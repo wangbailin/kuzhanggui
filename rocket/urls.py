@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, include, url
+import settings
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root': settings.STATIC_ROOT}),
+    url(r'', include('weixin.urls'))
     # Examples:
     # url(r'^$', 'rocket.views.home', name='home'),
     # url(r'^rocket/', include('rocket.foo.urls')),
