@@ -19,7 +19,32 @@ class HomePage(models.Model):
         db_table = u"homepage"
         app_label = u'microsite'
 
-class Trends(models.Model):
+class IntroPage(models.Model):
+    wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
+    enable = models.BooleanField(u'是否启用', default = True)
+    title = models.CharField(u'标题', max_length=50)
+    content = models.TextField(u'内容')
+
+    class Meta:
+        db_table = u"intropage"
+        app_label = u'microsite'
+
+class JoinPage(models.Model):
+    wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
+    enable = models.BooleanField(u'是否启用', default = True)
+    title = models.CharField(u'标题', max_length=50)
+    content = models.TextField(u'内容')
+
+    class Meta:
+        db_table = u'joinpage'
+        app_label = u'microsite'
+
+class ConnectPage(models.Model):
+    wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
+    enable = models.BooleanField(u'是否启用', default = True)
+    
+    
+class TrendsPage(models.Model):
     wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
     enable = models.BooleanField(u'启用')
 
