@@ -125,11 +125,10 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'account',
-    'microsite',
     'framework',
+    'microsite',
     'ajax_upload',
-    'django_tables2'
+    'django_tables2',
 )
 
 # A sample logging configuration. The only tangible logging
