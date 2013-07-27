@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 import settings
 
 # Uncomment the next two lines to enable the admin:
@@ -7,14 +8,7 @@ import settings
 
 urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root': settings.STATIC_ROOT}),
-    url(r'', include('weixin.urls'))
-    # Examples:
-    # url(r'^$', 'rocket.views.home', name='home'),
-    # url(r'^rocket/', include('rocket.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'', include('framework.urls')),
 )
+
+urlpatterns += staticfiles_urlpatterns()
