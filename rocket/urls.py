@@ -7,8 +7,6 @@ import settings
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root': settings.STATIC_ROOT}),
     url(r'', include('framework.urls')),
 )
 
-urlpatterns += staticfiles_urlpatterns()
