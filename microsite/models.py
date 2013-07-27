@@ -1,12 +1,13 @@
 #coding:utf8
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
 
 from account.models import Weixin
 
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
-    tab_name = models.CharField(u'tab的名字')
+    tab_name = models.CharField(u'tab的名字', max_length=20)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -69,18 +70,16 @@ class JoinPage(Page):
         app_label = u'microsite'
 
 class ConnectPage(Page):
-    wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
-    enable = models.BooleanField(u'是否启用', default = True)
+    enable = models.BooleanField(u'是否启用')
 
     def _get_tab_name(self):
         return u"联系我们"
 
     class Meta:
         db_table = u'connectpage'
-        app_label = u'micosite'
+        app_label = u'microsite'
 
 class TrendsPage(Page):
-    wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
     enable = models.BooleanField(u'是否启用')
 
     def _get_tab_name(self):
