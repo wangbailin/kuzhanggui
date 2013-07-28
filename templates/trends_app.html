@@ -1,0 +1,6 @@
+<div>
+<button type="button" class="btn btn-default" onclick="javascript:window.location.href='/trend/add'">添加动态</button>
+</div>
+{% load render_table from django_tables2 %}
+{% render_table app_info "django_tables2/table.html" %}
+

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+<form method='post' enctype="multipart/form-data"> {% csrf_token %}
+<table class="table">
+    <tbody>
+    <tr><th>{{ form.name.label }}</th><td>{{ form.name }}{{ form.name.errors }}</td></tr>
+    <tr><th>{{ form.email.label }}</th><td>{{ form.email }}{{ form.email.errors }}</td></tr>
+    <tr><th>{{ form.phone.label }}</th><td>{{ form.phone }}{{ form.phone.errors }}</td></tr>
+    <tr><th>{{ form.qq.label }}</th><td>{{ form.qq }}{{ form.qq.errors }}</td></tr>
+    </tbody>
+</table>
+<div class="form-bottom-buttons text-right">
+    <button class="btn btn-primary btn-large" id="tab-save">保存</button>
+</div>
+</form>
+</div>
+{% endblock %}

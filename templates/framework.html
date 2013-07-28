@@ -17,10 +17,25 @@ $('#sidebar a').click(function(e) {
 			<li><a class="navable" href="#dashboard"><i class="icon-eye-open"></i> 控制面板</a></li>
 			<li><a href="#wsite" data-toggle="collapse" data-target="#wsite"><i class="icon-home"></i> 微网站</a></li>
 			<li id="wsite" class="collapse in sidenav2">
-				<a class="navable" href="#wsite-settings">设置</a>
-				<a class="navable" href="#wsite-news">公司动态</a>
-				<a class="navable" href="#wsite-contacts">联系我们</a>
+                {% if active_side_id == -1 %}
+				<a class="navable active" href="/settings">设置</a>
+                {% else %}
+				<a class="navable" href="/settings">设置</a>
+                {% endif %}
+
+                {% for app in apps %}
+                    {% if forloop.counter == active_side_id %}
+                    <a class="navable active" href="/app/{{ app.pk }}">{{ app.tab_name }}</a>
+                    {% else %}
+                    <a class="navable" href="/app/{{ app.pk }}">{{ app.tab_name }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if active_side_id == 0 %}
+				<a class="navable active" href="#wsite-data">数据</a>
+                {% else %}
 				<a class="navable" href="#wsite-data">数据</a>
+                {% endif %}
 			</li>
 			<li><a class="navable" href="#account"><i class="icon-user"></i> 账户管理</a></li>
 		</ul>

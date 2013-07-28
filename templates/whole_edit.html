@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block document_ready %}
+    $(document).ready(function(){
+        $('#cancel').click(function(){
+            history.back();
+            return false;
+        });
+        $('#save').click(function(){
+            $(this).closest('form').submit();
+            return false;
+        });
+    });
+{% endblock %}
