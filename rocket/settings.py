@@ -52,12 +52,12 @@ USE_TZ = True
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.normpath(__file__)))
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/data/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -128,6 +128,8 @@ INSTALLED_APPS = (
     'account',
     'microsite',
     'framework',
+    'ajax_upload',
+    'django_tables2'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -138,6 +140,11 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -148,13 +155,26 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join('/data' + '/logs/','rocket_default.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter':'standard',
+        },
     },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
+        },
+        'default': {
+            'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': False,
         },
     }
 }

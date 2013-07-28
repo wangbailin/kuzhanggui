@@ -1,0 +1,69 @@
+{% extends "framework.html" %}
+
+{% block app %}
+<script type="text/javascript">
+
+</script>
+<div id='nav-tab' class='tabbable'>
+    <ul class="nav nav-tabs">
+    {% for t in tabs %}
+        {% if forloop.counter == active_tab_id %}
+        <li id="nav-tab{{ forloop.counter }}" class='active'><a href="#tab{{ forloop.counter }}" data-toggle="tab">{{ t.0.tab_name }}</a></li>
+        {% else %}
+        <li id="nav-tab{{ forloop.counter }}"><a href="#tab{{ forloop.counter }}" data-toggle="tab">{{ t.0.tab_name }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    <div class="tab-content">
+        {% for t in tabs %}
+            {% if forloop.counter == active_tab_id %}
+            <div class="tab-pane active" id="tab{{ forloop.counter }}">
+            {% else %}
+            <div class="tab-pane" id="tab{{ forloop.counter }}">
+            {% endif %}
+                <form id="tab{{ forloop.counter }}_form" action="/save/{{t.0.pk}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+                    {% include t.0.template_name with form=t.1 only %}
+                    <div class="form-bottom-buttons text-right">
+                        <button class="btn btn-primary btn-large" id="tab-save">保存</button>
+                    </div>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+$("form :input").change(function() {
+    $(this).closest('form').data('changed', true);
+    window.hasChanged = true;
+    window.needSaveForm = $(this).closest('form');
+    
+});
+$('#tab-save').click(function() {
+    if($(this).closest('form').data('changed')) {
+        $(this).closest('form').submit();
+    }
+    window.hasChanged = false;
+    window.needSaveForm = null;
+});
+{% for t in tabs %}
+    $('#nav-tab{{ forloop.counter }} a').click(function (e) {
+        e.preventDefault();
+        if (window.hasChanged) {
+            bootbox.dialog("您已经修改了内容，需要保存吗？",[{
+                'label': '保存',
+                'callback': function() {
+                    window.needSaveForm.submit()
+                    next_tab.tab('show');
+                }
+            }, {
+                'label': '取消',
+                'callback' : function() {
+                    next_tab.tab('show');
+                }
+                }
+            ]);
+        }
+    });
+{% endfor %}
+</script>
+{% endblock %}

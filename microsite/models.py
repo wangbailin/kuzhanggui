@@ -3,17 +3,21 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
 from account.models import Weixin
+from site_template import site_templates
 
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
     tab_name = models.CharField(u'tab的名字', max_length=20)
+    template_name = models.CharField(u'template的文件路径', max_length=260)
+
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.real_type = self._get_real_type()
             self.tab_name = self._get_tab_name()
-        super(InheritanceCastModel, self).save(*args, **kwargs)
+            self.template_name = self._get_template()
+        super(Page, self).save(*args, **kwargs)
 
     def _get_real_type(self):
         return ContentType.objects.get_for_model(type(self))
@@ -24,13 +28,20 @@ class Page(models.Model):
     def _get_tab_name(self):
         raise NotImplementedError
 
+    def _get_template(self):
+        raise NotImplementedError
+
     class Meta:
-        abstract = True
+        db_table = 'page'
+        app_label = 'microsite'
 
 # Create your models here.
 class HomePage(Page):
     name = models.CharField(u'官网名称', max_length=50)
-    template_type = models.IntegerField(u'模板类型')
+    choices = []
+    for k,v in site_templates.items():
+        choices.append( (k, v.name) )
+    template_type = models.IntegerField(u'模板类型', choices=choices, default = 1)
     pic1 = models.ImageField(u"焦点图1", upload_to='upload/', max_length=255, blank=True)
     pic2 = models.ImageField(u"焦点图2", upload_to='upload/', max_length=255, blank=True)
     pic3 = models.ImageField(u"焦点图3", upload_to='upload/', max_length=255, blank=True)
@@ -40,6 +51,12 @@ class HomePage(Page):
 
     def _get_tab_name(self):
         return u"首页"
+
+    def _get_template(self):
+        return 'homepage.html'
+
+    def get_template(self):
+        return 'homepage.html'
 
     class Meta:
         db_table = u"homepage"
@@ -54,6 +71,8 @@ class IntroPage(Page):
         db_table = u"intropage"
         app_label = u'microsite'
 
+    def _get_template(self):
+        return 'intropage.html'
     def _get_tab_name(self):
         return u"公司简介"
 
