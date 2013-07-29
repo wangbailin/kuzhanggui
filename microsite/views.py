@@ -10,34 +10,15 @@ from django.http import HttpResponse
 
 from models import *
 from tables import TableManager, ContactPeopleTable
-from account.models import *
-logger = logging.getLogger('default')
+from framework.models import *
 from datetime import datetime
 
-
-def t_login(request):
-    username = 'jfwang213'
-    password = 'nameLR9969'
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            return HttpResponse("login success")
-        else:
-            logger.error("user not active")
-    else:
-        logger.error("user is none")
-    return HttpResponse("login failed")
-
-def t_logout(request):
-    logout(request)
-    return HttpResponse("logout success")
-    
+logger = logging.getLogger('default')
 
 def get_tabs(request):
     user = auth.get_user(request)
     account = Account.objects.get(user=user)
-    wx = Weixin.objects.get(account=account)
+    wx = WXAccount.objects.get(account=account)
     pages = Page.objects.filter(wx=wx)
     tabs = []
     for p in pages:
@@ -49,7 +30,7 @@ def get_tabs(request):
 def get_apps(request):
     user = auth.get_user(request)
     account = Account.objects.get(user=user)
-    wx = Weixin.objects.get(account=account)
+    wx = WXAccount.objects.get(account=account)
     apps = App.objects.filter(wx=wx)
     return apps
     
@@ -129,7 +110,7 @@ def add_edit_contact(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = Weixin.objects.get(account=account)
+                wx = WXAccount.objects.get(account=account)
                 contact_app = ContactApp.objects.get(wx=wx)
                 item.contact = contact_app
             item.save()
@@ -174,7 +155,7 @@ def add_edit_trend(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = Weixin.objects.get(account=account)
+                wx = WXAccount.objects.get(account=account)
                 trends_app = TrendsApp.objects.get(wx=wx)
                 item.trend = trends_app
             item.pub_time = datetime.now()
@@ -184,5 +165,3 @@ def add_edit_trend(request, item_id=None):
         form = TrendItemForm(instance=item)
 
     return render(request, 'add_edit_trend.html', {'form':form})
-
-
