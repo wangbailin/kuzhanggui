@@ -6,5 +6,10 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('framework.views',
     url(r'^$', 'index'),
-    url(r'^bind', 'bind')
+    url(r'^welcome', 'welcome'),
+    url(r'^bind', 'bind'),
+    url(r'^register', 'register'),
+    url(r'^signout', 'signout'),
+    url(r'^agreement_game', 'agreement_game'),
+    url(r'^agreement', 'agreement'),
 )

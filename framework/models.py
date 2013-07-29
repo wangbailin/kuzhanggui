@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 class Account(models.Model):
 	user = models.OneToOneField(User)
 
-	qq = models.CharField(u'QQ', max_length=20, blank=True, null=True)
-	phone = models.CharField(u'手机号码', max_length=20)
+	qq = models.CharField(u'QQ', max_length = 20, blank = True, null = True)
+	phone = models.CharField(u'手机号码', max_length = 20)
 	expired_time = models.DateTimeField(u'过期时间')
 	is_expired = models.BooleanField(u'是否过期', default=False)
 

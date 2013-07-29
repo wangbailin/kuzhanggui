@@ -2,12 +2,12 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
-from account.models import Weixin
 from site_template import site_templates
+from framework.models import WXAccount
 
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
-    wx = models.ForeignKey(Weixin, verbose_name = u'微信账号')
+    wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
     tab_name = models.CharField(u'tab的名字', max_length=20)
     template_name = models.CharField(u'template的文件路径', max_length=260)
 

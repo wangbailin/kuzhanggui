@@ -20,6 +20,13 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -105,6 +112,8 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+LOGIN_URL = '/welcome'
+
 ROOT_URLCONF = 'rocket.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -129,6 +138,8 @@ INSTALLED_APPS = (
     'microsite',
     'ajax_upload',
     'django_tables2',
+    'dajaxice',
+    'dajax',
 )
 
 # A sample logging configuration. The only tangible logging

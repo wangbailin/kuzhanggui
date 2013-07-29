@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}{{ PROJECT_NAME }} Index{% endblock %}
+{% block title %}Welcome to Rocket Plan{% endblock %}
 
-{% block document_ready %} $('.carousel').carousel() {% endblock %}
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/welcome.js"></script>
+{% endblock %}
+
+{% block document_ready %}
+$(".carousel").carousel();
+$('#login').click(function() {
+	if (!$(this).hasClass("disabled")) {
+		login();
+	}
+});
+{% endblock %}
 
 {% block content %}
 <div style="width:978px;height:520px;position:absolute;top:50%;left:50%;margin-top:-220px;margin-left:-489px;">
@@ -41,12 +52,12 @@
 		<a class="carousel-control right" href="#carousel" data-slide="next">&rsaquo;</a>
 	</div>
 
-	<form id="login" action="" method="post" enctype="multipart/form-data" style="width:100%;margin-top:40px;"> {% csrf_token %}
+	<form action="" method="post" enctype="multipart/form-data" style="width:100%;margin-top:40px;">
 		<div class="controls controls-row" style="padding-left:20px;">
-			<input name="username" type="text" class="span4" placeholder="用户名" style="height:34px;font-size:20px;">
-			<input name="password" type="password" class="span4" placeholder="密码" style="height:34px;font-size:20px;">
-			<button type="submit" class="btn btn-primary btn-large span2">登录</button>
-			<button class="btn btn-large span2">注册</button>
+			<input id="username" name="username" type="text" class="span4" placeholder="用户名" style="height:34px;font-size:20px;">
+			<input id="password" name="password" type="password" class="span4" placeholder="密码" style="height:34px;font-size:20px;">
+			<button id="login" type="button" class="btn btn-primary btn-large span2" data-loading-text="登录中...">登录</button>
+			<a href="/register" target="_blank" role="button" class="btn btn-large" style="width:100px;margin-left:20px;">注册</a>
 		</div>
 	</form>
 </div>

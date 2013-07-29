@@ -1,18 +1,28 @@
+{% load dajaxice_templatetags %}
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{% block title %} rocket plan {% endblock %}</title>
+	<title>{% block title %}Rocket Plan{% endblock %}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/sidenav.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}ajax_upload/css/ajax-upload-widget.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/rocket.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}css/jquery.pnotify.default.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}css/jquery.pnotify.default.icons.css"/>
+    {% block css %}{% endblock %}
 
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootbox.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/jquery.iframe-transport.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/ajax-upload-widget.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.pnotify.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+    {% dajaxice_js_import %}
+    {% block js %}{% endblock %}
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -38,7 +48,7 @@
 				<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{user.username}}</a>
 				<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 				<ul class="dropdown-menu">
-		  			<li><a href="/logout"><i class="icon-off"></i>退出</a></li>
+		  			<li><a href="/signout"><i class="icon-off"></i>退出</a></li>
 				</ul>
 			</div>
 		{% endif %}
@@ -78,10 +88,8 @@
 	</div>
 </div>
 
-<div id="content" class="container" style="width:100%;">
-	{% autoescape off %}
-	{% block content %} Content here! {% endblock %}
-	{% endautoescape %}
-</div>
+{% autoescape off %}
+{% block content %} Content here! {% endblock %}
+{% endautoescape %}
 </body>
 </html>

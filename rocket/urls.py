@@ -6,7 +6,12 @@ import settings
 # from django.contrib import admin
 # admin.autodiscover()
 
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+dajaxice_autodiscover()
+
 urlpatterns = patterns('',
+    url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root': settings.STATIC_ROOT}),
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     url(r'', include('framework.urls')),
     url(r'', include('microsite.urls')),
     url(r'^ajax-upload/', include('ajax_upload.urls')),

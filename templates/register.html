@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}注册成为「Rocket Plan」用户{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.timer.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.textchange.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/register.js"></script>
+{% endblock %}
+
+{% block document_ready %}
+$('#get_auth_code').click(function(e) {
+    if (!$(this).hasClass('disabled')) {
+        get_auth_code();
+    }
+});
+$('#id_phone').bind('textchange', function() {
+    var regex = new RegExp('1[0-9]{10}');
+    if (regex.test($(this).val())) {
+        $('#get_auth_code').removeClass('disabled');
+    } else {
+        $('#get_auth_code').addClass('disabled');
+    }
+});
+$('#agree').change(function() {
+    if ($(this).is(':checked')) {
+        $('#register').removeClass('disabled');
+    } else {
+        $('#register').addClass('disabled');
+    }
+});
+$('#cancel').click(function() {
+    window.close();
+});
+{% endblock %}
+
+{% block content %}
+<div id="content" class="container">
+    <div class="page-header">
+        <h1>注册成为「Rocket Plan」用户</h1>
+    </div>
+
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="control-group">
+            <label class="control-label" for="username"><span style="color:red;">*</span>用户名</label>
+            <div class="controls">
+                {{ form.username }}<span class="help-inline">6～18个字符，可以使用字母、数字、下划线，需以字母开头</span>{{ form.username.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password"><span style="color:red;">*</span>密码</label>
+            <div class="controls">
+                {{ form.password1 }}<span class="help-inline">6～16个字符，区分大小写</span>{{ form.password1.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password2"><span style="color:red;">*</span>确认密码</label>
+            <div class="controls">
+                {{ form.password2 }}<span class="help-inline">请再次填写密码</span>{{ form.password2.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="phone"><span style="color:red;">*</span>手机号码</label>
+            <div class="controls">
+                {{ form.phone }}
+                <a id="get_auth_code" href="#" class="btn disabled" data-loading-text="重新获取验证码(120)">免费获取验证码</a>
+                {{ form.phone.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="auth_code"><span style="color:red">*</span>验证码</label>
+            <div class="controls">
+                {{ form.auth_code }}
+                {{ form.auth_code.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="email">邮箱</label>
+            <div class="controls">
+                {{ form.email }}<span class="help-inline">用来接受最新的产品信息和优惠信息</span>{{ form.email.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="qq">QQ</label>
+            <div class="controls">
+                {{ form.qq }}<span class="help-inline">方便客服主动与您联系</span>{{ form.qq.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <label class="checkbox">
+                    <input id="agree" name="agree" type="checkbox" value="" checked=Ture>
+                    同意<a href="/agreement" target="_blank">"服务条款"</a>和<a href="/agreement_game" target="_blank">"隐私权相关政策"</a>
+                    {{ form.agree.errors }}
+                </label>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button id="register" type="submit" class="btn btn-primary">注册</button>
+            <button id="cancel" type="button" class="btn">取消</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
