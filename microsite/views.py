@@ -3,7 +3,7 @@
 import logging
 from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 
-from forms import HomePageForm, IntroPageForm, FormManager, ContactItemForm, ContactPeopleForm, TrendItemForm
+from forms import *
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
@@ -71,14 +71,7 @@ def save(request, page_id):
         logger.debug("save page id %d" % page_id)
         page = get_object_or_404(Page, id = page_id)
         sub_page = page.cast()
-        if page.real_type == ContentType.objects.get_for_model(HomePage):
-            logger.debug("home page")
-            form = HomePageForm(request.POST, request.FILES, instance=page.cast())
-        elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-            logger.debug("intro page")
-            form = IntroPageForm(request.POST, request.FILES, instance=page.cast())
-        else:
-            logger.error("bad real_type %d" % page.read_type.id)
+        form = FormManager.get_form(sub_page, request)
         if form.is_valid():
             intropage = form.save()
             intropage.save()
@@ -165,3 +158,46 @@ def add_edit_trend(request, item_id=None):
         form = TrendItemForm(instance=item)
 
     return render(request, 'add_edit_trend.html', {'form':form})
+
+def add_edit_link_page(request, link_id=None):
+    if link_id:
+        item = get_object_or_404(LinkPage, pk = link_id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = LinkPageForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                user = auth.get_user(request)
+                account = Account.objects.get(user=user)
+                wx = WXAccount.objects.get(account=account)
+                item.enable = True
+                item.wx = wx
+            item.save()
+            return redirect('/setting')
+    else:
+        form = LinkPageForm(instance=item)
+
+    return render(request, 'add_edit_link.html', {'form':form})
+def add_edit_content_page(request, content_id=None):
+    if content_id:
+        item = get_object_or_404(ContentPage, pk = content_id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = ContentPageForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                user = auth.get_user(request)
+                account = Account.objects.get(user=user)
+                wx = WXAccount.objects.get(account=account)
+                item.enable = True
+                item.wx = wx
+            item.save()
+            return redirect('/setting')
+    else:
+        form = ContentPageForm(instance=item)
+
+    return render(request, 'add_edit_content.html', {'form':form})

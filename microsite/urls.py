@@ -11,4 +11,6 @@ urlpatterns = patterns('microsite.views',
     url(r'^trend/(?P<item_id>\d+)/edit', 'add_edit_trend'),
     url(r'^contact_people/(?P<contact_id>\d+)/add', 'add_edit_contact_people'),
     url(r'^contact_people/(?P<contact_id>\d+)/(?P<item_id>\d+)/edit', 'add_edit_contact_people'),
+    url(r'^link_page/add', 'add_edit_link_page'),
+    url(r'^content_page/add', 'add_edit_content_page'),
 )

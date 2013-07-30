@@ -1,7 +1,7 @@
 #coding:utf8
 from django import forms
 from django.forms import ModelForm
-from models import HomePage, IntroPage, JoinPage, ContactApp, TrendsApp, TrendItem, ContactItem, ContactPeople
+from models import *
 from django.contrib.contenttypes.models import ContentType
 from ajax_upload.widgets import AjaxClearableFileInput
 
@@ -85,6 +85,47 @@ class ContactPeopleForm(ModelForm):
             'qq',
         )
 
+class CulturePageForm(ModelForm):
+    class Meta:
+        model = CulturePage 
+        fields = (
+            'enable',
+            'title',
+            'content',
+        )
+
+class WeiboPageForm(ModelForm):
+    class Meta:
+        model = WeiboPage 
+        fields = (
+            'enable',
+            'title',
+            'url',
+        )
+
+class ContentPageForm(ModelForm):
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
+    class Meta:
+        model = ContentPage
+        fields = (
+            'enable',
+            'title',
+            'icon',
+            'content',
+        )
+
+
+class LinkPageForm(ModelForm):
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
+    class Meta:
+        model = LinkPage
+        fields = (
+            'enable',
+            'title',
+            'icon',
+            'url',
+        )
+
 class FormManager(object):
     @classmethod
     def get_form(cls, page, request = None):
@@ -113,6 +154,26 @@ class FormManager(object):
                 return TrendsAppForm(request.POST, request.FILES, instance=page)
             else:
                 return TrendsAppForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(CulturePage):
+            if (request):
+                return CulturePageForm(request.POST, request.FILES, instance=page)
+            else:
+                return CulturePageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+            if (request):
+                return WeiboPageForm(request.POST, request.FILES, instance=page)
+            else:
+                return WeiboPageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(ContentPage):
+            if (request):
+                return ContentPageForm(request.POST, request.FILES, instance=page)
+            else:
+                return ContentPageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(LinkPage):
+            if (request):
+                return LinkPageForm(request.POST, request.FILES, instance=page)
+            else:
+                return LinkPageForm(instance=page)
 
 
 

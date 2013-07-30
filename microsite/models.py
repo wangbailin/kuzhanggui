@@ -28,6 +28,7 @@ class Page(models.Model):
     def _get_tab_name(self):
         raise NotImplementedError
 
+
     def _get_template(self):
         raise NotImplementedError
 
@@ -77,11 +78,17 @@ class HomePage(Page):
         db_table = u"homepage"
         app_label = u'microsite'
 
+
 class IntroPage(Page):
     enable = models.BooleanField(u'是否启用', default = True)
     title = models.CharField(u'标题', max_length=50)
     content = models.TextField(u'内容')
 
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '公司简介'
+        super(IntroPage, self).save(*args, **kwargs)
+        
     class Meta:
         db_table = u"intropage"
         app_label = u'microsite'
@@ -89,15 +96,20 @@ class IntroPage(Page):
     def _get_template(self):
         return 'intropage.html'
     def _get_tab_name(self):
-        return u"公司简介"
+        return self.title
 
 class JoinPage(Page):
     enable = models.BooleanField(u'是否启用', default = True)
     title = models.CharField(u'标题', max_length=50)
     content = models.TextField(u'内容')
 
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '加入我们'
+        super(JoinPage, self).save(*args, **kwargs)
+        
     def _get_tab_name(self):
-        return u"加入我们"
+        return self.title
     def _get_template(self):
         return 'intropage.html'
 
@@ -117,6 +129,7 @@ class ContactApp(App):
     class Meta:
         db_table = u'contactapp'
         app_label = u'microsite'
+
 
 class TrendsApp(App):
     enable = models.BooleanField(u'是否启用')
@@ -162,3 +175,86 @@ class ContactPeople(models.Model):
     class Meta:
         db_table = u'contact_people'
         app_label = u'microsite'
+
+class CulturePage(Page):
+    enable = models.BooleanField(u'是否启用', default = True)
+    title = models.CharField(u'标题', max_length=100)
+    content = models.TextField(u'内容')
+
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '公司文化'
+        super(CulturePage, self).save(*args, **kwargs)
+
+    class Meta:
+        db_table = u"culture"
+        app_label = u'microsite'
+
+    def _get_template(self):
+        return 'intropage.html'
+    def _get_tab_name(self):
+        return self.title
+
+
+class WeiboPage(Page):
+    enable = models.BooleanField(u'是否启用', default = True)
+    title = models.CharField(u'标题', max_length=100)
+    url = models.CharField(u"微博链接", max_length=100)
+
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '官方微博'
+        super(WeiboPage, self).save(*args, **kwargs)
+
+    class Meta:
+        db_table = u"official_weibo"
+        app_label = u'microsite'
+
+    def _get_template(self):
+        return 'official_weibo.html'
+    def _get_tab_name(self):
+        return self.title
+    
+
+class ContentPage(Page):
+    enable = models.BooleanField(u'是否启用', default = True)
+    title = models.CharField(u'标题', max_length=100)
+    icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
+    content = models.TextField(u'内容')
+    
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '内容页面'
+        super(ContentPage, self).save(*args, **kwargs)
+
+    class Meta:
+        db_table = u"content_page"
+        app_label = u'microsite'
+
+    def _get_template(self):
+        return 'content_page.html'
+    def _get_tab_name(self):
+        return self.title
+
+
+class LinkPage(Page):
+    enable = models.BooleanField(u'是否启用', default = True)
+    title = models.CharField(u'标题', max_length=100)
+    icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
+    url = models.CharField(u'链接地址', max_length=200)
+    
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '链接页面'
+        super(LinkPage, self).save(*args, **kwargs)
+
+    class Meta:
+        db_table = u"link_page"
+        app_label = u'microsite'
+
+    def _get_template(self):
+        return 'link_page.html'
+    def _get_tab_name(self):
+        return self.title
+        
+ 
