@@ -54,7 +54,8 @@ def get_url_token(request, name):
         wx_account.url = 'http://r.limijiaoyin.com/wx/%d' % wx_account.id
         wx_account.token = str(random.randint(1000,10000))
         wx_account.save()
-
+    
+    cache.set('wx_%d_token' % wx_account.id, wx_account.token, 15 * 60 * 1000)
     dajax.add_data({ 'url' : wx_account.url, 'token' : wx_account.token }, 'getUrlTokenCallback')
     return dajax.json()
 

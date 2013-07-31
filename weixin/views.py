@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 from django.utils.encoding import smart_str, smart_unicode
 from django.views.decorators.csrf import csrf_exempt
+from django.core.cache import cache
 import logging, traceback, time, struct, socket
 import hashlib
 from datetime import date, timedelta, datetime
@@ -25,8 +26,6 @@ def _route_callback(error=None, reply=None):
 def index(request, wx):
     global router_error, router_reply
     wxlogger = logging.getLogger('weixin')
-
-    wx_account = get_object_or_404(WXAccount, id=wx)
     
     if request.method == 'GET':
         if 'signature' not in request.GET or 'timestamp' not in request.GET or 'nonce' not in request.GET or 'echostr' not in request.GET:
@@ -36,11 +35,9 @@ def index(request, wx):
         nonce = request.GET['nonce']
         echostr = request.GET['echostr']
         wxlogger.info("receive one get message signature %s timestamp %s nonce %s echostr %s" % (signature, timestamp, nonce, echostr))
-
-        weixin = WeiXin.on_connect(wx_account.token, timestamp, nonce, signature, echostr)
+	token = cache.get('wx_%s_token' % wx)
+        weixin = WeiXin.on_connect(token, timestamp, nonce, signature, echostr)
         if weixin.validate():
-            wx_account.state = WXAccount.BOUND_UNCHECKED
-            wx_account.save()
             return HttpResponse(echostr, content_type="text/plain")
         else:
             return HttpResponse(None, content_type="text/plain")
