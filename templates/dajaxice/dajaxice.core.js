@@ -13,6 +13,9 @@ var Dajaxice = {
         clear_bind_info : function(callback_function, argv, custom_settings){
             return Dajaxice.call('framework.clear_bind_info', 'POST', callback_function, argv, custom_settings);
         },
+        is_bind_successed : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.is_bind_successed', 'POST', callback_function, argv, custom_settings);
+        },
     }
 ,
     get_cookie: function(name)

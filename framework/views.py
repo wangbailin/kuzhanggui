@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404, render, redi
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from framework.forms import RegisterForm
+from framework.models import Account, WXAccount
 
 def welcome(request):
     if request.method == 'POST':
@@ -32,7 +33,11 @@ def register(request):
 
 @login_required
 def index(request):
-	return render(request, 'framework.html')
+    account = Account.objects.get(user=request.user)
+    if account.has_wx_bound:
+        return render(request, 'framework.html')
+    else:
+        return redirect('/bind')
 
 @login_required
 def bind(request):

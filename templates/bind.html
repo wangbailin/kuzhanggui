@@ -13,6 +13,7 @@
 {% block document_ready %}
 $('#get_url_token').click(getUrlToken);
 $('#wxaccount_restart').click(clearBindInfo);
+$('#wxaccount_bound').click(isBindSuccessed);
 $('#wxaccount_name').bind('textchange', function() {
     if ($(this).val() && $(this).val().length > 1) {
         $('#get_url_token').removeClass('disabled');
@@ -98,11 +99,11 @@ $('#wxaccount_name').bind('textchange', function() {
     <div class="page-header">
         <span class="badge badge-success">4</span><span style="margin-left:4px;">验证绑定是否成功</span>
     </div>
-    <p><strong>绑定完成！</strong>请使用个人微信号向您的微信公众号发送一条消息“Rocket Plan”，如果收到回复"绑定成功"，说明您已经绑定成功可以开始正常的配置和使用了。</p>
+    <p><strong>绑定完成！</strong>请使用个人微信号向您的微信公众号发送一条消息“rocket”，如果收到回复"绑定成功"，说明您已经绑定成功可以开始正常的配置和使用了。</p>
 
     <div class="form-actions text-center">
         <button id="wxaccount_restart" type="button" class="btn btn-danger disabled">未收到回复，重新绑定</button>
-        <button id="wxaccount_bound" type="button" class="btn btn-success disabled">绑定成功，进入新世界</button>
+        <button id="wxaccount_bound" type="button" class="btn btn-success disabled">收到回复，进入新世界</button>
     </div>
 <div>
 {% endblock %}

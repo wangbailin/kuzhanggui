@@ -9,6 +9,7 @@ class Account(models.Model):
 	phone = models.CharField(u'手机号码', max_length = 20)
 	expired_time = models.DateTimeField(u'过期时间')
 	is_expired = models.BooleanField(u'是否过期', default=False)
+	has_wx_bound = models.BooleanField(u'绑定微信公众号', default=False)
 
 	class Meta:
 		db_table = u'account'

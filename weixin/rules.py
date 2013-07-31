@@ -17,6 +17,10 @@ def check_bind_state(rule, info):
         wx_account.bind_time = datetime.now()
         wx_account.wxid = info.sp
         wx_account.save()
+
+        wx_account.account.has_wx_bound = True
+        wx_account.account.save()
+
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'绑定成功')
     except ObjectDoesNotExist:
         return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u'no wx account')

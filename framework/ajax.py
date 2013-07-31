@@ -67,3 +67,16 @@ def clear_bind_info(request, name):
     WXAccount.objects.filter(account=account, name=name).delete()
 
     return dajax.json()
+
+@dajaxice_register
+def is_bind_successed(request, name):
+    dajax = Dajax()
+
+    account = Account.objects.get(user=request.user)
+
+    if WXAccount.objects.filter(account=account, name=name, state=WXAccount.STATE_BOUND).exists():
+        dajax.add_data({'ret_code' : 0 , 'ret_msg' : 'success'}, 'isBindSuccessedCallback')
+    else:
+        dajax.add_data({'ret_code' : 1000, 'ret_msg' : 'failed'}, 'isBindSuccessedCallback')
+
+    return dajax.json()
