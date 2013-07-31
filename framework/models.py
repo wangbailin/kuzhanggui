@@ -18,8 +18,8 @@ class WXAccount(models.Model):
 
 	name = models.CharField(u'名称', max_length=20, blank=True, null=True)
 	avatar = models.ImageField(u'图标', upload_to='avatar/', max_length=255, blank=True)
-	follower_count = models.IntegerField(u'粉丝数量', max_length=11)
-	message_count = models.IntegerField(u'消息数量', max_length=11)
+	follower_count = models.IntegerField(u'粉丝数量', max_length=11, default=0)
+	message_count = models.IntegerField(u'消息数量', max_length=11, default=0)
 
 	username = models.CharField(u'用户名', max_length=255, blank=True, null=True)
 	STATE_UNBOUND = 1
@@ -31,9 +31,10 @@ class WXAccount(models.Model):
 		(STATE_BINDING, u'绑定中'),
 		(STATE_BOUND_UNCHECKED, '未验证'),
 		(STATE_BOUND, u'绑定成功'))
-	state = models.IntegerField(u'状态', max_length=2, choices=STATE_CHOICES, default=STATE_BOUND)
+	state = models.IntegerField(u'状态', max_length=2, choices=STATE_CHOICES, default=STATE_UNBOUND)
 	url = models.CharField(u'URL', max_length=255)
 	token = models.CharField(u'Token', max_length=255)
+	wxid = models.CharField(u'WXID', max_length=255, blank=True, null=True)
 	bind_time = models.DateTimeField(u'绑定时间', blank=True, null=True)
 
 	class Meta:

@@ -7,6 +7,12 @@ var Dajaxice = {
         signin: function(callback_function, argv, custom_settings){
             return Dajaxice.call('framework.signin', 'POST', callback_function, argv, custom_settings);
         },
+        get_url_token : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.get_url_token', 'POST', callback_function, argv, custom_settings);
+        },
+        clear_bind_info : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.clear_bind_info', 'POST', callback_function, argv, custom_settings);
+        },
     }
 ,
     get_cookie: function(name)

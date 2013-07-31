@@ -2,7 +2,107 @@
 
 {% block title %}Rocket Plan - 绑定微信公众平台账号{% endblock %}
 
+{% block css %}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.textchange.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bind.js"></script>
+{% endblock %}
+
+{% block document_ready %}
+$('#get_url_token').click(getUrlToken);
+$('#wxaccount_restart').click(clearBindInfo);
+$('#wxaccount_name').bind('textchange', function() {
+    if ($(this).val() && $(this).val().length > 1) {
+        $('#get_url_token').removeClass('disabled');
+    } else {
+        $('#get_url_token').addClass('disabled');
+    }
+});
+{% endblock %}
+
 {% block content %}
 <div id="content" class="container">
+    <div class="page-header">
+        <h1>绑定微信公众号</h1>
+    </div>
+    <div class="alert alert-info">
+        <h4>绑定微信公众号必要条件：</h4>
+        <ol style="margin-top:8px;">
+            <li>已经拥有一个微信公众号，否则请去<a href="http://mp.weixin.qq.com" target="_blank">微信公众平台</a>注册</li>
+            <li>微信公众号注册超过一个星期（超过一个星期才能开启开发模式），否则请等到注册之后的一个星期再进行绑定</li>
+        </ol>
+    </div>
+
+    <div class="page-header">
+        <span class="badge badge-success">1</span><span style="margin-left:4px;">开启「开发模式」</span>
+    </div>
+    <ul class="thumbnails">
+        <li class="span6">
+            <div class="thumbnail">
+                <img data-src="holder.js/300x200" alt="">
+                <div class="caption">
+                    <h3>进入「开发模式」</h3>
+                    <p>登录<a href="http://mp.weixin.qq.com" target="_blank">微信公众平台</a>，点击图中所示的「高级功能」，进入高级功能面板。然后点击图中所示的「开发模式」，进入开发模式功能面板。</p>
+                </div>
+            </div>
+        </li>
+        <li class="span6">
+            <div class="thumbnail">
+                <img data-src="holder.js/300x200" alt="">
+                <div class="caption">
+                    <h3>开启「开发模式」</h3>
+                    <p>如果「编辑模式」已经开启，可能会导致「开发模式」无发开启，请首先关闭「编辑模式」。</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div class="page-header">
+        <span class="badge badge-success">2</span><span style="margin-left:4px;">获取接口配置信息</span>
+    </div>
+    <div class="input-append">
+        <input id="wxaccount_name" type="text" class="span3" placeholder="微信公众号名称">
+        <button id="get_url_token" type="button" class="btn btn-primary disabled" data-loading-text="获取接口配置信息中...">获取接口配置信息</button>
+    </div>
+    <div class="alert alert-success" style="padding-top:18px;">
+        <p>URL: <span id="wxaccount_url"></span></p>
+        <p>Token: <span id="wxaccount_token"></span></p>
+    </div>
+    
+    <div class="page-header">
+        <span class="badge badge-success">3</span><span style="margin-left:4px;">设置接口配置信息</span>
+    </div>
+    <ul class="thumbnails">
+        <li class="span6">
+            <div class="thumbnail">
+                <img data-src="holder.js/300x200" alt="">
+                <div class="caption">
+                    <h3>进入接口配置信息页面</h3>
+                    <p>点击图中所示的修改或设置链接。</p>
+                </div>
+            </div>
+        </li>
+        <li class="span6">
+            <div class="thumbnail">
+                <img data-src="holder.js/300x200" alt="">
+                <div class="caption">
+                    <h3>提交接口配置信息</h3>
+                    <p>将之前获得的URL和TOKEN填写到对应位置并点击提交。</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div class="page-header">
+        <span class="badge badge-success">4</span><span style="margin-left:4px;">验证绑定是否成功</span>
+    </div>
+    <p><strong>绑定完成！</strong>请使用个人微信号向您的微信公众号发送一条消息“Rocket Plan”，如果收到回复"绑定成功"，说明您已经绑定成功可以开始正常的配置和使用了。</p>
+
+    <div class="form-actions text-center">
+        <button id="wxaccount_restart" type="button" class="btn btn-danger disabled">未收到回复，重新绑定</button>
+        <button id="wxaccount_bound" type="button" class="btn btn-success disabled">绑定成功，进入新世界</button>
+    </div>
 <div>
 {% endblock %}
