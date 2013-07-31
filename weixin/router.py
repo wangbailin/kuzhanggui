@@ -62,10 +62,10 @@ class Router(object):
     def dialog(self, path):
         pass
 
-    def reply(self, data, cb):
+    def reply(self, wx, data, cb):
         info = data
         if not isinstance(data, Info):
-            info = Info(data)
+            info = Info(wx, data)
 
         if not self.config.get('keepBlank', False) and info.text:
             info.text = info.text.trim()

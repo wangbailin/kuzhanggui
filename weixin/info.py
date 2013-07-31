@@ -1,5 +1,5 @@
 class Info(object):
-	def __init__(self, json):
+	def __init__(self, wx, json):
 		self.user =  json.get('FromUserName', None)
 		self.sp = json.get('ToUserName', None)
 		self.create_time = json.get('CreateTime', None)
@@ -12,6 +12,7 @@ class Info(object):
 		self.pic = json.get('PicUrl', None)
 		self.event = json.get('Event', None)
 		self.event_key = json.get('EventKey', None)
+		self.wx = wx
 
 	type = 'text'
 	user = None
@@ -28,6 +29,7 @@ class Info(object):
 	origin_json = None
 	reply = None
 	flag = 0
+	wx = -1
 
 	def is_text(self):
 		return self.type == 'text'

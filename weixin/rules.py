@@ -1,6 +1,8 @@
 # coding: utf8
 from router import Router
 from message_builder import MessageBuilder, BuildConfig
+from framework.models import WXAccount
+from datetime import datetime
 
 def subscribe(rule, info):
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)
@@ -9,7 +11,15 @@ def unsubscribe(rule, info):
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s unsubscribe" % info.user)
 
 def check_bind_state(rule, info):
-    pass
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        wx_account.state = WXAccount.STATE_BOUND
+        wx_account.bind_time = datetime.now()
+        wx_account.wxid = info.sp
+        wx_account.save()
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'绑定成功')
+    except ObjectDoesNotExist:
+        return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u'no wx account')
 
 def match_subscribe_event(rule, info):
     return info.type == "event" and info.event == 'subscribe'

@@ -47,7 +47,7 @@ def index(request, wx):
             message = weixin.to_json()
             wxlogger.info("receive one message %s" % str(message))
 
-            Router.get_instance().reply(message, _route_callback)
+            Router.get_instance().reply(wx, message, _route_callback)
             
             if router_error is None and router_reply is not None:
                 router_reply.platform = MessageBuilder.PLATFORM_WEIXIN
