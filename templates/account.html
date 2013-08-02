@@ -1,0 +1,93 @@
+{% extends "framework.html" %}
+
+{% block title %}账户管理{% endblock %}
+
+{% block document_ready %}
+{{ block.super }}
+$('#nav-account').addClass('active');
+{% endblock %}
+
+{% block app %}
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">基本信息</p>
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th>用户名</th>
+        <td><span id="username">{{ account.user.username }}</span></td>
+    </tr>
+    <tr>
+        <th>手机号码</th>
+        <td><span id="phone">{{ account.phone }}</span></td>
+    </tr>
+    <tr>
+        <th>邮箱</th>
+        <td><span id="email">{{ account.user.email }}</span></td>
+    </tr>
+    <tr>
+        <th>QQ</th>
+        <td><span id="qq">{{ account.qq }}</span></td>
+    </tr>
+    <tr>
+        <th>注册时间</th>
+        <td><span id="reg_time">{{ account.user.date_joined | date:"Y-m-d H:i:s"}}</span></td>
+    </tr>
+    <tr>
+        <th>上次登陆时间</th>
+        <td><span id="last_active_time">{{ account.user.last_login | date:"Y-m-d H:i:s" }}</span></td>
+    </tr>
+    <tr>
+        <th>操作</th>
+        <td><a href="#" class="btn">编辑账户信息<a/><a href="#" class="btn" style="margin-left:8px;">修改密码<a/></td>
+    </tr>
+</table>
+
+
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">会员信息</p>
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th>账户类型</th>
+        <td><span id="account_type">{{ group | default_if_none:"试用账户"}}</span></td>
+    </tr>
+    <tr>
+        <th>到期时间</th>
+        <td><span id="expired_time">{{ account.expired_time | date:"Y-m-d H:i:s" }}</span></td>
+    </tr>
+</table>
+
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">账户绑定信息</p>
+    </div>
+</div>
+{% if wx_account %}
+<table class="table">
+    <thead>
+        <th>公众号名称</th>
+        <th>绑定时间</th>
+        <th>本月消息个数</th>
+        <th>操作</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span id="wxaccount_name">{{ wx_account.name }}</span></td>
+            <td><span id="wxaccount_bindtime">{{ wx_account.bind_time | date:"Y-m-d H:i:s" }}</span></td>
+            <td><span id="wxaccount_msgcount">{{ wx_account.message_count }}</span></td>
+            <td><a id="unbind" href="#" class="btn btn-danger">解除绑定</a></td>
+        </tr>
+    </tbody>
+</table>
+{% else %}
+<table class="table">
+    <tr>
+        <td><a href="/bind" class="btn btn-primary">绑定微信公众号</a></td>
+    </tr>
+</table>
+{% endif %}
+{% endblock %}

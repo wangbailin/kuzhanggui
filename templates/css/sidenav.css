@@ -1,6 +1,10 @@
 /* Sidenav
 -------------------------------------------------- */
-
+.sidebar {
+  position: fixed;
+  top: 48px;
+  left: 0px;
+}
 .sidenav {
   list-style: none;
   width: 228px;

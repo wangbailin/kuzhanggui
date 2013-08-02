@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/framework.css"/>
+{% endblock %}
+
 {% block document_ready %}
 $('#sidebar').affix();
 $('#sidebar a').click(function(e) {
@@ -11,37 +15,35 @@ $('#sidebar a').click(function(e) {
 {% endblock %}
 
 {% block content %}
-<div class="row">
-	<div class="span3 sidebar">
-		<ul id="sidebar" class="nav nav-list sidenav" style="margin-top:8px;">
-			<li><a class="navable" href="#dashboard"><i class="icon-eye-open"></i> 控制面板</a></li>
-			<li><a href="#wsite" data-toggle="collapse" data-target="#wsite"><i class="icon-home"></i> 微网站</a></li>
-			<li id="wsite" class="collapse in sidenav2">
-                {% if active_side_id == -1 %}
-				<a class="navable active" href="/settings">设置</a>
-                {% else %}
-				<a class="navable" href="/settings">设置</a>
-                {% endif %}
+<div class="sidebar">
+	<ul id="sidebar" class="nav nav-list sidenav">
+		<li><a class="navable" href="#dashboard"><i class="icon-eye-open"></i> 控制面板</a></li>
+		<li><a href="#wsite" data-toggle="collapse" data-target="#wsite"><i class="icon-home"></i> 微网站</a></li>
+		<li id="wsite" class="collapse in sidenav2">
+            {% if active_side_id == -1 %}
+		      <a class="navable active" href="/settings">设置</a>
+            {% else %}
+		      <a class="navable" href="/settings">设置</a>
+            {% endif %}
 
-                {% for app in apps %}
-                    {% if forloop.counter == active_side_id %}
+            {% for app in apps %}
+                {% if forloop.counter == active_side_id %}
                     <a class="navable active" href="/app/{{ app.pk }}">{{ app.tab_name }}</a>
-                    {% else %}
-                    <a class="navable" href="/app/{{ app.pk }}">{{ app.tab_name }}</a>
-                    {% endif %}
-                {% endfor %}
-
-                {% if active_side_id == 0 %}
-				<a class="navable active" href="#wsite-data">数据</a>
                 {% else %}
-				<a class="navable" href="#wsite-data">数据</a>
+                    <a class="navable" href="/app/{{ app.pk }}">{{ app.tab_name }}</a>
                 {% endif %}
-			</li>
-			<li><a class="navable" href="#account"><i class="icon-user"></i> 账户管理</a></li>
-		</ul>
-	</div>
-	<div class="span9">
+            {% endfor %}
+
+            {% if active_side_id == 0 %}
+				<a class="navable active" href="#wsite-data">数据</a>
+            {% else %}
+				<a class="navable" href="#wsite-data">数据</a>
+            {% endif %}
+		</li>
+		<li><a id="nav-account" class="navable" href="/account"><i class="icon-user"></i> 账户管理</a></li>
+	</ul>
+</div>
+<div class="app">
 		{% block app %}App here!{% endblock %}
-	</div>
 </div>
 {% endblock %}

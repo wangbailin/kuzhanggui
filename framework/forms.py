@@ -47,6 +47,6 @@ class RegisterForm(forms.Form):
             expired_time=datetime.datetime.now() + datetime.timedelta(weeks=4))
 
         # add new account as trial account
-        new_account.user.groups = Group.objects.filter(name='TRIAL')
+        new_account.user.groups = Group.objects.filter(name=u'试用账户')
 
         return new_account

@@ -12,4 +12,5 @@ urlpatterns = patterns('framework.views',
     url(r'^signout', 'signout'),
     url(r'^agreement_game', 'agreement_game'),
     url(r'^agreement', 'agreement'),
+    url(r'^account', 'account')
 )

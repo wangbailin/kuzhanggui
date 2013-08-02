@@ -48,6 +48,17 @@ def signout(request):
     logout(request)
     return redirect('/welcome')
 
+@login_required
+def account(request):
+    account = Account.objects.get(user=request.user)
+    group_name = None
+    if request.user.groups.count() > 0:
+        group_name = request.user.groups.all()[0].name
+    wx_account = None
+    if account.has_wx_bound:
+        wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+    return render(request, 'account.html', { 'account' : account, 'group' : group_name, 'wx_account' : wx_account })
+
 def agreement(request):
     return render(request, 'agreement.html')
 
