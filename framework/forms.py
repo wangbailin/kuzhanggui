@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate
 from django.core.cache import cache
 import datetime
 
@@ -50,3 +51,29 @@ class RegisterForm(forms.Form):
         new_account.user.groups = Group.objects.filter(name=u'试用账户')
 
         return new_account
+
+class ChangePasswordForm(forms.Form):
+    username = forms.CharField(min_length=6, max_length=18, required=True)
+    password_old = forms.CharField(min_length=6, max_length=16, required=True, widget=forms.widgets.PasswordInput())
+    password_new1 = forms.CharField(min_length=6, max_length=16, required=True, widget=forms.widgets.PasswordInput())
+    password_new2 = forms.CharField(min_length=6, max_length=16, required=True, widget=forms.widgets.PasswordInput())
+
+    def clean_password_old(self):
+        if 'username' in self.cleaned_data and 'password_old' in self.cleaned_data:
+            user = authenticate(username=self.cleaned_data['username'], password=self.cleaned_data['password_old'])
+            if user is None or not user.is_active:
+                raise forms.ValidationError(u'密码不正确')
+
+        return self.cleaned_data['password_old']
+
+    def clean_password_new2(self):
+        if 'password_new1' in self.cleaned_data and 'password_new2' in self.cleaned_data:
+            if self.cleaned_data['password_new1'] != self.cleaned_data['password_new2']:
+                raise forms.ValidationError(u'两次输入的密码不一致')
+
+        return self.cleaned_data['password_new2']
+
+    def save(self):
+        user = User.objects.get(username__exact=self.cleaned_data['username'])
+        user.set_password(self.cleaned_data['password_new1'])
+        user.save()

@@ -16,6 +16,9 @@ var Dajaxice = {
         is_bind_successed : function(callback_function, argv, custom_settings){
             return Dajaxice.call('framework.is_bind_successed', 'POST', callback_function, argv, custom_settings);
         },
+        change_password : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.change_password', 'POST', callback_function, argv, custom_settings);
+        },
     }
 ,
     get_cookie: function(name)

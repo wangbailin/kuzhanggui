@@ -4,6 +4,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 from dajaxice.decorators import dajaxice_register
+from dajaxice.utils import deserialize_form
 from dajax.core import Dajax
 from django.core.cache import cache
 from django.contrib.auth import authenticate, login
@@ -11,6 +12,7 @@ import random
 
 from utils import send_sms
 from models import Account, WXAccount
+from forms import ChangePasswordForm
 
 AUTH_CODE_TIMEOUT = 15 * 60 * 1000
 
@@ -66,6 +68,10 @@ def clear_bind_info(request, name):
     account = Account.objects.get(user=request.user)
     WXAccount.objects.filter(account=account, name=name).delete()
 
+    if not WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND):
+        account.has_wx_bound = False
+        account.save()
+
     return dajax.json()
 
 @dajaxice_register
@@ -78,5 +84,22 @@ def is_bind_successed(request, name):
         dajax.add_data({'ret_code' : 0 , 'ret_msg' : 'success'}, 'isBindSuccessedCallback')
     else:
         dajax.add_data({'ret_code' : 1000, 'ret_msg' : 'failed'}, 'isBindSuccessedCallback')
+
+    return dajax.json()
+
+@dajaxice_register
+def change_password(request, form):
+    dajax = Dajax()
+    form = ChangePasswordForm(deserialize_form(form))
+
+    if form.is_valid():
+        form.save()
+        dajax.remove_css_class('#change_password_form .control-group', 'error')
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'changePasswordCallback')
+    else:
+        dajax.remove_css_class('#change_password_form .control-group', 'error')
+        for error in form.errors:
+            dajax.add_css_class('#%s' % error, 'error')
+        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'changePasswordCallback')
 
     return dajax.json()
