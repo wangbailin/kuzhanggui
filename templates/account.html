@@ -21,6 +21,12 @@ $('#unbind').click(function() {
     }
 });
 $('#change_password_save').click(changePassword);
+$('#change_password').on('hidden', function() {
+    $('#password_old input').val('');
+    $('#password_new1 input').val('');
+    $('#password_new2 input').val('');
+    $('#change_password .control-group').removeClass('error');
+});
 {% endblock %}
 
 {% block app %}
