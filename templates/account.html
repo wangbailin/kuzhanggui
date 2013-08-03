@@ -27,6 +27,12 @@ $('#change_password').on('hidden', function() {
     $('#password_new2 input').val('');
     $('#change_password .control-group').removeClass('error');
 });
+$('#edit_account_save').click(editAccount);
+$('#edit_account').on('show', function() {
+   $('#email input').val($('#info_email').text()); 
+   $('#qq input').val($('#info_qq').text()); 
+   $('#edit_account .control-group').removeClass('error');
+});
 {% endblock %}
 
 {% block app %}
@@ -38,31 +44,31 @@ $('#change_password').on('hidden', function() {
 <table class="table">
     <tr>
         <th>用户名</th>
-        <td><span id="username">{{ account.user.username }}</span></td>
+        <td><span id="info_username">{{ account.user.username }}</span></td>
     </tr>
     <tr>
         <th>手机号码</th>
-        <td><span id="phone">{{ account.phone }}</span></td>
+        <td><span id="info_phone">{{ account.phone }}</span></td>
     </tr>
     <tr>
         <th>邮箱</th>
-        <td><span id="email">{{ account.user.email }}</span></td>
+        <td><span id="info_email">{{ account.user.email }}</span></td>
     </tr>
     <tr>
         <th>QQ</th>
-        <td><span id="qq">{{ account.qq }}</span></td>
+        <td><span id="info_qq">{{ account.qq }}</span></td>
     </tr>
     <tr>
         <th>注册时间</th>
-        <td><span id="reg_time">{{ account.user.date_joined | date:"Y-m-d H:i:s"}}</span></td>
+        <td><span id="info_reg_time">{{ account.user.date_joined | date:"Y-m-d H:i:s"}}</span></td>
     </tr>
     <tr>
         <th>上次登陆时间</th>
-        <td><span id="last_active_time">{{ account.user.last_login | date:"Y-m-d H:i:s" }}</span></td>
+        <td><span id="info_last_active_time">{{ account.user.last_login | date:"Y-m-d H:i:s" }}</span></td>
     </tr>
     <tr>
         <th>操作</th>
-        <td><a href="#account_edit" class="btn" role="button" data-toggle="modal">编辑账户信息<a/><a href="#change_password" class="btn" style="margin-left:8px;" role="button" data-toggle="modal">修改密码<a/></td>
+        <td><a href="#edit_account" class="btn" role="button" data-toggle="modal">修改账户信息<a/><a href="#change_phone" class="btn" role="button" data-toggle="modal" style="margin-left:8px;">修改手机号码<a/><a href="#change_password" class="btn" style="margin-left:8px;" role="button" data-toggle="modal">修改密码<a/></td>
     </tr>
 </table>
 
@@ -126,42 +132,29 @@ $('#change_password').on('hidden', function() {
     </div>
 </div>
 
-<div id="account_edit" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="account_edit_header" aria-hidden="true">
+<div id="edit_account" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="edit_account_header" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="account_edit_header">编辑账号信息</h3>
+        <h3 id="edit_account_header">编辑账号信息</h3>
     </div>
     <div class="modal-body">
-        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
-            <div class="control-group">
-                <label class="control-label" for="phone"><span style="color:red;">*</span>手机号码</label>
-                <div class="controls">
-                    <input type="text" id="phone">
-                    <a id="get_auth_code" href="#" class="btn disabled" data-loading-text="重新获取验证码(120)">免费获取验证码</a>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="auth_code"><span style="color:red">*</span>验证码</label>
-                <div class="controls">
-                    <input type="text" id="auth_code">
-                </div>
-            </div>
-            <div class="control-group">
+        <form id="edit_account_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="control-group" id="email">
                 <label class="control-label" for="email">邮箱</label>
                 <div class="controls">
-                    <input type="text" id="email">
+                    <input type="text" name="email">
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" id="qq">
                 <label class="control-label" for="qq">QQ</label>
                 <div class="controls">
-                    <input type="text" id="qq">
+                    <input type="text" name="qq">
                 </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button id="account_edit_save" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">保存</button>
+        <button id="edit_account_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>

@@ -77,3 +77,7 @@ class ChangePasswordForm(forms.Form):
         user = User.objects.get(username__exact=self.cleaned_data['username'])
         user.set_password(self.cleaned_data['password_new1'])
         user.save()
+
+class EditAccountForm(forms.Form):
+    email = forms.EmailField(required=False)
+    qq = forms.RegexField(min_length=6, max_length=20, required=False, regex='\d+')

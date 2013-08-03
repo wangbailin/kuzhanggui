@@ -19,6 +19,9 @@ var Dajaxice = {
         change_password : function(callback_function, argv, custom_settings){
             return Dajaxice.call('framework.change_password', 'POST', callback_function, argv, custom_settings);
         },
+        edit_account : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.edit_account', 'POST', callback_function, argv, custom_settings);
+        },
     }
 ,
     get_cookie: function(name)
