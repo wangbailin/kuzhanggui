@@ -7,8 +7,7 @@ var get_auth_code_callback = function(data) {
     toast(type, data.ret_msg);
 };
 
-var get_auth_code = function() {
-    var phone = $('#id_phone').val();
+var get_auth_code = function(phone) {
     Dajaxice.framework.get_auth_code(Dajax.process, { 'phone' : phone });
 
     $('#get_auth_code').button('loading');

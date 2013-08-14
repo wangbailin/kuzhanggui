@@ -4,6 +4,9 @@
 
 {% block js %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/account.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.timer.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.textchange.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/register.js"></script>
 {% endblock %}
 
 {% block document_ready %}
@@ -33,6 +36,24 @@ $('#edit_account').on('show', function() {
    $('#qq input').val($('#info_qq').text()); 
    $('#edit_account .control-group').removeClass('error');
 });
+$('#get_auth_code').click(function(e) {
+    if (!$(this).hasClass('disabled')) {
+        get_auth_code($('#phone input').val());
+    }
+});
+$('#phone input').bind('textchange', function() {
+    var regex = new RegExp('1[0-9]{10}');
+    if (regex.test($(this).val())) {
+        $('#get_auth_code').removeClass('disabled');
+    } else {
+        $('#get_auth_code').addClass('disabled');
+    }
+});
+$('#change_phone').on('show', function() {
+    $('#phone input').val($('#info_phone').text());
+    $('#change_phone .control-group').removeClass('error');
+});
+$('#change_phone_save').click(changePhone);
 {% endblock %}
 
 {% block app %}
@@ -188,8 +209,39 @@ $('#edit_account').on('show', function() {
             </div>
         </form>
     </div>
+
     <div class="modal-footer">
         <button id="change_password_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
+<div id="change_phone" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="change_phone_header" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="change_phone_header">修改手机号码</h3>
+    </div>
+    <div class="modal-body">
+        <form id="change_phone_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="control-group" id="phone">
+                <label class="control-label" for="phone"><span style="color:red;">*</span>手机号码</label>
+                <div class="controls">
+                    <input type="text" name="phone">
+                    <div style="height:8px;"></div>
+                    <a id="get_auth_code" href="#" class="btn disabled" data-loading-text="重新获取验证码(120)">免费获取验证码</a>
+                </div>
+            </div>
+            <div class="control-group" id="auth_code">
+                <label class="control-label" for="auth_code"><span style="color:red">*</span>验证码</label>
+                <div class="controls">
+                    <input type="text" name="auth_code">
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <div class="modal-footer">
+        <button id="change_phone_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>

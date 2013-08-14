@@ -81,3 +81,12 @@ class ChangePasswordForm(forms.Form):
 class EditAccountForm(forms.Form):
     email = forms.EmailField(required=False)
     qq = forms.RegexField(min_length=6, max_length=20, required=False, regex='\d+')
+
+class ChangePhoneForm(forms.Form):
+    phone = forms.RegexField(min_length=11, max_length=11, required=True, regex='^1\d+')
+    auth_code = forms.RegexField(min_length=6, max_length=6, required=True, regex='\d+')
+
+    def clean_auth_code(self):
+        auth_code = cache.get('auth_code_' + self.cleaned_data['phone'])
+        if auth_code != self.cleaned_data['auth_code']:
+            raise forms.ValidationError(u'验证码错误')

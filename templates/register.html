@@ -11,7 +11,7 @@
 {% block document_ready %}
 $('#get_auth_code').click(function(e) {
     if (!$(this).hasClass('disabled')) {
-        get_auth_code();
+        get_auth_code($('#id_phone').val());
     }
 });
 $('#id_phone').bind('textchange', function() {

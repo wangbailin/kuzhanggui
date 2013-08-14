@@ -29,3 +29,20 @@ var editAccountCallback = function(data) {
 
     $('#edit_account_save').button('reset');
 };
+
+var changePhone = function() {
+    $('#change_phone_save').button('loading');
+    Dajaxice.framework.change_phone(Dajax.process, {'form' : $('#change_phone_form').serialize(true)});
+};
+
+var changePhoneCallback = function(data) {
+    if (data && data.ret_code == 0) {
+        $('#change_phone').modal('hide');
+
+        $('#info_phone').text($('#phone input').val());
+
+        toast('success', '手机号码修改成功！');
+    }
+
+    $('#change_phone_save').button('reset');
+};

@@ -12,7 +12,7 @@ import random
 
 from utils import send_sms
 from models import Account, WXAccount
-from forms import ChangePasswordForm, EditAccountForm
+from forms import ChangePasswordForm, EditAccountForm, ChangePhoneForm
 
 AUTH_CODE_TIMEOUT = 15 * 60 * 1000
 
@@ -123,5 +123,23 @@ def edit_account(request, form):
         for error in form.errors:
             dajax.add_css_class('#%s' % error, 'error')
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'editAccountCallback')
+
+    return dajax.json()
+
+@dajaxice_register
+def change_phone(request, form):
+    dajax = Dajax()
+    form = ChangePhoneForm(deserialize_form(form))
+
+    account = Account.objects.get(user=request.user)
+
+    if form.is_valid():
+        account.phone = form.cleaned_data.get('phone')
+        account.save()
+    else:
+        dajax.remove_css_class('#change_phone_form .control-group', 'error')
+        for error in form.errors:
+            dajax.add_css_class('#%s' % error, 'error')
+        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'changePhoneCallback')
 
     return dajax.json()
