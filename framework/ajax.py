@@ -136,6 +136,8 @@ def change_phone(request, form):
     if form.is_valid():
         account.phone = form.cleaned_data.get('phone')
         account.save()
+        dajax.remove_css_class('#change_phone_form .control-group', 'error')
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'changePhoneCallback')
     else:
         dajax.remove_css_class('#change_phone_form .control-group', 'error')
         for error in form.errors:
