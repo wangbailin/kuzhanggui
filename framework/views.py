@@ -14,7 +14,7 @@ def welcome(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect('/')
+                return redirect('/dashboard')
             else:
                 pass
     return render(request, 'welcome.html')
@@ -38,7 +38,7 @@ def register(request):
 def index(request):
     account = Account.objects.get(user=request.user)
     if account.has_wx_bound:
-        return render(request, 'framework.html')
+        return redirect('/dashboard')
     else:
         return redirect('/bind')
 
