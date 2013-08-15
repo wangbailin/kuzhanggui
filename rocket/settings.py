@@ -137,10 +137,12 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'framework',
     'microsite',
+    'data',
     'ajax_upload',
     'django_tables2',
     'dajaxice',
     'dajax',
+    'chartit'
 )
 
 # A sample logging configuration. The only tangible logging

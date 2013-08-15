@@ -50,7 +50,8 @@ $('#phone input').bind('textchange', function() {
     }
 });
 $('#change_phone').on('show', function() {
-    $('#phone input').val($('#info_phone').text());
+    $('#phone input').val('');
+    $('#auth_code input').val('');
     $('#change_phone .control-group').removeClass('error');
 });
 $('#change_phone_save').click(changePhone);

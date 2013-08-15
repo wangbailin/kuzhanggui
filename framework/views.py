@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from framework.forms import RegisterForm
 from framework.models import Account, WXAccount
+from chartit import DataPool, Chart
+from data.models import WeixinDailyData, WSiteDailyData
+from datetime import date, timedelta
 
 def welcome(request):
     if request.method == 'POST':
@@ -58,6 +61,73 @@ def account(request):
     if account.has_wx_bound:
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
     return render(request, 'account.html', { 'account' : account, 'group' : group_name, 'wx_account' : wx_account })
+
+@login_required
+def dashboard(request):
+    account = Account.objects.get(user=request.user)
+    wx_account = None
+    if account.has_wx_bound:
+        wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+
+    if wx_account is not None:
+        weixin_ds = DataPool(
+            series=
+            [{
+            'options' : {
+            'source' : WeixinDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=30)).order_by('date')
+            },
+            'terms' : [
+            'date_str',
+            'follow_count',
+            'unfollow_count',
+            'new_count']
+            }])
+        weixin_chart = Chart(
+            datasource = weixin_ds,
+            series_options = [
+                {'options' : {
+                    'type' : 'line',
+                    'xAxis' : 0,
+                    'yAxis' : 0,
+                    'zIndex' : 1},
+                'terms' : {
+                    'date_str' : ['new_count']}},
+                {'options' : {
+                    'type' : 'column',
+                    'stacking' : True},
+                'terms' : {
+                    'date_str' : ['follow_count', 'unfollow_count']}
+                }],
+            chart_options = {
+                'title' : {'text' : u'微信日关注/取消关注/新增粉丝数'},
+                'xAxis' : {'title' : {'text' : u'日期'}},
+                'colors' : ['#f77f74', '#58ace8', '#3a3a3a']
+            })
+
+        wsite_ds = DataPool(
+            series = [{
+            'options' : { 'source' : WSiteDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=30)).order_by('date')},
+            'terms' : ['date_str', 'visitor_count', 'visit_count']
+            }])
+        wsite_chart = Chart(
+            datasource = wsite_ds,
+            series_options = [
+            { 'options' : {
+                'type' : 'line',
+                'xAxis' : 0,
+                'yAxis' : 0,
+                'zIndex' : 1},
+            'terms' : {
+                'date_str' : ['visitor_count', 'visit_count']
+            }}],
+            chart_options = {
+                'title' : {'text' : u'微官网日访问人数/访问次数'},
+                'xAxis' : {'title' : {'text' : u'日期'}},
+                'colors' : ['#58ace8', '#f77f74']
+            })
+        return render(request, 'dashboard.html', {'weixin' : wx_account, 'charts' : [weixin_chart, wsite_chart]})
+    else:
+        return redirect('/bind')
 
 def agreement(request):
     return render(request, 'agreement.html')

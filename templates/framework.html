@@ -17,7 +17,7 @@ $('#sidebar a').click(function(e) {
 {% block content %}
 <div class="sidebar">
 	<ul id="sidebar" class="nav nav-list sidenav">
-		<li><a class="navable" href="#dashboard"><i class="icon-eye-open"></i> 控制面板</a></li>
+		<li><a id="nav-dashboard" class="navable" href="/dashboard"><i class="icon-eye-open"></i> 控制面板</a></li>
 		<li><a href="#wsite" data-toggle="collapse" data-target="#wsite"><i class="icon-home"></i> 微网站</a></li>
 		<li id="wsite" class="collapse in sidenav2">
             {% if active_side_id == -1 %}
