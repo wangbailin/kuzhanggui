@@ -257,4 +257,64 @@ class LinkPage(Page):
     def _get_tab_name(self):
         return self.title
         
+def add_default_site(wx_account):
+    homepages = HomePage.objects.filter(wx=wx_account)
+    if len(homepages) == 0:
+        homepage = HomePage()
+        homepage.wx = wx_account
+        homepage.name = u'每日精品游戏'
+        homepage.content = u'这是个好网站'
+        homepage.template_type = 0
+        homepage.save()
+
+    intropages = IntroPage.objects.filter(wx=wx_account)
+    if len(intropages) == 0:
+        intropage = IntroPage()
+        intropage.wx = wx_account
+        intropage.enable = True
+        intropage.title = u"我们的游戏相当好玩"
+        intropage.content = u"每天一款好游戏"
+        intropage.save()
+
+    joinpages = JoinPage.objects.filter(wx=wx_account)
+    if len(joinpages) == 0:
+        joinpage = JoinPage()
+        joinpage.wx = wx_account
+        joinpage.enable = True
+        joinpage.title = u'加入我们吧'
+        joinpage.content = u'加入我们，奋斗吧，并享受奋斗的快感'
+        joinpage.save()
+
+    contactapps = ContactApp.objects.filter(wx=wx_account)
+    if len(contactapps) == 0:
+        contactapp = ContactApp()
+        contactapp.wx = wx_account
+        contactapp.enable = True
+        contactapp.save()
+
+    trendsapps = TrendsApp.objects.filter(wx=wx_account)
+    if len(trendsapps) == 0:
+        trendsapp = TrendsApp()
+        trendsapp.wx = wx_account
+        trendsapp.enable = True
+        trendsapp.save()
+    
+    culturepages = CulturePage.objects.filter(wx=wx_account)
+    if len(culturepages) == 0:
+        culturepage = CulturePage()
+        culturepage.wx = wx_account
+        culturepage.enable = True
+        culturepage.title = ''
+        culturepage.content = 'abc'
+        culturepage.save()
+
+    weibopages= WeiboPage.objects.filter(wx=wx_account)
+    if len(weibopages) == 0:
+        weibopage = WeiboPage()
+        weibopage.wx = wx_account
+        weibopage.enable = True
+        weibopage.title = ''
+        weibopage.url = 'abc'
+        weibopage.save()
+
  
