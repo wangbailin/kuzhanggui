@@ -2,6 +2,7 @@
 from router import Router
 from message_builder import MessageBuilder, BuildConfig
 from framework.models import WXAccount
+from microsite.models import add_default_site
 from datetime import datetime
 
 def subscribe(rule, info):
@@ -13,13 +14,17 @@ def unsubscribe(rule, info):
 def check_bind_state(rule, info):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
-        wx_account.state = WXAccount.STATE_BOUND
-        wx_account.bind_time = datetime.now()
-        wx_account.wxid = info.sp
-        wx_account.save()
 
-        wx_account.account.has_wx_bound = True
-        wx_account.account.save()
+        if not wx_account.has_wx_bound:
+            wx_account.state = WXAccount.STATE_BOUND
+            wx_account.bind_time = datetime.now()
+            wx_account.wxid = info.sp
+            wx_account.save()
+
+            wx_account.account.has_wx_bound = True
+            wx_account.account.save()
+
+            add_default_site(wx_account)
 
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'绑定成功')
     except ObjectDoesNotExist:
