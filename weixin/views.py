@@ -60,6 +60,6 @@ def index(request, wx):
                 wxlogger.info("router error %s router reply %s" % (str(router_error), str(router_reply)))
                 return HttpResponse('<xml></xml>', content_type="application/xml")
         except:
-            logger.error(traceback.format_exc())
+            wxlogger.error(traceback.format_exc())
             reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, u"抱歉，我不是很明白。")
             return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
