@@ -4,6 +4,7 @@ from message_builder import MessageBuilder, BuildConfig
 from framework.models import WXAccount
 from microsite.models import add_default_site
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 def subscribe(rule, info):
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)
@@ -15,7 +16,7 @@ def check_bind_state(rule, info):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
 
-        if not wx_account.has_wx_bound:
+        if not wx_account.account.has_wx_bound:
             wx_account.state = WXAccount.STATE_BOUND
             wx_account.bind_time = datetime.now()
             wx_account.wxid = info.sp

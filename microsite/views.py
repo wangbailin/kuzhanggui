@@ -1,5 +1,4 @@
-# Create your views here.
-
+# -*- coding: utf-8 -*-
 import logging
 from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 
@@ -7,6 +6,7 @@ from forms import *
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from models import *
 from tables import TableManager, ContactPeopleTable
@@ -33,13 +33,9 @@ def get_apps(request):
     wx = WXAccount.objects.get(account=account)
     apps = App.objects.filter(wx=wx)
     return apps
-    
+
+@login_required
 def setting(request, active_tab_id = None):
-    if not request.user.is_authenticated():
-        logger.debug("not login")
-        return redirect('/login')
-    else:
-        logger.debug("have logined")
     if active_tab_id:
         active_tab_id = int(active_tab_id)
     else:
@@ -48,6 +44,7 @@ def setting(request, active_tab_id = None):
     apps = get_apps(request)
     return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'apps':apps, 'active_side_id':-1})
 
+@login_required
 def app(request, app_id):
     app_id = int(app_id)
     if not request.user.is_authenticated():
@@ -65,6 +62,7 @@ def app(request, app_id):
     
     return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app})
 
+@login_required
 def save(request, page_id):
     if page_id:
         page_id = int(page_id)
@@ -89,6 +87,7 @@ def save(request, page_id):
         logger.error("no page id")
     return redirect("/setting")
 
+@login_required
 def add_edit_contact(request, item_id=None):
     if item_id:
         item = get_object_or_404(ContactItem, pk = item_id)
@@ -113,6 +112,7 @@ def add_edit_contact(request, item_id=None):
 
     return render(request, 'add_edit_contact.html', {'form':form, 'peoples':peoples, 'contact_id':item_id})
 
+@login_required
 def add_edit_contact_people(request, contact_id, item_id=None):
     if item_id:
         item = get_object_or_404(ContactPeople, pk = item_id)
@@ -135,6 +135,7 @@ def add_edit_contact_people(request, contact_id, item_id=None):
 
     return render(request, 'add_edit_contact_people.html', {'form':form})
 
+@login_required
 def add_edit_trend(request, item_id=None):
     if item_id:
         item = get_object_or_404(TrendItem, pk = item_id)
@@ -159,6 +160,7 @@ def add_edit_trend(request, item_id=None):
 
     return render(request, 'add_edit_trend.html', {'form':form})
 
+@login_required
 def add_edit_link_page(request, link_id=None):
     if link_id:
         item = get_object_or_404(LinkPage, pk = link_id)
@@ -180,6 +182,8 @@ def add_edit_link_page(request, link_id=None):
         form = LinkPageForm(instance=item)
 
     return render(request, 'add_edit_link.html', {'form':form})
+
+@login_required
 def add_edit_content_page(request, content_id=None):
     if content_id:
         item = get_object_or_404(ContentPage, pk = content_id)

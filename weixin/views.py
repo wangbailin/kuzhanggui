@@ -35,7 +35,7 @@ def index(request, wx):
         nonce = request.GET['nonce']
         echostr = request.GET['echostr']
         wxlogger.info("receive one get message signature %s timestamp %s nonce %s echostr %s" % (signature, timestamp, nonce, echostr))
-	token = cache.get('wx_%s_token' % wx)
+        token = cache.get('wx_%s_token' % wx)
         weixin = WeiXin.on_connect(token, timestamp, nonce, signature, echostr)
         if weixin.validate():
             return HttpResponse(echostr, content_type="text/plain")

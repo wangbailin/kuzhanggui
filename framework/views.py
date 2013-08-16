@@ -7,6 +7,13 @@ from framework.models import Account, WXAccount
 from chartit import DataPool, Chart
 from data.models import WeixinDailyData, WSiteDailyData
 from datetime import date, timedelta
+from microsite.models import App
+
+def get_apps(request):
+    account = Account.objects.get(user=request.user)
+    wx = WXAccount.objects.get(account=account)
+    apps = App.objects.filter(wx=wx)
+    return apps
 
 def welcome(request):
     if request.method == 'POST':
@@ -60,7 +67,7 @@ def account(request):
     wx_account = None
     if account.has_wx_bound:
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
-    return render(request, 'account.html', { 'account' : account, 'group' : group_name, 'wx_account' : wx_account })
+    return render(request, 'account.html', { 'account' : account, 'group' : group_name, 'wx_account' : wx_account, 'apps' : get_apps(request) })
 
 @login_required
 def dashboard(request):
@@ -125,7 +132,7 @@ def dashboard(request):
                 'xAxis' : {'title' : {'text' : u'日期'}},
                 'colors' : ['#58ace8', '#f77f74']
             })
-        return render(request, 'dashboard.html', {'weixin' : wx_account, 'charts' : [weixin_chart, wsite_chart]})
+        return render(request, 'dashboard.html', {'weixin' : wx_account, 'charts' : [weixin_chart, wsite_chart], 'apps' : get_apps(request)})
     else:
         return redirect('/bind')
 
