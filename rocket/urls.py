@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'', include('microsite.urls')),
     url(r'^wx/', include('weixin.urls')),
     url(r'^ajax-upload/', include('ajax_upload.urls')),
+    url(r'^ckeditor/', include('ckeditor.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

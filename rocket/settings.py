@@ -84,6 +84,17 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+CKEDITOR_UPLOAD_PATH = '/data/media/ckeditor/'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': 840,
+        'height': 300,
+    },
+    'awesome_ckeditor': {
+        'toolbar': 'Basic',
+    },
+}
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -142,7 +153,8 @@ INSTALLED_APPS = (
     'django_tables2',
     'dajaxice',
     'dajax',
-    'chartit'
+    'chartit',
+    'ckeditor',
 )
 
 # A sample logging configuration. The only tangible logging

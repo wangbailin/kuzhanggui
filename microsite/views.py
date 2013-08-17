@@ -39,10 +39,12 @@ def setting(request, active_tab_id = None):
     if active_tab_id:
         active_tab_id = int(active_tab_id)
     else:
-        active_tab_id = 1
+        active_tab_id = 0
     tabs = get_tabs(request)
+    if active_tab_id > len(tabs):
+        active_tab_id = 0
     apps = get_apps(request)
-    return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'apps':apps, 'active_side_id':-1})
+    return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':tabs[active_tab_id][0], 'f':tabs[active_tab_id][1], 'apps':apps, 'active_side_id':-1})
 
 @login_required
 def app(request, app_id):
@@ -66,6 +68,19 @@ def app(request, app_id):
 def save(request, page_id):
     if page_id:
         page_id = int(page_id)
+        tabs = get_tabs(request)
+        active_tab_id = -1
+        for i in range(len(tabs)):
+            if tabs[i][0].pk == page_id:
+                active_tab_id = i
+                logger.debug("find form active tab id %d" % i)
+                break
+
+        if active_tab_id == -1:
+            return redirect('/setting')
+
+        apps = get_apps(request)
+
         logger.debug("save page id %d" % page_id)
         page = get_object_or_404(Page, id = page_id)
         sub_page = page.cast()
@@ -73,16 +88,10 @@ def save(request, page_id):
         if form.is_valid():
             intropage = form.save()
             intropage.save()
+            return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
         else:
             logger.debug("form is not valid")
-            tabs = get_tabs(request)
-            active_tab_id = 1
-            for i in range(len(tabs)):
-                if tabs[i][0].pk == page_id:
-                    tabs[i] = (sub_page, form)
-                    active_tab_id = i + 1
-                    logger.debug("find form active tab id %d" % (i + 1))
-            return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id})
+            return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
     else:
         logger.error("no page id")
     return redirect("/setting")

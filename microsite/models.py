@@ -5,6 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 from site_template import site_templates
 from framework.models import WXAccount
 
+from ckeditor.fields import RichTextField
+
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
@@ -15,8 +17,8 @@ class Page(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.real_type = self._get_real_type()
-            self.tab_name = self._get_tab_name()
-            self.template_name = self._get_template()
+        self.tab_name = self._get_tab_name()
+        self.template_name = self._get_template()
         super(Page, self).save(*args, **kwargs)
 
     def _get_real_type(self):
@@ -179,6 +181,7 @@ class ContactPeople(models.Model):
 class CulturePage(Page):
     enable = models.BooleanField(u'是否启用', default = True)
     title = models.CharField(u'标题', max_length=100)
+    #content = RichTextField(u'内容')
     content = models.TextField(u'内容')
 
     def save(self, *args, **kwargs):

@@ -5,6 +5,7 @@ from models import *
 from django.contrib.contenttypes.models import ContentType
 from ajax_upload.widgets import AjaxClearableFileInput
 
+from ckeditor.widgets import CKEditorWidget
 
 
 
@@ -27,6 +28,7 @@ class HomePageForm(ModelForm):
         )
 
 class IntroPageForm(ModelForm):
+    content = forms.CharField(widget=CKEditorWidget()) 
     class Meta:
         model = IntroPage
         fields = (
@@ -36,6 +38,7 @@ class IntroPageForm(ModelForm):
         )
 
 class JoinPageForm(ModelForm):
+    content = forms.CharField(widget=CKEditorWidget()) 
     class Meta:
         model = JoinPage
         fields = (
@@ -86,12 +89,13 @@ class ContactPeopleForm(ModelForm):
         )
 
 class CulturePageForm(ModelForm):
+    content = forms.CharField(widget=CKEditorWidget()) 
     class Meta:
         model = CulturePage 
         fields = (
             'enable',
-            'title',
             'content',
+            'title',
         )
 
 class WeiboPageForm(ModelForm):
