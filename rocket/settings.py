@@ -87,8 +87,25 @@ STATICFILES_DIRS = (
 CKEDITOR_UPLOAD_PATH = '/data/media/ckeditor/'
 CKEDITOR_CONFIGS = {
     'default': {
+        'toolbar': [
+            [      'Undo', 'Redo',
+              '-', 'Bold', 'Italic', 'Underline',
+              '-', 'Link', 'Unlink', 'Anchor',
+              '-', 'Format',
+              '-', 'Image',
+            ],
+            [      'HorizontalRule',
+              '-', 'Table',
+              '-', 'BulletedList', 'NumberedList',
+              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+              '-', 'SpecialChar',
+              '-', 'Source',
+              '-', 'About',
+            ]
+        ],
         'width': 840,
         'height': 300,
+        'toolbarCanCollapse': False,
     },
     'awesome_ckeditor': {
         'toolbar': 'Basic',
