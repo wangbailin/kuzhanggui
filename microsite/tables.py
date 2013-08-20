@@ -2,7 +2,7 @@
 from models import HomePage
 import django_tables2 as tables
 from django.contrib.contenttypes.models import ContentType
-from models import ContactApp, TrendsApp, ContactItem, TrendItem, ContactPeople
+from models import ContactApp, TrendsApp, ContactItem, TrendItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass
 from django_tables2.columns import DateTimeColumn, TemplateColumn
 
 class HomePageTable(tables.Table):
@@ -42,13 +42,45 @@ class TrendsTable(tables.Table):
         orderable = False
         fields = ('title', 'pub_time', 'content')
 
+class CaseItemTable(tables.Table):
+    ops = TemplateColumn(template_name="case_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    class Meta:
+        model = CaseItem
+        order_by = 'pub_time'
+        empty_text = u'暂无案例'
+        attrs = {'class' : 'table table-striped'}
+        orderable = False
+        fields = ('title', 'cls')
 
-class TableManager():
-    @classmethod
-    def get_table(cls, app):
-        if app.real_type == ContentType.objects.get_for_model(ContactApp):
-            return ContactTable(ContactItem.objects.all())
-        elif app.real_type == ContentType.objects.get_for_model(TrendsApp):
-            return TrendsTable(TrendItem.objects.all())
-        else:
-            raise Exception("bad real type")
+
+class CaseClassTable(tables.Table):
+    ops = TemplateColumn(template_name="case_class_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    class Meta:
+        model = CaseClass
+        order_by = 'pub_time'
+        empty_text = u'暂无案例分类'
+        attrs = {'class' : 'table table-striped'}
+        orderable = False
+        fields = ('name',)
+    
+class ProductItemTable(tables.Table):
+    ops = TemplateColumn(template_name="product_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    class Meta:
+        model = ProductItem
+        order_by = 'pub_time'
+        empty_text = u'暂无产品'
+        attrs = {'class' : 'table table-striped'}
+        orderable = False
+        fields = ('title', 'cls')
+
+
+class ProductClassTable(tables.Table):
+    ops = TemplateColumn(template_name="product_class_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    class Meta:
+        model = ProductClass
+        order_by = 'pub_time'
+        empty_text = u'暂无案例分类'
+        attrs = {'class' : 'table table-striped'}
+        orderable = False
+        fields = ('name',)
+    

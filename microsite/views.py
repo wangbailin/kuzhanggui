@@ -9,7 +9,8 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from models import *
-from tables import TableManager, ContactPeopleTable
+from tables import ContactPeopleTable
+from app_manager import AppMgr
 from framework.models import *
 from datetime import datetime
 
@@ -58,7 +59,7 @@ def app(request, app_id):
         logger.debug("pk %d app_id %d" % (apps[i].pk, app_id))
         if apps[i].pk == app_id:
             active_side_id = i + 1
-            app_info = TableManager.get_table(apps[i].cast())
+            app_info = AppMgr.get_app_info(apps[i].cast())
             active_app = apps[i]
     logger.debug("active side id is %d" % active_side_id)
     
@@ -122,6 +123,17 @@ def add_edit_contact(request, item_id=None):
     return render(request, 'add_edit_contact.html', {'form':form, 'peoples':peoples, 'contact_id':item_id})
 
 @login_required
+def contact_delete(request, item_id):
+    item = get_object_or_404(ContactItem, pk = item_id)
+    id = item.contact.pk
+    peoples = ContactPeople.objects.filter(contact_item=item)
+    for p in peoples:
+        p.delete()
+    item.delete()
+    return redirect('/app/%d' % id)
+
+
+@login_required
 def add_edit_contact_people(request, contact_id, item_id=None):
     if item_id:
         item = get_object_or_404(ContactPeople, pk = item_id)
@@ -143,6 +155,13 @@ def add_edit_contact_people(request, contact_id, item_id=None):
         form = ContactPeopleForm(instance=item)
 
     return render(request, 'add_edit_contact_people.html', {'form':form})
+
+@login_required
+def contact_people_delete(request, item_id):
+    item = get_object_or_404(ContactPeople, pk = item_id)
+    id = item.contact_item.pk
+    item.delete()
+    return redirect('/contact/%d/edit' % id)
 
 @login_required
 def add_edit_trend(request, item_id=None):
@@ -169,6 +188,12 @@ def add_edit_trend(request, item_id=None):
 
     return render(request, 'add_edit_trend.html', {'form':form})
 
+@login_required
+def trend_delete(request, item_id):
+    item = get_object_or_404(TrendItem, pk = item_id)
+    app_id = item.trend.pk
+    item.delete()
+    return redirect('/app/%d' % app_id)
 @login_required
 def add_edit_link_page(request, link_id=None):
     if link_id:
@@ -214,3 +239,135 @@ def add_edit_content_page(request, content_id=None):
         form = ContentPageForm(instance=item)
 
     return render(request, 'add_edit_content.html', {'form':form})
+    
+@login_required
+def add_edit_case(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(CaseItem, pk = item_id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = CaseItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                user = auth.get_user(request)
+                account = Account.objects.get(user=user)
+                wx = WXAccount.objects.get(account=account)
+                case_app = CaseApp.objects.get(wx=wx)
+                item.case_app= case_app
+            item.pub_time = datetime.now()
+            item.save()
+            return redirect('/app/%d' % item.case_app.id)
+    else:
+        form = CaseItemForm(instance=item)
+
+    return render(request, 'add_edit_case.html', {'form':form})
+
+@login_required
+def add_edit_case_class(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(CaseClass, pk = item_id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = CaseClassForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                user = auth.get_user(request)
+                account = Account.objects.get(user=user)
+                wx = WXAccount.objects.get(account=account)
+                case_app = CaseApp.objects.get(wx=wx)
+                item.case_app= case_app
+            item.pub_time = datetime.now()
+            item.save()
+            return redirect('/app/%d' % item.case_app.id)
+    else:
+        form = CaseClassForm(instance=item)
+
+    return render(request, 'add_edit_case_class.html', {'form':form})
+
+@login_required
+def case_delete(request, item_id):
+    item = get_object_or_404(CaseItem, pk = item_id)
+    app_id = item.case_app.id
+    item.delete()
+    return redirect('/app/%d' % app_id)
+
+@login_required
+def case_class_delete(request, item_id):
+    item = get_object_or_404(CaseClass, pk = item_id)
+    cases = CaseItem.objects.filter(cls=item)
+    for c in cases:
+        c.delete()
+    app_id = item.case_app.pk
+    item.delete()
+    return redirect('/app/%d' % app_id)
+
+@login_required
+def add_edit_product(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(ProductItem, pk = item_id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = ProductItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                user = auth.get_user(request)
+                account = Account.objects.get(user=user)
+                wx = WXAccount.objects.get(account=account)
+                product_app = ProductApp.objects.get(wx=wx)
+                item.product_app= product_app
+            item.pub_time = datetime.now()
+            item.save()
+            return redirect('/app/%d' % item.product_app.id)
+    else:
+        form = ProductItemForm(instance=item)
+
+    return render(request, 'add_edit_product.html', {'form':form})
+
+@login_required
+def add_edit_product_class(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(ProductClass, pk = item_id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = ProductClassForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                user = auth.get_user(request)
+                account = Account.objects.get(user=user)
+                wx = WXAccount.objects.get(account=account)
+                product_app = ProductApp.objects.get(wx=wx)
+                item.product_app= product_app
+            item.pub_time = datetime.now()
+            item.save()
+            return redirect('/app/%d' % item.product_app.id)
+    else:
+        form = ProductClassForm(instance=item)
+
+    return render(request, 'add_edit_product_class.html', {'form':form})
+
+@login_required
+def product_class_delete(request, item_id):
+    item = get_object_or_404(ProductClass, pk = item_id)
+    products = ProductItem.objects.filter(cls=item)
+    for p in products:
+        p.delete()
+    app_id = item.product_app.pk
+    item.delete()
+    return redirect('/app/%d' % app_id)
+
+ 
+@login_required
+def product_delete(request, item_id):
+    item = get_object_or_404(ProductItem, pk = item_id)
+    app_id = item.product_app.pk
+    item.delete()
+    return redirect('/app/%d' % app_id)
+

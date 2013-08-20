@@ -68,7 +68,7 @@ class HomePage(Page):
     pic3 = models.ImageField(u"焦点图3", upload_to='upload/', max_length=255, blank=True)
     pic4 = models.ImageField(u"焦点图4", upload_to='upload/', max_length=255, blank=True)
     cover = models.ImageField(u"消息封面", upload_to='upload/', max_length=255, blank=True)
-    content = models.CharField(u"内容", max_length=1000)
+    content = models.TextField(u"内容", max_length=1000)
 
     def _get_tab_name(self):
         return u"首页"
@@ -145,6 +145,94 @@ class TrendsApp(App):
     class Meta:
         db_table = u"trendsapp"
         app_label = u'microsite'
+
+class CaseApp(App):
+    enable = models.BooleanField(u'是否启用')
+    title = models.CharField(u'标题', max_length=20)
+
+    def _get_tab_name(self):
+        if len(self.title) > 0:
+            return self.title
+        else:
+            return u'案例中心'
+
+    def _get_app_template(self):
+        return 'case_app.html'
+
+    class Meta:
+        db_table = u'case_app'
+        app_label = u'microsite'
+
+class CaseClass(models.Model):
+    case_app = models.ForeignKey(CaseApp, verbose_name=u'案例')
+    name = models.CharField(u'分类名称', max_length=20)
+    pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    class Meta:
+        db_table = u'case_class'        
+        app_label = u'microsite'
+
+    def __unicode__(self):
+        return self.name
+
+class CaseItem(models.Model):
+    case_app = models.ForeignKey(CaseApp, verbose_name=u'案例')
+    cls = models.ForeignKey(CaseClass, verbose_name=u'分类')
+    pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    title = models.CharField(u'案例名称', max_length=100)
+    case_pic1 = models.ImageField(u"案例截图1", upload_to='upload/', max_length=255, blank=True)
+    case_pic2 = models.ImageField(u"案例截图2", upload_to='upload/', max_length=255, blank=True)
+    case_pic3 = models.ImageField(u"案例截图3", upload_to='upload/', max_length=255, blank=True)
+    case_pic4 = models.ImageField(u"案例截图4", upload_to='upload/', max_length=255, blank=True)
+    case_intro = models.TextField(u"案例介绍")
+
+    class Meta:
+        db_table = u'case_item'
+        app_label = u'microsite'
+
+class ProductApp(App):
+    enable = models.BooleanField(u'是否启用')
+    title = models.CharField(u'标题', max_length=20)
+
+    def _get_tab_name(self):
+        if len(self.title) > 0:
+            return self.title
+        else:
+            return u'产品中心'
+
+    def _get_app_template(self):
+        return 'product_app.html'
+
+    class Meta:
+        db_table = u'product_app'
+        app_label = u'microsite'
+
+class ProductClass(models.Model):
+    product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
+    name = models.CharField(u'分类名称', max_length=20)
+    pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    class Meta:
+        db_table = u'product_class'        
+        app_label = u'microsite'
+
+    def __unicode__(self):
+        return self.name
+
+class ProductItem(models.Model):
+    product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
+    cls = models.ForeignKey(ProductClass, verbose_name=u'分类')
+    pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    title = models.CharField(u'产品名称', max_length=100)
+    product_pic1 = models.ImageField(u"产品截图1", upload_to='upload/', max_length=255, blank=True)
+    product_pic2 = models.ImageField(u"产品截图2", upload_to='upload/', max_length=255, blank=True)
+    product_pic3 = models.ImageField(u"产品截图3", upload_to='upload/', max_length=255, blank=True)
+    product_pic4 = models.ImageField(u"产品截图4", upload_to='upload/', max_length=255, blank=True)
+    product_intro = models.TextField(u"产品介绍")
+
+    class Meta:
+        db_table = u'product_item'
+        app_label = u'microsite'
+
+
     
 class TrendItem(models.Model):
     trend = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
@@ -181,7 +269,6 @@ class ContactPeople(models.Model):
 class CulturePage(Page):
     enable = models.BooleanField(u'是否启用', default = True)
     title = models.CharField(u'标题', max_length=100)
-    #content = RichTextField(u'内容')
     content = models.TextField(u'内容')
 
     def save(self, *args, **kwargs):
@@ -301,7 +388,24 @@ def add_default_site(wx_account):
         trendsapp.wx = wx_account
         trendsapp.enable = True
         trendsapp.save()
+
+    caseapps = CaseApp.objects.filter(wx=wx_account)
+    if len(caseapps) == 0:
+        caseapp = CaseApp()
+        caseapp.wx = wx_account
+        caseapp.enable = True
+        caseapp.title = u'成功案例'
+        caseapp.save()
+
+    productapps = ProductApp.objects.filter(wx=wx_account)
+    if len(productapps) == 0:
+        productapp = ProductApp()
+        productapp.wx = wx_account
+        productapp.enable = True
+        productapp.title = u'产品中心'
+        productapp.save()
     
+
     culturepages = CulturePage.objects.filter(wx=wx_account)
     if len(culturepages) == 0:
         culturepage = CulturePage()

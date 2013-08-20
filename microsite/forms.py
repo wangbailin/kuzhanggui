@@ -61,6 +61,7 @@ class TrendsAppForm(ModelForm):
         )
 
 class TrendItemForm(ModelForm):
+    content = forms.CharField(widget=CKEditorWidget()) 
     class Meta:
         model = TrendItem
         fields = (
@@ -109,6 +110,7 @@ class WeiboPageForm(ModelForm):
 
 class ContentPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
+    content = forms.CharField(widget=CKEditorWidget()) 
     class Meta:
         model = ContentPage
         fields = (
@@ -129,6 +131,47 @@ class LinkPageForm(ModelForm):
             'icon',
             'url',
         )
+
+class CaseItemForm(ModelForm):
+    case_pic1 = forms.ImageField(label=u'案例截图1', widget=AjaxClearableFileInput(), required = False)
+    case_pic2 = forms.ImageField(label=u'案例截图2', widget=AjaxClearableFileInput(), required = False)
+    case_pic3 = forms.ImageField(label=u'案例截图3', widget=AjaxClearableFileInput(), required = False)
+    case_pic4 = forms.ImageField(label=u'案例截图4', widget=AjaxClearableFileInput(), required = False)
+    case_intro = forms.CharField(widget=CKEditorWidget())
+    class Meta:
+        model = CaseItem
+        fields = (
+            'title',
+            'cls',
+        )
+
+class ProductClassForm(ModelForm):
+    class Meta:
+        model = ProductClass
+        fields = (
+            'name',
+        )
+
+class ProductItemForm(ModelForm):
+    product_pic1 = forms.ImageField(label=u'产品截图1', widget=AjaxClearableFileInput(), required = False)
+    product_pic2 = forms.ImageField(label=u'产品截图2', widget=AjaxClearableFileInput(), required = False)
+    product_pic3 = forms.ImageField(label=u'产品截图3', widget=AjaxClearableFileInput(), required = False)
+    product_pic4 = forms.ImageField(label=u'产品截图4', widget=AjaxClearableFileInput(), required = False)
+    product_intro = forms.CharField(widget=CKEditorWidget())
+    class Meta:
+        model = ProductItem
+        fields = (
+            'title',
+            'cls',
+        )
+
+class ProductClassForm(ModelForm):
+    class Meta:
+        model = ProductClass
+        fields = (
+            'name',
+        )
+
 
 class FormManager(object):
     @classmethod

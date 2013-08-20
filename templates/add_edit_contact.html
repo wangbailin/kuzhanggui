@@ -3,8 +3,6 @@
 <div style="width:978px;height:520px;position:absolute;top:50%;left:50%;margin-top:-220px;margin-left:-489px;">
 <h3>添加联系方式</h3>
 <form method='post' enctype="multipart/form-data"> {% csrf_token %}
-<h3>添加联系方式</h3>
-<form method='post' enctype="multipart/form-data"> {% csrf_token %}
 <table class="table">
     <tbody>
     <tr><th>{{ form.name.label }}</th><td>{{ form.name }}{{ form.name.errors }}</td></tr>
