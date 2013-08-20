@@ -19,9 +19,11 @@ logger = logging.getLogger('default')
 def get_tabs(request):
     user = auth.get_user(request)
     account = Account.objects.get(user=user)
-    wx = WXAccount.objects.get(account=account)
+
+    wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
     pages = Page.objects.filter(wx=wx)
     tabs = []
+    logger.debug("wx id %d" % wx.pk)
     for p in pages:
         subp = p.cast()
         form = FormManager.get_form(subp)
@@ -31,7 +33,7 @@ def get_tabs(request):
 def get_apps(request):
     user = auth.get_user(request)
     account = Account.objects.get(user=user)
-    wx = WXAccount.objects.get(account=account)
+    wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
     apps = App.objects.filter(wx=wx)
     return apps
 
@@ -112,7 +114,7 @@ def add_edit_contact(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 contact_app = ContactApp.objects.get(wx=wx)
                 item.contact = contact_app
             item.save()
@@ -177,7 +179,7 @@ def add_edit_trend(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 trends_app = TrendsApp.objects.get(wx=wx)
                 item.trend = trends_app
             item.pub_time = datetime.now()
@@ -207,7 +209,7 @@ def add_edit_link_page(request, link_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 item.enable = True
                 item.wx = wx
             item.save()
@@ -230,7 +232,7 @@ def add_edit_content_page(request, content_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 item.enable = True
                 item.wx = wx
             item.save()
@@ -253,7 +255,7 @@ def add_edit_case(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 case_app = CaseApp.objects.get(wx=wx)
                 item.case_app= case_app
             item.pub_time = datetime.now()
@@ -277,7 +279,7 @@ def add_edit_case_class(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 case_app = CaseApp.objects.get(wx=wx)
                 item.case_app= case_app
             item.pub_time = datetime.now()
@@ -318,7 +320,7 @@ def add_edit_product(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 product_app = ProductApp.objects.get(wx=wx)
                 item.product_app= product_app
             item.pub_time = datetime.now()
@@ -342,7 +344,7 @@ def add_edit_product_class(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.get(account=account)
+                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 product_app = ProductApp.objects.get(wx=wx)
                 item.product_app= product_app
             item.pub_time = datetime.now()

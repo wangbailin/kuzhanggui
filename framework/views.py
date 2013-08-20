@@ -11,7 +11,7 @@ from microsite.models import App
 
 def get_apps(request):
     account = Account.objects.get(user=request.user)
-    wx = WXAccount.objects.get(account=account)
+    wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
     apps = App.objects.filter(wx=wx)
     return apps
 
