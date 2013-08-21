@@ -273,7 +273,7 @@ class CulturePage(Page):
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
-            self.title = '公司文化'
+            self.title = '公司业务'
         super(CulturePage, self).save(*args, **kwargs)
 
     class Meta:
@@ -362,16 +362,32 @@ def add_default_site(wx_account):
         intropage = IntroPage()
         intropage.wx = wx_account
         intropage.enable = True
-        intropage.title = u"我们的游戏相当好玩"
+        intropage.title = u"公司简介"
         intropage.content = u"每天一款好游戏"
         intropage.save()
+
+    culturepages = CulturePage.objects.filter(wx=wx_account)
+    if len(culturepages) == 0:
+        culturepage = CulturePage()
+        culturepage.wx = wx_account
+        culturepage.enable = True
+        culturepage.title = '公司业务'
+        culturepage.content = 'abc'
+        culturepage.save()
+
+    trendsapps = TrendsApp.objects.filter(wx=wx_account)
+    if len(trendsapps) == 0:
+        trendsapp = TrendsApp()
+        trendsapp.wx = wx_account
+        trendsapp.enable = True
+        trendsapp.save()
 
     joinpages = JoinPage.objects.filter(wx=wx_account)
     if len(joinpages) == 0:
         joinpage = JoinPage()
         joinpage.wx = wx_account
         joinpage.enable = True
-        joinpage.title = u'加入我们吧'
+        joinpage.title = u'加入我们'
         joinpage.content = u'加入我们，奋斗吧，并享受奋斗的快感'
         joinpage.save()
 
@@ -381,13 +397,6 @@ def add_default_site(wx_account):
         contactapp.wx = wx_account
         contactapp.enable = True
         contactapp.save()
-
-    trendsapps = TrendsApp.objects.filter(wx=wx_account)
-    if len(trendsapps) == 0:
-        trendsapp = TrendsApp()
-        trendsapp.wx = wx_account
-        trendsapp.enable = True
-        trendsapp.save()
 
     caseapps = CaseApp.objects.filter(wx=wx_account)
     if len(caseapps) == 0:
@@ -405,16 +414,6 @@ def add_default_site(wx_account):
         productapp.title = u'产品中心'
         productapp.save()
     
-
-    culturepages = CulturePage.objects.filter(wx=wx_account)
-    if len(culturepages) == 0:
-        culturepage = CulturePage()
-        culturepage.wx = wx_account
-        culturepage.enable = True
-        culturepage.title = ''
-        culturepage.content = 'abc'
-        culturepage.save()
-
     weibopages= WeiboPage.objects.filter(wx=wx_account)
     if len(weibopages) == 0:
         weibopage = WeiboPage()

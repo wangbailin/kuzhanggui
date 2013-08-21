@@ -132,6 +132,19 @@ class LinkPageForm(ModelForm):
             'url',
         )
 
+class CaseAppForm(ModelForm):
+    class Meta:
+        model = CaseApp
+        fields = (
+            'enable',
+        )
+
+class ProductAppForm(ModelForm):
+    class Meta:
+        model = ProductApp
+        fields = (
+            'enable',
+        )
 class CaseItemForm(ModelForm):
     case_pic1 = forms.ImageField(label=u'案例截图1', widget=AjaxClearableFileInput(), required = False)
     case_pic2 = forms.ImageField(label=u'案例截图2', widget=AjaxClearableFileInput(), required = False)
@@ -221,6 +234,18 @@ class FormManager(object):
                 return LinkPageForm(request.POST, request.FILES, instance=page)
             else:
                 return LinkPageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+            if (request):
+                return CaseAppForm(request.POST, request.FILES, instance=page)
+            else:
+                return CaseAppForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+            if (request):
+                return ProductAppForm(request.POST, request.FILES, instance=page)
+            else:
+                return ProductAppForm(instance=page)
+
+
 
 
 
