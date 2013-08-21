@@ -99,6 +99,17 @@ class CulturePageForm(ModelForm):
             'title',
         )
 
+class BusinessPageForm(ModelForm):
+    content = forms.CharField(widget=CKEditorWidget()) 
+    class Meta:
+        model = BusinessPage 
+        fields = (
+            'enable',
+            'content',
+            'title',
+        )
+
+
 class WeiboPageForm(ModelForm):
     class Meta:
         model = WeiboPage 
@@ -219,6 +230,11 @@ class FormManager(object):
                 return CulturePageForm(request.POST, request.FILES, instance=page)
             else:
                 return CulturePageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+            if (request):
+                return BusinessPageForm(request.POST, request.FILES, instance=page)
+            else:
+                return BusinessPageForm(instance=page)
         elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
             if (request):
                 return WeiboPageForm(request.POST, request.FILES, instance=page)

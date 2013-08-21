@@ -21,6 +21,7 @@ if __name__ == '__main__':
     HomePage.objects.filter(wx=wx_account).delete()
     IntroPage.objects.filter(wx=wx_account).delete()
     CulturePage.objects.filter(wx=wx_account).delete()
+    BusinessPage.objects.filter(wx=wx_account).delete()
     JoinPage.objects.filter(wx=wx_account).delete()
     WeiboPage.objects.filter(wx=wx_account).delete()
 

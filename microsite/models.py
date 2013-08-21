@@ -273,11 +273,30 @@ class CulturePage(Page):
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
-            self.title = '公司业务'
+            self.title = '公司文化'
         super(CulturePage, self).save(*args, **kwargs)
 
     class Meta:
         db_table = u"culture"
+        app_label = u'microsite'
+
+    def _get_template(self):
+        return 'intropage.html'
+    def _get_tab_name(self):
+        return self.title
+
+class BusinessPage(Page):
+    enable = models.BooleanField(u'是否启用', default = True)
+    title = models.CharField(u'标题', max_length=100)
+    content = models.TextField(u'内容')
+
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '公司业务'
+        super(BusinessPage, self).save(*args, **kwargs)
+
+    class Meta:
+        db_table = u"business"
         app_label = u'microsite'
 
     def _get_template(self):
@@ -366,14 +385,14 @@ def add_default_site(wx_account):
         intropage.content = u"每天一款好游戏"
         intropage.save()
 
-    culturepages = CulturePage.objects.filter(wx=wx_account)
-    if len(culturepages) == 0:
-        culturepage = CulturePage()
-        culturepage.wx = wx_account
-        culturepage.enable = True
-        culturepage.title = '公司业务'
-        culturepage.content = 'abc'
-        culturepage.save()
+    businesspages = BusinessPage.objects.filter(wx=wx_account)
+    if len(businesspages) == 0:
+        businesspage = BusinessPage()
+        businesspage.wx = wx_account
+        businesspage.enable = True
+        businesspage.title = '公司业务'
+        businesspage.content = '公司业务'
+        businesspage.save()
 
     trendsapps = TrendsApp.objects.filter(wx=wx_account)
     if len(trendsapps) == 0:
