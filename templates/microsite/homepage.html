@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+        <p>{{ name }}</p>
+        </div>
+        <div id="myCarousel" class="carousel slide">
+            <ol class="carousel-indicators">
+            {% for pic in pics %}
+                {% if forloop.counter0 == 0 %}
+                <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
+                {% else %}
+                <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}"></li>
+                {% endif %}
+            {% endfor %}
+            </ol>
+            <div class="carousel-inner">
+            {% for pic in pics %}
+                {% if forloop.counter0 == 0 %}
+                <div class="active item"><img src="{{ MEDIA_URL }}{{ pic }}" /></div>
+                {% else %}
+                <div class="item"><img src="{{ MEDIA_URL }}{{ pic }}" /></div>
+                {% endif %}
+            {% endfor %}
+            </div>
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
+    </div>
+</body>
+</html>

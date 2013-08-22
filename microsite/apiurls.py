@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('microsite.apiviews',
     url(r'homepage/(?P<item_id>\d+)', 'homepage'),
-    url(r'intropage/(?P<item_id>\d+)', 'intropage'),
+    #url(r'intropage/(?P<item_id>\d+)', 'intropage'),
     #url(r'business/(?P<item_id>\d+)', 'business'),
     #url(r'trend/(?P<item_id>\d+)', 'trend'),
     #url(r'joinus/(?P<item_id>\d+)', 'joinus'),

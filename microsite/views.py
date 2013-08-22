@@ -88,13 +88,16 @@ def save(request, page_id):
         page = get_object_or_404(Page, id = page_id)
         sub_page = page.cast()
         form = FormManager.get_form(sub_page, request)
-        if form.is_valid():
-            intropage = form.save()
-            intropage.save()
-            return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+        if request.method == 'POST':
+            if form.is_valid():
+                intropage = form.save()
+                intropage.save()
+                return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+            else:
+                logger.debug("form is not valid")
+                return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
         else:
-            logger.debug("form is not valid")
-            return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+            return redirect("/setting/%d" % active_tab_id)
     else:
         logger.error("no page id")
     return redirect("/setting")
