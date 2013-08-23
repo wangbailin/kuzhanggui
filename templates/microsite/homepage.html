@@ -10,9 +10,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="row">
         <p>{{ name }}</p>
-        </div>
         <div id="myCarousel" class="carousel slide">
             <ol class="carousel-indicators">
             {% for pic in pics %}
@@ -36,6 +34,18 @@
             <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
             <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
+        <table>
+            {% for row in rows %}
+            <tr>
+                {% for i in row %}
+                <td>
+                <a href="{{ i.0 }}"><img src="{{ i.1 }}" /></a>
+                <p>{{ i.2 }}</p>
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>
 </html>

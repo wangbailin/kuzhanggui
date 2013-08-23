@@ -30,7 +30,6 @@ class Page(models.Model):
     def _get_tab_name(self):
         raise NotImplementedError
 
-
     def _get_template(self):
         raise NotImplementedError
 
