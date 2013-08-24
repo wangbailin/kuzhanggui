@@ -14,6 +14,7 @@ class HomePageForm(ModelForm):
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
+    cover = forms.ImageField(label=u'封面图片', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = HomePage
         fields = (
@@ -99,6 +100,17 @@ class CulturePageForm(ModelForm):
             'title',
         )
 
+class BusinessPageForm(ModelForm):
+    content = forms.CharField(widget=CKEditorWidget()) 
+    class Meta:
+        model = BusinessPage 
+        fields = (
+            'enable',
+            'content',
+            'title',
+        )
+
+
 class WeiboPageForm(ModelForm):
     class Meta:
         model = WeiboPage 
@@ -132,6 +144,19 @@ class LinkPageForm(ModelForm):
             'url',
         )
 
+class CaseAppForm(ModelForm):
+    class Meta:
+        model = CaseApp
+        fields = (
+            'enable',
+        )
+
+class ProductAppForm(ModelForm):
+    class Meta:
+        model = ProductApp
+        fields = (
+            'enable',
+        )
 class CaseItemForm(ModelForm):
     case_pic1 = forms.ImageField(label=u'案例截图1', widget=AjaxClearableFileInput(), required = False)
     case_pic2 = forms.ImageField(label=u'案例截图2', widget=AjaxClearableFileInput(), required = False)
@@ -143,11 +168,16 @@ class CaseItemForm(ModelForm):
         fields = (
             'title',
             'cls',
+            'case_pic1',
+            'case_pic2',
+            'case_pic3',
+            'case_pic4',
+            'case_intro',
         )
 
-class ProductClassForm(ModelForm):
+class CaseClassForm(ModelForm):
     class Meta:
-        model = ProductClass
+        model = CaseClass
         fields = (
             'name',
         )
@@ -163,6 +193,11 @@ class ProductItemForm(ModelForm):
         fields = (
             'title',
             'cls',
+            'product_pic1',
+            'product_pic2',
+            'product_pic3',
+            'product_pic4',
+            'product_intro',
         )
 
 class ProductClassForm(ModelForm):
@@ -206,6 +241,11 @@ class FormManager(object):
                 return CulturePageForm(request.POST, request.FILES, instance=page)
             else:
                 return CulturePageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+            if (request):
+                return BusinessPageForm(request.POST, request.FILES, instance=page)
+            else:
+                return BusinessPageForm(instance=page)
         elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
             if (request):
                 return WeiboPageForm(request.POST, request.FILES, instance=page)
@@ -221,6 +261,18 @@ class FormManager(object):
                 return LinkPageForm(request.POST, request.FILES, instance=page)
             else:
                 return LinkPageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+            if (request):
+                return CaseAppForm(request.POST, request.FILES, instance=page)
+            else:
+                return CaseAppForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+            if (request):
+                return ProductAppForm(request.POST, request.FILES, instance=page)
+            else:
+                return ProductAppForm(instance=page)
+
+
 
 
 

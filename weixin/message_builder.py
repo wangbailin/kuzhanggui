@@ -23,9 +23,14 @@ def _build_weixin_raw_text(context, data):
             content=data,
             func_flag=0)
 
+def _build_webapp(context, data):
+    articles = []
+    articles.append(data)
+    return WeiXin.to_news_xml(context.get('FromUserName', None), context.get('ToUserName', None), articles)
 class MessageBuilder:
     # message types
     TYPE_RAW_TEXT = 'type_raw_text'
+    TYPE_WEB_APP = 'type_web_app'
     TYPE_NO_RESPONSE = 'no_response'
 
     # platforms
@@ -38,6 +43,9 @@ class MessageBuilder:
     _build_methods = {
         TYPE_RAW_TEXT : {
             PLATFORM_WEIXIN : _build_weixin_raw_text
+        },
+        TYPE_WEB_APP : {
+            PLATFORM_WEIXIN : _build_webapp
         },
     }
 
