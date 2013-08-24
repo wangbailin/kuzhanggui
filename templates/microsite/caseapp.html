@@ -10,9 +10,19 @@
 </head>
 <body>
     <div class="container">
-        <div>
-        <a href="{{ url }}" >{{ title }}</a>
-        </div>
+        <table>
+        {% for items in rows %}
+            <tr>
+            {% for item in items %}
+                <td>
+                    <a href="{{ item.0 }}"><img src="{{ item.1 }}" /></a>
+                    <p>{{ item.2 }}</p>
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
     </div>
 </body>
 </html>
+
