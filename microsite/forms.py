@@ -71,6 +71,8 @@ class TrendItemForm(ModelForm):
         )
 
 class ContactItemForm(ModelForm):
+    lat = forms.CharField(widget=forms.HiddenInput())
+    lng = forms.CharField(widget=forms.HiddenInput())
     class Meta:
         model = ContactItem
         fields = (
@@ -78,6 +80,8 @@ class ContactItemForm(ModelForm):
             'address',
             'mail_code',
             'fax_code',
+            'lat',
+            'lng',
         )
 
 class ContactPeopleForm(ModelForm):

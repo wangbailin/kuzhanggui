@@ -1,7 +1,26 @@
-{% extends "whole_edit.html" %}
+{% extends "base.html" %}
+{% block document_ready %}
+$(document).ready(function(){
+    $('#cancel').click(function(){
+        history.back();
+        return false;
+    });
+    $('#save').click(function(){
+        var lngval = $("input#id_lng").val();
+        if (lngval != '') {
+            $(this).closest('form').submit();
+        } else {
+            alert("请用右键在地图中选出公司的具体位置");
+        }
+        return false;
+    });
+});
+{% endblock %}
+
 {% block content %}
 <div style="width:978px;height:520px;position:absolute;top:50%;left:50%;margin-top:-220px;margin-left:-489px;">
 <h3>添加联系方式</h3>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
 <form method='post' enctype="multipart/form-data"> {% csrf_token %}
 <table class="table">
     <tbody>
@@ -11,6 +30,10 @@
     <tr><th>{{ form.fax_code.label }}</th><td>{{ form.fax_code }}{{ form.fax_code.errors }}</td></tr>
     </tbody>
 </table>
+{{ form.lng }}
+{{ form.lat }}
+<div id="baidumap" style="height:500px">
+</div>
 {% include "save_cancel_section.html" %}
 </form>
 {% if peoples %}
@@ -19,4 +42,47 @@
     {% render_table peoples "django_tables2/table.html" %}
 {% endif %}
 </div>
+
+<script type="text/javascript">
+// 百度地图API功能
+var map = new BMap.Map("baidumap");            // 创建Map实例
+var point = new BMap.Point(116.404, 39.915);    // 创建点坐标
+map.centerAndZoom(point,15);
+var local = new BMap.LocalSearch(map, {
+    renderOptions:{
+        map: map,
+        autoViewport: true,
+        selectFirstResult: false},
+    pageCapacity:0});
+
+var addr_cnt = 0;
+
+var addr_point = null;
+var contextMenu = new BMap.ContextMenu();
+var menuItem = new BMap.MenuItem(
+    '就是这里',
+    function () {
+        console.log(addr_point);
+        $("input#id_lng").val(addr_point.lng);
+        $("input#id_lat").val(addr_point.lat);
+    }
+);
+contextMenu.addItem(menuItem);
+contextMenu.addEventListener("open", function(e) {
+    addr_point = e.point;
+});
+
+map.addContextMenu(contextMenu);
+
+function changeAddress(tcnt) {
+    if (addr_cnt == tcnt) {
+        local.search($('input#id_address').val());
+    }
+}
+$('input#id_address').on('input', function() {
+    addr_cnt += 1;
+    setTimeout(changeAddress, 1000, addr_cnt);
+});
+</script>
+
 {% endblock %}

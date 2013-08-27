@@ -377,3 +377,5 @@ def product_delete(request, item_id):
     item.delete()
     return redirect('/app/%d' % app_id)
 
+def baidumap(request):
+    return render(request, 'baidumap.html')
