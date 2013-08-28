@@ -1,20 +1,61 @@
-{% extends "whole_edit.html" %}
+{% extends "base.html" %}
+
+{% block title %}添加案例{% endblock %}
+
 {% block content %}
-<div style="width:978px;height:520px;position:absolute;top:50%;left:50%;margin-top:-220px;margin-left:-489px;">
-<h3>添加案例</h3>
-<form method='post' enctype="multipart/form-data"> {% csrf_token %}
-<table class="table">
-    <tbody>
-    <tr><th>{{ form.title.label }}</th><td>{{ form.title }}{{ form.title.errors }}</td></tr>
-    <tr><th>{{ form.cls.label }}</th><td>{{ form.cls }} {{ form.cls.errors }}</td></tr>
-    <tr><th>{{ form.case_pic1.label }}</th><td>{{ form.case_pic1 }} {{ form.case_pic1.errors }}</td></tr>
-    <tr><th>{{ form.case_pic2.label }}</th><td>{{ form.case_pic2 }} {{ form.case_pic2.errors }}</td></tr>
-    <tr><th>{{ form.case_pic3.label }}</th><td>{{ form.case_pic3 }} {{ form.case_pic3.errors }}</td></tr>
-    <tr><th>{{ form.case_pic4.label }}</th><td>{{ form.case_pic4 }} {{ form.case_pic4.errors }}</td></tr>
-    <tr><th>{{ form.case_intro.label }}</th><td>{{ form.case_intro }} {{ form.case_intro.errors }}</td></tr>
-    </tbody>
-</table>
-{% include "save_cancel_section.html" %}
-</form>
+<div id="content" class="container">
+    <div class="page-header">
+        <h1>添加案例</h1>
+    </div>
+
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="control-group">
+            <label class="control-label" for="title"><span style="color:red;">*</span>{{form.title.label}}</label>
+            <div class="controls">
+                {{ form.title }}{{ form.title.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="cls"><span style="color:red;">*</span>{{form.cls.label}}</label>
+            <div class="controls">
+                {{ form.cls }}{{ form.cls.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="case_pic1"><span style="color:red;">*</span>{{form.case_pic1.label}}</label>
+            <div class="controls">
+                {{ form.case_pic1 }}{{ form.case_pic1.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="case_pic2"><span style="color:red;">*</span>{{form.case_pic2.label}}</label>
+            <div class="controls">
+                {{ form.case_pic2 }}{{ form.case_pic2.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="case_pic3"><span style="color:red;">*</span>{{form.case_pic3.label}}</label>
+            <div class="controls">
+                {{ form.case_pic3 }}{{ form.case_pic3.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="case_pic4"><span style="color:red;">*</span>{{form.case_pic4.label}}</label>
+            <div class="controls">
+                {{ form.case_pic4 }}{{ form.case_pic4.errors }}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="case_intro"><span style="color:red;">*</span>{{form.case_intro.label}}</label>
+            <div class="controls">
+                {{ form.case_intro }}{{ form.case_intro.errors }}
+            </div>
+        </div>
+        <div class="form-actions">
+            <button id="save" type="submit" class="btn btn-primary">保存</button>
+            <button id="cancel" type="button" class="btn">取消</button>
+        </div>
+    </form>
 </div>
 {% endblock %}
