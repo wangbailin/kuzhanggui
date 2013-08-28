@@ -14,6 +14,7 @@ class HomePageForm(ModelForm):
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
+    cover = forms.ImageField(label=u'封面图片', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = HomePage
         fields = (
@@ -72,6 +73,8 @@ class TrendItemForm(ModelForm):
         )
 
 class ContactItemForm(ModelForm):
+    lat = forms.CharField(widget=forms.HiddenInput())
+    lng = forms.CharField(widget=forms.HiddenInput())
     class Meta:
         model = ContactItem
         fields = (
@@ -79,6 +82,8 @@ class ContactItemForm(ModelForm):
             'address',
             'mail_code',
             'fax_code',
+            'lat',
+            'lng',
         )
 
 class ContactPeopleForm(ModelForm):
@@ -171,11 +176,16 @@ class CaseItemForm(ModelForm):
         fields = (
             'title',
             'cls',
+            'case_pic1',
+            'case_pic2',
+            'case_pic3',
+            'case_pic4',
+            'case_intro',
         )
 
-class ProductClassForm(ModelForm):
+class CaseClassForm(ModelForm):
     class Meta:
-        model = ProductClass
+        model = CaseClass
         fields = (
             'name',
         )
@@ -198,6 +208,11 @@ class ProductItemForm(ModelForm):
         fields = (
             'title',
             'cls',
+            'product_pic1',
+            'product_pic2',
+            'product_pic3',
+            'product_pic4',
+            'product_intro',
         )
 
 class ProductClassForm(ModelForm):

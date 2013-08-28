@@ -262,6 +262,7 @@ def add_edit_case(request, item_id=None):
                 case_app = CaseApp.objects.get(wx=wx)
                 item.case_app= case_app
             item.pub_time = datetime.now()
+            logger.debug("item picurl %s" % item.case_pic1)
             item.save()
             return redirect('/app/%d' % item.case_app.id)
     else:
@@ -376,3 +377,5 @@ def product_delete(request, item_id):
     item.delete()
     return redirect('/app/%d' % app_id)
 
+def baidumap(request):
+    return render(request, 'baidumap.html')

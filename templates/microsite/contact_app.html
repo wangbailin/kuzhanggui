@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        {% for item in infos %}
+        <div>
+        <h3>{{ item.0.name }}</h3>
+        {% for people in item.1 %}
+        <p>联系电话：{{ people.phone }}({{ people.name }})</p>
+        {% endfor %}
+
+        {% for people in item.1 %}
+        {% if people.qq %}
+        <p>联系QQ：{{ people.qq }}({{ people.name }})</p>
+        {% endif %}
+        {% endfor %}
+
+        {% for people in item.1 %}
+        {% if people.email %}
+        <p>联系邮箱：{{ people.email }}({{ people.name }})</p>
+        {% endif %}
+        {% endfor %}
+
+        {% if item.0.fax_code %}
+        <p>传真：{{ item.0.fax_code }}</p>
+        {% endif %}
+        <p>地址：{{ item.0.address }}</p>
+        </div>
+        {% endfor %}  
+    </div>
+
+</body>
+</html>

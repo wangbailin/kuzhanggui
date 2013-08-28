@@ -29,7 +29,7 @@ def get_home_info(subpage):
     elif subpage.real_type == ContentType.objects.get_for_model(LinkPage):
         return (site_base_url + "/link/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/link.gif", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ContentPage):
-        return (site_base_url + "/content/%d" % subpage.pk, settings.MEDIA_URL + subpage.icon, subpage._get_tab_name())
+        return (site_base_url + "/content/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name())
 
             
 def homepage(request, item_id):
@@ -92,3 +92,94 @@ def trenditem(request, item_id):
     trenditem = get_object_or_404(TrendItem, pk=item_id)
     logger.debug("content %s" % trenditem.content)
     return render(request, 'microsite/trenditem.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
+
+def case(request, item_id):
+    logger.debug("case %d" % int(item_id))
+    caseapp = get_object_or_404(CaseApp, pk=item_id)
+    caseitems = CaseItem.objects.filter(case_app=caseapp)
+    rows = []
+    items = []
+    for ci in caseitems:
+        pic_url = ''
+        if ci.case_pic1:
+            pic_url = ci.case_pic1
+        elif ci.case_pic2:
+            pic_url = ci.case_pic2
+        elif ci.case_pic3:
+            pic_url = ci.case_pic3
+        elif ci.case_pic4:
+            pic_url = ci.case_pic4
+        items.append( ("/microsite/caseitem/%d" % ci.pk, pic_url.url, ci.title) )
+        if len(items) >=2 :
+            rows.append(items)
+            items = []
+    if len(items) > 0:
+        rows.append(items)
+    return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows})
+
+def caseitem(request, item_id):
+    logger.debug("caseitem %d", item_id)
+    caseitem = get_object_or_404(CaseItem, pk=item_id)
+    pics = []
+    if caseitem.case_pic1:
+        pics.append(caseitem.case_pic1)
+    if caseitem.case_pic2:
+        pics.append(caseitem.case_pic2)
+    if caseitem.case_pic3:
+        pics.append(caseitem.case_pic3)
+    if caseitem.case_pic4:
+        pics.append(caseitem.case_pic4)
+
+    return render(request, 'microsite/caseitem.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro})
+
+def link(request, item_id):
+    logger.debug("link %d" % int(item_id))
+    linkpage = get_object_or_404(LinkPage, pk=item_id)
+    return render(request, 'microsite/linkpage.html', {'title':linkpage.title, 'url':linkpage.url})
+
+
+def product(request, item_id):
+    logger.debug("product %d" % int(item_id))
+    papp = get_object_or_404(ProductApp, pk=item_id)
+    pitems = ProductItem.objects.filter(product_app=papp)
+    items = []
+    for p in pitems:
+        pic_url = ''
+        if p.product_pic1:
+            pic_url = p.product_pic1
+        elif ci.product_pic2:
+            pic_url = p.product_pic2
+        elif ci.product_pic3:
+            pic_url = p.product_pic3
+        elif ci.product_pic4:
+            pic_url = p.product_pic4
+        items.append( ("/microsite/product_item/%d" % p.pk, pic_url.url, p.title) )
+    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'items':items})
+
+def product_item(request, item_id):
+    logger.debug("product item %d", item_id)
+    pitem = get_object_or_404(ProductItem, pk=item_id)
+    pics = []
+    if pitem.product_pic1:
+        pics.append(pitem.product_pic1)
+    if pitem.product_pic2:
+        pics.append(pitem.product_pic2)
+    if pitem.product_pic3:
+        pics.append(pitem.product_pic3)
+    if pitem.product_pic4:
+        pics.append(pitem.product_pic4)
+
+    return render(request, 'microsite/product_item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
+    
+
+def contact(request, item_id):
+    logger.debug("contact app %d" % int(item_id))
+    app = get_object_or_404(ContactApp, pk=item_id)
+    items = ContactItem.objects.filter(contact=app)
+    infos = []
+    for item in items:
+        contact_peoples = ContactPeople.objects.filter(contact_item=item)
+        infos.append( (item, contact_peoples) )
+    return render(request, 'microsite/contact_app.html', {'title':app._get_tab_name(), 'infos':infos})
+
+
