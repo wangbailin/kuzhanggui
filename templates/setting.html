@@ -4,8 +4,9 @@
 <script type="text/javascript">
 
 </script>
-<div class="btn-group">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+<div class="btn-group" style="margin-bottom:10px;">
+    <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+        <i class="icon-plus icon-white"></i>
     新建页面
     <span class="caret"></span>
     </a>
@@ -15,7 +16,7 @@
     </ul>
 </div>
 <div>
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" style="margin-bottom:10px">
     {% for t in tabs %}
         {% if forloop.counter0 == active_tab_id %}
         <li class='active'><a href="#">{{ t.0.tab_name }}</a></li>
@@ -27,7 +28,7 @@
     <form action="/save/{{page.pk}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
         {% include page.template_name with form=f only %}
         <div class="form-bottom-buttons text-right">
-            <button class="btn btn-primary btn-large" id="tab-save">保存</button>
+            <button class="btn btn-primary" id="tab-save">保存</button>
         </div>
     </form>
 </div>

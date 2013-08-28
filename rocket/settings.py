@@ -103,7 +103,7 @@ CKEDITOR_CONFIGS = {
               '-', 'About',
             ]
         ],
-        'width': 840,
+        'width': 680,
         'height': 300,
         'toolbarCanCollapse': False,
     },
@@ -201,7 +201,7 @@ LOGGING = {
         'default': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join('/data' + '/logs/','rocket_default.log'),
+            'filename': os.path.join(PROJECT_ROOT + '/logs/','rocket_default.log'),
             'maxBytes': 1024*1024*5,
             'backupCount': 5,
             'formatter':'standard',
@@ -209,7 +209,7 @@ LOGGING = {
         'weixin': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join('/data' + '/logs/','weixin.log'),
+            'filename': os.path.join(PROJECT_ROOT + '/logs/','weixin.log'),
             'maxBytes': 1024*1024*5,
             'backupCount': 5,
             'formatter':'standard',
