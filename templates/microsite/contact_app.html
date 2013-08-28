@@ -8,11 +8,14 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
 </head>
 <body>
     <div class="container">
+        <div id="baidumap" style="height:500px">
+        </div>
         {% for item in infos %}
-        <div>
+        <div id="item_{{ forloop.counter0 }}" lat="{{ item.0.lat }}" lng="{{ item.0.lng }}" class="well">
         <h3>{{ item.0.name }}</h3>
         {% for people in item.1 %}
         <p>联系电话：{{ people.phone }}({{ people.name }})</p>
@@ -39,4 +42,20 @@
     </div>
 
 </body>
+<script>
+var map = new BMap.Map("baidumap");
+{% if infos|length > 0 %}
+var point = new BMap.Point({{ infos.0.0.lng }}, {{ infos.0.0.lat }});
+map.centerAndZoom(point, 15);
+{% endif %}
+
+{% for item in infos %}
+$("div#item_{{ forloop.counter0 }}").click(function() {
+    var point = new BMap.Point({{ item.0.lng }}, {{ item.0.lat }});
+    map.centerAndZoom(point, 15);
+    console.log("click {{ forloop.counter0 }}");
+});
+{% endfor %}
+
+</script>
 </html>

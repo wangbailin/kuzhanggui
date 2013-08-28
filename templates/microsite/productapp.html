@@ -11,11 +11,22 @@
 </head>
 <body>
     <div class="container">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {{ pclass.name }}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                {% for c in pclasses %}
+                <a href="/microsite/product/{{ c.product_app.pk }}/{{ c.pk }}">{{ c.name }}</a>
+                {% endfor %}
+            </ul>
+        </div>
         {% for item in items %}
             <div>
             <img src="{{ item.1 }}" />
-            <p>{{ item.2 }}</p>
-            <a href="{{ item.0 }}"><i class='icon-chevron-right'></i></a>
+            <span>{{ item.0.title }}</span>
+            <a href="/microsite/product_item/{{ item.0.pk }}"><i class='icon-chevron-right'></i></a>
             </div>
         {% endfor %}
     </div>
