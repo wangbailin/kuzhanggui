@@ -63,9 +63,10 @@ def app(request, app_id):
             active_side_id = i + 1
             app_info = AppMgr.get_app_info(apps[i].cast())
             active_app = apps[i]
+            active_app_enable = AppMgr.get_app_enable(apps[i].cast())
     logger.debug("active side id is %d" % active_side_id)
     
-    return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app})
+    return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app, 'active_app_enable':active_app_enable})
 
 @login_required
 def save(request, page_id):

@@ -1,6 +1,11 @@
 <div id="margin_bottom">
 <button type="button" class="btn btn-default btn-primary" onclick="javascript:window.location.href='/contact/add'"><i class="icon-plus icon-white"></i>添加联系方式</button>
 </div>
+
+{% if not active_app_enable %}
+{% include "prompt.html" %}
+{% endif %}
+
 {% load render_table from django_tables2 %}
 {% render_table app_info "django_tables2/table.html" %}
 
