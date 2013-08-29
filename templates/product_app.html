@@ -12,6 +12,11 @@
         </li>
     </ul>
 </div>
+
+{% if not active_app_enable %}
+{% include "prompt.html" %}
+{% endif %}
+
 {% load render_table from django_tables2 %}
 {% render_table app_info.0 "django_tables2/table.html" %}
 {% render_table app_info.1 "django_tables2/table.html" %}

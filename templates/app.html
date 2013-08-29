@@ -1,5 +1,5 @@
 {% extends "framework.html" %}
 
 {% block app %}
-{% include active_app.app_template_name with app_info=app_info only %}
+{% include active_app.app_template_name with app_info=app_info active_app_enable=active_app_enable %}
 {% endblock %}

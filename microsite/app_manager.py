@@ -16,4 +16,14 @@ class AppMgr(object):
         elif app.real_type == ContentType.objects.get_for_model(ProductApp):
             return (ProductItemTable(ProductItem.objects.filter(product_app=app)),
                 ProductClassTable(ProductClass.objects.filter(product_app=app)))
-
+    @classmethod
+    def get_app_enable(cls, app):
+        if app.real_type == ContentType.objects.get_for_model(ContactApp):
+            return ContactApp.objects.filter(app_ptr_id=app.pk)[0].enable
+        elif app.real_type == ContentType.objects.get_for_model(TrendsApp):
+            return TrendsApp.objects.filter(app_ptr_id=app.pk)[0].enable
+        elif app.real_type == ContentType.objects.get_for_model(CaseApp):
+            return CaseApp.objects.filter(app_ptr_id=app.pk)[0].enable
+        elif app.real_type == ContentType.objects.get_for_model(ProductApp):
+            return ProductApp.objects.filter(app_ptr_id=app.pk)[0].enable
+        
