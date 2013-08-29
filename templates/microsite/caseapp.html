@@ -11,13 +11,24 @@
 </head>
 <body>
     <div class="container">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {{ caseclass.name }}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                {% for c in caseclasses %}
+                <a href="/microsite/case/{{ c.case_app.pk }}/{{ c.pk }}">{{ c.name }}</a>
+                {% endfor %}
+            </ul>
+        </div>
         <table>
         {% for items in rows %}
             <tr>
             {% for item in items %}
                 <td>
-                    <a href="{{ item.0 }}"><img src="{{ item.1 }}" /></a>
-                    <p>{{ item.2 }}</p>
+                    <a href="/microsite/caseitem/{{ item.0.pk }}"><img src="{{ item.1 }}" /></a>
+                    <p>{{ item.0.title }}</p>
                 </td>
             {% endfor %}
             </tr>

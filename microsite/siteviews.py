@@ -1,3 +1,4 @@
+#coding:utf-8
 import logging
 
 from django.shortcuts import render_to_response, get_object_or_404, render, redirect
@@ -21,7 +22,7 @@ def get_home_info(subpage):
     elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
         return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/contact.gif", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return (site_base_url + "/weibo/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/weibo.gif", subpage._get_tab_name())
+        return (subpage.url, settings.STATIC_URL + "/siteicon/weibo.gif", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
         return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/case.gif", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
@@ -93,10 +94,20 @@ def trenditem(request, item_id):
     logger.debug("content %s" % trenditem.content)
     return render(request, 'microsite/trenditem.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
 
-def case(request, item_id):
+def case(request, item_id, class_id=None):
+    empty_msg = u'没有案例'
     logger.debug("case %d" % int(item_id))
     caseapp = get_object_or_404(CaseApp, pk=item_id)
-    caseitems = CaseItem.objects.filter(case_app=caseapp)
+    caseclasses = CaseClass.objects.filter(case_app=caseapp)
+    if class_id:
+        caseclass = get_object_or_404(CaseClass, pk=class_id)
+    else:
+        if len(caseclasses) == 0:
+            return render(request, 'microsite/message.html', {'title':caseapp._get_tab_name(), 'message':empty_msg})
+        else:
+            caseclass = caseclasses[0]
+            
+    caseitems = CaseItem.objects.filter(cls=caseclass)
     rows = []
     items = []
     for ci in caseitems:
@@ -109,13 +120,13 @@ def case(request, item_id):
             pic_url = ci.case_pic3
         elif ci.case_pic4:
             pic_url = ci.case_pic4
-        items.append( ("/microsite/caseitem/%d" % ci.pk, pic_url.url, ci.title) )
+        items.append( (ci, pic_url.url) )
         if len(items) >=2 :
             rows.append(items)
             items = []
     if len(items) > 0:
         rows.append(items)
-    return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows})
+    return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows, 'caseclass':caseclass, 'caseclasses':caseclasses})
 
 def caseitem(request, item_id):
     logger.debug("caseitem %d", item_id)
@@ -138,10 +149,18 @@ def link(request, item_id):
     return render(request, 'microsite/linkpage.html', {'title':linkpage.title, 'url':linkpage.url})
 
 
-def product(request, item_id):
+def product(request, item_id, class_id=None):
+    empty_msg = u'没有产品'
     logger.debug("product %d" % int(item_id))
     papp = get_object_or_404(ProductApp, pk=item_id)
-    pitems = ProductItem.objects.filter(product_app=papp)
+    pclasses = ProductClass.objects.filter(product_app=papp)
+    if class_id:
+        pclass = get_object_or_404(ProductClass, pk=class_id)
+    else:
+        if len(pclasses) == 0:
+            return render(request, 'microsite/message.html', {'title':papp._get_tab_name(), 'message':empty_msg})
+        pclass = pclasses[0]
+    pitems = ProductItem.objects.filter(cls=pclass)
     items = []
     for p in pitems:
         pic_url = ''
@@ -153,8 +172,8 @@ def product(request, item_id):
             pic_url = p.product_pic3
         elif ci.product_pic4:
             pic_url = p.product_pic4
-        items.append( ("/microsite/product_item/%d" % p.pk, pic_url.url, p.title) )
-    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'items':items})
+        items.append( (p, pic_url.url) )
+    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'items':items, 'pclass':pclass, 'pclasses':pclasses})
 
 def product_item(request, item_id):
     logger.debug("product item %d", item_id)
