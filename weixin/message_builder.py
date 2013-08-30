@@ -27,6 +27,7 @@ def _build_webapp(context, data):
     articles = []
     articles.append(data)
     return WeiXin.to_news_xml(context.get('FromUserName', None), context.get('ToUserName', None), articles)
+    
 class MessageBuilder:
     # message types
     TYPE_RAW_TEXT = 'type_raw_text'

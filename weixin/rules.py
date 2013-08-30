@@ -9,7 +9,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 
 logger = logging.getLogger('weixin')
-siteurl = 'http://jianfei.bestgames7.com'
+siteurl = 'http://r.limijiaoyin.com'
 
 def subscribe(rule, info):
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)
