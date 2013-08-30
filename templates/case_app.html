@@ -13,8 +13,8 @@
     </ul>
 </div>
 
-{% if not active_app_enable %}
-{% include "prompt.html" %}
+{% if not active_app_specific.enable %}
+{% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}
 {% endif %}
 
 {% load render_table from django_tables2 %}
@@ -37,7 +37,7 @@
                 </div>
                 <div class="modal-footer">
                      <button id="save" type="submit" class="btn btn-primary">保存</button>
-                     <button id="cancel" type="button" class="btn">取消</button>
+                     <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
                 </div>
              </div>
 

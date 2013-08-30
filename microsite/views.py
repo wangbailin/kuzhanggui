@@ -37,6 +37,16 @@ def get_apps(request):
     apps = App.objects.filter(wx=wx)
     return apps
 
+def get_tabs_names(request):
+    user = auth.get_user(request)
+    account = Account.objects.get(user=user)
+    wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+    pages = Page.objects.filter(wx=wx)
+    tabs_names = []
+    for p in pages:
+        tabs_names.append(p.tab_name)
+    return tabs_names
+
 @login_required
 def setting(request, active_tab_id = None):
     if active_tab_id:
@@ -63,10 +73,14 @@ def app(request, app_id):
             active_side_id = i + 1
             app_info = AppMgr.get_app_info(apps[i].cast())
             active_app = apps[i]
-            active_app_enable = AppMgr.get_app_enable(apps[i].cast())
+            active_app_specific= AppMgr.get_app_enable(apps[i].cast())
     logger.debug("active side id is %d" % active_side_id)
+
+    tabs_names=get_tabs_names(request)
+    tab_id=tabs_names.index(active_app_specific.title)
+    logger.debug("tab id is %d" % tab_id)
     
-    return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app, 'active_app_enable':active_app_enable})
+    return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app, 'active_app_specific':active_app_specific, 'tab_id':tab_id})
 
 @login_required
 def save(request, page_id):
