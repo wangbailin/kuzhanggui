@@ -12,25 +12,25 @@ logger = logging.getLogger('default')
 def get_home_info(subpage):
     site_base_url = '/microsite'
     if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
-        return (site_base_url + "/intro/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/intro.gif", subpage._get_tab_name())
+        return (site_base_url + "/intro/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_intro.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return (site_base_url + "/business/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/business.gif", subpage._get_tab_name())
+        return (site_base_url + "/business/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_business.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return (site_base_url + "/trend/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/trend.gif", subpage._get_tab_name())
+        return (site_base_url + "/trend/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_news.png", subpage._get_tab_name(), 3)
     elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
-        return (site_base_url + "/join/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/joinus.gif", subpage._get_tab_name())
+        return (site_base_url + "/join/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_joinus.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
-        return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/contact.gif", subpage._get_tab_name())
+        return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_contact.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return (subpage.url, settings.STATIC_URL + "/siteicon/weibo.gif", subpage._get_tab_name())
+        return (subpage.url, settings.STATIC_URL + "/themes/default/home_weibo.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
-        return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/case.gif", subpage._get_tab_name())
+        return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_case.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
-        return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/product.gif", subpage._get_tab_name())
+        return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_product.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(LinkPage):
-        return (site_base_url + "/link/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/link.gif", subpage._get_tab_name())
+        return (site_base_url + "/link/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(ContentPage):
-        return (site_base_url + "/content/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name())
+        return (site_base_url + "/content/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name(), 0)
 
             
 def homepage(request, item_id):
@@ -45,20 +45,14 @@ def homepage(request, item_id):
     if homepage.pic4:
         pics.append(homepage.pic4)
     logger.debug("%s" % str(pics))
-    rows = []
-    cols = []
+    items = []
     pages = Page.objects.filter(wx=homepage.wx)
     for p in pages:
         if p.real_type == homepage.real_type:
             continue
-        if len(cols) >= 3:
-            rows.append(cols)
-            cols = []
-        cols.append(get_home_info(p.cast()))
-    if len(cols) > 0:
-        rows.append(cols)
-        cols = []
-    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'rows':rows})
+        items.append(get_home_info(p.cast()))
+
+    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'items':items})
 
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)

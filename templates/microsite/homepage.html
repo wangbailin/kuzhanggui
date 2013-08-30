@@ -3,22 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>首页</title>
+    <title>{{ name }}</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#focus-indicators').css('margin-left', '-' + $('#focus-indicators li').size() * 15 / 2 + 'px');
+        });
+    </script>
 </head>
 <body>
     <div class="container">
-        <p>{{ name }}</p>
-        <div id="myCarousel" class="carousel slide">
-            <ol class="carousel-indicators">
+        <div id="focus" class="carousel slide">
+            <ol id="focus-indicators" class="carousel-indicators">
             {% for pic in pics %}
                 {% if forloop.counter0 == 0 %}
-                <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
+                <li data-target="#focus" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
                 {% else %}
-                <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}"></li>
+                <li data-target="#focus" data-slide-to="{{ forloop.counter0 }}"></li>
                 {% endif %}
             {% endfor %}
             </ol>
@@ -31,22 +37,22 @@
                 {% endif %}
             {% endfor %}
             </div>
-            <!-- Carousel nav -->
-            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
-        <table>
-            {% for row in rows %}
-            <tr>
-                {% for i in row %}
-                <td>
-                <a href="{{ i.0 }}"><img src="{{ i.1 }}" /></a>
-                <p>{{ i.2 }}</p>
-                </td>
-                {% endfor %}
-            </tr>
+
+        <div class="items">
+            {% for item in items %}
+                <div class="item">
+                    <a href="{{ item.0 }}">
+                        {% if item.3 > 0 %} 
+                            <div class="notifications">{{ item.3 }}</div>
+                        {% endif %}
+                        <img src="{{ item.1 }}" />
+                    </a>
+                    <p>{{ item.2 }}</p>
+                </div>
+            {% empty %}
             {% endfor %}
-        </table>
+        </div>
     </div>
 </body>
 </html>
