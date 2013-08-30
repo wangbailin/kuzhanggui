@@ -4,7 +4,7 @@ import logging, traceback
 from router import Router
 from message_builder import MessageBuilder, BuildConfig
 from framework.models import WXAccount
-from microsite.models import add_default_site, HomePage
+from microsite.models import *
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -49,18 +49,47 @@ def micro_site(rule, info):
         homepage = HomePage.objects.get(wx=wx_account)
         data = {}
         data['title'] = u'欢迎光临微官网'
-        data['description'] = u'这个是描述'
+        data['description'] = homepage.content
         data['pic_url'] = siteurl + homepage.cover.url
         data['url'] = siteurl + '/microsite/homepage/%d' % int(homepage.pk)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
-        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'绑定成功')
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+def trend(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        trend_app = TrendsApp.objects.get(wx=wx_account)
+        data = {}
+        data['title'] = trend_app.title
+        data['description'] = u'点击查看公司动态'
+        data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
+        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+def join(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        joinpage = JoinPage.objects.get(wx=wx_account)
+        data = {}
+        data['title'] = joinpage.title
+        data['description'] = u'点击查看公司招聘信息'
+        data['url'] = siteurl + "/microsite/join/%d" % joinpage.pk
+        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+
+        
 
 Router.get_instance().set({
         'name' : u'关注',
         'pattern' : match_subscribe_event,
-        'handler' : subscribe
+        'handler' : micro_site 
     })
 Router.get_instance().set({
         'name' : u'取消关注',
@@ -74,6 +103,16 @@ Router.get_instance().set({
     })
 Router.get_instance().set({
         'name' : u'microsite',
-        'pattern' : u'官网',
+        'pattern' : u'(官网|网站|你好|hi|hello|你是谁)',
         'handler' : micro_site,
+    })
+Router.get_instance().set({
+        'name' : u'microsite',
+        'pattern' : u'(动态|公司动态|新闻|公司新闻)',
+        'handler' : trend,
+    })
+Router.get_instance().set({
+        'name' : u'microsite',
+        'pattern' : u'(招聘|职位|工作)',
+        'handler' : join,
     })

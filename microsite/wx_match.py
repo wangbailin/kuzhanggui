@@ -1,5 +1,6 @@
 #coding:utf-8
 import logging
+from functools import wraps
 from django.contrib import auth
 
 from django.contrib.contenttypes.models import ContentType
@@ -10,6 +11,7 @@ from models import *
 logger = logging.getLogger('default')
 
 def wx_match(func):
+    @wraps(func)
     def wrapper(request, *args, **kwargs):
         active_wx_id = request.session.get('active_wx_id', 0)
         if active_wx_id <= 0:
