@@ -16,8 +16,8 @@ body {
     }
 
     .items .item img {
-        width: 95px;
-        height: 117.5px;
+        width: 100%;
+        height: 100%;
     }
 
     .items .item p {
