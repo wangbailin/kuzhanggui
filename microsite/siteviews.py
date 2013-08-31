@@ -56,19 +56,19 @@ def homepage(request, item_id):
 
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':intropage.title, 'content':intropage.content})
+    return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content})
 
 def business(request, item_id):
     business_page = get_object_or_404(BusinessPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':business_page.title, 'content':business_page.content})
+    return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content})
 
 def join(request, item_id):
     joinpage = get_object_or_404(JoinPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':joinpage.title, 'content':joinpage.content})
+    return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content})
 
 def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':content_page.title, 'content':content_page.content})
+    return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content})
 
 def weibo(request, item_id):
     weibopage = get_object_or_404(WeiboPage, pk=item_id)
@@ -86,7 +86,7 @@ def trend(request, item_id):
 def trenditem(request, item_id):
     trenditem = get_object_or_404(TrendItem, pk=item_id)
     logger.debug("content %s" % trenditem.content)
-    return render(request, 'microsite/trenditem.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
+    return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
 
 def case(request, item_id, class_id=None):
     empty_msg = u'没有案例'
@@ -182,7 +182,7 @@ def product_item(request, item_id):
     if pitem.product_pic4:
         pics.append(pitem.product_pic4)
 
-    return render(request, 'microsite/product_item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
+    return render(request, 'microsite/productitem.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
     
 
 def contact(request, item_id):
@@ -193,6 +193,6 @@ def contact(request, item_id):
     for item in items:
         contact_peoples = ContactPeople.objects.filter(contact_item=item)
         infos.append( (item, contact_peoples) )
-    return render(request, 'microsite/contact_app.html', {'title':app._get_tab_name(), 'infos':infos})
+    return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos})
 
 
