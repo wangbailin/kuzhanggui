@@ -14,7 +14,7 @@ from app_manager import AppMgr
 from framework.models import *
 from datetime import datetime
 
-from wx_match import app_verify
+from wx_match import *
 
 logger = logging.getLogger('default')
 
@@ -67,6 +67,7 @@ def settings(request, active_tab_id = None):
     return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':tabs[active_tab_id][0], 'f':tabs[active_tab_id][1], 'apps':apps, 'active_side_id':-1})
 
 @login_required
+@page_verify('app_id')
 def app(request, app_id):
     app_id = int(app_id)
     if not request.user.is_authenticated():
@@ -90,6 +91,7 @@ def app(request, app_id):
     return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app, 'active_app_specific':active_app_specific, 'tab_id':tab_id})
 
 @login_required
+@page_verify('page_id')
 def save(request, page_id):
     if page_id:
         page_id = int(page_id)
@@ -125,6 +127,7 @@ def save(request, page_id):
     return redirect("/setting")
 
 @login_required
+@contact_item_verify('item_id')
 def add_edit_contact(request, item_id=None):
     if item_id:
         item = get_object_or_404(ContactItem, pk = item_id)
@@ -150,6 +153,7 @@ def add_edit_contact(request, item_id=None):
     return render(request, 'add_edit_contact.html', {'form':form, 'peoples':peoples, 'contact_id':item_id})
 
 @login_required
+@contact_item_verify('item_id')
 def contact_delete(request, item_id):
     item = get_object_or_404(ContactItem, pk = item_id)
     id = item.contact.pk
@@ -161,6 +165,7 @@ def contact_delete(request, item_id):
 
 
 @login_required
+@contact_item_verify('contact_id')
 def add_edit_contact_people(request, contact_id, item_id=None):
     if item_id:
         item = get_object_or_404(ContactPeople, pk = item_id)
@@ -184,6 +189,7 @@ def add_edit_contact_people(request, contact_id, item_id=None):
     return render(request, 'add_edit_contact_people.html', {'form':form})
 
 @login_required
+@contact_people_verify('item_id')
 def contact_people_delete(request, item_id):
     item = get_object_or_404(ContactPeople, pk = item_id)
     id = item.contact_item.pk
@@ -191,6 +197,7 @@ def contact_people_delete(request, item_id):
     return redirect('/contact/%d/edit' % id)
 
 @login_required
+@trend_item_verify('item_id')
 def add_edit_trend(request, item_id=None):
     if item_id:
         item = get_object_or_404(TrendItem, pk = item_id)
@@ -216,12 +223,15 @@ def add_edit_trend(request, item_id=None):
     return render(request, 'add_edit_trend.html', {'form':form})
 
 @login_required
+@trend_item_verify('item_id')
 def trend_delete(request, item_id):
     item = get_object_or_404(TrendItem, pk = item_id)
     app_id = item.trend.pk
     item.delete()
     return redirect('/app/%d' % app_id)
+
 @login_required
+@page_verify('link_id')
 def add_edit_link_page(request, link_id=None):
     if link_id:
         item = get_object_or_404(LinkPage, pk = link_id)
@@ -245,6 +255,7 @@ def add_edit_link_page(request, link_id=None):
     return render(request, 'add_edit_link.html', {'form':form})
 
 @login_required
+@page_verify('content_id')
 def add_edit_content_page(request, content_id=None):
     if content_id:
         item = get_object_or_404(ContentPage, pk = content_id)
@@ -268,6 +279,7 @@ def add_edit_content_page(request, content_id=None):
     return render(request, 'add_edit_content.html', {'form':form})
     
 @login_required
+@case_item_verify('item_id')
 def add_edit_case(request, item_id=None):
     if item_id:
         item = get_object_or_404(CaseItem, pk = item_id)
@@ -293,6 +305,7 @@ def add_edit_case(request, item_id=None):
     return render(request, 'add_edit_case.html', {'form':form})
 
 @login_required
+@case_class_verify('item_id')
 def add_edit_case_class(request, item_id=None):
     if item_id:
         item = get_object_or_404(CaseClass, pk = item_id)
@@ -317,6 +330,7 @@ def add_edit_case_class(request, item_id=None):
     return render(request, 'add_edit_case_class.html', {'form':form})
 
 @login_required
+@case_item_verify('item_id')
 def case_delete(request, item_id):
     item = get_object_or_404(CaseItem, pk = item_id)
     app_id = item.case_app.id
@@ -324,6 +338,7 @@ def case_delete(request, item_id):
     return redirect('/app/%d' % app_id)
 
 @login_required
+@case_class_verify('item_id')
 def case_class_delete(request, item_id):
     item = get_object_or_404(CaseClass, pk = item_id)
     cases = CaseItem.objects.filter(cls=item)
@@ -334,6 +349,7 @@ def case_class_delete(request, item_id):
     return redirect('/app/%d' % app_id)
 
 @login_required
+@product_item_verify('item_id')
 def add_edit_product(request, item_id=None):
     if item_id:
         item = get_object_or_404(ProductItem, pk = item_id)
@@ -358,6 +374,7 @@ def add_edit_product(request, item_id=None):
     return render(request, 'add_edit_product.html', {'form':form})
 
 @login_required
+@product_class_verify('item_id')
 def add_edit_product_class(request, item_id=None):
     if item_id:
         item = get_object_or_404(ProductClass, pk = item_id)
@@ -382,6 +399,7 @@ def add_edit_product_class(request, item_id=None):
     return render(request, 'add_edit_product_class.html', {'form':form})
 
 @login_required
+@product_class_verify('item_id')
 def product_class_delete(request, item_id):
     item = get_object_or_404(ProductClass, pk = item_id)
     products = ProductItem.objects.filter(cls=item)
@@ -393,6 +411,7 @@ def product_class_delete(request, item_id):
 
  
 @login_required
+@product_item_verify('item_id')
 def product_delete(request, item_id):
     item = get_object_or_404(ProductItem, pk = item_id)
     app_id = item.product_app.pk
