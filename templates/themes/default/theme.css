@@ -1,5 +1,6 @@
 body {
     background-color: #1e1e1e;
+    color: #e8e8e8;
 }
 
 .items {
@@ -47,15 +48,15 @@ body {
 }
 
 .trends a, .trends a:hover, .trends a:visited, .trends a:active {
-    color: #e8e8e8;
     text-decoration: none;
 }
 
-.trends .trend {
+.card {
     border-radius: 10px;
     padding: 16px;
     background-color: #2e2e2e;
     box-shadow: 0px 2px 3px rgba(0,0,0,0.3);
+    margin-bottom: 24px;
 }
 
 .trends img {
@@ -92,4 +93,43 @@ body {
     float: right;
     margin-top: -16px;
     margin-right: -16px;
+}
+
+#baidumap {
+    height: 490px;
+    margin: 16px;
+    border-radius: 10px;
+}
+
+.locs {
+    padding: 16px;
+}
+
+.locs .loc h2 {
+    margin-top: 8px;
+    margin-bottom: 24px;
+}
+
+.locs .loc p {
+    font-size: 25px;
+    line-height: 36px;
+}
+
+a.phone div {
+    background: url('phone_normal.png');
+    width: 98px;
+    height: 40px;
+}
+
+a.phone:active div {
+    background: url('phone_pressed.png');
+}
+
+.locs .loc {
+    cursor: pointer;
+}
+
+.locs .loc .phone {
+    float: right;
+    margin-right: 36px;
 }

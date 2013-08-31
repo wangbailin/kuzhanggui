@@ -6,39 +6,59 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
 </head>
 <body>
     <div class="container">
-        <div id="baidumap" style="height:500px">
+        <div id="baidumap">
         </div>
-        {% for item in infos %}
-        <div id="item_{{ forloop.counter0 }}" lat="{{ item.0.lat }}" lng="{{ item.0.lng }}" class="well">
-        <h3>{{ item.0.name }}</h3>
-        {% for people in item.1 %}
-        <p>联系电话：{{ people.phone }}({{ people.name }})</p>
-        {% endfor %}
 
-        {% for people in item.1 %}
-        {% if people.qq %}
-        <p>联系QQ：{{ people.qq }}({{ people.name }})</p>
-        {% endif %}
-        {% endfor %}
+        <div class="locs">
+            {% for item in infos %}
+                <div id="item_{{ forloop.counter0 }}" lat="{{ item.0.lat }}" lng="{{ item.0.lng }}" class="loc card">
+                    <h2>{{ item.0.name }}</h2>
+                    {% for people in item.1 %}
+                        <a href="tel:{{ people.phone }}" class="phone"><div></div></a>
+                        <p>联系电话
+                        {% if item.1|length > 1 %}
+                        {{ forloop.counter }}
+                        {% endif %}
+                        ：{{ people.phone }}({{ people.name }})</p>
+                    {% endfor %}
 
-        {% for people in item.1 %}
-        {% if people.email %}
-        <p>联系邮箱：{{ people.email }}({{ people.name }})</p>
-        {% endif %}
-        {% endfor %}
 
-        {% if item.0.fax_code %}
-        <p>传真：{{ item.0.fax_code }}</p>
-        {% endif %}
-        <p>地址：{{ item.0.address }}</p>
+                    {% for people in item.1 %}
+                        {% if people.qq %}
+                            <p>QQ
+                            {% if item.1|length > 1%}
+                            {{ forloop.counter }}
+                            {% endif %}
+                            ：{{ people.qq }}({{ people.name }})</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for people in item.1 %}
+                        {% if people.email %}
+                            <p>邮箱
+                            {% if item.1|length > 1%}
+                            {{ forloop.counter }}
+                            {% endif %}
+                            ：{{ people.email }}({{ people.name }})</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if item.0.fax_code %}
+                        <p>传真：{{ item.0.fax_code }}</p>
+                    {% endif %}
+            
+                    <p>地址：{{ item.0.address }}</p>
+                </div>
+            {% endfor %}  
         </div>
-        {% endfor %}  
     </div>
 
 </body>
