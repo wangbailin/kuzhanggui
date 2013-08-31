@@ -31,9 +31,17 @@
             <div class="carousel-inner">
             {% for pic in pics %}
                 {% if forloop.counter0 == 0 %}
-                <div class="active item"><img src="{{ MEDIA_URL }}{{ pic }}" /></div>
+                <div class="active item"><img src="{{ MEDIA_URL }}{{ pic.0 }}" />
+                    {% if pic.1 %}
+                    <div class="carousel-caption">{{ pic.1 }}</div>
+                    {% endif %}
+                </div>
                 {% else %}
-                <div class="item"><img src="{{ MEDIA_URL }}{{ pic }}" /></div>
+                <div class="item"><img src="{{ MEDIA_URL }}{{ pic.0 }}" />
+                    {% if pic.1 %}
+                    <div class="carousel-caption">{{ pic.1 }}</div>
+                    {% endif %}
+                </div>
                 {% endif %}
             {% endfor %}
             </div>

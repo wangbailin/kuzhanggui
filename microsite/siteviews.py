@@ -36,14 +36,15 @@ def get_home_info(subpage):
 def homepage(request, item_id):
     homepage = get_object_or_404(HomePage, pk=item_id)
     pics = []
+    exps = []
     if homepage.pic1:
-        pics.append(homepage.pic1)
+        pics.append((homepage.pic1, homepage.exp1))
     if homepage.pic2:
-        pics.append(homepage.pic2)
+        pics.append((homepage.pic2, homepage.exp2))
     if homepage.pic3:
-        pics.append(homepage.pic3)
+        pics.append((homepage.pic3, homepage.exp3))
     if homepage.pic4:
-        pics.append(homepage.pic4)
+        pics.append((homepage.pic4, homepage.exp4))
     logger.debug("%s" % str(pics))
     items = []
     pages = Page.objects.filter(wx=homepage.wx)
