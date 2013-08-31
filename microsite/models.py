@@ -63,11 +63,15 @@ class HomePage(Page):
         choices.append( (k, v.name) )
     template_type = models.IntegerField(u'模板类型', choices=choices, default = 1)
     pic1 = models.ImageField(u"焦点图1", upload_to='upload/', max_length=255, blank=True)
+    exp1 = models.CharField(u"焦点图1注释", max_length=255, blank=True)
     pic2 = models.ImageField(u"焦点图2", upload_to='upload/', max_length=255, blank=True)
+    exp2 = models.CharField(u"焦点图2注释", max_length=255, blank=True)
     pic3 = models.ImageField(u"焦点图3", upload_to='upload/', max_length=255, blank=True)
+    exp3 = models.CharField(u"焦点图3注释", max_length=255, blank=True)
     pic4 = models.ImageField(u"焦点图4", upload_to='upload/', max_length=255, blank=True)
-    cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面图，建议图片宽度大于640像素", max_length=255, blank=True)
-    content = models.TextField(u"内容", help_text=u"微信返回消息的内容", max_length=1000)
+    exp4 = models.CharField(u"焦点图4注释", max_length=255, blank=True)
+    cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
+    content = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000)
 
     def _get_tab_name(self):
         return u"首页"
