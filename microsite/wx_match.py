@@ -16,14 +16,14 @@ def wx_match(func):
         active_wx_id = request.session.get('active_wx_id', 0)
         if active_wx_id <= 0:
             logger.debug("active_wx_id is %d" % active_wx_id)
-            return redirect('/setting')
+            return redirect('/settings')
         wx = get_object_or_404(WXAccount, pk=active_wx_id)
         account = Account.objects.get(user=request.user)
         if wx.account.pk == account.pk:
             return func(request, *args, **kwargs)
         else:
             logger.debug("wx account pk %d user pk %d" % (wx.account.pk, account.pk))
-            return redirect('/setting')
+            return redirect('/settings')
     return wrapper
 
             

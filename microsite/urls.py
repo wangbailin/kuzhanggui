@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('microsite.views',
-    url(r'^setting/(?P<active_tab_id>\d+)', 'setting'),
-    url(r'^setting', 'setting'),
+    url(r'^settings/(?P<active_tab_id>\d+)', 'settings'),
+    url(r'^settings', 'settings'),
     url(r'^save/(?P<page_id>\d+)', 'save'),
     url(r'^app/(?P<app_id>\d+)', 'app'),
     url(r'^contact/add', 'add_edit_contact'),

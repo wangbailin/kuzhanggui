@@ -50,7 +50,7 @@ def get_tabs_names(request):
     return tabs_names
 
 @login_required
-def setting(request, active_tab_id = None):
+def settings(request, active_tab_id = None):
     if active_tab_id:
         active_tab_id = int(active_tab_id)
     else:
@@ -59,7 +59,7 @@ def setting(request, active_tab_id = None):
     if active_tab_id > len(tabs):
         active_tab_id = 0
     apps = get_apps(request)
-    return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':tabs[active_tab_id][0], 'f':tabs[active_tab_id][1], 'apps':apps, 'active_side_id':-1})
+    return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':tabs[active_tab_id][0], 'f':tabs[active_tab_id][1], 'apps':apps, 'active_side_id':-1})
 
 @login_required
 @wx_match
