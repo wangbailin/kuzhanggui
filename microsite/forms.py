@@ -14,7 +14,7 @@ class HomePageForm(ModelForm):
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
-    cover = forms.ImageField(label=u'封面图片', widget=AjaxClearableFileInput(), required = True)
+    cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = HomePage
         fields = (
@@ -24,6 +24,10 @@ class HomePageForm(ModelForm):
             'pic2',
             'pic3',
             'pic4',
+            'exp1',
+            'exp2',
+            'exp3',
+            'exp4',
             'cover',
             'content',
         )
@@ -64,12 +68,15 @@ class TrendsAppForm(ModelForm):
         )
 
 class TrendItemForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget()) 
+    content = forms.CharField(label='内容', widget=CKEditorWidget())
+    cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False) 
     class Meta:
         model = TrendItem
         fields = (
             'title',
             'content',
+            'cover',
+            'summary',
         )
 
 class ContactItemForm(ModelForm):
@@ -189,13 +196,7 @@ class CaseClassForm(ModelForm):
         fields = (
             'name',
         )
-
-class CaseClassForm(ModelForm):
-    class Meta:
-        model = CaseClass
-        fields = (
-            'name',
-        )
+        
 
 class ProductItemForm(ModelForm):
     product_pic1 = forms.ImageField(label=u'产品截图1', widget=AjaxClearableFileInput(), required = False)

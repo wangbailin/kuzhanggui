@@ -13,10 +13,9 @@
     </ul>
 </div>
 
-{% if not active_app_enable %}
-{% include "prompt.html" %}
+{% if not active_app_specific.enable %}
+{% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}
 {% endif %}
-
 {% load render_table from django_tables2 %}
 {% render_table app_info.0 "django_tables2/table.html" %}
 {% render_table app_info.1 "django_tables2/table.html" %}

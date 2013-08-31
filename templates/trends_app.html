@@ -1,9 +1,11 @@
 <div id="margin_bottom">
 <button type="button" class="btn btn-default btn-primary" onclick="javascript:window.location.href='/trend/add'"><i class="icon-plus icon-white"></i>添加动态</button>
 </div>
-{% if not active_app_enable %}
-{% include "prompt.html" %}
+
+{% if not active_app_specific.enable %}
+{% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}
 {% endif %}
+
 {% load render_table from django_tables2 %}
 {% render_table app_info "django_tables2/table.html" %}
 

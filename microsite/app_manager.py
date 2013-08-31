@@ -19,11 +19,11 @@ class AppMgr(object):
     @classmethod
     def get_app_enable(cls, app):
         if app.real_type == ContentType.objects.get_for_model(ContactApp):
-            return ContactApp.objects.filter(app_ptr_id=app.pk)[0].enable
+            return ContactApp.objects.filter(app_ptr_id=app.pk)[0]
         elif app.real_type == ContentType.objects.get_for_model(TrendsApp):
-            return TrendsApp.objects.filter(app_ptr_id=app.pk)[0].enable
+            return TrendsApp.objects.filter(app_ptr_id=app.pk)[0]
         elif app.real_type == ContentType.objects.get_for_model(CaseApp):
-            return CaseApp.objects.filter(app_ptr_id=app.pk)[0].enable
+            return CaseApp.objects.filter(app_ptr_id=app.pk)[0]
         elif app.real_type == ContentType.objects.get_for_model(ProductApp):
-            return ProductApp.objects.filter(app_ptr_id=app.pk)[0].enable
+            return ProductApp.objects.filter(app_ptr_id=app.pk)[0]
         
