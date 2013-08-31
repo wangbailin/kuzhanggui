@@ -21,7 +21,7 @@
         {% if forloop.counter0 == active_tab_id %}
         <li class='active'><a href="#">{{ t.0.tab_name }}</a></li>
         {% else %}
-        <li><a href="/setting/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
+        <li><a href="/settings/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
         {% endif %}
     {% endfor %}
     </ul>
