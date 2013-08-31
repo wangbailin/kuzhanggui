@@ -100,7 +100,7 @@ def save(request, page_id):
             if form.is_valid():
                 intropage = form.save()
                 intropage.save()
-                return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+                return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
             else:
                 logger.debug("form is not valid")
                 return render(request, "setting.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
