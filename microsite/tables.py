@@ -40,7 +40,7 @@ class TrendsTable(tables.Table):
         empty_text = u'暂无公司动态'
         attrs = {'class' : 'table table-striped'}
         orderable = False
-        fields = ('title', 'pub_time', 'content')
+        fields = ('title', 'pub_time', 'summary')
 
 class CaseItemTable(tables.Table):
     ops = TemplateColumn(template_name="case_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
