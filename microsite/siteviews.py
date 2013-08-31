@@ -12,25 +12,25 @@ logger = logging.getLogger('default')
 def get_home_info(subpage):
     site_base_url = '/microsite'
     if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
-        return (site_base_url + "/intro/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/intro.gif", subpage._get_tab_name())
+        return (site_base_url + "/intro/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_intro.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return (site_base_url + "/business/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/business.gif", subpage._get_tab_name())
+        return (site_base_url + "/business/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_business.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return (site_base_url + "/trend/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/trend.gif", subpage._get_tab_name())
+        return (site_base_url + "/trend/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_news.png", subpage._get_tab_name(), 3)
     elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
-        return (site_base_url + "/join/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/joinus.gif", subpage._get_tab_name())
+        return (site_base_url + "/join/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_joinus.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
-        return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/contact.gif", subpage._get_tab_name())
+        return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_contact.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return (subpage.url, settings.STATIC_URL + "/siteicon/weibo.gif", subpage._get_tab_name())
+        return (subpage.url, settings.STATIC_URL + "/themes/default/home_weibo.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
-        return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/case.gif", subpage._get_tab_name())
+        return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_case.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
-        return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/product.gif", subpage._get_tab_name())
+        return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_product.png", subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(LinkPage):
-        return (site_base_url + "/link/%d" % subpage.pk, settings.STATIC_URL + "/siteicon/link.gif", subpage._get_tab_name())
+        return (site_base_url + "/link/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name(), 0)
     elif subpage.real_type == ContentType.objects.get_for_model(ContentPage):
-        return (site_base_url + "/content/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name())
+        return (site_base_url + "/content/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name(), 0)
 
             
 def homepage(request, item_id):
@@ -45,36 +45,30 @@ def homepage(request, item_id):
     if homepage.pic4:
         pics.append(homepage.pic4)
     logger.debug("%s" % str(pics))
-    rows = []
-    cols = []
+    items = []
     pages = Page.objects.filter(wx=homepage.wx)
     for p in pages:
         if p.real_type == homepage.real_type:
             continue
-        if len(cols) >= 3:
-            rows.append(cols)
-            cols = []
-        cols.append(get_home_info(p.cast()))
-    if len(cols) > 0:
-        rows.append(cols)
-        cols = []
-    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'rows':rows})
+        items.append(get_home_info(p.cast()))
+
+    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'items':items})
 
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':intropage.title, 'content':intropage.content})
+    return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content})
 
 def business(request, item_id):
     business_page = get_object_or_404(BusinessPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':business_page.title, 'content':business_page.content})
+    return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content})
 
 def join(request, item_id):
     joinpage = get_object_or_404(JoinPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':joinpage.title, 'content':joinpage.content})
+    return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content})
 
 def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
-    return render(request, 'microsite/intropage.html', {'title':content_page.title, 'content':content_page.content})
+    return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content})
 
 def weibo(request, item_id):
     weibopage = get_object_or_404(WeiboPage, pk=item_id)
@@ -86,13 +80,13 @@ def trend(request, item_id):
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
-        items.append( (i.title, '/microsite/trenditem/%d' % i.pk) )
+        items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, True, 'http://r.limijiaoyin.com/media/ckeditor/2013/08/30/weixinapp2.png') )
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items})
 
 def trenditem(request, item_id):
     trenditem = get_object_or_404(TrendItem, pk=item_id)
     logger.debug("content %s" % trenditem.content)
-    return render(request, 'microsite/trenditem.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
+    return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
 
 def case(request, item_id, class_id=None):
     empty_msg = u'没有案例'
@@ -188,7 +182,7 @@ def product_item(request, item_id):
     if pitem.product_pic4:
         pics.append(pitem.product_pic4)
 
-    return render(request, 'microsite/product_item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
+    return render(request, 'microsite/productitem.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
     
 
 def contact(request, item_id):
@@ -199,6 +193,6 @@ def contact(request, item_id):
     for item in items:
         contact_peoples = ContactPeople.objects.filter(contact_item=item)
         infos.append( (item, contact_peoples) )
-    return render(request, 'microsite/contact_app.html', {'title':app._get_tab_name(), 'infos':infos})
+    return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos})
 
 
