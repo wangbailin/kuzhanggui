@@ -39,5 +39,57 @@ body {
 }
 
 .content-page {
-    padding:8px;
+    padding: 8px;
+}
+
+.trends {
+    padding: 16px;
+}
+
+.trends a, .trends a:hover, .trends a:visited, .trends a:active {
+    color: #e8e8e8;
+    text-decoration: none;
+}
+
+.trends .trend {
+    border-radius: 10px;
+    padding: 16px;
+    background-color: #2e2e2e;
+    box-shadow: 0px 2px 3px rgba(0,0,0,0.3);
+}
+
+.trends img {
+    float: left;
+    width: 105px;
+    height: 105px;
+}
+
+.trends .trend .trend-meta {
+    margin-left: 121px;
+    margin-right: 60px;
+    height: 105px;
+}
+
+.trends .trend .trend-meta h2 {
+    margin-top: 0px;
+}
+
+.trends .trend .trend-meta p {
+    color: #828282;
+    font-size: 22px;
+}
+
+.trends .trend .trend-abs {
+    margin-top: 12px;
+    font-size: 25px;
+    line-height: 36px;
+}
+
+.trends .trend .new {
+    background: url('new.png');
+    width: 60px;
+    height: 60px;
+    float: right;
+    margin-top: -16px;
+    margin-right: -16px;
 }

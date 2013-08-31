@@ -2,18 +2,37 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=0" />
     <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
-        {% for item in items %}
-        <div>
-            <span>{{ item.0 }}</span><a href="{{ item.1 }}"><i class="icon-chevron-right"></i></a>
+        <div class="trends">
+            {% for item in items %}
+                <a href="{{ item.1 }}">
+                    <div class="trend">
+                        <img src="{{ item.4 }}" />
+                        {% if item.3 %}
+                            <div class="new"></div>
+                        {% endif %}
+                        <div class="trend-meta">
+                            <h2>{{ item.0 }}</h2>
+                            <p>{{ item.2 | date:"Y-m-d" }}</p>
+                        </div>
+                        <div class="trend-abs">
+                            <span>拥有每日答题，针锋相对，专题赛等功能的百度“寻找搜神”已经顺利上线了。</span>
+                        </div>
+                    </div>
+                </a>
+            {% empty %}
+                <div>暂无动态</div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+</body>

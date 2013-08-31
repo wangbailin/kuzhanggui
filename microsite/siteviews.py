@@ -80,7 +80,7 @@ def trend(request, item_id):
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
-        items.append( (i.title, '/microsite/trenditem/%d' % i.pk) )
+        items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, True, 'http://r.limijiaoyin.com/media/ckeditor/2013/08/30/weixinapp2.png') )
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items})
 
 def trenditem(request, item_id):
