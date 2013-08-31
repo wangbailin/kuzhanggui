@@ -48,6 +48,7 @@ body {
 }
 
 .trends a, .trends a:hover, .trends a:visited, .trends a:active {
+    color: #e8e8e8;
     text-decoration: none;
 }
 
