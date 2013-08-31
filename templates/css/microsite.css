@@ -9,3 +9,11 @@ body {
     left: 50%;
     right: auto;
 }
+
+#focus .item img {
+    width: 100%;
+}
+
+.items .item a:active {
+    color: transparent;
+}
