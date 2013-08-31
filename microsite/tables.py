@@ -16,7 +16,7 @@ class ContactTable(tables.Table):
     class Meta:
         model = ContactItem
         order_by = 'pk'
-        empty_text = u'暂无联系方式，快点添加吧'
+        empty_text = u'暂无联系方式'
         attrs = {'class' : 'table table-striped'}
         orderable = False
         fields = ('name', 'address', 'mail_code', 'fax_code')
@@ -37,7 +37,7 @@ class TrendsTable(tables.Table):
     class Meta:
         model = TrendItem
         order_by = 'pub_time'
-        empty_text = u'暂无公司动态，快点添加，让听众了解公司的最新状况'
+        empty_text = u'暂无公司动态'
         attrs = {'class' : 'table table-striped'}
         orderable = False
         fields = ('title', 'pub_time', 'content')

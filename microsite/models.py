@@ -255,6 +255,8 @@ class TrendItem(models.Model):
     pub_time = models.DateField(u'日期')
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
+    cover = models.ImageField(u'封面', upload_to='upload/', max_length=255, blank=True)
+    summary = models.CharField(u'摘要', max_length=255, blank=True)
 
     class Meta:
         db_table = u"trend_item"

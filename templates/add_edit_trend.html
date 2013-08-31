@@ -15,6 +15,18 @@
                 {{ form.title }}{{ form.title.errors }}
             </div>
         </div>
+         <div class="control-group">
+            <label class="control-label" for="cover">{{form.cover.label}}</label>
+            <div class="controls">
+                {{ form.cover }}{{ form.cover.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="summary">{{form.summary.label}}</label>
+            <div class="controls">
+                {{ form.summary }}{{ form.summary.errors }}
+            </div>
+        </div>
         <div class="control-group">
             <label class="control-label" for="content"><span style="color:red;">*</span>{{form.content.label}}</label>
             <div class="controls">

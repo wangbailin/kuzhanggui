@@ -68,12 +68,15 @@ class TrendsAppForm(ModelForm):
         )
 
 class TrendItemForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget()) 
+    content = forms.CharField(label='内容', widget=CKEditorWidget())
+    cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False) 
     class Meta:
         model = TrendItem
         fields = (
             'title',
             'content',
+            'cover',
+            'summary',
         )
 
 class ContactItemForm(ModelForm):
