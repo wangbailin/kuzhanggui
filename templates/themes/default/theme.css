@@ -179,7 +179,6 @@ a.phone:active div {
 }
 
 .navbar {
-    background-color: transparent;
     margin-bottom: 8px;
 }
 
@@ -197,5 +196,4 @@ a.phone:active div {
 
 .navbar-inner {
     padding-left: 0px;
-    background-color: transparent;
 }
