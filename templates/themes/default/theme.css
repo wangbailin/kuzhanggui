@@ -7,38 +7,18 @@ body {
     text-align: center;
 }
 
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) { 
-    .items .item {
-        width: 190px;
-        height: 235px;
-        display: inline-block;
-        text-align: center;
-        margin: 15px;
-    }
-
-    .items .item p {
-        font-size: 25px;
-        color: #f8f8f8;
-        margin-top: -35px;
-    }
+.items .item {
+    width: 95px;
+    height: 118px;
+    display: inline-block;
+    text-align: center;
+    margin: 8px;
 }
- 
-/* Landscape phones and down */
-@media (max-width: 480px) {
-    .items .item {
-        width: 95px;
-        height: 118px;
-        display: inline-block;
-        text-align: center;
-        margin: 8px;
-    }
 
-    .items .item p {
-        font-size: 14px;
-        color: #f8f8f8;
-        margin-top: -18px;
-    }
+.items .item p {
+    font-size: 14px;
+    color: #f8f8f8;
+    margin-top: -18px;
 }
 
 .items .item img {
