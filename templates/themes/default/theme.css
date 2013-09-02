@@ -158,10 +158,22 @@ a.phone:active div {
     padding: 4px;
 }
 
-.cases td:nth-child(odd) {
-    padding-left: 16px;
+@media (min-width: 340px) { 
+    .cases td:nth-child(odd) {
+        padding-left: 16px;
+    }
+
+    .cases td:nth-child(even){
+        padding-right: 16px;
+    }
 }
 
-.cases td:nth-child(even){
-    padding-right: 16px;
+@media (max-width: 340px) { 
+    .cases td:nth-child(odd) {
+        padding-left: 4px;
+    }
+
+    .cases td:nth-child(even){
+        padding-right: 4px;
+    }
 }
