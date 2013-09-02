@@ -186,6 +186,14 @@ a.phone:active div {
     border-bottom: 6px solid #2e2e2e;
 }
 
-.dropdown-menu>li>a {
+.navbar .dropdown-menu>li>a {
     color: #e8e8e8;
+}
+
+.navbar-inner {
+    padding-left: 8px;
+}
+
+.navbar .nav>li>a {
+    padding-left: 0px;
 }
