@@ -77,7 +77,7 @@ def weibo(request, item_id):
 
 def trend(request, item_id):
     trendapp = get_object_or_404(TrendsApp, pk=item_id)
-    trenditems = TrendItem.objects.filter(trend=trendapp)
+    trenditems = TrendItem.objects.filter(trend=trendapp).order_by("-pub_time")
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
