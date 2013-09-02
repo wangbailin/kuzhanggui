@@ -12,7 +12,7 @@ body {
     height: 118px;
     display: inline-block;
     text-align: center;
-    margin: 8px;
+    margin: 4px;
 }
 
 .items .item p {
@@ -22,8 +22,7 @@ body {
 }
 
 .items .item img {
-    width: 100%;
-    height: 100%;
+    width: 95px;
 }
 
 .content-page {
