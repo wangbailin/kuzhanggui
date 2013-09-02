@@ -90,19 +90,23 @@ def trenditem(request, item_id):
     return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
 
 def case(request, item_id, class_id=None):
-    empty_msg = u'没有案例'
     logger.debug("case %d" % int(item_id))
     caseapp = get_object_or_404(CaseApp, pk=item_id)
     caseclasses = CaseClass.objects.filter(case_app=caseapp)
+    
     if class_id:
         caseclass = get_object_or_404(CaseClass, pk=class_id)
     else:
         if len(caseclasses) == 0:
-            return render(request, 'microsite/message.html', {'title':caseapp._get_tab_name(), 'message':empty_msg})
+            caseclass = None
         else:
             caseclass = caseclasses[0]
-            
-    caseitems = CaseItem.objects.filter(cls=caseclass)
+    
+    if caseclass is not None:
+        caseitems = CaseItem.objects.filter(cls=caseclass)
+    else:
+        caseitems = []
+
     rows = []
     items = []
     for ci in caseitems:
@@ -115,12 +119,14 @@ def case(request, item_id, class_id=None):
             pic_url = ci.case_pic3
         elif ci.case_pic4:
             pic_url = ci.case_pic4
-        items.append( (ci, pic_url.url) )
-        if len(items) >=2 :
+        if len(items) < 2:
+            items.append( (ci, pic_url.url) )
+        else:
             rows.append(items)
             items = []
     if len(items) > 0:
         rows.append(items)
+
     return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows, 'caseclass':caseclass, 'caseclasses':caseclasses})
 
 def caseitem(request, item_id):

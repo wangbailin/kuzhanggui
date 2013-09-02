@@ -131,3 +131,37 @@ a.phone:active div {
     float: right;
     margin-right: 18px;
 }
+
+.cases {
+    padding: 8px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.cases .case {
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 150px;
+    background-position: 50%;
+}
+
+.cases a, .cases a:hover .cases a:active {
+    color: #e8e8e8;
+    text-decoration: none;
+}
+
+.cases .case .title {
+    margin-top: 122px;
+    background-color: rgba(0,0,0,0.5);
+    padding: 4px;
+}
+
+.cases td:nth-child(odd) {
+    padding-left: 16px;
+}
+
+.cases td:nth-child(even){
+    padding-right: 16px;
+}

@@ -6,12 +6,15 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container text-center">
         <div class="btn-group">
+            {% if caseclass %}
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                 {{ caseclass.name }}
                 <span class="caret"></span>
@@ -21,18 +24,25 @@
                 <a href="/microsite/case/{{ c.case_app.pk }}/{{ c.pk }}">{{ c.name }}</a>
                 {% endfor %}
             </ul>
+            {% endif %}
         </div>
-        <table>
-        {% for items in rows %}
+        <table class="cases">
+            <thead><th style="width:50%;"></th><th style="width:50%;"></th></thead>
+            {% for row in rows %}
             <tr>
-            {% for item in items %}
+                {% for item in row %}
                 <td>
-                    <a href="/microsite/caseitem/{{ item.0.pk }}"><img src="{{ item.1 }}" /></a>
-                    <p>{{ item.0.title }}</p>
+                    <a href="/microsite/caseitem/{{ item.0.pk }}">
+                        <div class="case" style="background-image: url('{{ item.1 }}')">
+                            <div class="title">{{ item.0.title }}</div>
+                        </div>
+                    </a>
                 </td>
+                {% empty %}
+                    <div class="text-center">暂无成功案例</div>
+                {% endfor %}
+            </div>
             {% endfor %}
-            </tr>
-        {% endfor %}
         </table>
     </div>
 </body>
