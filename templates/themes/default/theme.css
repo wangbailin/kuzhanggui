@@ -13,7 +13,18 @@ body {
     height: 118px;
     display: inline-block;
     text-align: center;
-    margin: 4px;
+}
+
+@media (min-width: 340px) { 
+    .items .item {
+        margin: 8px;
+    }
+}
+
+@media (max-width: 340px) {
+    .items .item {
+        margin: 4px;
+    }
 }
 
 .items .item p {
