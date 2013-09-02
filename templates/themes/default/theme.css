@@ -178,6 +178,11 @@ a.phone:active div {
     }
 }
 
+.navbar {
+    background-color: transparent;
+    margin-bottom: 8px;
+}
+
 .navbar .dropdown-menu {
     background-color: #2e2e2e;
 }
@@ -191,9 +196,6 @@ a.phone:active div {
 }
 
 .navbar-inner {
-    padding-left: 8px;
-}
-
-.navbar .nav>li>a {
     padding-left: 0px;
+    background-color: transparent;
 }
