@@ -20,7 +20,7 @@
         <div class="locs">
             {% for item in infos %}
                 <div id="item_{{ forloop.counter0 }}" lat="{{ item.0.lat }}" lng="{{ item.0.lng }}" class="loc card">
-                    <h2>{{ item.0.name }}</h2>
+                    <h4>{{ item.0.name }}</h4>
                     {% for people in item.1 %}
                         <a href="tel:{{ people.phone }}" class="phone"><div></div></a>
                         <p>联系电话

@@ -94,28 +94,29 @@ body {
 }
 
 #baidumap {
-    height: 490px;
-    margin: 16px;
+    height: 245px;
+    margin: 8px;
 }
 
 .locs {
-    padding: 16px;
+    padding: 8px;
 }
 
-.locs .loc h2 {
-    margin-top: 8px;
-    margin-bottom: 24px;
+.locs .loc h4 {
+    margin-top: 4px;
+    margin-bottom: 12px;
 }
 
 .locs .loc p {
-    font-size: 25px;
-    line-height: 36px;
+    font-size: 12px;
+    line-height: 18px;
 }
 
 a.phone div {
     background: url('phone_normal.png');
-    width: 98px;
-    height: 40px;
+    width: 49px;
+    height: 20px;
+    background-size: 49px 20px;
 }
 
 a.phone:active div {
@@ -128,5 +129,5 @@ a.phone:active div {
 
 .locs .loc .phone {
     float: right;
-    margin-right: 36px;
+    margin-right: 18px;
 }
