@@ -14,3 +14,14 @@ body {
 .items .item a:active {
     color: transparent;
 }
+
+#focus .carousel-control {
+    width: 20px;
+    height: 20px;
+    font-size: 30px;
+    line-height: 16px;
+}
+
+#focus .carousel-caption {
+    position: absolute;
+}
