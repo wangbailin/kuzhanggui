@@ -203,4 +203,6 @@ def contact(request, item_id):
         infos.append( (item, contact_peoples) )
     return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos})
 
+def pic(request):
+    return render(request, 'microsite/pic.html', {'title':request.GET['t'], 'path' : request.GET['p']});
 
