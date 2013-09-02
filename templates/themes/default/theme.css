@@ -192,6 +192,8 @@ a.phone:active div {
 
 .navbar .dropdown-menu>li>a {
     color: #e8e8e8;
+    padding: 5px 20px;
+    text-align: left;
 }
 
 .navbar-inner {
