@@ -5,6 +5,7 @@ body {
 
 .items {
     text-align: center;
+    margin-bottom: 8px;
 }
 
 .items .item {

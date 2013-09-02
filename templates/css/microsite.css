@@ -7,6 +7,10 @@ body {
     width: 100%;
 }
 
+#focus {
+    margin-bottom: 8px;
+}
+
 .items .item a:active {
     color: transparent;
 }
