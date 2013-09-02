@@ -145,6 +145,7 @@ a.phone:active div {
     background-repeat: no-repeat;
     background-size: 150px;
     background-position: 50%;
+    margin-bottom: 12px;
 }
 
 .cases a, .cases a:hover .cases a:active {

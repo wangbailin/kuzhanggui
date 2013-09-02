@@ -119,11 +119,12 @@ def case(request, item_id, class_id=None):
             pic_url = ci.case_pic3
         elif ci.case_pic4:
             pic_url = ci.case_pic4
-        if len(items) < 2:
-            items.append( (ci, pic_url.url) )
-        else:
+        
+        if len(items) >= 2:
             rows.append(items)
             items = []
+        items.append( (ci, pic_url.url) )
+
     if len(items) > 0:
         rows.append(items)
 
