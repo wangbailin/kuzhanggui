@@ -73,6 +73,7 @@ class HomePage(Page):
     cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
     content = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000)
 
+
     def _get_tab_name(self):
         return u"首页"
 

@@ -285,15 +285,13 @@ def add_edit_case(request, item_id=None):
         item = get_object_or_404(CaseItem, pk = item_id)
     else:
         item = None
+    wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+    case_app = CaseApp.objects.get(wx=wx)
     if request.method == 'POST':
         form = CaseItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                user = auth.get_user(request)
-                account = Account.objects.get(user=user)
-                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
-                case_app = CaseApp.objects.get(wx=wx)
                 item.case_app= case_app
             item.pub_time = datetime.now()
             logger.debug("item picurl %s" % item.case_pic1)
@@ -301,6 +299,7 @@ def add_edit_case(request, item_id=None):
             return redirect('/app/%d' % item.case_app.id)
     else:
         form = CaseItemForm(instance=item)
+    form.fields['cls'].queryset = CaseClass.objects.filter(case_app=case_app)
 
     return render(request, 'add_edit_case.html', {'form':form})
 
@@ -316,9 +315,7 @@ def add_edit_case_class(request, item_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                user = auth.get_user(request)
-                account = Account.objects.get(user=user)
-                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 case_app = CaseApp.objects.get(wx=wx)
                 item.case_app= case_app
             item.pub_time = datetime.now()
@@ -355,6 +352,8 @@ def add_edit_product(request, item_id=None):
         item = get_object_or_404(ProductItem, pk = item_id)
     else:
         item = None
+    wx_account = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+    product_app = ProductApp.objects.get(wx=wx_account)
     if request.method == 'POST':
         form = ProductItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
@@ -362,14 +361,14 @@ def add_edit_product(request, item_id=None):
             if item.pk is None:
                 user = auth.get_user(request)
                 account = Account.objects.get(user=user)
-                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
-                product_app = ProductApp.objects.get(wx=wx)
                 item.product_app= product_app
             item.pub_time = datetime.now()
             item.save()
             return redirect('/app/%d' % item.product_app.id)
     else:
         form = ProductItemForm(instance=item)
+
+    form.fields['cls'].queryset = ProductClass.objects.filter(product_app=product_app)
 
     return render(request, 'add_edit_product.html', {'form':form})
 
@@ -385,9 +384,7 @@ def add_edit_product_class(request, item_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                user = auth.get_user(request)
-                account = Account.objects.get(user=user)
-                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+                wx= get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 product_app = ProductApp.objects.get(wx=wx)
                 item.product_app= product_app
             item.pub_time = datetime.now()

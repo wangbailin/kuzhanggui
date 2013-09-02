@@ -21,7 +21,7 @@ def page_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             page = get_object_or_404(Page, pk=kwargs[id_name])
@@ -44,7 +44,7 @@ def contact_item_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             item = get_object_or_404(ContactItem, pk=kwargs[id_name])
@@ -67,7 +67,7 @@ def contact_people_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             people = get_object_or_404(ContactPeople, pk=kwargs[id_name])
@@ -91,7 +91,7 @@ def trend_item_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             trend_item= get_object_or_404(TrendItem, pk=kwargs[id_name])
@@ -113,7 +113,7 @@ def case_item_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             case_item = get_object_or_404(CaseItem, pk=kwargs[id_name])
@@ -136,7 +136,7 @@ def case_class_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             case_class= get_object_or_404(CaseClass, pk=kwargs[id_name])
@@ -159,7 +159,7 @@ def product_class_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             product_class= get_object_or_404(ProductClass, pk=kwargs[id_name])
@@ -182,7 +182,7 @@ def product_item_verify(id_name):
             wx = get_object_or_404(WXAccount, pk=active_wx_id)
             if id_name not in kwargs:
                 logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
-                return redirect('/settings')
+                return func(request, *args, **kwargs)
             if kwargs[id_name] is None:
                 return func(request, *args, **kwargs)
             product_item= get_object_or_404(ProductItem, pk=kwargs[id_name])
