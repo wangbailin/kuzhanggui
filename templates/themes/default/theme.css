@@ -177,3 +177,15 @@ a.phone:active div {
         padding-right: 4px;
     }
 }
+
+.navbar .dropdown-menu {
+    background-color: #2e2e2e;
+}
+
+.navbar .nav>li>.dropdown-menu:after {
+    border-bottom: 6px solid #2e2e2e;
+}
+
+.dropdown-menu>li>a {
+    color: #e8e8e8;
+}

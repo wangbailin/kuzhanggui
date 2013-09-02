@@ -13,18 +13,24 @@
 </head>
 <body>
     <div class="container text-center">
-        <div class="btn-group">
-            {% if caseclass %}
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {{ caseclass.name }}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                {% for c in caseclasses %}
-                <a href="/microsite/case/{{ c.case_app.pk }}/{{ c.pk }}">{{ c.name }}</a>
-                {% endfor %}
-            </ul>
-            {% endif %}
+        <div class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <ul class="nav">
+                    <li class="dropdown">
+                        {% if caseclass %}
+                        <a id="case-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+                            {{ caseclass.name }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="case-category">
+                            {% for c in caseclasses %}
+                            <li><a href="/microsite/case/{{ c.case_app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
         </div>
         <table class="cases">
             <thead><th style="width:50%;"></th><th style="width:50%;"></th></thead>
