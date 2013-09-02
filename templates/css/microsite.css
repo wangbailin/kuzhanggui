@@ -3,13 +3,6 @@ body {
     font-family: "Microsoft Yahei", "微软雅黑", "Tahoma", "Arial", "Helvetica","STHeiti";
 }
 
-#focus .carousel-indicators {
-    bottom: 15px;
-    top: auto;
-    left: 50%;
-    right: auto;
-}
-
 #focus .item img {
     width: 100%;
 }
