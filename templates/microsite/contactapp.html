@@ -14,8 +14,10 @@
 </head>
 <body>
     <div class="container">
+        {% if infos|length > 0 %}
         <div id="baidumap">
         </div>
+        {% endif %}
 
         <div class="locs">
             {% for item in infos %}
@@ -57,6 +59,10 @@
             
                     <p>地址：{{ item.0.address }}</p>
                 </div>
+            {% empty %}
+            <div class="empty">
+                <p>暂无联系方式</p>
+            </div>
             {% endfor %}  
         </div>
     </div>

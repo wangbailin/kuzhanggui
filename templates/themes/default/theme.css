@@ -3,6 +3,19 @@ body {
     color: #e8e8e8;
 }
 
+.empty {
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left:50%;
+}
+
+.empty p {
+    color: #6f6f6f;
+}
+
 .items {
     text-align: center;
     margin-bottom: 8px;
@@ -93,6 +106,19 @@ body {
     margin-right: -8px;
 }
 
+.trends .empty {
+    background-image: url('news_empty.png');
+    margin-top: -45px;
+    margin-left: -33px;
+    height: 52px;
+    width: 66px;
+    background-size: 66px 52px;
+}
+
+.trends .empty p {
+    margin-top: 60px;
+}
+
 #baidumap {
     height: 245px;
     margin: 8px;
@@ -132,7 +158,19 @@ a.phone:active div {
     margin-right: 18px;
 }
 
-.cases {
+.locs .empty {
+    background-image: url('contact_empty.png');
+    margin-top: -49px;
+    margin-left:-42px;
+    background-size: 60px 60px;
+    height: 60px;
+}
+
+.locs .empty p {
+    margin-top: 68px;
+}
+
+.cases table {
     padding: 8px;
     width: 100%;
     margin-top: 8px;
@@ -157,6 +195,18 @@ a.phone:active div {
     margin-top: 122px;
     background-color: rgba(0,0,0,0.5);
     padding: 4px;
+}
+
+.cases .empty {
+    background-image: url('case_empty.png');
+    background-size: 63px 52px;
+    height: 52px;
+    margin-top: -45px;
+    margin-left: -42px;
+}
+
+.cases .empty p {
+    margin-top: 60px;
 }
 
 @media (min-width: 340px) { 
