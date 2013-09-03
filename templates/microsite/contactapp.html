@@ -75,11 +75,19 @@ map.centerAndZoom(point, 15);
 {% endif %}
 
 {% for item in infos %}
-$("div#item_{{ forloop.counter0 }}").click(function() {
-    var point = new BMap.Point({{ item.0.lng }}, {{ item.0.lat }});
-    map.centerAndZoom(point, 15);
-    console.log("click {{ forloop.counter0 }}");
-});
+    $("div#item_{{ forloop.counter0 }}").click(function() {
+        var point = new BMap.Point({{ item.0.lng }}, {{ item.0.lat }});
+        map.centerAndZoom(point, 15);
+        console.log("click {{ forloop.counter0 }}");
+    });
+
+    marker = new BMap.Marker(new BMap.Point( {{ item.0.lng }}, {{ item.0.lat }}));
+    label = new BMap.Label('{{ item.0.name }}');
+    label.setOffset(new BMap.Size(-20, 25));
+    label.setStyle({'background-color': 'transparent', 'border': 'none'});
+    marker.setLabel(label);
+    marker.getIcon().setSize(new BMap.Size(30,30));
+    map.addOverlay(marker);
 {% endfor %}
 
 </script>
