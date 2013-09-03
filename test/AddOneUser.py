@@ -21,7 +21,7 @@ from microsite.models import *
 from microsite.models import add_default_site
 
 if __name__ == '__main__':
-    wx = WXAccount.objects.filter(pk=23)
+    wx = WXAccount.objects.filter(pk=25)
     if len(wx) == 0:
         wx = WXAccount()
         wx.account = account

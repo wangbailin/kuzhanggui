@@ -6,29 +6,54 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {{ pclass.name }}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                {% for c in pclasses %}
-                <a href="/microsite/product/{{ c.product_app.pk }}/{{ c.pk }}">{{ c.name }}</a>
-                {% endfor %}
-            </ul>
-        </div>
-        {% for item in items %}
-            <div>
-            <img src="{{ item.1 }}" />
-            <span>{{ item.0.title }}</span>
-            <a href="/microsite/product_item/{{ item.0.pk }}"><i class='icon-chevron-right'></i></a>
+    <div class="container text-center">
+        <div class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <ul class="nav">
+                    <li class="dropdown">
+                        {% if pclass %}
+                        <a id="product-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+                            {{ pclass.name }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="product-category">
+                            {% for c in pclasses %}
+                            <li><a href="/microsite/product/{{ c.product_app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                </ul>
             </div>
-        {% endfor %}
+        </div>
+        <div class="products">
+            <table>
+                <thead><th style="width:50%;"></th><th style="width:50%;"></th></thead>
+                {% for row in rows %}
+                <tr>
+                    {% for item in row %}
+                    <td>
+                        <a href="/microsite/productitem/{{ item.0.pk }}">
+                            <div class="product" style="background-image: url('{{ item.1 }}')">
+                                <div class="title">{{ item.0.title }}</div>
+                            </div>
+                        </a>
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% empty %}
+                    <div class="empty">
+                        <p>暂无产品</p>
+                    </div>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </body>
 </html>

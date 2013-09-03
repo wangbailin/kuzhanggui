@@ -12,38 +12,39 @@ logger = logging.getLogger('default')
 def get_home_info(subpage):
     site_base_url = '/microsite'
     if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
-        return (site_base_url + "/intro/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_intro.png", subpage._get_tab_name(), 0)
+        return (site_base_url + "/intro/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_intro.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return (site_base_url + "/business/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_business.png", subpage._get_tab_name(), 0)
+        return (site_base_url + "/business/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_business.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return (site_base_url + "/trend/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_news.png", subpage._get_tab_name(), 3)
+        return (site_base_url + "/trend/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_news.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
-        return (site_base_url + "/join/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_joinus.png", subpage._get_tab_name(), 0)
+        return (site_base_url + "/join/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_joinus.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
-        return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_contact.png", subpage._get_tab_name(), 0)
+        return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_contact.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return (subpage.url, settings.STATIC_URL + "/themes/default/home_weibo.png", subpage._get_tab_name(), 0)
+        return (subpage.url, settings.STATIC_URL + "/themes/default/home_weibo.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
-        return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_case.png", subpage._get_tab_name(), 0)
+        return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_case.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
-        return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_product.png", subpage._get_tab_name(), 0)
+        return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_product.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(LinkPage):
-        return (site_base_url + "/link/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name(), 0)
+        return (site_base_url + "/link/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ContentPage):
-        return (site_base_url + "/content/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name(), 0)
+        return (site_base_url + "/content/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name())
 
             
 def homepage(request, item_id):
     homepage = get_object_or_404(HomePage, pk=item_id)
     pics = []
+    exps = []
     if homepage.pic1:
-        pics.append(homepage.pic1)
+        pics.append((homepage.pic1, homepage.exp1))
     if homepage.pic2:
-        pics.append(homepage.pic2)
+        pics.append((homepage.pic2, homepage.exp2))
     if homepage.pic3:
-        pics.append(homepage.pic3)
+        pics.append((homepage.pic3, homepage.exp3))
     if homepage.pic4:
-        pics.append(homepage.pic4)
+        pics.append((homepage.pic4, homepage.exp4))
     logger.debug("%s" % str(pics))
     items = []
     pages = Page.objects.filter(wx=homepage.wx)
@@ -76,7 +77,7 @@ def weibo(request, item_id):
 
 def trend(request, item_id):
     trendapp = get_object_or_404(TrendsApp, pk=item_id)
-    trenditems = TrendItem.objects.filter(trend=trendapp)
+    trenditems = TrendItem.objects.filter(trend=trendapp).order_by("-pub_time")
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
@@ -89,19 +90,23 @@ def trenditem(request, item_id):
     return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
 
 def case(request, item_id, class_id=None):
-    empty_msg = u'没有案例'
     logger.debug("case %d" % int(item_id))
     caseapp = get_object_or_404(CaseApp, pk=item_id)
     caseclasses = CaseClass.objects.filter(case_app=caseapp)
+    
     if class_id:
         caseclass = get_object_or_404(CaseClass, pk=class_id)
     else:
         if len(caseclasses) == 0:
-            return render(request, 'microsite/message.html', {'title':caseapp._get_tab_name(), 'message':empty_msg})
+            caseclass = None
         else:
             caseclass = caseclasses[0]
-            
-    caseitems = CaseItem.objects.filter(cls=caseclass)
+    
+    if caseclass is not None:
+        caseitems = CaseItem.objects.filter(cls=caseclass)
+    else:
+        caseitems = []
+
     rows = []
     items = []
     for ci in caseitems:
@@ -114,12 +119,15 @@ def case(request, item_id, class_id=None):
             pic_url = ci.case_pic3
         elif ci.case_pic4:
             pic_url = ci.case_pic4
-        items.append( (ci, pic_url.url) )
-        if len(items) >=2 :
+        
+        if len(items) >= 2:
             rows.append(items)
             items = []
+        items.append( (ci, pic_url.url) )
+
     if len(items) > 0:
         rows.append(items)
+
     return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows, 'caseclass':caseclass, 'caseclasses':caseclasses})
 
 def caseitem(request, item_id):
@@ -135,7 +143,7 @@ def caseitem(request, item_id):
     if caseitem.case_pic4:
         pics.append(caseitem.case_pic4)
 
-    return render(request, 'microsite/caseitem.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro})
+    return render(request, 'microsite/item.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro})
 
 def link(request, item_id):
     logger.debug("link %d" % int(item_id))
@@ -144,7 +152,6 @@ def link(request, item_id):
 
 
 def product(request, item_id, class_id=None):
-    empty_msg = u'没有产品'
     logger.debug("product %d" % int(item_id))
     papp = get_object_or_404(ProductApp, pk=item_id)
     pclasses = ProductClass.objects.filter(product_app=papp)
@@ -152,9 +159,16 @@ def product(request, item_id, class_id=None):
         pclass = get_object_or_404(ProductClass, pk=class_id)
     else:
         if len(pclasses) == 0:
-            return render(request, 'microsite/message.html', {'title':papp._get_tab_name(), 'message':empty_msg})
-        pclass = pclasses[0]
-    pitems = ProductItem.objects.filter(cls=pclass)
+            pclass = None
+        else:
+            pclass = pclasses[0]
+
+    if pclass is not None:
+        pitems = ProductItem.objects.filter(cls=pclass)
+    else:
+        pitems = []
+
+    rows = []
     items = []
     for p in pitems:
         pic_url = ''
@@ -166,10 +180,18 @@ def product(request, item_id, class_id=None):
             pic_url = p.product_pic3
         elif ci.product_pic4:
             pic_url = p.product_pic4
-        items.append( (p, pic_url.url) )
-    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'items':items, 'pclass':pclass, 'pclasses':pclasses})
 
-def product_item(request, item_id):
+        if len(items) >= 2:
+            rows.append(items)
+            items = []
+        items.append( (p, pic_url.url) )
+
+    if len(items) > 0:
+        rows.append(items)
+
+    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'rows':rows, 'pclass':pclass, 'pclasses':pclasses})
+
+def productitem(request, item_id):
     logger.debug("product item %d", item_id)
     pitem = get_object_or_404(ProductItem, pk=item_id)
     pics = []
@@ -182,7 +204,7 @@ def product_item(request, item_id):
     if pitem.product_pic4:
         pics.append(pitem.product_pic4)
 
-    return render(request, 'microsite/productitem.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
+    return render(request, 'microsite/item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
     
 
 def contact(request, item_id):
@@ -195,4 +217,5 @@ def contact(request, item_id):
         infos.append( (item, contact_peoples) )
     return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos})
 
-
+def pic(request):
+    return render(request, 'microsite/pic.html', {'title':request.GET['t'], 'path' : request.GET['p']});

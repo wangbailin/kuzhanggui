@@ -3,17 +3,27 @@ body {
     font-family: "Microsoft Yahei", "微软雅黑", "Tahoma", "Arial", "Helvetica","STHeiti";
 }
 
-#focus .carousel-indicators {
-    bottom: 15px;
-    top: auto;
-    left: 50%;
-    right: auto;
-}
-
 #focus .item img {
     width: 100%;
 }
 
+#focus {
+    margin-bottom: 8px;
+}
+
 .items .item a:active {
     color: transparent;
+}
+
+#focus .carousel-control {
+    width: 20px;
+    height: 20px;
+    font-size: 24px;
+    line-height: 17px;
+    border: 2px solid #fff;
+}
+
+#focus .carousel-caption {
+    position: absolute;
+    padding: 8px;
 }

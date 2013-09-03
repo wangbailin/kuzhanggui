@@ -56,8 +56,20 @@ var local = new BMap.LocalSearch(map, {
     pageCapacity:0});
 
 var addr_cnt = 0;
-
 var addr_point = null;
+var marker = null;
+
+$ori_lng = $('input#id_lng').val();
+$ori_lat = $('input#id_lat').val();
+
+if ($ori_lng) {
+    addr_point = new BMap.Point(parseFloat($ori_lng), parseFloat($ori_lat));
+    marker = new BMap.Marker(addr_point);
+    map.centerAndZoom(addr_point, 15);
+    map.addOverlay(marker);
+}
+
+
 var contextMenu = new BMap.ContextMenu();
 var menuItem = new BMap.MenuItem(
     '就是这里',
@@ -65,6 +77,12 @@ var menuItem = new BMap.MenuItem(
         console.log(addr_point);
         $("input#id_lng").val(addr_point.lng);
         $("input#id_lat").val(addr_point.lat);
+        if (marker) {
+            map.removeOverlay(marker);
+            marker = null;
+        }
+        marker = new BMap.Marker(addr_point);
+        map.addOverlay(marker);
     }
 );
 contextMenu.addItem(menuItem);
