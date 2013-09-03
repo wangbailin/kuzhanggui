@@ -18,13 +18,13 @@
                 <ul class="nav">
                     <li class="dropdown">
                         {% if pclass %}
-                        <a id="case-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+                        <a id="product-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
                             {{ pclass.name }}
                             <span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="case-category">
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="product-category">
                             {% for c in pclasses %}
-                            <li><a href="/microsite/case/{{ c.case_app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
+                            <li><a href="/microsite/product/{{ c.product_app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
                             {% endfor %}
                         </ul>
                         {% endif %}
