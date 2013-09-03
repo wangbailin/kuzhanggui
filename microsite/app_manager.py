@@ -1,13 +1,17 @@
 #coding:utf8
-from models import ContactApp, TrendsApp, CaseApp, ContactItem, TrendItem, CaseItem, CaseClass, ProductApp, ProductClass, ProductItem
+from models import ContactApp, TrendsApp, CaseApp, ContactItem, TrendItem, CaseItem, CaseClass, ProductApp, ProductClass, ProductItem, ContactPeople
 from django.contrib.contenttypes.models import ContentType
-from tables import ContactTable, TrendsTable, CaseItemTable, CaseClassTable, ProductItemTable, ProductClassTable
+from tables import ContactTable, ContactPeopleTable, TrendsTable, CaseItemTable, CaseClassTable, ProductItemTable, ProductClassTable
 
 class AppMgr(object):
     @classmethod
     def get_app_info(cls, app):
         if app.real_type == ContentType.objects.get_for_model(ContactApp):
-            return ContactTable(ContactItem.objects.filter(contact=app))
+            items = ContactItem.objects.filter(contact=app)
+            peoples = []
+            for item in items:
+                peoples.extend(ContactPeople.objects.filter(contact_item=item))
+            return (ContactTable(items), ContactPeopleTable(peoples))
         elif app.real_type == ContentType.objects.get_for_model(TrendsApp):
             return TrendsTable(TrendItem.objects.filter(trend=app))
         elif app.real_type == ContentType.objects.get_for_model(CaseApp):

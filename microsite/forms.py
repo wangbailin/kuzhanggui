@@ -97,6 +97,7 @@ class ContactPeopleForm(ModelForm):
     class Meta:
         model = ContactPeople
         fields = (
+            'contact_item',
             'name',
             'email',
             'phone',

@@ -1,10 +1,22 @@
-<div id="margin_bottom">
-<button type="button" class="btn btn-default btn-primary" onclick="javascript:window.location.href='/contact/add'"><i class="icon-plus icon-white"></i>添加联系方式</button>
+<div class="btn-group" id="margin_bottom">
+    <button class="btn btn-primary"><i class="icon-plus icon-white"></i>增加联系方式</button>
+    <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="/contact/add">增加联系地点</a>
+        </li>
+        <li>
+            <a href="/contact_people/add">增加联系人</a>
+        </li>
+    </ul>
 </div>
 {% if not active_app_specific.enable %}
 {% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}
 {% endif %}
 
 {% load render_table from django_tables2 %}
-{% render_table app_info "django_tables2/table.html" %}
+{% render_table app_info.0 "django_tables2/table.html" %}
+{% render_table app_info.1 "django_tables2/table.html" %}
 

@@ -275,6 +275,8 @@ class ContactItem(models.Model):
     class Meta:
         db_table = u'contact_item'
         app_label = u'microsite'
+    def __unicode__(self):
+        return self.name
 
 class ContactPeople(models.Model):
     contact_item = models.ForeignKey(ContactItem, verbose_name = u'联系方式')

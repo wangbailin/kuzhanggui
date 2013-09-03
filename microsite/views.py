@@ -165,27 +165,24 @@ def contact_delete(request, item_id):
 
 
 @login_required
-@contact_item_verify('contact_id')
-def add_edit_contact_people(request, contact_id, item_id=None):
+@contact_people_verify('item_id')
+def add_edit_contact_people(request, item_id=None):
     if item_id:
         item = get_object_or_404(ContactPeople, pk = item_id)
     else:
         item = None
-    if contact_id:
-        contact = get_object_or_404(ContactItem, pk = contact_id)
-    else:
-        return redirect('/')
+    wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+    contact_app = ContactApp.objects.get(wx=wx)
     if request.method == 'POST':
         form = ContactPeopleForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             item = form.save(commit=False)
-            if item.pk is None:
-                item.contact_item = contact
             item.save()
-            return redirect('/contact/%d/edit' % int(contact_id))
+            return redirect('/app/%d' % item.contact_item.contact.pk)
     else:
         form = ContactPeopleForm(instance=item)
 
+    form.fields['contact_item'].queryset = ContactItem.objects.filter(contact=contact_app)
     return render(request, 'add_edit_contact_people.html', {'form':form})
 
 @login_required
