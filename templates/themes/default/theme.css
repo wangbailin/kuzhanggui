@@ -170,13 +170,15 @@ a.phone:active div {
     margin-top: 68px;
 }
 
-.cases table {
+.cases table,
+.products table {
     padding: 8px;
     width: 100%;
     margin-top: 8px;
 }
 
-.cases .case {
+.cases .case,
+.products .product {
     width: 150px;
     height: 150px;
     display: inline-block;
@@ -186,12 +188,14 @@ a.phone:active div {
     margin-bottom: 12px;
 }
 
-.cases a, .cases a:hover .cases a:active {
+.cases a, .cases a:hover .cases a:active,
+.products a, .products a:hover .products a:active {
     color: #e8e8e8;
     text-decoration: none;
 }
 
-.cases .case .title {
+.cases .case .title,
+.products .product .title {
     margin-top: 122px;
     background-color: rgba(0,0,0,0.5);
     padding: 4px;
@@ -209,22 +213,39 @@ a.phone:active div {
     margin-top: 60px;
 }
 
+.products .empty {
+    background-image: url('product_empty.png');
+    background-size: 65px 46px;
+    height: 46px;
+    width: 65px;
+    margin-top: -42px;
+    margin-left: -32px;
+}
+
+.products .empty p {
+    margin-top: 54px;
+}
+
 @media (min-width: 340px) { 
-    .cases td:nth-child(odd) {
+    .cases td:nth-child(odd),
+    .products td:nth-child(odd) {
         padding-left: 16px;
     }
 
-    .cases td:nth-child(even){
+    .cases td:nth-child(even),
+    .products td:nth-child(even) {
         padding-right: 16px;
     }
 }
 
 @media (max-width: 340px) { 
-    .cases td:nth-child(odd) {
+    .cases td:nth-child(odd),
+    .products td:nth-child(odd) {
         padding-left: 4px;
     }
 
-    .cases td:nth-child(even){
+    .cases td:nth-child(even),
+    .products td:nth-child(even) {
         padding-right: 4px;
     }
 }

@@ -143,7 +143,7 @@ def caseitem(request, item_id):
     if caseitem.case_pic4:
         pics.append(caseitem.case_pic4)
 
-    return render(request, 'microsite/caseitem.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro})
+    return render(request, 'microsite/item.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro})
 
 def link(request, item_id):
     logger.debug("link %d" % int(item_id))
@@ -152,7 +152,6 @@ def link(request, item_id):
 
 
 def product(request, item_id, class_id=None):
-    empty_msg = u'没有产品'
     logger.debug("product %d" % int(item_id))
     papp = get_object_or_404(ProductApp, pk=item_id)
     pclasses = ProductClass.objects.filter(product_app=papp)
@@ -160,9 +159,16 @@ def product(request, item_id, class_id=None):
         pclass = get_object_or_404(ProductClass, pk=class_id)
     else:
         if len(pclasses) == 0:
-            return render(request, 'microsite/message.html', {'title':papp._get_tab_name(), 'message':empty_msg})
-        pclass = pclasses[0]
-    pitems = ProductItem.objects.filter(cls=pclass)
+            pclass = None
+        else:
+            pclass = pclasses[0]
+
+    if pclass is not None:
+        pitems = ProductItem.objects.filter(cls=pclass)
+    else:
+        pitems = []
+
+    rows = []
     items = []
     for p in pitems:
         pic_url = ''
@@ -174,10 +180,18 @@ def product(request, item_id, class_id=None):
             pic_url = p.product_pic3
         elif ci.product_pic4:
             pic_url = p.product_pic4
-        items.append( (p, pic_url.url) )
-    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'items':items, 'pclass':pclass, 'pclasses':pclasses})
 
-def product_item(request, item_id):
+        if len(items) >= 2:
+            rows.append(items)
+            items = []
+        items.append( (p, pic_url.url) )
+
+    if len(items) > 0:
+        rows.append(items)
+
+    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'rows':rows, 'pclass':pclass, 'pclasses':pclasses})
+
+def productitem(request, item_id):
     logger.debug("product item %d", item_id)
     pitem = get_object_or_404(ProductItem, pk=item_id)
     pics = []
@@ -190,7 +204,7 @@ def product_item(request, item_id):
     if pitem.product_pic4:
         pics.append(pitem.product_pic4)
 
-    return render(request, 'microsite/productitem.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
+    return render(request, 'microsite/item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
     
 
 def contact(request, item_id):
@@ -205,4 +219,3 @@ def contact(request, item_id):
 
 def pic(request):
     return render(request, 'microsite/pic.html', {'title':request.GET['t'], 'path' : request.GET['p']});
-
