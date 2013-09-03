@@ -7,6 +7,7 @@ from framework.models import WXAccount
 from microsite.models import *
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from rocket import settings
 
 logger = logging.getLogger('weixin')
 siteurl = 'http://r.limijiaoyin.com'
@@ -64,6 +65,7 @@ def trend(rule, info):
         data = {}
         data['title'] = trend_app.title
         data['description'] = u'点击查看公司动态'
+        data['pic_url'] = siteurl + settings.STATIC_URL + 'img/news_message.png'
         data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -77,6 +79,7 @@ def join(rule, info):
         data = {}
         data['title'] = joinpage.title
         data['description'] = u'点击查看公司招聘信息'
+        data['pic_url'] = siteurl + settings.STATIC_URL + 'img/joinus_message.png'
         data['url'] = siteurl + "/microsite/join/%d" % joinpage.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
