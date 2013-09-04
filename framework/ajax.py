@@ -3,6 +3,7 @@ import sys
 reload(sys) 
 sys.setdefaultencoding('utf8')
 
+import datetime
 from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
 from dajax.core import Dajax
@@ -12,8 +13,8 @@ import random
 
 from utils import send_sms
 from models import Account, WXAccount
-from forms import ChangePasswordForm, EditAccountForm, ChangePhoneForm
-
+from forms import ChangePasswordForm, EditAccountForm, ChangePhoneForm, AddCaseClassForm, AddProductClassForm
+from microsite.models import CaseClass, ProductClass
 AUTH_CODE_TIMEOUT = 15 * 60 * 1000
 
 @dajaxice_register
@@ -145,3 +146,44 @@ def change_phone(request, form):
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'changePhoneCallback')
 
     return dajax.json()
+
+@dajaxice_register
+def add_case_class(request, form):
+    dajax = Dajax()
+    form = AddCaseClassForm(deserialize_form(form))
+ 
+    if form.is_valid():
+        CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
+        dajax.remove_css_class('#add_case_class_form .control-group', 'error')  
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'该分类已成功添加！' }, 'addCaseClassCallback')
+        dajax.redirect(form.cleaned_data.get('tab_id'))
+
+    else:
+        dajax.remove_css_class('#add_case_class_form .control-group', 'error')
+        print form.cleaned_data.get('name')
+        for error in form.errors:
+            dajax.add_css_class('#%s' % error, 'error')
+        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '该分类已添加过！' }, 'addCaseClassCallback')
+
+    return dajax.json()
+
+@dajaxice_register
+def add_product_class(request, form):
+    dajax = Dajax()
+    form = AddProductClassForm(deserialize_form(form))
+
+    if form.is_valid():
+        ProductClass.objects.create(name=form.cleaned_data.get('name'), product_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
+        dajax.remove_css_class('#add_product_class_form .control-group', 'error')
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'该分类已成功添加！' }, 'addProductClassCallback')
+        dajax.redirect(form.cleaned_data.get('tab_id'))
+
+    else:
+        dajax.remove_css_class('#add_product_class_form .control-group', 'error')
+        for error in form.errors:
+            dajax.add_css_class('#%s' % error, 'error')
+        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '该分类已添加过！' }, 'addProductClassCallback')
+
+    return dajax.json()
+ 
+

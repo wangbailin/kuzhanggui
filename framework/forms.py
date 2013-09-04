@@ -6,6 +6,7 @@ from django.core.cache import cache
 import datetime
 
 from models import Account
+from microsite.models import CaseClass, ProductClass
 
 class RegisterForm(forms.Form):
     username = forms.RegexField(min_length=6, max_length=18, required=True, regex='^[a-zA-Z0-9]\w+')
@@ -90,3 +91,28 @@ class ChangePhoneForm(forms.Form):
         auth_code = cache.get('auth_code_' + self.cleaned_data['phone'])
         if auth_code != self.cleaned_data['auth_code']:
             raise forms.ValidationError(u'验证码错误')
+
+class AddCaseClassForm(forms.Form):
+    name = forms.CharField()
+    tab_id = forms.CharField()
+
+    def clean_name(self):
+        try:
+            CaseClass.objects.get(name=self.cleaned_data['name'])
+        except CaseClass.DoesNotExist:
+            return self.cleaned_data['name']
+
+        raise forms.ValidationError(u'分类已经存在！')
+
+class AddProductClassForm(forms.Form):
+    name = forms.CharField()
+    tab_id = forms.CharField()
+
+    def clean_name(self):
+        try:
+            ProductClass.objects.get(name=self.cleaned_data['name'])
+        except ProductClass.DoesNotExist:
+            return self.cleaned_data['name']
+
+        raise forms.ValidationError(u'分类已经存在！')
+

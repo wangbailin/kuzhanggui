@@ -25,6 +25,13 @@ var Dajaxice = {
         change_phone : function(callback_function, argv, custom_settings){
             return Dajaxice.call('framework.change_phone', 'POST', callback_function, argv, custom_settings);
         },
+        add_case_class : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.add_case_class', 'POST', callback_function, argv, custom_settings);
+        },
+        add_product_class : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.add_product_class', 'POST', callback_function, argv, custom_settings);
+        },
+
     }
 ,
     get_cookie: function(name)
