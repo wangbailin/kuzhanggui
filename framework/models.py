@@ -37,6 +37,8 @@ class WXAccount(models.Model):
 	token = models.CharField(u'Token', max_length=255)
 	wxid = models.CharField(u'WXID', max_length=255, blank=True, null=True)
 	bind_time = models.DateTimeField(u'绑定时间', blank=True, null=True)
+	app_id = models.CharField(u'AppId', max_length=255, blank=True, null=True)
+	app_secret = models.CharField(u'AppSecret', max_length=255, blank=True, null=True)
 
 	class Meta:
 		db_table = u"wx_account"

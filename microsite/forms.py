@@ -1,4 +1,7 @@
 #coding:utf8
+import urllib  
+import urllib2
+import json
 from django import forms
 from django.forms import ModelForm
 from models import *
@@ -7,14 +10,40 @@ from ajax_upload.widgets import AjaxClearableFileInput
 
 from ckeditor.widgets import CKEditorWidget
 
+class MenuForm(forms.Form):
+    app_id = forms.CharField(label=u'AppId', required=True)
+    app_secret = forms.CharField(label=u'AppSecret', required=True)
 
+    def clean(self):
+        if not self.cleaned_data.has_key('app_id') or self.cleaned_data['app_id'] is None:
+            raise forms.ValidationError('AppId不能为空')
+        if not self.cleaned_data.has_key('app_secret') or self.cleaned_data['app_secret'] is None:
+            raise forms.ValidationError('AppSecret不能为空')
+
+        app_id = self.cleaned_data['app_id']
+        app_secret = self.cleaned_data['app_secret']
+        
+        if app_id and app_secret:
+            req = urllib2.Request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (app_id, app_secret))
+            data = urllib.urlencode({})
+            opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+            resp = opener.open(req, data)
+            
+            jsonObj = json.loads(resp.read())
+            if jsonObj.has_key('access_token'):
+                self.cleaned_data['access_token'] = jsonObj.get('access_token')
+            else:
+                raise forms.ValidationError(u'AppId和AppSecret验证失败')
+
+        return self.cleaned_data
 
 class HomePageForm(ModelForm):
     pic1 = forms.ImageField(label=u'焦点图1', widget=AjaxClearableFileInput(), required = False)
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
-    cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    
     class Meta:
         model = HomePage
         fields = (
@@ -28,8 +57,8 @@ class HomePageForm(ModelForm):
             'exp2',
             'exp3',
             'exp4',
-            'cover',
-            'content',
+            'message_cover',
+            'message_description',
         )
 
 class IntroPageForm(ModelForm):
@@ -288,9 +317,3 @@ class FormManager(object):
                 return ProductAppForm(request.POST, request.FILES, instance=page)
             else:
                 return ProductAppForm(instance=page)
-
-
-
-
-
-

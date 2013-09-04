@@ -7,12 +7,14 @@ from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 
 from models import *
-from tables import ContactPeopleTable
+from tables import ContactPeopleTable, MenuTable
 from app_manager import AppMgr
 from framework.models import *
 from datetime import datetime
+from microsite.forms import MenuForm
 
 from wx_match import *
 
@@ -412,3 +414,41 @@ def product_delete(request, item_id):
     item.delete()
     return redirect('/app/%d' % app_id)
 
+@login_required
+def menu0(request):
+    apps = get_apps(request)
+    account = Account.objects.get(user=request.user)
+    wx_account = None
+    if account.has_wx_bound:
+        wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+    else:
+        return redirect('/bind')
+
+    if request.method == 'POST':
+        form = MenuForm(request.POST)
+        if form.is_valid():
+            wx_account.app_id = form.cleaned_data.get('app_id')
+            wx_account.app_secret = form.cleaned_data.get('app_secret')
+            wx_account.save()
+            
+            cache.set(wx_account.id, form.cleaned_data.get('access_token'), 7200)
+            return redirect('/menu')
+    else:
+        form = MenuForm()
+    return render(request, 'menu0.html', {'apps' : apps, 'form' : form})
+
+@login_required
+def menu(request):
+    apps = get_apps(request)
+    account = Account.objects.get(user=request.user)
+    wx_account = None
+    if account.has_wx_bound:
+        wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+    else:
+        return redirect('/bind')
+
+    if wx_account.app_id is None or wx_account.app_secret is None:
+        return redirect('/menu0')
+    else:
+        menu_info = MenuTable(Menu.objects.filter(wx=wx_account))
+        return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info})

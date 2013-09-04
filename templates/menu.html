@@ -1,0 +1,25 @@
+{% extends "framework.html" %}
+
+{% block title %}自定义菜单{% endblock %}
+
+{% block document_ready %}
+{{ block.super }}
+$('#nav-menu').addClass('active');
+{% endblock %}
+
+{% block app %}
+<div class="alert alert-info">
+    <h4>设置说明：</h4>
+    <ul style="margin-top:8px;">
+        <li>菜单项个数必须为2~3个</li>
+        <li>菜单项按照下面列表从上到下顺序展示</li>
+    </ul>
+</div>
+<div style="margin-bottom:16px;">
+    <a type="button" class="btn btn-default btn-primary" href="#"><i class="icon-plus icon-white"></i>添加菜单项</a>
+    <a type="button" class="btn btn-default btn-primary" href="#">生成菜单</a>
+</div>
+
+{% load render_table from django_tables2 %}
+{% render_table menu_info "django_tables2/table.html" %}
+{% endblock %}
