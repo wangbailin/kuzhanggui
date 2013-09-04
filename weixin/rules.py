@@ -10,7 +10,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from rocket import settings
 
 logger = logging.getLogger('weixin')
-siteurl = 'http://r.limijiaoyin.com'
+#siteurl = 'http://r.limijiaoyin.com'
+siteurl = 'http://jianfei.bestgames7.com'
 
 def subscribe(rule, info):
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)
@@ -43,6 +44,9 @@ def match_subscribe_event(rule, info):
 def match_unsubscribe_event(rule, info):
     return info.type == "event" and info.event == 'unsubscribe'
 
+def match_location(rule, info):
+    return info.type == 'location'
+
 
 def micro_site(rule, info):
     try:
@@ -57,6 +61,50 @@ def micro_site(rule, info):
     except:
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+def find_nearest(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        contact_app = ContactApp.objects.get(wx=wx_account)
+        contact_items = ContactItem.objects.filter(contact=contact_app)
+        lat = float(info.lat)
+        lng = float(info.lng)
+        length = -1
+        nearest = None
+        for item in contact_items:
+            cur_length = (item.lat - lat)**2 + (item.lng - lng)**2
+            if length < 0 or cur_length < length:
+                length = cur_length
+                nearest = item
+        if nearest is not None:
+            logger.debug('start addr %f %f end addr %f %f' % (lat, lng, nearest.lat, nearest.lng))
+            data = {}
+            data['title'] = u'导航位置'
+            data['description'] = u'已为您搜索到最近的公司地址，查看位置并导航，请点击进入！'
+            data['pic_url'] = siteurl + settings.STATIC_URL + 'img/findme_message.png'
+            data['url'] = siteurl + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng)
+            return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+        else:
+            return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'没有找到公司')
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+def telephone(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        contact_app = ContactApp.objects.get(wx=wx_account)
+        data = {}
+        data['title'] = u'客服电话'
+        data['description'] = u'欢迎联系我们，您查询的同时可以一键拨号，更多客服号码，请点击进入！'
+        data['pic_url'] = siteurl + settings.STATIC_URL + 'img/kefuphone_message.png'
+        data['url'] = siteurl + "/microsite/telephone/%d" % contact_app.pk
+        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+   
 
 def trend(rule, info):
     try:
@@ -118,4 +166,15 @@ Router.get_instance().set({
         'name' : u'microsite',
         'pattern' : u'(招聘|职位|工作)',
         'handler' : join,
+    })
+Router.get_instance().set({
+        'name' : u'location',
+        'pattern' : match_location,
+        'handler' : find_nearest,
+    })
+
+Router.get_instance().set({
+        'name' : u'location',
+        'pattern' : u'电话',
+        'handler' : telephone,
     })

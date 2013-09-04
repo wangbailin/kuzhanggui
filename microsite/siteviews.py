@@ -217,6 +217,16 @@ def contact(request, item_id):
         infos.append( (item, contact_peoples) )
     return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos})
 
+def telephone(request, item_id):
+    logger.debug("contact app %d" % int(item_id))
+    app = get_object_or_404(ContactApp, pk=item_id)
+    items = ContactItem.objects.filter(contact=app)
+    infos = []
+    for item in items:
+        contact_peoples = ContactPeople.objects.filter(contact_item=item)
+        infos.append( (item, contact_peoples) )
+    return render(request, 'microsite/telephone.html', {'title':app._get_tab_name(), 'infos':infos})
+
 def pic(request):
     return render(request, 'microsite/pic.html', {'title':request.GET['t'], 'path' : request.GET['p']});
 
