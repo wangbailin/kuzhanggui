@@ -36,11 +36,6 @@ $(document).ready(function(){
 </div>
 {% include "save_cancel_section.html" %}
 </form>
-{% if peoples %}
-    <button type="button" class="btn btn-default" onclick="javascript:window.location.href='/contact_people/{{ contact_id }}/add'">添加联系人</button>
-    {% load render_table from django_tables2 %}
-    {% render_table peoples "django_tables2/table.html" %}
-{% endif %}
 </div>
 
 <script type="text/javascript">

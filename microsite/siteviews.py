@@ -219,3 +219,11 @@ def contact(request, item_id):
 
 def pic(request):
     return render(request, 'microsite/pic.html', {'title':request.GET['t'], 'path' : request.GET['p']});
+
+
+def contact_map(request, item_id, cur_lat, cur_lng):
+    logger.debug("contact item %d" % int(item_id))
+    item = get_object_or_404(ContactItem, pk=item_id)
+
+    return render(request, 'microsite/contact_map.html', {'item':item, 'cur_lat':cur_lat, 'cur_lng': cur_lng})
+

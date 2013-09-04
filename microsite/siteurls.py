@@ -17,5 +17,7 @@ urlpatterns = patterns('microsite.siteviews',
     url(r'productitem/(?P<item_id>\d+)', 'productitem'),
     url(r'link/(?P<item_id>\d+)', 'link'),
     url(r'content/(?P<item_id>\d+)', 'content'),
-    url(r'pic', 'pic')
+    url(r'pic', 'pic'),
+    url(r'contact_map/(?P<item_id>\d+)/(?P<cur_lat>\d+(.(\d+)){0,1})/(?P<cur_lng>\d+(.(\d+)){0,1})', 'contact_map'),
+
 )
