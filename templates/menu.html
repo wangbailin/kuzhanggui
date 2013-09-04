@@ -2,9 +2,19 @@
 
 {% block title %}自定义菜单{% endblock %}
 
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/menu.js"></script>
+{% endblock %}
+
 {% block document_ready %}
 {{ block.super }}
 $('#nav-menu').addClass('active');
+$('#add_edit_menu_save').click(addEditMenu);
+$('#add_edit_menu').on('hidden', function() {
+    $('#name input').val('');
+    $('#page input').val('');
+    $('#add_edit_menu .control-group').removeClass('error');
+});
 {% endblock %}
 
 {% block app %}
@@ -16,10 +26,37 @@ $('#nav-menu').addClass('active');
     </ul>
 </div>
 <div style="margin-bottom:16px;">
-    <a type="button" class="btn btn-default btn-primary" href="#"><i class="icon-plus icon-white"></i>添加菜单项</a>
+    <a type="button" class="btn btn-default btn-primary" role="button" data-toggle="modal" href="#add_edit_menu"><i class="icon-plus icon-white"></i>添加菜单项</a>
     <a type="button" class="btn btn-default btn-primary" href="#">生成菜单</a>
 </div>
 
 {% load render_table from django_tables2 %}
 {% render_table menu_info "django_tables2/table.html" %}
+
+<div id="add_edit_menu" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="add_edit_menu_header" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="add_edit_menu_header">添加/编辑菜单项</h3>
+    </div>
+    <div class="modal-body">
+        <form id="add_edit_menu_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="control-group" id="name">
+                <label class="control-label" for="name">菜单项名称</label>
+                <div class="controls">
+                    {{ form.name }}{{ form.name.errors }}
+                </div>
+            </div>
+            <div class="control-group" id="page">
+                <label class="control-label" for="page">显示页面</label>
+                <div class="controls">
+                    {{ form.page }}{{ form.page.errors }}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button id="add_edit_menu_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
 {% endblock %}

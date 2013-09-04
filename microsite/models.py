@@ -38,6 +38,9 @@ class Page(models.Model):
         db_table = 'page'
         app_label = 'microsite'
 
+    def __unicode__(self):
+        return self.tab_name
+
 class App(Page):
     app_template_name = models.CharField(u'template的文件路径', max_length=260)
 
@@ -389,11 +392,15 @@ class LinkPage(Page):
 
 class Menu(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name=u'微信帐号')
+    name = models.CharField(verbose_name=u'菜单项名称', max_length=10, blank=False, null=False)
     page = models.ForeignKey(Page, verbose_name=u'页面')
 
     class Meta:
         db_table = u'menus'
         app_label = u'microsite'
+
+    def __unicode__(self):
+        return self.page.tab_name
 
 def add_default_site(wx_account):
     homepages = HomePage.objects.filter(wx=wx_account)

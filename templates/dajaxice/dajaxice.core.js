@@ -27,6 +27,12 @@ var Dajaxice = {
         },
     }
 ,
+    microsite: {
+        add_edit_menu: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('microsite.add_edit_menu', 'POST', callback_function, argv, custom_settings);
+        },
+    }
+,
     get_cookie: function(name)
     {
         var cookieValue = null;
