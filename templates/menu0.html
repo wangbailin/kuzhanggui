@@ -1,0 +1,55 @@
+{% extends "framework.html" %}
+
+{% block title %}自定义菜单{% endblock %}
+
+{% block document_ready %}
+{{ block.super }}
+$('#nav-menu').addClass('active');
+{% endblock %}
+
+{% block app %}
+<div class="alert alert-info">
+    <h4>使用自定义菜单必要条件：</h4>
+    <ol style="margin-top:8px;">
+        <li>微信公众号是服务号，<a href="/faq#service_account">如何升级为服务号？</a></li>
+        <li>已经申请到自定义菜单权限，<a href="/faq#custom_menu">如何申请自定义菜单权限？</a></li>
+    </ol>
+</div>
+
+<ul class="thumbnails" style="margin-left:160px;">
+    <li class="span10">
+        <div class="thumbnail">
+            <img src="/static/img/app_id_secret.jpg"/>
+            <div class="caption">
+                <h3>进入「开发模式」，查看AppId和AppSecret</h3>
+                <p>登录<a href="http://mp.weixin.qq.com" target="_blank">微信公众平台</a>，点击图中所示的「高级功能」，进入高级功能面板。然后点击图中所示的「开发模式」，进入开发模式功能面板。</p>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <div class="control-group">
+        <label class="control-label" for="app_id">AppId</label>
+        <div class="controls">
+            <input type="text" id="id_app_id" name="app_id" class="span10" /> {{ form.appid.errors }}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="app_secret">AppSecret</label>
+        <div class="controls">
+            <input type="text" id="id_app_secret" name="app_secret" class="span10" />{{ form.appsecret.errors }}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label"></label>
+        <div class="controls">
+            {{ form.non_field_errors }}
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <input id="menu_next" type="submit" class="btn btn-success" value="下一步" />
+    </div>
+</form>
+{% endblock %}

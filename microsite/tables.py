@@ -2,7 +2,7 @@
 from models import HomePage
 import django_tables2 as tables
 from django.contrib.contenttypes.models import ContentType
-from models import ContactApp, TrendsApp, ContactItem, TrendItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass
+from models import ContactApp, TrendsApp, ContactItem, TrendItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
 from django_tables2.columns import DateTimeColumn, TemplateColumn
 
 class HomePageTable(tables.Table):
@@ -83,4 +83,12 @@ class ProductClassTable(tables.Table):
         attrs = {'class' : 'table table-striped'}
         orderable = False
         fields = ('name',)
-    
+
+class MenuTable(tables.Table):
+    ops = TemplateColumn(template_name="menu_ops.html", verbose_name=u"操作", orderable=False,attrs={"class":"ops"})
+    class Meta:
+        model = Menu
+        empty_text = u'暂无菜单项'
+        attrs = {'class' : 'table table-striped'}
+        orderable = False
+        fields = ('page.tab_name',)

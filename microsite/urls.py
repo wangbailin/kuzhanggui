@@ -28,4 +28,6 @@ urlpatterns = patterns('microsite.views',
     url(r'^product_class/(?P<item_id>\d+)/delete', 'product_class_delete'),
     url(r'^link_page/add', 'add_edit_link_page'),
     url(r'^content_page/add', 'add_edit_content_page'),
+    url(r'^menu0', 'menu0'),
+    url(r'^menu', 'menu'),
 )

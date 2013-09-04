@@ -10,9 +10,10 @@ from ckeditor.fields import RichTextField
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
-    tab_name = models.CharField(u'tab的名字', max_length=20)
+    tab_name = models.CharField(u'页面名称', max_length=20)
     template_name = models.CharField(u'template的文件路径', max_length=260)
-
+    message_cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
+    message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -70,9 +71,6 @@ class HomePage(Page):
     exp3 = models.CharField(u"焦点图3注释", max_length=255, blank=True)
     pic4 = models.ImageField(u"焦点图4", upload_to='upload/', max_length=255, blank=True)
     exp4 = models.CharField(u"焦点图4注释", max_length=255, blank=True)
-    cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
-    content = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000)
-
 
     def _get_tab_name(self):
         return u"首页"
@@ -388,7 +386,15 @@ class LinkPage(Page):
         return 'link_page.html'
     def _get_tab_name(self):
         return self.title
-        
+
+class Menu(models.Model):
+    wx = models.ForeignKey(WXAccount, verbose_name=u'微信帐号')
+    page = models.ForeignKey(Page, verbose_name=u'页面')
+
+    class Meta:
+        db_table = u'menus'
+        app_label = u'microsite'
+
 def add_default_site(wx_account):
     homepages = HomePage.objects.filter(wx=wx_account)
     if len(homepages) == 0:
@@ -464,5 +470,3 @@ def add_default_site(wx_account):
         weibopage.title = ''
         weibopage.url = 'abc'
         weibopage.save()
-
- 
