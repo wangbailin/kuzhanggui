@@ -11,7 +11,7 @@ from rocket import settings
 
 logger = logging.getLogger('weixin')
 #siteurl = 'http://r.limijiaoyin.com'
-siteurl = 'http://r.limijiaoyin.com/'
+siteurl = 'http://r.limijiaoyin.com'
 
 def subscribe(rule, info):
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)
