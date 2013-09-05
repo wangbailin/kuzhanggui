@@ -54,8 +54,8 @@ def micro_site(rule, info):
         homepage = HomePage.objects.get(wx=wx_account)
         data = {}
         data['title'] = u'欢迎光临微官网'
-        data['description'] = homepage.content
-        data['pic_url'] = siteurl + homepage.cover.url
+        data['description'] = homepage.message_description
+        data['pic_url'] = siteurl + homepage.message_cover.url
         data['url'] = siteurl + '/microsite/homepage/%d' % int(homepage.pk)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
