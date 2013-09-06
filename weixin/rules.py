@@ -171,7 +171,7 @@ def menu(rule, info):
         if menu.page.message_description:
             data['description'] = menu.page.message_description
         else:
-            data['description'] = consts.get_default_msg(menu.page)
+            data['description'] = get_default_msg(menu.page)
 
         if menu.page.message_cover:
             data['pic_url'] = siteurl + menu.page.message_cover.url
@@ -202,7 +202,7 @@ def submenu(rule, info):
             if menu.page.message_description:
                 data['description'] = menu.page.message_description
             else:
-                data['description'] = consts.get_default_msg(menu.page)
+                data['description'] = get_default_msg(menu.page)
             
             if menu.page.message_cover:
                 data['pic_url'] = siteurl + menu.page.message_cover.url

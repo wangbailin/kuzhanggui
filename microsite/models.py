@@ -558,3 +558,27 @@ def get_page_url(page):
         return '/microsite/content/%d' % page.id
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         return '/microsite/link/%d' % page.id
+
+def get_default_msg(page):
+    if page.real_type == ContentType.objects.get_for_model(models.ContactApp):
+        return consts.DEFAULT_CONTACT_MSG
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return consts.DEFAULT_NEWS_MSG
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return consts.DEFAULT_CASE_MSG
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return consts.DEFAULT_PRODUCT_MSG
+    elif page.real_type == ContentType.objects.get_for_model(HomePage):
+        return consts.DEFAULT_HOMEPAGE_MSG
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return consts.DEFAULT_INTRO_MSG
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return consts.DEFAULT_BUSINESS_MSG
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return consts.DEFAULT_JOIN_MSG
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return consts.DEFAULT_WEIBO_MSG
+    elif page.real_type == ContentType.objects.get_for_model(ContentPage):
+        return consts.DEFAULT_MSG
+    elif page.real_type == ContentType.objects.get_for_model(LinkPage):
+        return consts.DEFAULT_MSG
