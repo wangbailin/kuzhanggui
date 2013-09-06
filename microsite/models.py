@@ -583,3 +583,27 @@ def get_default_msg(page):
         return consts.DEFAULT_MSG
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         return consts.DEFAULT_MSG
+
+def get_default_cover(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return consts.DEFAULT_CONTACT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return consts.DEFAULT_NEWS_COVER
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return consts.DEFAULT_CASE_COVER
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return consts.DEFAULT_PRODUCT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(HomePage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return consts.DEFAULT_JOIN_COVER
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(ContentPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(LinkPage):
+        return consts.DEFAULT_COVER
