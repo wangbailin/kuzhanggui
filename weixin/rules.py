@@ -210,9 +210,9 @@ def submenu(rule, info):
                 data['pic_url'] = siteurl + menu.page.message_cover.url
             else:
                 if is_case:
-                    data['pic_url'] = siteurl + consts.DEFAULT_CASE_COVER
+                    data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_CASE_COVER
                 else:
-                    data['pic_url'] = siteurl + consts.DEFAULT_PRODUCT_COVER
+                    data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_PRODUCT_COVER
             data['url'] = siteurl + cls.get_url()
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
