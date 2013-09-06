@@ -10,7 +10,7 @@ $(document).ready(function(){
         if (lngval != '') {
             $(this).closest('form').submit();
         } else {
-            alert("请用右键在地图中选出公司的具体位置");
+            $('#map_prompt').modal();
         }
         return false;
     });
@@ -18,24 +18,52 @@ $(document).ready(function(){
 {% endblock %}
 
 {% block content %}
-<div style="width:978px;height:520px;position:absolute;top:50%;left:50%;margin-top:-220px;margin-left:-489px;">
-<h3>添加联系方式</h3>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
-<form method='post' enctype="multipart/form-data"> {% csrf_token %}
-<table class="table">
-    <tbody>
-    <tr><th>{{ form.name.label }}</th><td>{{ form.name }}{{ form.name.errors }}</td></tr>
-    <tr><th>{{ form.address.label }}</th><td>{{ form.address }}{{ form.address.errors }}</td></tr>
-    <tr><th>{{ form.mail_code.label }}</th><td>{{ form.mail_code }}{{ form.mail_code.errors }}</td></tr>
-    <tr><th>{{ form.fax_code.label }}</th><td>{{ form.fax_code }}{{ form.fax_code.errors }}</td></tr>
-    </tbody>
-</table>
-{{ form.lng }}
-{{ form.lat }}
-<div id="baidumap" style="height:500px">
+<div id="content" class="container">
+    <div class="page-header">
+        <h1>添加联系公司</h1>
+    </div>
+   <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
+   <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="control-group">
+            <label class="control-label" for="name"><span style="color:red;">*</span>{{form.name.label}}</label>
+            <div class="controls">
+               	<input class="input-xxlarge" id="id_name" name="name" type="text" />{{ form.name.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="fax_code">{{form.fax_code.label}}</label>
+            <div class="controls">
+                <input class="input-xxlarge" id="id_fax_code" name="fax_code" type="text" />{{ form.fax_code.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="address"><span style="color:red;">*</span>{{form.address.label}}</label>
+            <div class="controls">
+                <input class="input-xxlarge" id="id_address" name="address" type="text" /><span class="help-block">填写公司地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</span>{{ form.address.errors }}
+            </div>
+        </div>
+        <div>{{ form.lng }}</div>
+        <div>{{ form.lat }}</div>
+        <div id="baidumap" style="height:300px; margin-left:19%; margin-right:23%;"></div>
+        <div class="form-actions">
+            <button id="save" type="submit" class="btn btn-primary">保存</button>
+            <button id="cancel" type="button" class="btn">取消</button>
+        </div>
+    </form>
+
 </div>
-{% include "save_cancel_section.html" %}
-</form>
+
+<div id="map_prompt" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>提示</h3>
+    </div>
+    <div class="modal-body">
+        <p>填写公司地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</p>
+    </div>
+    <div class="modal-footer">
+        <a aria-hidden="true" class="btn btn-primary" data-dismiss="modal">关闭</a>
+    </div>
 </div>
 
 <script type="text/javascript">
