@@ -164,11 +164,11 @@ def menu(rule, info):
 def submenu(rule, info):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
-        match = re.match(r'submenu_(\d+)_(\d+)', info.event)
-        page_id = match.group(1)
+        match = re.match(r'submenu_(\d+)_(\d+)', info.event_key)
+        menu_id = match.group(1)
         cls_id = match.group(2)
 
-        page = Page.objects.get(id=page_id)
+        menu = Page.objects.get(id=menu_id)
         cls = None
         if page.real_type == ContentType.objects.get_for_model(ProductApp):
             cls = ProductClass.objects.get(id=cls_id)
@@ -177,10 +177,10 @@ def submenu(rule, info):
 
         if cls is not None:
             data = {}
-            data['title'] = '%s - %s' % (page.tab_name, cls.name)
-            data['description'] = page.message_description
-            if page.message_cover is not None:
-                data['pic_url'] = page.message_cover.url
+            data['title'] = '%s - %s' % (menu.page.tab_name, cls.name)
+            data['description'] = menu.page.message_description
+            if menu.page.message_cover is not None:
+                data['pic_url'] = menu.page.message_cover.url
             data['url'] = siteurl + cls.get_url()
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
