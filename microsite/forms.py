@@ -36,7 +36,6 @@ class AddEditMenuForm(ModelForm):
         model = Menu
         fields = ('id', 'page', 'name')
 
-
 class HomePageForm(ModelForm):
     pic1 = forms.ImageField(label=u'焦点图1', widget=AjaxClearableFileInput(), required = False)
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
@@ -335,8 +334,6 @@ class ChangeProductClassForm(forms.Form):
             return self.cleaned_data['name_change']
 
         raise forms.ValidationError(u'分类已经存在！')
-
-
 
 class FormManager(object):
     @classmethod

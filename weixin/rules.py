@@ -10,9 +10,9 @@ from microsite.models import *
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from rocket import settings
+from microsite import consts
 
 logger = logging.getLogger('weixin')
-#siteurl = 'http://r.limijiaoyin.com'
 siteurl = 'http://r.limijiaoyin.com'
 
 def subscribe(rule, info):
@@ -60,9 +60,13 @@ def micro_site(rule, info):
         wx_account = WXAccount.objects.get(id=info.wx)
         homepage = HomePage.objects.get(wx=wx_account)
         data = {}
-        data['title'] = u'欢迎光临微官网'
-        data['description'] = homepage.message_description
-        data['pic_url'] = siteurl + homepage.message_cover.url
+        data['title'] = wx_account.name
+        if homepage.message_description:
+            data['description'] = homepage.message_description
+        else:
+            data['description'] = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
+        if homepage.message_cover:
+            data['pic_url'] = siteurl + homepage.message_cover.url
         data['url'] = siteurl + '/microsite/homepage/%d' % int(homepage.pk)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -86,13 +90,13 @@ def find_nearest(rule, info):
         if nearest is not None:
             logger.debug('start addr %f %f end addr %f %f' % (lat, lng, nearest.lat, nearest.lng))
             data = {}
-            data['title'] = u'导航位置'
-            data['description'] = u'已为您搜索到最近的公司地址，查看位置并导航，请点击进入！'
+            data['title'] = u'找到我们'
+            data['description'] = u'点击查看如何找到我们。'
             data['pic_url'] = siteurl + settings.STATIC_URL + 'img/findme_message.png'
             data['url'] = siteurl + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
-            return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'没有找到公司')
+            return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'不知道怎么找到我们。')
     except:
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
@@ -102,8 +106,8 @@ def telephone(rule, info):
         wx_account = WXAccount.objects.get(id=info.wx)
         contact_app = ContactApp.objects.get(wx=wx_account)
         data = {}
-        data['title'] = u'客服电话'
-        data['description'] = u'欢迎联系我们，您查询的同时可以一键拨号，更多客服号码，请点击进入！'
+        data['title'] = u'联系电话'
+        data['description'] = u'点击查看我们的联系电话。'
         data['pic_url'] = siteurl + settings.STATIC_URL + 'img/kefuphone_message.png'
         data['url'] = siteurl + "/microsite/telephone/%d" % contact_app.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
@@ -119,8 +123,15 @@ def trend(rule, info):
         trend_app = TrendsApp.objects.get(wx=wx_account)
         data = {}
         data['title'] = trend_app.title
-        data['description'] = u'点击查看公司动态'
-        data['pic_url'] = siteurl + settings.STATIC_URL + 'img/news_message.png'
+        if trend_app.message_description:
+            data['description'] = message_description
+        else:
+            data['description'] = u'点击查看公司动态.'
+
+        if trend_app.message_cover:
+            data['pic_url'] = siteurl + settings.STATIC_URL + trend_app.message_cover.url
+        else:
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_NEWS_COVER
         data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -133,8 +144,14 @@ def join(rule, info):
         joinpage = JoinPage.objects.get(wx=wx_account)
         data = {}
         data['title'] = joinpage.title
-        data['description'] = u'点击查看公司招聘信息'
-        data['pic_url'] = siteurl + settings.STATIC_URL + 'img/joinus_message.png'
+        if joinpage.message_description:
+            data['description'] = joinpage.message_description
+        else:
+            data['description'] = u'点击查看最新招聘信息。'
+        if joinpage.message_cover:
+            data['pic_url'] = siteurl + settings.STATIC_URL + joinpage.message_cover.url
+        else:
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
         data['url'] = siteurl + "/microsite/join/%d" % joinpage.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -153,8 +170,12 @@ def menu(rule, info):
         data['title'] = menu.name
         if menu.page.message_description:
             data['description'] = menu.page.message_description
+        else:
+            data['description'] = consts.get_default_msg(menu.page)
+
         if menu.page.message_cover:
             data['pic_url'] = siteurl + menu.page.message_cover.url
+
         data['url'] = siteurl + get_page_url(menu.page)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -180,6 +201,9 @@ def submenu(rule, info):
             data['title'] = '%s - %s' % (menu.page.tab_name, cls.name)
             if menu.page.message_description:
                 data['description'] = menu.page.message_description
+            else:
+                data['description'] = consts.get_default_msg(menu.page)
+            
             if menu.page.message_cover:
                 data['pic_url'] = siteurl + menu.page.message_cover.url
             data['url'] = siteurl + cls.get_url()
