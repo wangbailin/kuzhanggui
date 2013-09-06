@@ -31,6 +31,9 @@ var Dajaxice = {
         add_product_class : function(callback_function, argv, custom_settings){
             return Dajaxice.call('framework.add_product_class', 'POST', callback_function, argv, custom_settings);
         },
+        change_case_class : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('framework.change_case_class', 'POST', callback_function, argv, custom_settings);
+        },
 
     }
 ,
