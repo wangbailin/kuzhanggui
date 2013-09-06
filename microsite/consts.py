@@ -6,6 +6,7 @@ DEFAULT_CONTACT_COVER = 'img/kefuphone_message.png'
 DEFAULT_NEWS_COVER = 'img/news_message.png'
 DEFAULT_PRODUCT_COVER = 'img/product_message.png'
 DEFAULT_CASE_COVER = 'img/case_message.png'
+DEFAULT_MSG = "img/empty.png"
 
 DEFAULT_HOMEPAGE_MSG = u'点击查看%s微官网。'
 DEFAULT_INTRO_MSG = u'点击查看公司介绍。'
