@@ -450,5 +450,8 @@ def menu(request):
     if wx_account.app_id is None or wx_account.app_secret is None:
         return redirect('/menu0')
     else:
-        menu_info = MenuTable(Menu.objects.filter(wx=wx_account))
-        return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info})
+        if request.method == "GET":
+            menu_info = MenuTable(Menu.objects.filter(wx=wx_account))
+            form = AddEditMenuForm()
+            form.fields['page'].queryset = Page.objects.filter(wx=wx_account)
+        return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form})

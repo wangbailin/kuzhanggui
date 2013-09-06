@@ -91,4 +91,4 @@ class MenuTable(tables.Table):
         empty_text = u'暂无菜单项'
         attrs = {'class' : 'table table-striped'}
         orderable = False
-        fields = ('page.tab_name',)
+        fields = ('name', 'page.tab_name',)

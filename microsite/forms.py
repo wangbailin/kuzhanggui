@@ -37,13 +37,19 @@ class MenuForm(forms.Form):
 
         return self.cleaned_data
 
+class AddEditMenuForm(ModelForm):
+    class Meta:
+        model = Menu
+        fields = ('page', 'name')
+
+
 class HomePageForm(ModelForm):
     pic1 = forms.ImageField(label=u'焦点图1', widget=AjaxClearableFileInput(), required = False)
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
     message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
-    
+
     class Meta:
         model = HomePage
         fields = (
@@ -68,7 +74,9 @@ class IntroPageForm(ModelForm):
         fields = (
             'enable',
             'title',
-            'content'
+            'content',
+            'message_cover',
+            'message_description',
         )
 
 class JoinPageForm(ModelForm):
@@ -78,7 +86,9 @@ class JoinPageForm(ModelForm):
         fields = (
             'enable',
             'title',
-            'content'
+            'content',
+            'message_cover',
+            'message_description',
         )
 
 class ContactAppForm(ModelForm):
@@ -87,6 +97,8 @@ class ContactAppForm(ModelForm):
         fields = (
             'title',
             'enable',
+            'message_cover',
+            'message_description',
         )
 class TrendsAppForm(ModelForm):
     class Meta:
@@ -94,6 +106,8 @@ class TrendsAppForm(ModelForm):
         fields = (
             'title',
             'enable',
+            'message_cover',
+            'message_description',
         )
 
 class TrendItemForm(ModelForm):
@@ -141,6 +155,8 @@ class CulturePageForm(ModelForm):
             'enable',
             'content',
             'title',
+            'message_cover',
+            'message_description',
         )
 
 class BusinessPageForm(ModelForm):
@@ -151,6 +167,8 @@ class BusinessPageForm(ModelForm):
             'enable',
             'content',
             'title',
+            'message_cover',
+            'message_description',
         )
 
 
@@ -161,6 +179,8 @@ class WeiboPageForm(ModelForm):
             'enable',
             'title',
             'url',
+            'message_cover',
+            'message_description',
         )
 
 class ContentPageForm(ModelForm):
@@ -173,6 +193,8 @@ class ContentPageForm(ModelForm):
             'title',
             'icon',
             'content',
+            'message_cover',
+            'message_description',
         )
 
 
@@ -185,6 +207,8 @@ class LinkPageForm(ModelForm):
             'title',
             'icon',
             'url',
+            'message_cover',
+            'message_description',
         )
 
 class CaseAppForm(ModelForm):
@@ -193,6 +217,8 @@ class CaseAppForm(ModelForm):
         fields = (
             'title',
             'enable',
+            'message_cover',
+            'message_description',
         )
 
 class ProductAppForm(ModelForm):
@@ -201,6 +227,8 @@ class ProductAppForm(ModelForm):
         fields = (
             'title',
             'enable',
+            'message_cover',
+            'message_description',
         )
 class CaseItemForm(ModelForm):
     case_pic1 = forms.ImageField(label=u'案例截图1', widget=AjaxClearableFileInput(), required = False)
