@@ -151,7 +151,8 @@ def menu(rule, info):
 
         data = {}
         data['title'] = menu.name
-        data['description'] = menu.page.message_description
+        if menu.page.message_description is not None:
+            data['description'] = menu.page.message_description
         if menu.page.message_cover is not None:
             data['pic_url'] = menu.page.message_cover.url
         data['url'] = siteurl + get_page_url(menu.page)
