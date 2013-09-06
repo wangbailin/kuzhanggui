@@ -38,9 +38,10 @@ class MenuForm(forms.Form):
         return self.cleaned_data
 
 class AddEditMenuForm(ModelForm):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
     class Meta:
         model = Menu
-        fields = ('page', 'name')
+        fields = ('id', 'page', 'name')
 
 
 class HomePageForm(ModelForm):

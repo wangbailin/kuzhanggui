@@ -455,3 +455,9 @@ def menu(request):
             form = AddEditMenuForm()
             form.fields['page'].queryset = Page.objects.filter(wx=wx_account)
         return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form})
+
+@login_required
+def menu_delete(request, menu_id):
+    menu = get_object_or_404(Menu, pk = menu_id)
+    menu.delete()
+    return redirect('/menu')

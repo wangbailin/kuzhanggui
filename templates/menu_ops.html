@@ -1,4 +1,4 @@
 <div class="btn-group">
-    <a href="/menu/{{ record.id }}/edit" class="btn"><i class="icon-edit"></i></a>
-    <a href="/menu/{{ record.id}}/delete" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
+    <a href="javascript:void(0)" onclick="editMenu({{ record.id }}, '{{ record.name }}', {{ record.page.id }})" class="btn"><i class="icon-edit"></i></a>
+    <a href="javascript:void(0)" onclick="deleteMenu({{ record.id }}, '{{ record.name }}')" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
 </div>

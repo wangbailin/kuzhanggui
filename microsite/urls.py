@@ -29,5 +29,6 @@ urlpatterns = patterns('microsite.views',
     url(r'^link_page/add', 'add_edit_link_page'),
     url(r'^content_page/add', 'add_edit_content_page'),
     url(r'^menu0', 'menu0'),
+    url(r'^menu/(?P<menu_id>\d+)/delete', 'menu_delete'),
     url(r'^menu', 'menu'),
 )

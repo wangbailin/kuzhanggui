@@ -28,12 +28,25 @@ def add_edit_menu(request, form):
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
 
     if form.is_valid():
-        menu = Menu(wx=wx_account, page=form.cleaned_data.get('page'), name=form.cleaned_data.get('name'))
+        print form.cleaned_data
+        if form.cleaned_data.has_key('id') and form.cleaned_data.get('id') is not None and form.cleaned_data.get('id') != '':
+            menu = Menu.objects.get(id=form.cleaned_data.get('id'))
+            menu.name = form.cleaned_data.get('name')
+            menu.page = form.cleaned_data.get('page')
+        else:
+            if Menu.objects.filter(wx=wx_account, name=form.cleaned_data.get('name')).exists():
+                dajax.remove_css_class('#add_edit_menu_form .control-group', 'error')
+                dajax.add_css_class('#name', 'error')
+                dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'addEditMenuCallback')
+                return dajax.json()
+            else:
+                menu = Menu(wx=wx_account, page=form.cleaned_data.get('page'), name=form.cleaned_data.get('name'))
+        
         menu.save()
-        dajax.remove_css_class('#edit_account_form .control-group', 'error')
+        dajax.remove_css_class('#add_edit_menu_form .control-group', 'error')
         dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'addEditMenuCallback')
     else:
-        dajax.remove_css_class('#edit_account_form .control-group', 'error')
+        dajax.remove_css_class('#add_edit_menu_form .control-group', 'error')
         for error in form.errors:
             dajax.add_css_class('#%s' % error, 'error')
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'addEditMenuCallback')
