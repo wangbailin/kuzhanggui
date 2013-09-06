@@ -150,9 +150,9 @@ def menu(rule, info):
         menu = Menu.objects.get(id=menu_id)
 
         data = {}
-        data['title'] = menu.page.tab_name
+        data['title'] = menu.name
         data['description'] = menu.page.message_description
-        if page.menu.message_cover is not None:
+        if menu.page.message_cover is not None:
             data['pic_url'] = menu.page.message_cover.url
         data['url'] = siteurl + get_page_url(menu.page)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
