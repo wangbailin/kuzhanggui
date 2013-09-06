@@ -1,12 +1,10 @@
 #coding:utf8
-import urllib  
-import urllib2
-import json
 from django import forms
 from django.forms import ModelForm
 from models import *
 from django.contrib.contenttypes.models import ContentType
 from ajax_upload.widgets import AjaxClearableFileInput
+from utils import get_wx_access_token
 
 from ckeditor.widgets import CKEditorWidget
 
@@ -24,14 +22,9 @@ class MenuForm(forms.Form):
         app_secret = self.cleaned_data['app_secret']
         
         if app_id and app_secret:
-            req = urllib2.Request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (app_id, app_secret))
-            data = urllib.urlencode({})
-            opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-            resp = opener.open(req, data)
-            
-            jsonObj = json.loads(resp.read())
-            if jsonObj.has_key('access_token'):
-                self.cleaned_data['access_token'] = jsonObj.get('access_token')
+            access_token = get_wx_access_token(app_id, app_secret)
+            if access_token is not None:
+                self.cleaned_data['access_token'] = access_token
             else:
                 raise forms.ValidationError(u'AppId和AppSecret验证失败')
 

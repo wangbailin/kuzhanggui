@@ -3,19 +3,23 @@ import sys
 reload(sys) 
 sys.setdefaultencoding('utf8')
 
+import urllib  
+import urllib2
+import json
+
 from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
 from dajax.core import Dajax
 from django.core.cache import cache
 from django.contrib.auth import authenticate, login
+from django.contrib.contenttypes.models import ContentType
 import random
 import datetime
 
 from framework.models import Account, WXAccount
-from microsite.models import Menu
-from microsite.forms import AddEditMenuForm
-from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm
-from microsite.models import CaseClass, ProductClass
+from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm
+from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp
+from utils import get_wx_access_token, create_wx_menu
 
 @dajaxice_register
 def add_edit_menu(request, form):
@@ -131,3 +135,47 @@ def change_product_class(request, form):
 
     return dajax.json()
 
+@dajaxice_register
+def generate_menu(request):
+    dajax = Dajax()
+
+    account = Account.objects.get(user=request.user)
+    wx_account = None
+    if account.has_wx_bound:
+        wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+
+    menu_count = wx_account.menu_set.count()
+    if menu_count >= 2 and menu_count <= 3:
+        wx_access_token = cache.get('wx_access_token_%d' % wx_account.id, None)
+        if wx_access_token is None:
+            wx_access_token = get_wx_access_token(wx_account.app_id, wx_account.app_secret)
+
+        if wx_access_token is None:
+            dajax.add_data({ 'ret_code' : 1001, 'ret_msg' : '由于网络原因生成菜单失败，请稍后再试！' }, 'generateMenuCallback')
+        else:
+            buttons = []
+            for menu in wx_account.menu_set.all():
+                sub_buttons = []
+                if menu.page.real_type == ContentType.objects.get_for_model(ProductApp):
+                    product_app = menu.page.cast()
+                    for cls in product_app.productclass_set.all():
+                        sub_buttons.append(u'{ "type": "click", "name": "%s", "key": "submenu_%d_%d" }' % (cls.name, menu.id, cls.id))
+                elif menu.page.real_type == ContentType.objects.get_for_model(CaseApp):
+                    case_app = menu.page.cast()
+                    for cls in case_app.caseclass_set.all():
+                        sub_buttons.append(u'{ "type": "click", "name": "%s", "key": "submenu_%d_%d" }' % (cls.name, menu.id, cls.id))
+
+                if len(sub_buttons) > 0:
+                    buttons.append(u'{ "type": "click", "name": "%s", "sub_button": [%s] }' % (menu.name, ','.join(sub_buttons)))
+                else:
+                    buttons.append(u'{ "type": "click", "name": "%s", "key": "menu_%d" }' % (menu.name, menu.id))
+
+            menu_data = u'{"button":[%s]}' % ','.join(buttons)
+            if create_wx_menu(wx_access_token, menu_data):
+                dajax.add_data({ 'ret_code' : 0, 'ret_msg' : '' }, 'generateMenuCallback')
+            else:
+                dajax.add_data({ 'ret_code' : 1002, 'ret_msg' : '生成菜单失败！' }, 'generateMenuCallback')
+    else:
+        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '菜单项数量应该为2~3个！' }, 'generateMenuCallback')
+
+    return dajax.json()

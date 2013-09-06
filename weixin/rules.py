@@ -1,6 +1,8 @@
 # coding: utf8
 import logging, traceback
+import re
 
+from django.contrib.contenttypes.models import ContentType
 from router import Router
 from message_builder import MessageBuilder, BuildConfig
 from framework.models import WXAccount
@@ -47,6 +49,11 @@ def match_unsubscribe_event(rule, info):
 def match_location(rule, info):
     return info.type == 'location'
 
+def match_menu(rule, info):
+    return info.type == 'event' and re.match(r'menu_\d+', info.event) is not None
+
+def match_submenu(rule, info):
+    return info.type == 'event' and re.match(r'submenu_\d+_\d+', info.event) is not None
 
 def micro_site(rule, info):
     try:
@@ -134,8 +141,51 @@ def join(rule, info):
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
 
+def menu(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        match = re.match(r'menu_(\d+)', info.event)
+        page_id = match.group(1)
 
-        
+        page = Page.objects.get(id=page_id)
+        data = {}
+        data['title'] = page.tab_name
+        data['description'] = page.message_description
+        if page.message_cover is not None:
+            data['pic_url'] = page.message_cover.url
+        data['url'] = siteurl + page.get_url()
+        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+def submenu(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        match = re.match(r'submenu_(\d+)_(\d+)', info.event)
+        page_id = match.group(1)
+        cls_id = match.group(2)
+
+        page = Page.objects.get(id=page_id)
+        cls = None
+        if page.real_type == ContentType.objects.get_for_model(ProductApp):
+            cls = ProductClass.objects.get(id=cls_id)
+        elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+            cls = CaseClass.objects.get(id=cls_id)
+
+        if cls is not None:
+            data = {}
+            data['title'] = '%s - %s' % (page.tab_name, cls.name)
+            data['description'] = page.message_description
+            if page.message_cover is not None:
+                data['pic_url'] = page.message_cover.url
+            data['url'] = siteurl + cls.get_url()
+            return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+        else:
+            return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
 
 Router.get_instance().set({
         'name' : u'关注',
@@ -174,7 +224,18 @@ Router.get_instance().set({
     })
 
 Router.get_instance().set({
-        'name' : u'location',
+        'name' : u'contact',
         'pattern' : u'电话',
         'handler' : telephone,
+    })
+Router.get_instance().set({
+        'name' : u'menu',
+        'pattern' : match_menu,
+        'handler' : menu
+    })
+
+Router.get_instance().set({
+        'name' : u'submenu',
+        'pattern' : match_submenu,
+        'handler' : submenu
     })

@@ -34,6 +34,9 @@ class Page(models.Model):
     def _get_template(self):
         raise NotImplementedError
 
+    def get_url(self):
+        raise NotImplementedError
+
     class Meta:
         db_table = 'page'
         app_label = 'microsite'
@@ -81,6 +84,9 @@ class HomePage(Page):
     def _get_template(self):
         return 'homepage.html'
 
+    def get_url(self):
+        return '/microsite/homepage/%d' % self.pk
+
     class Meta:
         db_table = u"homepage"
         app_label = u'microsite'
@@ -102,8 +108,12 @@ class IntroPage(Page):
 
     def _get_template(self):
         return 'intropage.html'
+
     def _get_tab_name(self):
         return self.title
+
+    def get_url(self):
+        return '/microsite/intro/%d' % self.pk
 
 class JoinPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
@@ -117,8 +127,12 @@ class JoinPage(Page):
         
     def _get_tab_name(self):
         return self.title
+
     def _get_template(self):
         return 'intropage.html'
+
+    def get_url(self):
+        return '/microsite/join/%d' % self.pk
 
     class Meta:
         db_table = u'joinpage'
@@ -138,6 +152,9 @@ class ContactApp(App):
 
     def _get_app_template(self):
         return 'contact_app.html'
+
+    def get_url(self):
+        return '/microsite/contact/%d' % self.pk
 
     class Meta:
         db_table = u'contactapp'
@@ -160,6 +177,9 @@ class TrendsApp(App):
     def _get_app_template(self):
         return 'trends_app.html'
 
+    def get_url(self):
+        return '/microsite/trend/%d' % self.pk
+
     class Meta:
         db_table = u"trendsapp"
         app_label = u'microsite'
@@ -177,6 +197,9 @@ class CaseApp(App):
     def _get_app_template(self):
         return 'case_app.html'
 
+    def get_url(self):
+        return '/microsite/case/%d' % self.pk
+
     class Meta:
         db_table = u'case_app'
         app_label = u'microsite'
@@ -185,9 +208,13 @@ class CaseClass(models.Model):
     case_app = models.ForeignKey(CaseApp, verbose_name=u'案例')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    
     class Meta:
         db_table = u'case_class'        
         app_label = u'microsite'
+
+    def get_url(self):
+        return '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -220,6 +247,9 @@ class ProductApp(App):
     def _get_app_template(self):
         return 'product_app.html'
 
+    def get_url(self):
+        return '/microsite/product/%d' % self.pk
+
     class Meta:
         db_table = u'product_app'
         app_label = u'microsite'
@@ -228,9 +258,13 @@ class ProductClass(models.Model):
     product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    
     class Meta:
         db_table = u'product_class'        
         app_label = u'microsite'
+
+    def get_url(self):
+        return '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -304,6 +338,9 @@ class CulturePage(Page):
         db_table = u"culture"
         app_label = u'microsite'
 
+    def get_url(self):
+        return '/microsite/culture/%d' % self.pk
+
     def _get_template(self):
         return 'intropage.html'
     def _get_tab_name(self):
@@ -323,8 +360,12 @@ class BusinessPage(Page):
         db_table = u"business"
         app_label = u'microsite'
 
+    def get_url(self):
+        return '/microsite/business/%d' % self.pk
+
     def _get_template(self):
         return 'intropage.html'
+
     def _get_tab_name(self):
         return self.title
 
@@ -345,8 +386,12 @@ class WeiboPage(Page):
 
     def _get_template(self):
         return 'official_weibo.html'
+
     def _get_tab_name(self):
         return self.title
+
+    def get_url(self):
+        return '/microsite/weibo/%d' % self.pk
     
 
 class ContentPage(Page):
@@ -366,8 +411,12 @@ class ContentPage(Page):
 
     def _get_template(self):
         return 'content_page.html'
+
     def _get_tab_name(self):
         return self.title
+
+    def get_url(self):
+        return '/microsite/content/%d' % self.pk
 
 
 class LinkPage(Page):
@@ -387,12 +436,16 @@ class LinkPage(Page):
 
     def _get_template(self):
         return 'link_page.html'
+
     def _get_tab_name(self):
         return self.title
 
+    def get_url(self):
+        return '/microsite/link/%d' % self.pk
+
 class Menu(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name=u'微信帐号')
-    name = models.CharField(verbose_name=u'菜单项名称', max_length=10, blank=False, null=False)
+    name = models.CharField(verbose_name=u'菜单项名称', max_length=4, blank=False, null=False)
     page = models.ForeignKey(Page, verbose_name=u'页面')
 
     class Meta:

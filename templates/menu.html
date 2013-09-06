@@ -28,11 +28,14 @@ $('#add_edit_menu').on('hidden', function() {
 </div>
 <div style="margin-bottom:16px;">
     <a type="button" class="btn btn-default btn-primary" role="button" data-toggle="modal" href="#add_edit_menu"><i class="icon-plus icon-white"></i>添加菜单项</a>
-    <a type="button" class="btn btn-default btn-primary" href="#">生成菜单</a>
 </div>
 
 {% load render_table from django_tables2 %}
 {% render_table menu_info "django_tables2/table.html" %}
+
+<div style="margin-top:16px;">
+    <a id="generate_menu" type="button" class="btn btn-default btn-success" href="javascript:void(0)" onclick="generateMenu()" data-loading-text="生成中..."><i class="icon-play icon-white"></i>生成菜单</a>
+</div>
 
 <div id="add_edit_menu" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="add_edit_menu_header" aria-hidden="true">
     <div class="modal-header">
