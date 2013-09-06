@@ -1,4 +1,7 @@
+
 <div class="btn-group">
-    <a href="/case_class/{{ record.id}}/edit" class="btn"><i class="icon-edit"></i></a>
-    <a href="/case_class/{{ record.id}}/delete" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
+    <a id="change_case_class_button" class="btn" onclick="showDialog('{{ record.name }}',{{ record.id }})"><i class="icon-edit"></i></a>
+    <a href="/case_class/{{ record.id }}/delete" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
 </div>
+
+

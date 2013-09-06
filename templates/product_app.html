@@ -2,7 +2,14 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#add_product_class_save').click(addProductClass);
+        $('#change_product_class_save').click(changeProductClass);
     });
+    function showDialog(var1,var2){
+        $('#change_product_class').modal();
+        $('#name_change').val(var1);
+        $('#record_id_change').val(var2)
+    };
+
 </script>
 
 <div class="btn-group" id="margin_bottom">
@@ -45,6 +52,29 @@
     </div>
     <div class="modal-footer">
         <button id="add_product_class_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
+<div id="change_product_class" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel">修改产品分类</h3>
+    </div>
+    <div class="modal-body">
+        <form id="change_product_class_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="control-group">
+                <label class="control-label" for="name_change">分类名称</label>
+                <div class="controls">
+                    <input type="text" name="name_change" id="name_change">
+                </div>
+                <input type="hidden" name="tab_id_change" value="{{ active_app_specific.pk }}">
+                <input type="hidden" name="record_id_change" id="record_id_change">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button id="change_product_class_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>
