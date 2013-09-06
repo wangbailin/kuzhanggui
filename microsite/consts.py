@@ -1,6 +1,5 @@
 #coding:utf8
 from django.contrib.contenttypes.models import ContentType
-from microsite.models import ContactApp, TrendsApp, CaseApp, ProductApp, HomePage, IntroPage, BusinessPage, JoinPage, WeiboPage, ContentPage, LinkPage
 
 DEFAULT_JOIN_COVER = 'img/joinus_message.png'
 DEFAULT_CONTACT_COVER = 'img/kefuphone_message.png'
@@ -21,7 +20,7 @@ DEFAULT_HELP_MSG = u'点击查看新手指导。'
 DEFAULT_MSG = "点击查看全部内容。"
 
 def get_default_msg(page):
-    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+    if page.real_type == ContentType.objects.get_for_model(models.ContactApp):
         return DEFAULT_CONTACT_MSG
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
         return DEFAULT_NEWS_MSG
