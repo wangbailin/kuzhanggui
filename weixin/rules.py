@@ -151,10 +151,10 @@ def menu(rule, info):
 
         data = {}
         data['title'] = menu.name
-        if menu.page.message_description is not None:
+        if menu.page.message_description:
             data['description'] = menu.page.message_description
-        if menu.page.message_cover is not None:
-            data['pic_url'] = menu.page.message_cover.url
+        if menu.page.message_cover:
+            data['pic_url'] = siteurl + menu.page.message_cover.url
         data['url'] = siteurl + get_page_url(menu.page)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -168,19 +168,20 @@ def submenu(rule, info):
         menu_id = match.group(1)
         cls_id = match.group(2)
 
-        menu = Page.objects.get(id=menu_id)
+        menu = Menu.objects.get(id=menu_id)
         cls = None
-        if page.real_type == ContentType.objects.get_for_model(ProductApp):
+        if menu.page.real_type == ContentType.objects.get_for_model(ProductApp):
             cls = ProductClass.objects.get(id=cls_id)
-        elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        elif menu.page.real_type == ContentType.objects.get_for_model(CaseApp):
             cls = CaseClass.objects.get(id=cls_id)
 
         if cls is not None:
             data = {}
             data['title'] = '%s - %s' % (menu.page.tab_name, cls.name)
-            data['description'] = menu.page.message_description
-            if menu.page.message_cover is not None:
-                data['pic_url'] = menu.page.message_cover.url
+            if menu.page.message_description:
+                data['description'] = menu.page.message_description
+            if menu.page.message_cover:
+                data['pic_url'] = siteurl + menu.page.message_cover.url
             data['url'] = siteurl + cls.get_url()
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
