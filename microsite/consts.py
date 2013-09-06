@@ -1,6 +1,6 @@
 #coding:utf8
 from django.contrib.contenttypes.models import ContentType
-from microsite.models import *
+from microsite.models import ContactApp, TrendsApp, CaseApp, ProductApp, HomePage, IntroPage, BusinessPage, JoinPage, WeiboPage, ContentPage, LinkPage
 
 DEFAULT_JOIN_COVER = 'img/joinus_message.png'
 DEFAULT_CONTACT_COVER = 'img/kefuphone_message.png'
