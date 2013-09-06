@@ -281,6 +281,57 @@ class ProductClassForm(ModelForm):
             'name',
         )
 
+class AddCaseClassForm(forms.Form):
+    name = forms.CharField()
+    tab_id = forms.IntegerField()
+
+    def clean_name(self):
+        try:
+            CaseClass.objects.get(name=self.cleaned_data['name'])
+        except CaseClass.DoesNotExist:
+            return self.cleaned_data['name']
+
+        raise forms.ValidationError(u'分类已经存在！')
+
+class AddProductClassForm(forms.Form):
+    name = forms.CharField()
+    tab_id = forms.IntegerField()
+
+    def clean_name(self):
+        try:
+            ProductClass.objects.get(name=self.cleaned_data['name'])
+        except ProductClass.DoesNotExist:
+            return self.cleaned_data['name']
+
+        raise forms.ValidationError(u'分类已经存在！')
+
+class ChangeCaseClassForm(forms.Form):
+    name_change = forms.CharField()
+    tab_id_change = forms.IntegerField()
+    record_id_change = forms.IntegerField()
+
+    def clean_name_change(self):
+        try:
+            CaseClass.objects.get(name=self.cleaned_data['name_change'])
+        except CaseClass.DoesNotExist:
+            return self.cleaned_data['name_change']
+
+        raise forms.ValidationError(u'分类已经存在！')
+
+class ChangeProductClassForm(forms.Form):
+    name_change = forms.CharField()
+    tab_id_change = forms.IntegerField()
+    record_id_change = forms.IntegerField()
+
+    def clean_name_change(self):
+        try:
+            ProductClass.objects.get(name=self.cleaned_data['name_change'])
+        except ProductClass.DoesNotExist:
+            return self.cleaned_data['name_change']
+
+        raise forms.ValidationError(u'分类已经存在！')
+
+
 
 class FormManager(object):
     @classmethod

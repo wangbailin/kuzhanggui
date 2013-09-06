@@ -90,3 +90,4 @@ class ChangePhoneForm(forms.Form):
         auth_code = cache.get('auth_code_' + self.cleaned_data['phone'])
         if auth_code != self.cleaned_data['auth_code']:
             raise forms.ValidationError(u'验证码错误')
+
