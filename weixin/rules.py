@@ -50,10 +50,10 @@ def match_location(rule, info):
     return info.type == 'location'
 
 def match_menu(rule, info):
-    return info.type == 'event' and re.match(r'menu_\d+', info.event) is not None
+    return info.type == 'event' and re.match(r'menu_\d+', info.event_key) is not None
 
 def match_submenu(rule, info):
-    return info.type == 'event' and re.match(r'submenu_\d+_\d+', info.event) is not None
+    return info.type == 'event' and re.match(r'submenu_\d+_\d+', info.event_key) is not None
 
 def micro_site(rule, info):
     try:
@@ -144,16 +144,17 @@ def join(rule, info):
 def menu(rule, info):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
-        match = re.match(r'menu_(\d+)', info.event)
-        page_id = match.group(1)
+        match = re.match(r'menu_(\d+)', info.event_key)
+        menu_id = match.group(1)
 
-        page = Page.objects.get(id=page_id)
+        menu = Menu.objects.get(id=menu_id)
+
         data = {}
-        data['title'] = page.tab_name
-        data['description'] = page.message_description
-        if page.message_cover is not None:
-            data['pic_url'] = page.message_cover.url
-        data['url'] = siteurl + page.get_url()
+        data['title'] = menu.page.tab_name
+        data['description'] = menu.page.message_description
+        if page.menu.message_cover is not None:
+            data['pic_url'] = menu.page.message_cover.url
+        data['url'] = siteurl + get_page_url(menu.page)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())

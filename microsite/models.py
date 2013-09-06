@@ -390,10 +390,6 @@ class WeiboPage(Page):
     def _get_tab_name(self):
         return self.title
 
-    def get_url(self):
-        return '/microsite/weibo/%d' % self.pk
-    
-
 class ContentPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
     title = models.CharField(u'标题', max_length=100)
@@ -414,10 +410,6 @@ class ContentPage(Page):
 
     def _get_tab_name(self):
         return self.title
-
-    def get_url(self):
-        return '/microsite/content/%d' % self.pk
-
 
 class LinkPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
@@ -530,3 +522,27 @@ def add_default_site(wx_account):
         weibopage.title = ''
         weibopage.url = 'abc'
         weibopage.save()
+
+def get_page_url(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return '/microsite/contact/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return '/microsite/trend/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return '/microsite/case/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return '/microsite/product/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(HomePage):
+        return '/microsite/homepage/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return '/microsite/intro/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return '/microsite/business/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return '/microsite/join/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return '/microsite/weibo/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(ContentPage):
+        return '/microsite/content/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(LinkPage):
+        return '/microsite/link/%d' % page.id
