@@ -191,10 +191,12 @@ def submenu(rule, info):
 
         menu = Menu.objects.get(id=menu_id)
         cls = None
+        is_case = False
         if menu.page.real_type == ContentType.objects.get_for_model(ProductApp):
             cls = ProductClass.objects.get(id=cls_id)
         elif menu.page.real_type == ContentType.objects.get_for_model(CaseApp):
             cls = CaseClass.objects.get(id=cls_id)
+            is_case = True
 
         if cls is not None:
             data = {}
@@ -206,6 +208,11 @@ def submenu(rule, info):
             
             if menu.page.message_cover:
                 data['pic_url'] = siteurl + menu.page.message_cover.url
+            else:
+                if is_case:
+                    data['pic_url'] = siteurl + consts.DEFAULT_CASE_COVER
+                else:
+                    data['pic_url'] = siteurl + consts.DEFAULT_PRODUCT_COVER
             data['url'] = siteurl + cls.get_url()
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
