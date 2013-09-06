@@ -560,7 +560,7 @@ def get_page_url(page):
         return '/microsite/link/%d' % page.id
 
 def get_default_msg(page):
-    if page.real_type == ContentType.objects.get_for_model(models.ContactApp):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
         return consts.DEFAULT_CONTACT_MSG
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
         return consts.DEFAULT_NEWS_MSG
