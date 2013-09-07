@@ -13,7 +13,7 @@ from rocket import settings
 from microsite import consts
 
 logger = logging.getLogger('weixin')
-siteurl = 'http://r.limijiaoyin.com'
+siteurl = 'http://jianfei.bestgames7.com'
 
 def subscribe(rule, info):
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)

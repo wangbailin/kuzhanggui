@@ -33,8 +33,8 @@
             {% if active_tab_id > 8 %}
             <a href="#delete_page" class="btn btn-danger" id="tab-delete" data-toggle="modal">删除页面</a>
             {% endif %}
-            <button class="btn btn-primary" id="tab-save">保存</button>
             <button class="btn btn-primary" id="tab-preview">预览</button>
+            <button class="btn btn-primary" id="tab-save">保存</button>
         </div>
     </form>
 </div>
@@ -61,12 +61,12 @@ $('#tab-save').click(function() {
     $(this).closest('form').submit();
 });
 $('#tab-preview').click(function() {
-    bootbox.alert("<iframe name='iframe_preview' width='480' height='640'></iframe>");
+    bootbox.alert("<iframe name='iframe_preview' width='360' height='640'></iframe>");
     $("#page_form").attr('action', "/preview/page/{{page.pk}}");
     $("#page_form").attr('target', "iframe_preview");
 
     $("#page_form").submit();
-    $('.bootbox').css('width', '520px');
+    $('.bootbox').css('width', '400px');
     $('.modal-body').css('height', '660px');
 });
 </script>

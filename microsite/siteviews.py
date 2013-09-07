@@ -4,6 +4,7 @@ import logging
 from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 
 from rocket import settings
 from models import *
@@ -234,6 +235,10 @@ def pic(request):
 def contact_map(request, item_id, cur_lat, cur_lng):
     logger.debug("contact item %d" % int(item_id))
     item = get_object_or_404(ContactItem, pk=item_id)
+    try:
+        people = ContactPeople.objects.get(contact_item=item)
+    except ObjectDoesNotExist:
+        people = None
 
-    return render(request, 'microsite/contact_map.html', {'item':item, 'cur_lat':cur_lat, 'cur_lng': cur_lng})
+    return render(request, 'microsite/contact_map.html', {'item':item, 'people':people, 'cur_lat':cur_lat, 'cur_lng': cur_lng})
 
