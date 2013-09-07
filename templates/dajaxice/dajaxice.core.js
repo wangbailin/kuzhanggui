@@ -44,6 +44,9 @@ var Dajaxice = {
         change_product_class : function(callback_function, argv, custom_settings){
             return Dajaxice.call('microsite.change_product_class', 'POST', callback_function, argv, custom_settings);
         },
+        add_edit_contact_people: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('microsite.add_edit_contact_people', 'POST', callback_function, argv, custom_settings);
+        },
         generate_menu : function(callback_function, argv, custom_settings){
             return Dajaxice.call('microsite.generate_menu', 'POST', callback_function, argv, custom_settings);
         },

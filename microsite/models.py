@@ -317,7 +317,7 @@ class ContactItem(models.Model):
         return self.name
 
 class ContactPeople(models.Model):
-    contact_item = models.ForeignKey(ContactItem, verbose_name = u'联系方式')
+    contact_item = models.ForeignKey(ContactItem, verbose_name = u'公司名称')
     name = models.CharField(u'联系人', max_length=10)
     email = models.CharField(u'联系邮箱', max_length=50, blank=True)
     phone = models.CharField(u'联系电话', max_length=20)

@@ -32,7 +32,6 @@ def add_edit_menu(request, form):
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
 
     if form.is_valid():
-        print form.cleaned_data
         if form.cleaned_data.has_key('id') and form.cleaned_data.get('id') is not None and form.cleaned_data.get('id') != '':
             menu = Menu.objects.get(id=form.cleaned_data.get('id'))
             menu.name = form.cleaned_data.get('name')
@@ -57,6 +56,32 @@ def add_edit_menu(request, form):
 
     return dajax.json()
 
+@dajaxice_register
+def add_edit_contact_people(request, form):
+    dajax = Dajax()
+    form = AddEditContactPeopleForm(deserialize_form(form))
+
+    if form.is_valid():
+        if form.cleaned_data.get('id'):
+            contactPeople = ContactPeople.objects.filter(id=form.cleaned_data.get('id'))[0]
+            contactPeople.contact_item = form.cleaned_data.get('contact_item')
+            contactPeople.name = form.cleaned_data.get('name')
+            contactPeople.qq = form.cleaned_data.get('qq')
+            contactPeople.email = form.cleaned_data.get('email')
+            contactPeople.phone = form.cleaned_data.get('phone')
+            contactPeople.save()
+        else:
+            ContactPeople.objects.create(contact_item=form.cleaned_data.get('contact_item'), name=form.cleaned_data.get('name'), qq=form.cleaned_data.get('qq'), phone=form.cleaned_data.get('phone'), email=form.cleaned_data.get('email'))
+        dajax.remove_css_class('#add_edit_contact_people_form.control-group', 'error')
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'addEditContactPeopleCallback')
+        dajax.redirect(form.cleaned_data.get('tab_id'))
+    else:
+        dajax.remove_css_class('#add_edit_contact_people_form .control-group', 'error')
+        for error in form.errors:
+            dajax.add_css_class('#%s' % error, 'error')
+        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'addEditContactPeopleCallback')
+
+    return dajax.json()
 @dajaxice_register
 def add_case_class(request, form):
     dajax = Dajax()

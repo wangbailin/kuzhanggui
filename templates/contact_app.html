@@ -1,3 +1,27 @@
+<script type="text/javascript" src="{{ STATIC_URL }}js/app_dialog.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#add_edit_contact_people_save').click(addEditContactPeople);
+        $('#add_edit_contact_people').on('hidden', function() {
+        $('#name').val('');
+        $('#email').val('');
+        $('#phone').val('');
+        $('#qq').val('');
+        $('#record_id').val('')
+        $('#add_edit_contact_people.control-group').removeClass('error');
+});
+
+    });
+    function showDialog(record_id,name,email,phone,qq){
+        $('#add_edit_contact_people').modal();
+        $('#record_id').val(record_id);
+        $('#name').val(name);
+        $('#email').val(email);
+        $('#phone').val(phone);
+        $('#qq').val(qq);
+    };
+</script>
+
 <div class="btn-group" id="margin_bottom">
     <button class="btn btn-primary"><i class="icon-plus icon-white"></i>增加联系方式</button>
     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
@@ -5,10 +29,10 @@
     </button>
     <ul class="dropdown-menu">
         <li>
-            <a href="/contact/add">增加联系公司</a>
+            <a href="/contact/add">增加联系地址</a>
         </li>
         <li>
-            <a href="/contact_people/add">增加联系人</a>
+            <a href="#add_edit_contact_people" data-toggle="modal">增加联系人</a>
         </li>
     </ul>
 </div>
@@ -19,4 +43,56 @@
 {% load render_table from django_tables2 %}
 {% render_table app_info.0 "django_tables2/table.html" %}
 {% render_table app_info.1 "django_tables2/table.html" %}
+
+
+<div id="add_edit_contact_people" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel">增加联系人</h3>
+    </div>
+    <div class="modal-body">
+        <form id="add_edit_contact_people_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="control-group" id="contact_item">
+                <label class="control-label" for="contact_item">公司名称</label>
+                <div class="controls">
+                    <select type="text" name="contact_item" id="contact_item">
+                    {% for data in app_info.0.data %}
+                    <option value="{{ data.id }}">{{data.name}}</option>
+                    {% endfor %}
+                    <select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="name">联系人</label>
+                <div class="controls">
+                    <input type="text" name="name" id="name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email">联系邮箱</label>
+                <div class="controls">
+                    <input type="text" name="email" id="email">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="phone">联系电话</label>
+                <div class="controls">
+                    <input type="text" name="phone" id="phone">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="qq">QQ</label>
+                <div class="controls">
+                    <input type="text" name="qq" id="qq">
+                </div>
+            </div>
+            <input type="hidden" name="id" id="record_id">
+            <input type="hidden" name="tab_id" id="tab_id" value="{{ active_app_specific.id }}">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button id="add_edit_contact_people_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
 
