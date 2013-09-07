@@ -7,6 +7,9 @@ from framework.models import WXAccount
 
 from ckeditor.fields import RichTextField
 
+from rocket import settings
+from microsite import consts
+
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
@@ -32,6 +35,9 @@ class Page(models.Model):
         raise NotImplementedError
 
     def _get_template(self):
+        raise NotImplementedError
+
+    def get_url(self):
         raise NotImplementedError
 
     class Meta:
@@ -81,6 +87,9 @@ class HomePage(Page):
     def _get_template(self):
         return 'homepage.html'
 
+    def get_url(self):
+        return '/microsite/homepage/%d' % self.pk
+
     class Meta:
         db_table = u"homepage"
         app_label = u'microsite'
@@ -102,8 +111,12 @@ class IntroPage(Page):
 
     def _get_template(self):
         return 'intropage.html'
+
     def _get_tab_name(self):
         return self.title
+
+    def get_url(self):
+        return '/microsite/intro/%d' % self.pk
 
 class JoinPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
@@ -117,8 +130,12 @@ class JoinPage(Page):
         
     def _get_tab_name(self):
         return self.title
+
     def _get_template(self):
         return 'intropage.html'
+
+    def get_url(self):
+        return '/microsite/join/%d' % self.pk
 
     class Meta:
         db_table = u'joinpage'
@@ -138,6 +155,9 @@ class ContactApp(App):
 
     def _get_app_template(self):
         return 'contact_app.html'
+
+    def get_url(self):
+        return '/microsite/contact/%d' % self.pk
 
     class Meta:
         db_table = u'contactapp'
@@ -160,6 +180,9 @@ class TrendsApp(App):
     def _get_app_template(self):
         return 'trends_app.html'
 
+    def get_url(self):
+        return '/microsite/trend/%d' % self.pk
+
     class Meta:
         db_table = u"trendsapp"
         app_label = u'microsite'
@@ -177,6 +200,9 @@ class CaseApp(App):
     def _get_app_template(self):
         return 'case_app.html'
 
+    def get_url(self):
+        return '/microsite/case/%d' % self.pk
+
     class Meta:
         db_table = u'case_app'
         app_label = u'microsite'
@@ -185,9 +211,13 @@ class CaseClass(models.Model):
     case_app = models.ForeignKey(CaseApp, verbose_name=u'案例')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    
     class Meta:
         db_table = u'case_class'        
         app_label = u'microsite'
+
+    def get_url(self):
+        return '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -220,6 +250,9 @@ class ProductApp(App):
     def _get_app_template(self):
         return 'product_app.html'
 
+    def get_url(self):
+        return '/microsite/product/%d' % self.pk
+
     class Meta:
         db_table = u'product_app'
         app_label = u'microsite'
@@ -228,9 +261,13 @@ class ProductClass(models.Model):
     product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    
     class Meta:
         db_table = u'product_class'        
         app_label = u'microsite'
+
+    def get_url(self):
+        return '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -304,6 +341,9 @@ class CulturePage(Page):
         db_table = u"culture"
         app_label = u'microsite'
 
+    def get_url(self):
+        return '/microsite/culture/%d' % self.pk
+
     def _get_template(self):
         return 'intropage.html'
     def _get_tab_name(self):
@@ -323,8 +363,12 @@ class BusinessPage(Page):
         db_table = u"business"
         app_label = u'microsite'
 
+    def get_url(self):
+        return '/microsite/business/%d' % self.pk
+
     def _get_template(self):
         return 'intropage.html'
+
     def _get_tab_name(self):
         return self.title
 
@@ -345,9 +389,9 @@ class WeiboPage(Page):
 
     def _get_template(self):
         return 'official_weibo.html'
+
     def _get_tab_name(self):
         return self.title
-    
 
 class ContentPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
@@ -366,9 +410,9 @@ class ContentPage(Page):
 
     def _get_template(self):
         return 'content_page.html'
+
     def _get_tab_name(self):
         return self.title
-
 
 class LinkPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
@@ -387,12 +431,16 @@ class LinkPage(Page):
 
     def _get_template(self):
         return 'link_page.html'
+
     def _get_tab_name(self):
         return self.title
 
+    def get_url(self):
+        return '/microsite/link/%d' % self.pk
+
 class Menu(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name=u'微信帐号')
-    name = models.CharField(verbose_name=u'菜单项名称', max_length=10, blank=False, null=False)
+    name = models.CharField(verbose_name=u'菜单项名称', max_length=4, blank=False, null=False)
     page = models.ForeignKey(Page, verbose_name=u'页面')
 
     class Meta:
@@ -407,8 +455,8 @@ def add_default_site(wx_account):
     if len(homepages) == 0:
         homepage = HomePage()
         homepage.wx = wx_account
-        homepage.name = u'每日精品游戏'
-        homepage.content = u'这是个好网站'
+        homepage.name = wx_account.name
+        homepage.message_description = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         homepage.template_type = 0
         homepage.save()
 
@@ -418,7 +466,7 @@ def add_default_site(wx_account):
         intropage.wx = wx_account
         intropage.enable = True
         intropage.title = u"公司简介"
-        intropage.content = u"每天一款好游戏"
+        intropage.message_description = consts.DEFAULT_INTRO_MSG
         intropage.save()
 
     businesspages = BusinessPage.objects.filter(wx=wx_account)
@@ -427,7 +475,7 @@ def add_default_site(wx_account):
         businesspage.wx = wx_account
         businesspage.enable = True
         businesspage.title = '公司业务'
-        businesspage.content = '公司业务'
+        businesspage.message_description = consts.DEFAULT_BUSINESS_MSG
         businesspage.save()
 
     trendsapps = TrendsApp.objects.filter(wx=wx_account)
@@ -435,6 +483,8 @@ def add_default_site(wx_account):
         trendsapp = TrendsApp()
         trendsapp.wx = wx_account
         trendsapp.enable = True
+        trendsapp.message_cover = consts.DEFAULT_NEWS_COVER
+        trendsapp.message_description = consts.DEFAULT_NEWS_MSG
         trendsapp.save()
 
     joinpages = JoinPage.objects.filter(wx=wx_account)
@@ -443,7 +493,8 @@ def add_default_site(wx_account):
         joinpage.wx = wx_account
         joinpage.enable = True
         joinpage.title = u'加入我们'
-        joinpage.content = u'加入我们，奋斗吧，并享受奋斗的快感'
+        joinpage.message_cover = consts.DEFAULT_JOIN_COVER
+        joinpage.message_description = consts.DEFAULT_JOIN_MSG
         joinpage.save()
 
     contactapps = ContactApp.objects.filter(wx=wx_account)
@@ -451,6 +502,8 @@ def add_default_site(wx_account):
         contactapp = ContactApp()
         contactapp.wx = wx_account
         contactapp.enable = True
+        contactapp.message_cover = consts.DEFAULT_CONTACT_COVER
+        contactapp.message_description = consts.DEFAULT_CONTACT_MSG
         contactapp.save()
 
     caseapps = CaseApp.objects.filter(wx=wx_account)
@@ -459,6 +512,8 @@ def add_default_site(wx_account):
         caseapp.wx = wx_account
         caseapp.enable = True
         caseapp.title = u'成功案例'
+        caseapp.message_cover = consts.DEFAULT_CASE_COVER
+        caseapp.message_description = consts.DEFAULT_CASE_MSG
         caseapp.save()
 
     productapps = ProductApp.objects.filter(wx=wx_account)
@@ -467,6 +522,8 @@ def add_default_site(wx_account):
         productapp.wx = wx_account
         productapp.enable = True
         productapp.title = u'产品中心'
+        productapp.message_cover = consts.DEFAULT_PRODUCT_COVER
+        productapp.message_description = consts.DEFAULT_PRODUCT_MSG
         productapp.save()
     
     weibopages= WeiboPage.objects.filter(wx=wx_account)
@@ -474,6 +531,82 @@ def add_default_site(wx_account):
         weibopage = WeiboPage()
         weibopage.wx = wx_account
         weibopage.enable = True
-        weibopage.title = ''
-        weibopage.url = 'abc'
+<<<<<<< HEAD
+=======
+        weibopage.title = u'官方微博'
+        weibopage.message_description = consts.DEFAULT_WEIBO_MSG
         weibopage.save()
+
+def get_page_url(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return '/microsite/contact/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return '/microsite/trend/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return '/microsite/case/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return '/microsite/product/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(HomePage):
+        return '/microsite/homepage/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return '/microsite/intro/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return '/microsite/business/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return '/microsite/join/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        weibo = page.cast()
+        return weibo.url
+    elif page.real_type == ContentType.objects.get_for_model(ContentPage):
+        return '/microsite/content/%d' % page.id
+    elif page.real_type == ContentType.objects.get_for_model(LinkPage):
+        return '/microsite/link/%d' % page.id
+
+def get_default_msg(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return consts.DEFAULT_CONTACT_MSG
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return consts.DEFAULT_NEWS_MSG
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return consts.DEFAULT_CASE_MSG
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return consts.DEFAULT_PRODUCT_MSG
+    elif page.real_type == ContentType.objects.get_for_model(HomePage):
+        return consts.DEFAULT_HOMEPAGE_MSG
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return consts.DEFAULT_INTRO_MSG
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return consts.DEFAULT_BUSINESS_MSG
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return consts.DEFAULT_JOIN_MSG
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return consts.DEFAULT_WEIBO_MSG
+    elif page.real_type == ContentType.objects.get_for_model(ContentPage):
+        return consts.DEFAULT_MSG
+    elif page.real_type == ContentType.objects.get_for_model(LinkPage):
+        return consts.DEFAULT_MSG
+
+def get_default_cover(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return consts.DEFAULT_CONTACT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return consts.DEFAULT_NEWS_COVER
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return consts.DEFAULT_CASE_COVER
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return consts.DEFAULT_PRODUCT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(HomePage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return consts.DEFAULT_JOIN_COVER
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(ContentPage):
+        return consts.DEFAULT_COVER
+    elif page.real_type == ContentType.objects.get_for_model(LinkPage):
+        return consts.DEFAULT_COVER
+>>>>>>> upstream/master

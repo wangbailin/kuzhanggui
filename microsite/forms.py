@@ -1,12 +1,10 @@
 #coding:utf8
-import urllib  
-import urllib2
-import json
 from django import forms
 from django.forms import ModelForm
 from models import *
 from django.contrib.contenttypes.models import ContentType
 from ajax_upload.widgets import AjaxClearableFileInput
+from utils import get_wx_access_token
 
 from ckeditor.widgets import CKEditorWidget
 
@@ -24,14 +22,9 @@ class MenuForm(forms.Form):
         app_secret = self.cleaned_data['app_secret']
         
         if app_id and app_secret:
-            req = urllib2.Request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (app_id, app_secret))
-            data = urllib.urlencode({})
-            opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-            resp = opener.open(req, data)
-            
-            jsonObj = json.loads(resp.read())
-            if jsonObj.has_key('access_token'):
-                self.cleaned_data['access_token'] = jsonObj.get('access_token')
+            access_token = get_wx_access_token(app_id, app_secret)
+            if access_token is not None:
+                self.cleaned_data['access_token'] = access_token
             else:
                 raise forms.ValidationError(u'AppId和AppSecret验证失败')
 
@@ -43,13 +36,14 @@ class AddEditMenuForm(ModelForm):
         model = Menu
         fields = ('id', 'page', 'name')
 
+<<<<<<< HEAD
 class AddEditContactPeopleForm(ModelForm):
     id = forms.CharField(required=False)
     tab_id = forms.CharField()
     class Meta:
         model = ContactPeople
         fields = ('contact_item', 'name', 'email', 'phone', 'qq', 'id', 'tab_id')
-    
+>>>>>>> upstream/master
 class HomePageForm(ModelForm):
     pic1 = forms.ImageField(label=u'焦点图1', widget=AjaxClearableFileInput(), required = False)
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
@@ -75,6 +69,7 @@ class HomePageForm(ModelForm):
         )
 
 class IntroPageForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     content = forms.CharField(label=u'内容', widget=CKEditorWidget()) 
     class Meta:
         model = IntroPage
@@ -87,6 +82,7 @@ class IntroPageForm(ModelForm):
         )
 
 class JoinPageForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     content = forms.CharField(label=u'内容', widget=CKEditorWidget()) 
     class Meta:
         model = JoinPage
@@ -99,6 +95,7 @@ class JoinPageForm(ModelForm):
         )
 
 class ContactAppForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = ContactApp
         fields = (
@@ -108,6 +105,7 @@ class ContactAppForm(ModelForm):
             'message_description',
         )
 class TrendsAppForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = TrendsApp
         fields = (
@@ -155,6 +153,7 @@ class ContactPeopleForm(ModelForm):
         )
 
 class CulturePageForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     content = forms.CharField(label='内容', widget=CKEditorWidget()) 
     class Meta:
         model = CulturePage 
@@ -167,6 +166,7 @@ class CulturePageForm(ModelForm):
         )
 
 class BusinessPageForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     content = forms.CharField(label='内容', widget=CKEditorWidget()) 
     class Meta:
         model = BusinessPage 
@@ -180,6 +180,7 @@ class BusinessPageForm(ModelForm):
 
 
 class WeiboPageForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = WeiboPage 
         fields = (
@@ -192,7 +193,8 @@ class WeiboPageForm(ModelForm):
 
 class ContentPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
-    content = forms.CharField(label=u'内容', widget=CKEditorWidget()) 
+    content = forms.CharField(label=u'内容', widget=CKEditorWidget())
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True) 
     class Meta:
         model = ContentPage
         fields = (
@@ -207,6 +209,7 @@ class ContentPageForm(ModelForm):
 
 class LinkPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = LinkPage
         fields = (
@@ -219,6 +222,7 @@ class LinkPageForm(ModelForm):
         )
 
 class CaseAppForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = CaseApp
         fields = (
@@ -229,6 +233,7 @@ class CaseAppForm(ModelForm):
         )
 
 class ProductAppForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = ProductApp
         fields = (
@@ -337,8 +342,6 @@ class ChangeProductClassForm(forms.Form):
             return self.cleaned_data['name_change']
 
         raise forms.ValidationError(u'分类已经存在！')
-
-
 
 class FormManager(object):
     @classmethod

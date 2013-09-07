@@ -431,7 +431,7 @@ def menu0(request):
             wx_account.app_secret = form.cleaned_data.get('app_secret')
             wx_account.save()
             
-            cache.set(wx_account.id, form.cleaned_data.get('access_token'), 7200)
+            cache.set('wx_access_token_%d' % wx_account.id, form.cleaned_data.get('access_token'), 7200)
             return redirect('/menu')
     else:
         form = MenuForm()

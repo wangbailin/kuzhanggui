@@ -26,3 +26,22 @@ var deleteMenu = function(id, name) {
     $('#delete_menu_ok').attr('href', '/menu/' + id + '/delete');
     $('#delete_menu').modal('show');
 };
+
+var generateMenu = function() {
+    if (!$('#generate_menu').hasClass('disabled')) {
+        $('#generate_menu').button('loading');
+        Dajaxice.microsite.generate_menu(Dajax.process, {});
+    }
+};
+
+var generateMenuCallback = function(data) {
+    if (data) {
+        if (data.ret_code == 0) {
+            toast('success', '生成菜单成功，请重新关注微信公众号查看效果！');
+        } else {
+            toast('error', data.ret_msg);
+        }
+    }
+
+    $('#generate_menu').button('reset');
+}
