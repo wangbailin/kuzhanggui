@@ -84,3 +84,45 @@ var addEditContactPeopleCallback = function(data) {
     toast(type, data.ret_msg);
 };
 
+var deleteTrend = function(id, name) {
+    $('#trend_name').text(name);
+    $('#delete_trend_ok').attr('href', '/trend/' + id + '/delete');
+    $('#delete_trend').modal('show');
+};
+
+var deleteContact = function(id, name) {
+    $('#contact_name').text(name);
+    $('#delete_contact_ok').attr('href', '/contact/' + id + '/delete');
+    $('#delete_contact').modal('show');
+};
+
+var deleteContactPeople = function(id, name) {
+    $('#contact_people_name').text(name);
+    $('#delete_contact_people_ok').attr('href', '/contact_people/' + id + '/delete');
+    $('#delete_contact_people').modal('show');
+};
+
+var deleteCase = function(id, name) {
+    $('#case_name').text(name);
+    $('#delete_case_ok').attr('href', '/case/' + id + '/delete');
+    $('#delete_case').modal('show');
+};
+
+var deleteCaseClass = function(id, name) {
+    $('#case_class_name').text(name);
+    $('#delete_case_class_ok').attr('href', '/case_class/' + id + '/delete');
+    $('#delete_case_class').modal('show');
+};
+
+var deleteProduct = function(id, name) {
+    $('#product_name').text(name);
+    $('#delete_product_ok').attr('href', '/product/' + id + '/delete');
+    $('#delete_product').modal('show');
+};
+
+var deleteProductClass = function(id, name) {
+    $('#case_product_name').text(name);
+    $('#delete_product_class_ok').attr('href', '/product_class/' + id + '/delete');
+    $('#delete_product_class').modal('show');
+};
+

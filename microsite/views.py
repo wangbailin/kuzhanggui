@@ -194,9 +194,9 @@ def add_edit_contact_people(request, item_id=None):
 @contact_people_verify('item_id')
 def contact_people_delete(request, item_id):
     item = get_object_or_404(ContactPeople, pk = item_id)
-    id = item.contact_item.pk
+    id = item.contact_item.contact.pk
     item.delete()
-    return redirect('/contact/%d/edit' % id)
+    return redirect('/app/%d' % id)
 
 @login_required
 @trend_item_verify('item_id')

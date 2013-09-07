@@ -1,3 +1,5 @@
+<script type="text/javascript" src="{{ STATIC_URL }}js/app_dialog.js"></script>
+
 <div id="margin_bottom">
 <button type="button" class="btn btn-default btn-primary" onclick="javascript:window.location.href='/trend/add'"><i class="icon-plus icon-white"></i>添加动态</button>
 </div>
@@ -8,4 +10,19 @@
 
 {% load render_table from django_tables2 %}
 {% render_table app_info "django_tables2/table.html" %}
+
+
+<div id="delete_trend" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_trend_header" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>删除动态</h3>
+    </div>
+    <div class="modal-body">
+        <span>确认删除动态 <strong id="trend_name"></strong>?</span>
+    </div>
+    <div class="modal-footer">
+        <a id="delete_trend_ok" href="#" class="btn btn-danger btn-del">删除</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
 

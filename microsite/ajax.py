@@ -17,8 +17,8 @@ import random
 import datetime
 
 from framework.models import Account, WXAccount
-from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm
-from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp
+from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm, AddEditContactPeopleForm
+from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople
 from utils import get_wx_access_token, create_wx_menu
 
 @dajaxice_register
@@ -60,7 +60,6 @@ def add_edit_menu(request, form):
 def add_edit_contact_people(request, form):
     dajax = Dajax()
     form = AddEditContactPeopleForm(deserialize_form(form))
-
     if form.is_valid():
         if form.cleaned_data.get('id'):
             contactPeople = ContactPeople.objects.filter(id=form.cleaned_data.get('id'))[0]
@@ -82,6 +81,7 @@ def add_edit_contact_people(request, form):
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'addEditContactPeopleCallback')
 
     return dajax.json()
+
 @dajaxice_register
 def add_case_class(request, form):
     dajax = Dajax()
