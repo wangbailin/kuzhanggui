@@ -8,6 +8,11 @@
 {% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}
 {% endif %}
 
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">公司动态</p>
+    </div>
+</div>
 {% load render_table from django_tables2 %}
 {% render_table app_info "django_tables2/table.html" %}
 
