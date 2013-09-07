@@ -106,7 +106,7 @@ def save(request, page_id):
                 break
 
         if active_tab_id == -1:
-            return redirect('/setting')
+            return redirect('/settings')
 
         apps = get_apps(request)
 
@@ -123,10 +123,10 @@ def save(request, page_id):
                 logger.debug("form is not valid")
                 return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
         else:
-            return redirect("/setting/%d" % active_tab_id)
+            return redirect("/settings/%d" % active_tab_id)
     else:
         logger.error("no page id")
-    return redirect("/setting")
+    return redirect("/settings")
 
 @login_required
 @contact_item_verify('item_id')
@@ -247,7 +247,7 @@ def add_edit_link_page(request, link_id=None):
                 item.enable = True
                 item.wx = wx
             item.save()
-            return redirect('/setting')
+            return redirect('/settings')
     else:
         form = LinkPageForm(instance=item)
 
@@ -271,7 +271,7 @@ def add_edit_content_page(request, content_id=None):
                 item.enable = True
                 item.wx = wx
             item.save()
-            return redirect('/setting')
+            return redirect('/settings')
     else:
         form = ContentPageForm(instance=item)
 

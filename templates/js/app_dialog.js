@@ -67,4 +67,20 @@ var changeProductClassCallback = function(data) {
     toast(type, data.ret_msg);
 };
 
+var addEditContactPeople = function()  {
+    $('#add_edit_contact_people_save').button('loading');
+    Dajaxice.microsite.add_edit_contact_people(Dajax.process, {'form' : $('#add_edit_contact_people_form').serialize(true)});
+};
+
+var addEditContactPeopleCallback = function(data) {
+    var type= 'success';
+    if (data.ret_code==0){
+        $('#add_edit_contact_people').modal('hide');
+    }
+    else{
+        type = 'error';
+        $('#add_edit_contact_people').button('reset');
+    }
+    toast(type, data.ret_msg);
+};
 

@@ -43,7 +43,13 @@ class AddEditMenuForm(ModelForm):
         model = Menu
         fields = ('id', 'page', 'name')
 
-
+class AddEditContactPeopleForm(ModelForm):
+    id = forms.CharField(required=False)
+    tab_id = forms.CharField()
+    class Meta:
+        model = ContactPeople
+        fields = ('contact_item', 'name', 'email', 'phone', 'qq', 'id', 'tab_id')
+    
 class HomePageForm(ModelForm):
     pic1 = forms.ImageField(label=u'焦点图1', widget=AjaxClearableFileInput(), required = False)
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)

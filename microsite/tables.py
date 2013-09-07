@@ -29,7 +29,7 @@ class ContactPeopleTable(tables.Table):
         attrs = {'class' : 'table table-striped'}
         orderable = False
         empty_text = u'暂无联系人'
-        fields = ('name', 'email', 'phone', 'qq')
+        fields = ('contact_item', 'name', 'email', 'phone', 'qq')
 
 
 class TrendsTable(tables.Table):
