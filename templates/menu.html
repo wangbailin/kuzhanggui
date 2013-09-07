@@ -30,6 +30,11 @@ $('#add_edit_menu').on('hidden', function() {
     <a type="button" class="btn btn-default btn-primary" role="button" data-toggle="modal" href="#add_edit_menu"><i class="icon-plus icon-white"></i>添加菜单项</a>
 </div>
 
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">菜单项</p>
+    </div>
+</div>
 {% load render_table from django_tables2 %}
 {% render_table menu_info "django_tables2/table.html" %}
 

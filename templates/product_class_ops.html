@@ -1,4 +1,4 @@
 <div class="btn-group">
     <a id="change_product_class_button" class="btn" onclick="showDialog('{{ record.name }}',{{ record.id }})"><i class="icon-edit"></i></a>
-    <a href="/product_class/{{ record.id}}/delete" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
+    <a data-toggle="modal" onclick="deleteProductClass({{ record.id }}, '{{ record.name }}')" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
 </div>

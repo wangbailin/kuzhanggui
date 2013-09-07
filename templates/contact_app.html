@@ -40,8 +40,19 @@
 {% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}
 {% endif %}
 
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">联系地址</p>
+    </div>
+</div>
 {% load render_table from django_tables2 %}
 {% render_table app_info.0 "django_tables2/table.html" %}
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">联系人</p>
+    </div>
+</div>
+
 {% render_table app_info.1 "django_tables2/table.html" %}
 
 
@@ -95,4 +106,33 @@
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>
+
+<div id="delete_contact" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_contact_header" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>删除联系地址</h3>
+    </div>
+    <div class="modal-body">
+        <span>确认删除联系地址 <strong id="contact_name"></strong>?</span>
+    </div>
+    <div class="modal-footer">
+        <a id="delete_contact_ok" href="#" class="btn btn-danger btn-del">删除</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
+<div id="delete_contact_people" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_contact_people_header" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>删除联系人</h3>
+    </div>
+    <div class="modal-body">
+        <span>确认删除联系人 <strong id="contact_people_name"></strong>?</span>
+    </div>
+    <div class="modal-footer">
+        <a id="delete_contact_people_ok" href="#" class="btn btn-danger btn-del">删除</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
 
