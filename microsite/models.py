@@ -16,7 +16,7 @@ class Page(models.Model):
     tab_name = models.CharField(u'页面名称', max_length=20)
     template_name = models.CharField(u'template的文件路径', max_length=260)
     message_cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
-    message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000)
+    message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -607,4 +607,3 @@ def get_default_cover(page):
         return consts.DEFAULT_COVER
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         return consts.DEFAULT_COVER
->>>>>>> upstream/master

@@ -84,6 +84,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+CKEDITOR_RESTRICT_BY_USER = True
 CKEDITOR_UPLOAD_PATH = '/data/media/ckeditor/'
 CKEDITOR_CONFIGS = {
     'default': {
