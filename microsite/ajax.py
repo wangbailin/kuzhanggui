@@ -17,12 +17,9 @@ import random
 import datetime
 
 from framework.models import Account, WXAccount
-<<<<<<< HEAD
-=======
 from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm
 from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp
 from utils import get_wx_access_token, create_wx_menu
->>>>>>> upstream/master
 
 @dajaxice_register
 def add_edit_menu(request, form):

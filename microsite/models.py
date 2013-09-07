@@ -531,8 +531,6 @@ def add_default_site(wx_account):
         weibopage = WeiboPage()
         weibopage.wx = wx_account
         weibopage.enable = True
-<<<<<<< HEAD
-=======
         weibopage.title = u'官方微博'
         weibopage.message_description = consts.DEFAULT_WEIBO_MSG
         weibopage.save()
