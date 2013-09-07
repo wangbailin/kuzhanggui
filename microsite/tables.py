@@ -19,7 +19,7 @@ class ContactTable(tables.Table):
         empty_text = u'暂无联系方式'
         attrs = {'class' : 'table table-striped'}
         orderable = False
-        fields = ('name', 'address', 'mail_code', 'fax_code')
+        fields = ('name', 'address', 'fax_code')
 
 class ContactPeopleTable(tables.Table):
     ops = TemplateColumn(template_name="contact_people_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
