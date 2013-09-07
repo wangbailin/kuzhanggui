@@ -4,6 +4,8 @@
 <script type="text/javascript">
 
 </script>
+<div id="previewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
 <div class="btn-group" style="margin-bottom:10px;">
     <button class="btn btn-primary"><i class="icon-plus icon-white"></i>新建页面</button>
     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
@@ -25,13 +27,14 @@
         {% endif %}
     {% endfor %}
     </ul>
-    <form action="/save/{{page.pk}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <form id='page_form' action="/save/{{page.pk}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
         {% include page.template_name with form=f only %}
         <div class="form-bottom-buttons text-right">
             {% if active_tab_id > 8 %}
             <a href="#delete_page" class="btn btn-danger" id="tab-delete" data-toggle="modal">删除页面</a>
             {% endif %}
             <button class="btn btn-primary" id="tab-save">保存</button>
+            <button class="btn btn-primary" id="tab-preview">预览</button>
         </div>
     </form>
 </div>
@@ -50,9 +53,21 @@
     </div>
 </div>
 
+<a id="preview" href="#previewModal" style="display:none" data-toggle='modal'></a>
 <script>
 $('#tab-save').click(function() {
+    $("#page_form").attr('action', "/save/{{page.pk}}");
+    $("#page_form").attr('target', "_self");
     $(this).closest('form').submit();
+});
+$('#tab-preview').click(function() {
+    bootbox.alert("<iframe name='iframe_preview' width='480' height='640'></iframe>");
+    $("#page_form").attr('action', "/preview/page/{{page.pk}}");
+    $("#page_form").attr('target', "iframe_preview");
+
+    $("#page_form").submit();
+    $('.bootbox').css('width', '520px');
+    $('.modal-body').css('height', '660px');
 });
 </script>
 {% endblock %}

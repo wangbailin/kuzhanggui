@@ -18,6 +18,8 @@ from microsite.forms import MenuForm
 
 from wx_match import *
 
+
+
 logger = logging.getLogger('default')
 
 def get_tabs(request):
@@ -53,6 +55,7 @@ def get_tabs_names(request):
 
 @login_required
 def settings(request, active_tab_id = None):
+    user = auth.get_user(request)
     if active_tab_id:
         active_tab_id = int(active_tab_id)
     else:
@@ -256,6 +259,7 @@ def add_edit_link_page(request, link_id=None):
 @login_required
 @page_verify('content_id')
 def add_edit_content_page(request, content_id=None):
+    logger.debug("add edit content page")
     if content_id:
         item = get_object_or_404(ContentPage, pk = content_id)
     else:
@@ -272,7 +276,10 @@ def add_edit_content_page(request, content_id=None):
                 item.wx = wx
             item.save()
             return redirect('/setting')
+        else:
+            logger.debug("form is not valid")
     else:
+        logger.debug("method is get")
         form = ContentPageForm(instance=item)
 
     return render(request, 'add_edit_content.html', {'form':form})
