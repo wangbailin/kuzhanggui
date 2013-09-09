@@ -131,7 +131,7 @@ def trend(rule, info):
             data['description'] = consts.DEFAULT_NEWS_MSG
 
         if trend_app.message_cover:
-            data['pic_url'] = siteurl + settings.STATIC_URL + trend_app.message_cover.url
+            data['pic_url'] = siteurl + trend_app.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_NEWS_COVER
         data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
@@ -152,7 +152,7 @@ def help(rule, info):
             data['description'] = consts.DEFAULT_HELP_MSG
 
         if helppage.message_cover:
-            data['pic_url'] = siteurl + settings.STATIC_URL + helppage.message_cover.url
+            data['pic_url'] = siteurl + helppage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
         data['url'] = siteurl + "/microsite/help/%d" % helppage.pk
@@ -172,7 +172,7 @@ def join(rule, info):
         else:
             data['description'] = u'点击查看最新招聘信息。'
         if joinpage.message_cover:
-            data['pic_url'] = siteurl + settings.STATIC_URL + joinpage.message_cover.url
+            data['pic_url'] = siteurl + joinpage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
         data['url'] = siteurl + "/microsite/join/%d" % joinpage.pk
