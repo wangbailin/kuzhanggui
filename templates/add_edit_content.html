@@ -27,6 +27,19 @@
                 {{ form.content }}{{ form.content.errors }}
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label" for="message_cover"><span style="color:red;">*</span>{{form.message_cover.label}}</label>
+            <div class="controls">
+                {{ form.message_cover }}{{ form.message_cover.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="message_description"><span style="color:red;">*</span>{{form.message_description.label}}</label>
+            <div class="controls">
+                <textarea cols="40" id="id_message_description" name="message_description" rows="10" style="margin-left: 0px; margin-right: 0px; width: 746px;"></textarea>
+                {{ form.message_description.errors }}
+            </div>
+        </div>
         <div class="form-actions">
             <button id="save" type="submit" class="btn btn-primary">保存</button>
             <button id="cancel" type="button" class="btn">取消</button>

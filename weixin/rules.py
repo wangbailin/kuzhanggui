@@ -60,7 +60,7 @@ def micro_site(rule, info):
         wx_account = WXAccount.objects.get(id=info.wx)
         homepage = HomePage.objects.get(wx=wx_account)
         data = {}
-        data['title'] = wx_account.name
+        data['title'] = homepage.name
         if homepage.message_description:
             data['description'] = homepage.message_description
         else:
