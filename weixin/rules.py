@@ -128,13 +128,34 @@ def trend(rule, info):
         if trend_app.message_description:
             data['description'] = message_description
         else:
-            data['description'] = u'点击查看公司动态.'
+            data['description'] = consts.DEFAULT_NEWS_MSG
 
         if trend_app.message_cover:
             data['pic_url'] = siteurl + settings.STATIC_URL + trend_app.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_NEWS_COVER
         data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
+        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+def help(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        helppage = HelpPage.objects.get(wx=wx_account)
+        data = {}
+        data['title'] = helppage.title
+        if helppage.message_description:
+            data['description'] = helppage.message_description
+        else:
+            data['description'] = consts.DEFAULT_HELP_MSG
+
+        if trend_app.message_cover:
+            data['pic_url'] = siteurl + settings.STATIC_URL + helppage.message_cover.url
+        else:
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
+        data['url'] = siteurl + "/microsite/help/%d" % helppage.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -271,4 +292,9 @@ Router.get_instance().set({
         'name' : u'submenu',
         'pattern' : match_submenu,
         'handler' : submenu
+    })
+Router.get_instance().set({
+        'name' : u'help',
+        'pattern' : u'(新手指导|帮助)',
+        'handler' : help,
     })

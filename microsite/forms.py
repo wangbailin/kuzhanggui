@@ -177,6 +177,19 @@ class BusinessPageForm(ModelForm):
             'message_description',
         )
 
+class HelpPageForm(ModelForm):
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    content = forms.CharField(label='内容', widget=CKEditorWidget()) 
+    class Meta:
+        model = BusinessPage 
+        fields = (
+            'enable',
+            'content',
+            'title',
+            'message_cover',
+            'message_description',
+        )
+
 
 class WeiboPageForm(ModelForm):
     message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
@@ -376,6 +389,11 @@ class FormManager(object):
             else:
                 return CulturePageForm(instance=page)
         elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+            if (request):
+                return BusinessPageForm(request.POST, request.FILES, instance=page)
+            else:
+                return BusinessPageForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(HelpPage):
             if (request):
                 return BusinessPageForm(request.POST, request.FILES, instance=page)
             else:

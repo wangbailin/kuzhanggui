@@ -1,6 +1,7 @@
 #coding:utf8
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
+from django.template.loader import render_to_string
 
 from site_template import site_templates
 from framework.models import WXAccount
@@ -438,6 +439,29 @@ class LinkPage(Page):
     def get_url(self):
         return '/microsite/link/%d' % self.pk
 
+class HelpPage(Page):
+    enable = models.BooleanField(u'是否启用', default=True, help_text=u'启用 (启用后该页面内容会显示在微官网)')
+    title = models.CharField(u'标题', max_length=100)
+    content = models.TextField(u'内容')
+
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '新手指导'
+        super(HelpPage, self).save(*args, **kwargs)
+
+    class Meta:
+        db_table = u"helppage"
+        app_label = u'microsite'
+
+    def get_url(self):
+        return '/microsite/help/%d' % self.pk
+
+    def _get_template(self):
+        return 'intropage.html'
+
+    def _get_tab_name(self):
+        return self.title
+
 class Menu(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name=u'微信帐号')
     name = models.CharField(verbose_name=u'菜单项名称', max_length=4, blank=False, null=False)
@@ -490,24 +514,15 @@ def add_default_site(wx_account):
         trendsapp.message_description = consts.DEFAULT_NEWS_MSG
         trendsapp.save()
 
-    joinpages = JoinPage.objects.filter(wx=wx_account)
-    if len(joinpages) == 0:
-        joinpage = JoinPage()
-        joinpage.wx = wx_account
-        joinpage.enable = True
-        joinpage.title = u'加入我们'
-        joinpage.message_cover = consts.DEFAULT_JOIN_COVER
-        joinpage.message_description = consts.DEFAULT_JOIN_MSG
-        joinpage.save()
-
-    contactapps = ContactApp.objects.filter(wx=wx_account)
-    if len(contactapps) == 0:
-        contactapp = ContactApp()
-        contactapp.wx = wx_account
-        contactapp.enable = True
-        contactapp.message_cover = consts.DEFAULT_CONTACT_COVER
-        contactapp.message_description = consts.DEFAULT_CONTACT_MSG
-        contactapp.save()
+    productapps = ProductApp.objects.filter(wx=wx_account)
+    if len(productapps) == 0:
+        productapp = ProductApp()
+        productapp.wx = wx_account
+        productapp.enable = True
+        productapp.title = u'产品中心'
+        productapp.message_cover = consts.DEFAULT_PRODUCT_COVER
+        productapp.message_description = consts.DEFAULT_PRODUCT_MSG
+        productapp.save()
 
     caseapps = CaseApp.objects.filter(wx=wx_account)
     if len(caseapps) == 0:
@@ -518,16 +533,6 @@ def add_default_site(wx_account):
         caseapp.message_cover = consts.DEFAULT_CASE_COVER
         caseapp.message_description = consts.DEFAULT_CASE_MSG
         caseapp.save()
-
-    productapps = ProductApp.objects.filter(wx=wx_account)
-    if len(productapps) == 0:
-        productapp = ProductApp()
-        productapp.wx = wx_account
-        productapp.enable = True
-        productapp.title = u'产品中心'
-        productapp.message_cover = consts.DEFAULT_PRODUCT_COVER
-        productapp.message_description = consts.DEFAULT_PRODUCT_MSG
-        productapp.save()
     
     weibopages= WeiboPage.objects.filter(wx=wx_account)
     if len(weibopages) == 0:
@@ -538,6 +543,36 @@ def add_default_site(wx_account):
         weibopage.message_cover = consts.DEFAULT_WEIBO_COVER
         weibopage.message_description = consts.DEFAULT_WEIBO_MSG
         weibopage.save()
+
+    contactapps = ContactApp.objects.filter(wx=wx_account)
+    if len(contactapps) == 0:
+        contactapp = ContactApp()
+        contactapp.wx = wx_account
+        contactapp.enable = True
+        contactapp.message_cover = consts.DEFAULT_CONTACT_COVER
+        contactapp.message_description = consts.DEFAULT_CONTACT_MSG
+        contactapp.save()
+
+    joinpages = JoinPage.objects.filter(wx=wx_account)
+    if len(joinpages) == 0:
+        joinpage = JoinPage()
+        joinpage.wx = wx_account
+        joinpage.enable = True
+        joinpage.title = u'加入我们'
+        joinpage.message_cover = consts.DEFAULT_JOIN_COVER
+        joinpage.message_description = consts.DEFAULT_JOIN_MSG
+        joinpage.save()
+
+    helppages = HelpPage.objects.filter(wx=wx_account)
+    if len(helppages) == 0:
+        helppage = HelpPage()
+        helppage.wx = wx_account
+        helppage.enable = True
+        helppage.title = u'新手指导'
+        helppage.message_cover = consts.DEFAULT_HELP_COVER
+        helppage.message_description = consts.DEFAULT_HELP_MSG
+        helppage.content = render_to_string('helppage_content.html', {})
+        helppage.save()
 
 def get_page_url(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
@@ -583,6 +618,8 @@ def get_default_msg(page):
         return consts.DEFAULT_JOIN_MSG
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         return consts.DEFAULT_WEIBO_MSG
+    elif page.real_type == ContentType.objects.get_for_model(HelpPage):
+        return consts.DEFAULT_HELP_MSG
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
         return consts.DEFAULT_MSG
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
@@ -607,6 +644,8 @@ def get_default_cover(page):
         return consts.DEFAULT_JOIN_COVER
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         return consts.DEFAULT_WEIBO_COVER
+    elif page.real_type == ContentType.objects.get_for_model(HelpPage):
+        return consts.DEFAULT_HELP_COVER
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
         return consts.DEFAULT_CONTENT_COVER
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
