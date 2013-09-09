@@ -594,6 +594,8 @@ def get_page_url(page):
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         weibo = page.cast()
         return weibo.url
+    elif page.real_type == ContentType.objects.get_for_model(HelpPage):
+        return '/microsite/help/%d' % page.id
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
         return '/microsite/content/%d' % page.id
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
