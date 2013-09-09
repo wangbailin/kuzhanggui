@@ -1,8 +1,8 @@
 <table class="table">
     <tbody>
-    <tr><th>{{ form.name.label }}</th><td>{{ form.name }}{{ form.name.errors }}</td></tr>
-    <tr><th>{{ form.template_type.label }}</th><td>{{ form.template_type }}{{ form.template_type.errors }}</td></tr>
-    <tr><th>{{ form.pic1.label }}</th><td>{{ form.pic1 }}{{ form.pic1.errors }}</td></tr>
+    <tr><th><span style="color:red;">*</span>{{ form.name.label }}</th><td>{{ form.name }}{{ form.name.errors }}</td></tr>
+    <tr><th><span style="color:red;">*</span>{{ form.template_type.label }}</th><td>{{ form.template_type }}{{ form.template_type.errors }}</td></tr>
+    <tr><th><span style="color:red;">*</span>{{ form.pic1.label }}</th><td>{{ form.pic1 }}{{ form.pic1.errors }}</td></tr>
     <tr><th>{{ form.exp1.label }}</th><td>{{ form.exp1 }}{{ form.exp1.errors }}</td></tr>
     <tr><th>{{ form.pic2.label }}</th><td>{{ form.pic2 }}{{ form.pic2.errors }}</td></tr>
     <tr><th>{{ form.exp2.label }}</th><td>{{ form.exp2 }}{{ form.exp2.errors }}</td></tr>
@@ -10,7 +10,7 @@
     <tr><th>{{ form.exp3.label }}</th><td>{{ form.exp3 }}{{ form.exp3.errors }}</td></tr>
     <tr><th>{{ form.pic4.label }}</th><td>{{ form.pic4 }}{{ form.pic4.errors }}</td></tr>
     <tr><th>{{ form.exp4.label }}</th><td>{{ form.exp4 }}{{ form.exp4.errors }}</td></tr>
-    <tr><th>{{ form.message_cover.label }}</th><td>{{ form.message_cover }}{{ form.message_cover.errors }}</td></tr>
-    <tr><th>{{ form.message_description.label }}</th><td>{{ form.message_description }}<span class="help-inline">{{form.message_description.help_text}}</span>{{ form.message_description.errors }}</td></tr>
+    <tr><th><span style="color:red;">*</span>{{ form.message_cover.label }}</th><td>{{ form.message_cover }}{{ form.message_cover.errors }}</td></tr>
+    <tr><th><span style="color:red;">*</span>{{ form.message_description.label }}</th><td>{{ form.message_description }}<span class="help-inline">{{form.message_description.help_text}}</span>{{ form.message_description.errors }}</td></tr>
     </tbody>
 </table>
