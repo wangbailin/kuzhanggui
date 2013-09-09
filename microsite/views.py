@@ -260,7 +260,7 @@ def add_edit_link_page(request, link_id=None):
             item.save()
             return redirect('/settings')
     else:
-        form = LinkPageForm(instance=item)
+        form = LinkPageForm(instance=item, initial={'message_cover': consts.DEFAULT_LINK_COVER, 'message_description': consts.DEFAULT_MSG})
 
     return render(request, 'add_edit_link.html', {'form':form})
 
@@ -288,7 +288,7 @@ def add_edit_content_page(request, content_id=None):
             logger.debug("form is not valid")
     else:
         logger.debug("method is get")
-        form = ContentPageForm(instance=item)
+        form = ContentPageForm(instance=item, initial={'message_cover': consts.DEFAULT_CONTENT_COVER, 'message_description': consts.DEFAULT_MSG})
 
     return render(request, 'add_edit_content.html', {'form':form})
     

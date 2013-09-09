@@ -67,6 +67,8 @@ def micro_site(rule, info):
             data['description'] = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         if homepage.message_cover:
             data['pic_url'] = siteurl + homepage.message_cover.url
+        else:
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
         data['url'] = siteurl + '/microsite/homepage/%d' % int(homepage.pk)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -92,7 +94,7 @@ def find_nearest(rule, info):
             data = {}
             data['title'] = u'找到我们'
             data['description'] = u'点击查看如何找到我们。'
-            data['pic_url'] = siteurl + settings.STATIC_URL + 'img/findme_message.png'
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_FINDME_COVER
             data['url'] = siteurl + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
@@ -108,7 +110,7 @@ def telephone(rule, info):
         data = {}
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
-        data['pic_url'] = siteurl + settings.STATIC_URL + 'img/kefuphone_message.png'
+        data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
         data['url'] = siteurl + "/microsite/telephone/%d" % contact_app.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -126,13 +128,34 @@ def trend(rule, info):
         if trend_app.message_description:
             data['description'] = message_description
         else:
-            data['description'] = u'点击查看公司动态.'
+            data['description'] = consts.DEFAULT_NEWS_MSG
 
         if trend_app.message_cover:
-            data['pic_url'] = siteurl + settings.STATIC_URL + trend_app.message_cover.url
+            data['pic_url'] = siteurl + trend_app.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_NEWS_COVER
         data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
+        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
+    except:
+        logger.error(traceback.format_exc())
+        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
+
+def help(rule, info):
+    try:
+        wx_account = WXAccount.objects.get(id=info.wx)
+        helppage = HelpPage.objects.get(wx=wx_account)
+        data = {}
+        data['title'] = helppage.title
+        if helppage.message_description:
+            data['description'] = helppage.message_description
+        else:
+            data['description'] = consts.DEFAULT_HELP_MSG
+
+        if helppage.message_cover:
+            data['pic_url'] = siteurl + helppage.message_cover.url
+        else:
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
+        data['url'] = siteurl + "/microsite/help/%d" % helppage.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -149,7 +172,7 @@ def join(rule, info):
         else:
             data['description'] = u'点击查看最新招聘信息。'
         if joinpage.message_cover:
-            data['pic_url'] = siteurl + settings.STATIC_URL + joinpage.message_cover.url
+            data['pic_url'] = siteurl + joinpage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
         data['url'] = siteurl + "/microsite/join/%d" % joinpage.pk
@@ -269,4 +292,9 @@ Router.get_instance().set({
         'name' : u'submenu',
         'pattern' : match_submenu,
         'handler' : submenu
+    })
+Router.get_instance().set({
+        'name' : u'help',
+        'pattern' : u'(新手指导|帮助)',
+        'handler' : help,
     })

@@ -18,7 +18,7 @@ def page(request, page_id):
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
         return businesspage(request, page_id)
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return trendsapp(request, page_id)
+        return trend(request, page_id)
     elif page.real_type == ContentType.objects.get_for_model(JoinPage):
         return join(request, page_id)
     elif page.real_type == ContentType.objects.get_for_model(ContactApp):
@@ -82,7 +82,7 @@ def businesspage(request, page_id):
 
 def trend(request, page_id):
     app = get_object_or_404(TrendsApp, pk=page_id)
-    form = TrendsAppForm(request.POST, request.FILES, instance=page)
+    form = TrendsAppForm(request.POST, request.FILES, instance=app)
     if form.is_valid():
         trendapp = form.save(commit=False)
         trenditems = TrendItem.objects.filter(trend=trendapp).order_by("-pub_time")
@@ -96,7 +96,7 @@ def trend(request, page_id):
 
 def join(request, page_id):
     joinpage = get_object_or_404(JoinPage, pk=page_id)
-    form = JoinPageForm(request.POST, request.FILES, isntance=joinpage)
+    form = JoinPageForm(request.POST, request.FILES, instance=joinpage)
     if form.is_valid():
         joinpage = form.save(commit=False)
         return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content})
@@ -127,13 +127,10 @@ def case(request, item_id):
         caseapp = form.save(commit=False)
         caseclasses = CaseClass.objects.filter(case_app=caseapp)
         
-        if class_id:
-            caseclass = get_object_or_404(CaseClass, pk=class_id)
+        if len(caseclasses) == 0:
+            caseclass = None
         else:
-            if len(caseclasses) == 0:
-                caseclass = None
-            else:
-                caseclass = caseclasses[0]
+            caseclass = caseclasses[0]
         
         if caseclass is not None:
             caseitems = CaseItem.objects.filter(cls=caseclass)

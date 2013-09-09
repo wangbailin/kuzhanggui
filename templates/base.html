@@ -15,7 +15,7 @@
     {% block css %}{% endblock %}
 
     <script type="text/javascript" src="{{ STATIC_URL }}/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootbox.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/jquery.iframe-transport.js"></script>
@@ -62,19 +62,6 @@
   					<li>
   						<div class="row">
   							<div class="span2">
-  								<img src="{{ STATIC_URL }}img/wechat_nancyxu.png" alt="" style="width:120px;height:120px;">
-  							</div>
-							<div class="span2">
-								<div class="row"><h3>许女士</h3></div>
-								<div class="row"><p><strong>电话：</strong>18612143799</div>
-								<div class="row"><strong>QQ：</strong>821171834</p></div>
-							</div>
-						</div>
-  					</li>
-  					<li class="divider"></li>
-  					<li>
-  						<div class="row">
-  							<div class="span2">
 								<img src="{{ STATIC_URL }}img/wechat_sunqiao.jpg" alt="" style="width:120px;height:120px;">
 							</div>
 							<div class="span2">
@@ -84,6 +71,32 @@
 							</div>
 						</div>
   					</li>
+                    <!-- <li class="divider"></li>
+                    <li>
+                        <div class="row">
+                            <div class="span2">
+                                <img src="{{ STATIC_URL }}img/wechat_wangnan.jpg" alt="" style="width:120px;height:120px;">
+                            </div>
+                            <div class="span2">
+                                <div class="row"><h3>王先生</h3></div>
+                                <div class="row"><p><strong>电话：</strong>13426017242</div>
+                                <div class="row"><strong>QQ：</strong>375584419</p></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <div class="row">
+                            <div class="span2">
+                                <img src="{{ STATIC_URL }}img/wechat_zhengfeng.jpg" alt="" style="width:120px;height:120px;">
+                            </div>
+                            <div class="span2">
+                                <div class="row"><h3>周先生</h3></div>
+                                <div class="row"><p><strong>电话：</strong>18800076776</div>
+                                <div class="row"><strong>QQ：</strong>208082</p></div>
+                            </div>
+                        </div>
+                    </li> -->
 				</ul>
 			</li>
 		</ul>

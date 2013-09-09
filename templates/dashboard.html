@@ -4,14 +4,9 @@
 
 {% block js %}
 {{ block.super }}
-<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/highcharts.js"></script>
 {% load chartit %}
-{{ charts|load_charts:"weixin_daily_data, wsite_daily_data" }}
-{% endblock %}
-
-{% block document_ready %}
-{{ block.super }}
-$('#nav-dashboard').addClass('active');
+{{ charts|load_charts:"weixin_daily_data" }}
 {% endblock %}
 
 {% block app %}
@@ -38,6 +33,9 @@ $('#nav-dashboard').addClass('active');
     </div>
 </div>
 
+<script type="text/javascript">
+    $('#nav-dashboard').addClass('active');
+</script>
+
 <div id="weixin_daily_data" class="well" style="height:400px;"></div>
-<div id="wsite_daily_data" class="well" style="height:400px;"></div>
 {% endblock %}
