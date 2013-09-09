@@ -30,10 +30,10 @@
     <form id='page_form' action="/save/{{page.pk}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
         {% include page.template_name with form=f only %}
         <div class="form-bottom-buttons text-right">
-            {% if page.template_name == "content_page.html" or page.template_name == "link_page.html" %}
-            <a href="#delete_page" class="btn btn-danger" data-toggle="modal">删除页面</a>
-            {% endif %}
             <button class="btn" id="tab-preview">预览</button>
+            {% if page.template_name == "content_page.html" or page.template_name == "link_page.html" %}
+            <a href="#delete_page" class="btn btn-danger" data-toggle="modal">删除</a>
+            {% endif %}
             <button class="btn btn-primary" id="tab-save">保存</button>
         </div>
     </form>
