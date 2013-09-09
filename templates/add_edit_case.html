@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}添加案例{% endblock %}
+{% block title %}新增成功案例{% endblock %}
 
 {% block content %}
 <div id="content" class="container">
     <div class="page-header">
-        <h1>添加案例</h1>
+        <h1>新增成功案例</h1>
     </div>
 
     <form id="case_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
@@ -24,23 +24,23 @@
         <div class="control-group">
             <label class="control-label" for="case_pic1"><span style="color:red;">*</span>{{form.case_pic1.label}}</label>
             <div class="controls">
-                {{ form.case_pic1 }}{{ form.case_pic1.errors }}
+                {{ form.case_pic1 }}<span class="help-inline">{{form.case_pic1.help_text}}</span>{{ form.case_pic1.errors }}
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="case_pic2"><span style="color:red;">*</span>{{form.case_pic2.label}}</label>
+            <label class="control-label" for="case_pic2">{{form.case_pic2.label}}</label>
             <div class="controls">
                 {{ form.case_pic2 }}{{ form.case_pic2.errors }}
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="case_pic3"><span style="color:red;">*</span>{{form.case_pic3.label}}</label>
+            <label class="control-label" for="case_pic3">{{form.case_pic3.label}}</label>
             <div class="controls">
                 {{ form.case_pic3 }}{{ form.case_pic3.errors }}
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="case_pic4"><span style="color:red;">*</span>{{form.case_pic4.label}}</label>
+            <label class="control-label" for="case_pic4">{{form.case_pic4.label}}</label>
             <div class="controls">
                 {{ form.case_pic4 }}{{ form.case_pic4.errors }}
             </div>

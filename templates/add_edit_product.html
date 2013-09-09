@@ -1,12 +1,12 @@
 
 {% extends "base.html" %}
 
-{% block title %}添加产品{% endblock %}
+{% block title %}新增产品{% endblock %}
 
 {% block content %}
 <div id="content" class="container">
     <div class="page-header">
-        <h1>添加产品</h1>
+        <h1>新增产品</h1>
     </div>
 
     <form id="product_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
@@ -25,23 +25,23 @@
         <div class="control-group">
             <label class="control-label" for="product_pic1"><span style="color:red;">*</span>{{form.product_pic1.label}}</label>
             <div class="controls">
-                {{ form.product_pic1 }}{{ form.product_pic1.errors }}
+                {{ form.product_pic1 }}<span class="help-inline">{{form.product_pic1.help_text}}</span>{{ form.product_pic1.errors }}
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="product_pic2"><span style="color:red;">*</span>{{form.product_pic2.label}}</label>
+            <label class="control-label" for="product_pic2">{{form.product_pic2.label}}</label>
             <div class="controls">
                 {{ form.product_pic2 }}{{ form.product_pic2.errors }}
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="product_pic3"><span style="color:red;">*</span>{{form.product_pic3.label}}</label>
+            <label class="control-label" for="product_pic3">{{form.product_pic3.label}}</label>
             <div class="controls">
                 {{ form.product_pic3 }}{{ form.product_pic3.errors }}
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="product_pic4"><span style="color:red;">*</span>{{form.product_pic4.label}}</label>
+            <label class="control-label" for="product_pic4">{{form.product_pic4.label}}</label>
             <div class="controls">
                 {{ form.product_pic4 }}{{ form.product_pic4.errors }}
             </div>

@@ -16,7 +16,7 @@ class ContactTable(tables.Table):
     class Meta:
         model = ContactItem
         order_by = 'pk'
-        empty_text = u'暂无联系方式'
+        empty_text = u'暂无联系地址'
         attrs = {'class' : 'table table-striped'}
         orderable = False
         fields = ('name', 'address', 'fax_code')
@@ -47,7 +47,7 @@ class CaseItemTable(tables.Table):
     class Meta:
         model = CaseItem
         order_by = 'pub_time'
-        empty_text = u'暂无案例'
+        empty_text = u'暂无成功案例'
         attrs = {'class' : 'table table-striped'}
         orderable = False
         fields = ('title', 'cls')
@@ -79,7 +79,7 @@ class ProductClassTable(tables.Table):
     class Meta:
         model = ProductClass
         order_by = 'pub_time'
-        empty_text = u'暂无案例分类'
+        empty_text = u'暂无产品分类'
         attrs = {'class' : 'table table-striped'}
         orderable = False
         fields = ('name',)

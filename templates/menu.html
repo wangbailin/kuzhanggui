@@ -27,7 +27,7 @@ $('#add_edit_menu').on('hidden', function() {
     </ul>
 </div>
 <div style="margin-bottom:16px;">
-    <a type="button" class="btn btn-default btn-primary" role="button" data-toggle="modal" href="#add_edit_menu"><i class="icon-plus icon-white"></i>添加菜单项</a>
+    <a type="button" class="btn btn-default btn-primary" role="button" data-toggle="modal" href="#add_edit_menu"><i class="icon-plus icon-white"></i>新增菜单项</a>
 </div>
 
 <div class="navbar" style="margin-bottom:0;">
@@ -45,18 +45,18 @@ $('#add_edit_menu').on('hidden', function() {
 <div id="add_edit_menu" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="add_edit_menu_header" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="add_edit_menu_header">添加/编辑菜单项</h3>
+        <h3 id="add_edit_menu_header">新增/编辑菜单项</h3>
     </div>
     <div class="modal-body">
         <form id="add_edit_menu_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
             <div class="control-group" id="name">
-                <label class="control-label" for="name">菜单项名称</label>
+                <label class="control-label" for="name"><span style="color:red;">*</span>菜单项名称</label>
                 <div class="controls">
                     {{ form.name }}{{ form.name.errors }}
                 </div>
             </div>
             <div class="control-group" id="page">
-                <label class="control-label" for="page">显示页面</label>
+                <label class="control-label" for="page"><span style="color:red;">*</span>显示页面</label>
                 <div class="controls">
                     {{ form.page }}{{ form.page.errors }}
                 </div>

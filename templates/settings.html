@@ -30,10 +30,10 @@
     <form id='page_form' action="/save/{{page.pk}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
         {% include page.template_name with form=f only %}
         <div class="form-bottom-buttons text-right">
-            {% if active_tab_id > 8 %}
-            <a href="#delete_page" class="btn btn-danger" id="tab-delete" data-toggle="modal">删除页面</a>
-            {% endif %}
             <button class="btn" id="tab-preview">预览</button>
+            {% if page.template_name == "content_page.html" or page.template_name == "link_page.html" %}
+            <a href="#delete_page" class="btn btn-danger" data-toggle="modal">删除</a>
+            {% endif %}
             <button class="btn btn-primary" id="tab-save">保存</button>
         </div>
     </form>
@@ -42,13 +42,13 @@
 <div id="delete_page" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="myModalLabel">删除页面</h3>
+        <h3>删除页面</h3>
     </div>
     <div class="modal-body">
-        <p>确认删除</p><strong> {{ active_tab_name }}</strong>
+        <span>确认删除页面 <strong>{{ page.tab_name }}</strong>?</span>
     </div>
     <div class="modal-footer">
-        <button id="delete_page_button" class="btn btn-danger">删除</button>
+        <a href="/delete/{{ page.pk }}" class="btn btn-danger">删除</a>
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>

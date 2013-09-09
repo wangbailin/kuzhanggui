@@ -4,6 +4,18 @@
     margin-right: 8px;
 }
 
+.app .ops {
+    width:10%;
+}
+
+.app .pub_time {
+    width:10%;
+}
+
+.app .fax_code {
+    width:10%;
+}
+
 .table {
     width: 100%;
     border: 1px solid #e3e3e3;

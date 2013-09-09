@@ -23,16 +23,16 @@
 </script>
 
 <div class="btn-group" id="margin_bottom">
-    <button class="btn btn-primary"><i class="icon-plus icon-white"></i>增加联系方式</button>
+    <button class="btn btn-primary"><i class="icon-plus icon-white"></i>新增联系方式</button>
     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
         <li>
-            <a href="/contact/add">增加联系地址</a>
+            <a href="/contact/add">新增联系地址</a>
         </li>
         <li>
-            <a href="#add_edit_contact_people" data-toggle="modal">增加联系人</a>
+            <a href="#add_edit_contact_people" data-toggle="modal">新增联系人</a>
         </li>
     </ul>
 </div>
@@ -59,12 +59,12 @@
 <div id="add_edit_contact_people" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="myModalLabel">增加联系人</h3>
+        <h3 id="myModalLabel">新增联系人</h3>
     </div>
     <div class="modal-body">
         <form id="add_edit_contact_people_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
             <div class="control-group" id="contact_item">
-                <label class="control-label" for="contact_item">公司名称</label>
+                <label class="control-label" for="contact_item"><span style="color:red;">*</span>地址名称</label>
                 <div class="controls">
                     <select type="text" name="contact_item" id="contact_item">
                     {% for data in app_info.0.data %}
@@ -74,9 +74,15 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="name">联系人</label>
+                <label class="control-label" for="name"><span style="color:red;">*</span>联系人</label>
                 <div class="controls">
                     <input type="text" name="name" id="name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="phone"><span style="color:red;">*</span>联系电话</label>
+                <div class="controls">
+                    <input type="text" name="phone" id="phone">
                 </div>
             </div>
             <div class="control-group">
@@ -85,12 +91,7 @@
                     <input type="text" name="email" id="email">
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="phone">联系电话</label>
-                <div class="controls">
-                    <input type="text" name="phone" id="phone">
-                </div>
-            </div>
+
             <div class="control-group">
                 <label class="control-label" for="qq">QQ</label>
                 <div class="controls">

@@ -96,10 +96,9 @@ CKEDITOR_CONFIGS = {
             ['NumberedList','BulletedList','-','Blockquote'],        
             ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],        
             ['Link','Unlink'],        
-            ['Image','Flash','HorizontalRule','Smiley','SpecialChar'],        
+            ['Image','Flash','HorizontalRule','Smiley','SpecialChar','TextColor','BGColor'],        
             ['Styles','Format','Font','FontSize'],        
-            ['TextColor','BGColor'],        
-            ['Maximize','ShowBlocks','Preview']
+            ['Maximize','ShowBlocks','Preview','Source'],
         ],
         'language': 'zh-cn',
         'width': 760,
