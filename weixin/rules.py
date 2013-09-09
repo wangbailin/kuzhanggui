@@ -110,7 +110,7 @@ def telephone(rule, info):
         data = {}
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
-        data['pic_url'] = siteurl + settings.STATIC_URL + cosnts.DEFAULT_CONTACT_COVER
+        data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
         data['url'] = siteurl + "/microsite/telephone/%d" % contact_app.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
