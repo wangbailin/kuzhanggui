@@ -50,13 +50,13 @@ $('#add_edit_menu').on('hidden', function() {
     <div class="modal-body">
         <form id="add_edit_menu_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
             <div class="control-group" id="name">
-                <label class="control-label" for="name">菜单项名称</label>
+                <label class="control-label" for="name"><span style="color:red;">*</span>菜单项名称</label>
                 <div class="controls">
                     {{ form.name }}{{ form.name.errors }}
                 </div>
             </div>
             <div class="control-group" id="page">
-                <label class="control-label" for="page">显示页面</label>
+                <label class="control-label" for="page"><span style="color:red;">*</span>显示页面</label>
                 <div class="controls">
                     {{ form.page }}{{ form.page.errors }}
                 </div>
