@@ -132,6 +132,14 @@ def save(request, page_id):
     return redirect("/settings")
 
 @login_required
+@page_verify('page_id')
+def page_delete(request, page_id):
+    page = get_object_or_404(Page, pk = page_id)
+    page.delete()
+    return redirect("/settings")
+
+
+@login_required
 @contact_item_verify('item_id')
 def add_edit_contact(request, item_id=None):
     if item_id:

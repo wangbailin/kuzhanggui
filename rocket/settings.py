@@ -98,7 +98,7 @@ CKEDITOR_CONFIGS = {
             ['Image','Flash','HorizontalRule','Smiley','SpecialChar'],        
             ['Styles','Format','Font','FontSize'],        
             ['TextColor','BGColor'],        
-            ['Maximize','ShowBlocks','Preview']
+            ['Maximize','ShowBlocks','Preview','Source'],
         ],
         'language': 'zh-cn',
         'width': 760,
