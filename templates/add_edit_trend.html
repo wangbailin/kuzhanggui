@@ -18,7 +18,7 @@
          <div class="control-group">
             <label class="control-label" for="cover">{{form.cover.label}}</label>
             <div class="controls">
-                {{ form.cover }}{{ form.cover.errors }}
+                {{ form.cover }}<span class="help-inline">{{form.cover.help_text}}</span>{{ form.cover.errors }}
             </div>
         </div>
         <div class="control-group">
@@ -36,7 +36,6 @@
         <div class="form-actions">
             <button id="preview" class="btn">预览</button>
             <button id="save" class="btn btn-primary">保存</button>
-            <button id="cancel" type="button" class="btn">取消</button>
         </div>
     </form>
 </div>

@@ -1,7 +1,8 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/app_dialog.js"></script>
 
 <div id="margin_bottom">
-<button type="button" class="btn btn-default btn-primary" onclick="javascript:window.location.href='/trend/add'"><i class="icon-plus icon-white"></i>新增动态</button>
+<!--<a type="button" class="btn btn-default btn-primary" onclick="javascript:window.location.href='/trend/add'"><i class="icon-plus icon-white"></i>新增动态</a>-->
+<a type="button" class="btn btn-default btn-primary" href="/trend/add" target="_blank"><i class="icon-plus icon-white"></i>新增动态</a>
 </div>
 
 {% if not active_app_specific.enable %}
