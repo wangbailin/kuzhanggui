@@ -35,12 +35,6 @@ $('#sidebar a').click(function(e) {
             {% endfor %}
 
             <a id="nav-menu" class="navable" href="/menu">自定义菜单</a>
-
-            {% if active_side_id == 0 %}
-				<a class="navable active" href="#wsite-data">数据</a>
-            {% else %}
-				<a class="navable" href="#wsite-data">数据</a>
-            {% endif %}
 		</li>
 		<li><a id="nav-account" class="navable" href="/account"><i class="icon-user"></i> 账户管理</a></li>
 	</ul>
