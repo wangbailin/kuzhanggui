@@ -70,7 +70,7 @@ def join(request, item_id):
     joinpage = get_object_or_404(JoinPage, pk=item_id)
     return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content})
 
-def intro(request, item_id):
+def help(request, item_id):
     helppage = get_object_or_404(HelpPage, pk=item_id)
     return render(request, 'microsite/contentpage.html', {'title':helppage.title, 'content':helppage.content})
 
