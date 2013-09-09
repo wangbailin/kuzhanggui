@@ -4,8 +4,6 @@
 <script type="text/javascript">
 
 </script>
-<div id="previewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-</div>
 <div class="btn-group" style="margin-bottom:10px;">
     <button class="btn btn-primary"><i class="icon-plus icon-white"></i>新建页面</button>
     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
@@ -60,7 +58,7 @@ $('#tab-save').click(function() {
     $(this).closest('form').submit();
 });
 $('#tab-preview').click(function() {
-    bootbox.alert("<iframe name='iframe_preview' width='360' height='640'></iframe>");
+    bootbox.dialog("<iframe id='iframe_preview' name='iframe_preview' width='360' height='640'></iframe>", [{'label':'后退','callback':function(){iframe_preview.history.back(); return false;}}, {'label':'关闭','callback':function(){}}]);
     $("#page_form").attr('action', "/preview/page/{{page.pk}}");
     $("#page_form").attr('target', "iframe_preview");
 

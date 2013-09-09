@@ -10,6 +10,26 @@ from rocket import settings
 from models import *
 logger = logging.getLogger('default')
 
+def is_enable(subpage):
+    if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
+        return subpage.enable
+    return True
+
+
 def get_home_info(subpage):
     site_base_url = '/microsite'
     if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
@@ -54,7 +74,10 @@ def homepage(request, item_id):
     for p in pages:
         if p.real_type == homepage.real_type:
             continue
-        items.append(get_home_info(p.cast()))
+        subp = p.cast()
+        if not is_enable(subp):
+            continue
+        items.append(get_home_info(subp))
 
     return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'items':items})
 
