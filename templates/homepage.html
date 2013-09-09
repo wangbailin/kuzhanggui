@@ -2,7 +2,7 @@
     <tbody>
     <tr><th><span style="color:red;">*</span>{{ form.name.label }}</th><td>{{ form.name }}{{ form.name.errors }}</td></tr>
     <tr><th><span style="color:red;">*</span>{{ form.template_type.label }}</th><td>{{ form.template_type }}{{ form.template_type.errors }}</td></tr>
-    <tr><th><span style="color:red;">*</span>{{ form.pic1.label }}</th><td>{{ form.pic1 }}{{ form.pic1.errors }}</td></tr>
+    <tr><th><span style="color:red;">*</span>{{ form.pic1.label }}</th><td>{{ form.pic1 }}<span class="help-inline">{{form.pic1.help_text}}</span>{{ form.pic1.errors }}</td></tr>
     <tr><th>{{ form.exp1.label }}</th><td>{{ form.exp1 }}{{ form.exp1.errors }}</td></tr>
     <tr><th>{{ form.pic2.label }}</th><td>{{ form.pic2 }}{{ form.pic2.errors }}</td></tr>
     <tr><th>{{ form.exp2.label }}</th><td>{{ form.exp2 }}{{ form.exp2.errors }}</td></tr>

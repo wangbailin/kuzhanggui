@@ -25,7 +25,7 @@
         <div class="control-group">
             <label class="control-label" for="product_pic1"><span style="color:red;">*</span>{{form.product_pic1.label}}</label>
             <div class="controls">
-                {{ form.product_pic1 }}{{ form.product_pic1.errors }}
+                {{ form.product_pic1 }}<span class="help-inline">{{form.product_pic1.help_text}}</span>{{ form.product_pic1.errors }}
             </div>
         </div>
         <div class="control-group">

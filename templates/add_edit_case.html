@@ -24,7 +24,7 @@
         <div class="control-group">
             <label class="control-label" for="case_pic1"><span style="color:red;">*</span>{{form.case_pic1.label}}</label>
             <div class="controls">
-                {{ form.case_pic1 }}{{ form.case_pic1.errors }}
+                {{ form.case_pic1 }}<span class="help-inline">{{form.case_pic1.help_text}}</span>{{ form.case_pic1.errors }}
             </div>
         </div>
         <div class="control-group">
