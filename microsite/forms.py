@@ -116,7 +116,7 @@ class TrendsAppForm(ModelForm):
 
 class TrendItemForm(ModelForm):
     content = forms.CharField(label='内容', widget=CKEditorWidget())
-    cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False) 
+    cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False, help_text=u'建议图片大小为105px*105px') 
     class Meta:
         model = TrendItem
         fields = (
