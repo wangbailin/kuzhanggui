@@ -28,6 +28,8 @@ def get_home_info(subpage):
         return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_case.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
         return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_product.png", subpage._get_tab_name())
+    elif subpage.real_type == ContentType.objects.get_for_model(HelpPage):
+        return (site_base_url + "/help/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_help.png", subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(LinkPage):
         return (site_base_url + "/link/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ContentPage):
@@ -67,6 +69,10 @@ def business(request, item_id):
 def join(request, item_id):
     joinpage = get_object_or_404(JoinPage, pk=item_id)
     return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content})
+
+def intro(request, item_id):
+    helppage = get_object_or_404(HelpPage, pk=item_id)
+    return render(request, 'microsite/contentpage.html', {'title':helppage.title, 'content':helppage.content})
 
 def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
