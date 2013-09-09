@@ -6,6 +6,14 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/welcome.js"></script>
 {% endblock %}
 
+{% block css %}
+<style type="text/css">
+body {
+	background-color:#f4f4f4;
+}
+</style>
+{% endblock %}
+
 {% block document_ready %}
 $(".carousel").carousel();
 $('#login').click(function() {

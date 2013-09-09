@@ -15,7 +15,7 @@
     {% block css %}{% endblock %}
 
     <script type="text/javascript" src="{{ STATIC_URL }}/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootbox.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/jquery.iframe-transport.js"></script>
@@ -39,7 +39,7 @@
 	</script>
 </head>
 
-<body style="padding-top:40px;background-color:#f4f4f4;">
+<body style="padding-top:40px;">
 	<div id="navbar" class="navbar navbar-fixed-top">
   		<div class="navbar-inner" style="padding:0 8px;">
     	<img class="img-rounded pull-left" style="margin-top:5px; margin-right:8px;" src="{{ STATIC_URL }}img/icon.png" />

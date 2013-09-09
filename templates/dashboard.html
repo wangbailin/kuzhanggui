@@ -9,11 +9,6 @@
 {{ charts|load_charts:"weixin_daily_data" }}
 {% endblock %}
 
-{% block document_ready %}
-{{ block.super }}
-$('#nav-dashboard').addClass('active');
-{% endblock %}
-
 {% block app %}
 <div class="page-header">
     {% if weixin.avatar %}
@@ -37,6 +32,10 @@ $('#nav-dashboard').addClass('active');
         </table>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#nav-dashboard').addClass('active');
+</script>
 
 <div id="weixin_daily_data" class="well" style="height:400px;"></div>
 {% endblock %}
