@@ -96,7 +96,7 @@ class HomePage(Page):
 
 
 class IntroPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
     content = models.TextField(u'内容')
 
@@ -119,7 +119,7 @@ class IntroPage(Page):
         return '/microsite/intro/%d' % self.pk
 
 class JoinPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
     content = models.TextField(u'内容')
 
@@ -142,7 +142,7 @@ class JoinPage(Page):
         app_label = u'microsite'
 
 class ContactApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50) 
 
     def save(self, *args, **kwargs):
@@ -165,7 +165,7 @@ class ContactApp(App):
 
 
 class TrendsApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
  
     def save(self, *args, **kwargs):
@@ -188,7 +188,7 @@ class TrendsApp(App):
         app_label = u'microsite'
 
 class CaseApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=20)
 
     def _get_tab_name(self):
@@ -238,7 +238,7 @@ class CaseItem(models.Model):
         app_label = u'microsite'
 
 class ProductApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=20)
 
     def _get_tab_name(self):
@@ -350,7 +350,7 @@ class CulturePage(Page):
         return self.title
 
 class BusinessPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
 
@@ -374,7 +374,7 @@ class BusinessPage(Page):
 
 
 class WeiboPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     url = models.URLField(u"微博链接", max_length=100)
 
@@ -394,7 +394,7 @@ class WeiboPage(Page):
         return self.title
 
 class ContentPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
     content = models.TextField(u'内容')
@@ -415,7 +415,7 @@ class ContentPage(Page):
         return self.title
 
 class LinkPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
     url = models.URLField(u'链接地址', max_length=200)
