@@ -67,6 +67,8 @@ def micro_site(rule, info):
             data['description'] = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         if homepage.message_cover:
             data['pic_url'] = siteurl + homepage.message_cover.url
+        else:
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
         data['url'] = siteurl + '/microsite/homepage/%d' % int(homepage.pk)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -92,7 +94,7 @@ def find_nearest(rule, info):
             data = {}
             data['title'] = u'找到我们'
             data['description'] = u'点击查看如何找到我们。'
-            data['pic_url'] = siteurl + settings.STATIC_URL + 'img/findme_message.png'
+            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_FINDME_COVER
             data['url'] = siteurl + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
@@ -108,7 +110,7 @@ def telephone(rule, info):
         data = {}
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
-        data['pic_url'] = siteurl + settings.STATIC_URL + 'img/kefuphone_message.png'
+        data['pic_url'] = siteurl + settings.STATIC_URL + cosnts.DEFAULT_CONTACT_COVER
         data['url'] = siteurl + "/microsite/telephone/%d" % contact_app.pk
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:

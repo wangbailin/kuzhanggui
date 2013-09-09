@@ -456,6 +456,7 @@ def add_default_site(wx_account):
         homepage = HomePage()
         homepage.wx = wx_account
         homepage.name = wx_account.name
+        homepage.message_cover = consts.DEFAULT_HOMEPAGE_COVER
         homepage.message_description = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         homepage.template_type = 0
         homepage.save()
@@ -466,6 +467,7 @@ def add_default_site(wx_account):
         intropage.wx = wx_account
         intropage.enable = True
         intropage.title = u"公司简介"
+        intropage.message_cover = consts.DEFAULT_INTRO_COVER
         intropage.message_description = consts.DEFAULT_INTRO_MSG
         intropage.save()
 
@@ -475,6 +477,7 @@ def add_default_site(wx_account):
         businesspage.wx = wx_account
         businesspage.enable = True
         businesspage.title = '公司业务'
+        businesspage.message_cover = consts.DEFAULT_BUSINESS_COVER
         businesspage.message_description = consts.DEFAULT_BUSINESS_MSG
         businesspage.save()
 
@@ -532,6 +535,7 @@ def add_default_site(wx_account):
         weibopage.wx = wx_account
         weibopage.enable = True
         weibopage.title = u'官方微博'
+        weibopage.message_cover = consts.DEFAULT_WEIBO_COVER
         weibopage.message_description = consts.DEFAULT_WEIBO_MSG
         weibopage.save()
 
@@ -594,16 +598,16 @@ def get_default_cover(page):
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
         return consts.DEFAULT_PRODUCT_COVER
     elif page.real_type == ContentType.objects.get_for_model(HomePage):
-        return consts.DEFAULT_COVER
+        return consts.DEFAULT_HOMEPAGE_COVER
     elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-        return consts.DEFAULT_COVER
+        return consts.DEFAULT_INTRO_COVER
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return consts.DEFAULT_COVER
+        return consts.DEFAULT_BUSINESS_COVER
     elif page.real_type == ContentType.objects.get_for_model(JoinPage):
         return consts.DEFAULT_JOIN_COVER
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return consts.DEFAULT_COVER
+        return consts.DEFAULT_WEIBO_COVER
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
-        return consts.DEFAULT_COVER
+        return consts.DEFAULT_CONTENT_COVER
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
-        return consts.DEFAULT_COVER
+        return consts.DEFAULT_LINK_COVER
