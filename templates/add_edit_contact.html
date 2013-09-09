@@ -25,7 +25,7 @@ $(document).ready(function(){
 </style>
 <div id="content" class="container">
     <div class="page-header">
-        <h1>添加联系公司</h1>
+        <h1>新增地址</h1>
     </div>
    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
@@ -44,7 +44,7 @@ $(document).ready(function(){
         <div class="control-group">
             <label class="control-label" for="address"><span style="color:red;">*</span>{{form.address.label}}</label>
             <div class="controls">
-                <input class="input-xxlarge" id="id_address" name="address" type="text" /><span class="help-block">填写公司地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</span>{{ form.address.errors }}
+                <input class="input-xxlarge" id="id_address" name="address" type="text" /><span class="help-block">填写具体地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</span>{{ form.address.errors }}
             </div>
         </div>
         <div>{{ form.lng }}</div>
@@ -64,7 +64,7 @@ $(document).ready(function(){
         <h3>提示</h3>
     </div>
     <div class="modal-body">
-        <p>填写公司地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</p>
+        <p>填写具体地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</p>
     </div>
     <div class="modal-footer">
         <a aria-hidden="true" class="btn btn-primary" data-dismiss="modal">关闭</a>

@@ -303,10 +303,10 @@ class TrendItem(models.Model):
 
 class ContactItem(models.Model):
     contact = models.ForeignKey(ContactApp, verbose_name = u'联系我们')
-    name = models.CharField(u'公司名称', max_length=50)
+    name = models.CharField(u'地址名称', max_length=50)
     lat = models.FloatField(u'公司纬度')
     lng = models.FloatField(u'公司经度')
-    address = models.CharField(u'公司地址', max_length=200)
+    address = models.CharField(u'具体地址', max_length=200)
     mail_code = models.CharField(u'邮政编码', max_length=20, blank=True)
     fax_code = models.CharField(u'传真号码', max_length=30, blank=True)
 
@@ -317,7 +317,7 @@ class ContactItem(models.Model):
         return self.name
 
 class ContactPeople(models.Model):
-    contact_item = models.ForeignKey(ContactItem, verbose_name = u'公司名称')
+    contact_item = models.ForeignKey(ContactItem, verbose_name = u'地址名称')
     name = models.CharField(u'联系人', max_length=10)
     email = models.CharField(u'联系邮箱', max_length=50, blank=True)
     phone = models.CharField(u'联系电话', max_length=20)

@@ -13,16 +13,16 @@
 
 
 <div class="btn-group" id="margin_bottom">
-    <button class="btn btn-primary"><i class="icon-plus icon-white"></i>增加案例</button>
+    <button class="btn btn-primary"><i class="icon-plus icon-white"></i>新增成功案例</button>
     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
         <li>
-            <a href="/case/add">增加案例</a>
+            <a href="/case/add">新增成功案例</a>
         </li>
         <li>
-            <a href="#add_case_class" data-toggle="modal">增加案例分类</a>
+            <a href="#add_case_class" data-toggle="modal">新增案例分类</a>
         </li>
     </ul>
 </div>
@@ -33,7 +33,7 @@
 
 <div class="navbar" style="margin-bottom:0;">
     <div class="navbar-inner">
-        <p class="navbar-text">案例</p>
+        <p class="navbar-text">成功案例</p>
     </div>
 </div>
 {% load render_table from django_tables2 %}
@@ -48,7 +48,7 @@
 <div id="add_case_class" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="myModalLabel">增加案例分类</h3>
+        <h3 id="myModalLabel">新增案例分类</h3>
     </div>
     <div class="modal-body">
         <form id="add_case_class_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
