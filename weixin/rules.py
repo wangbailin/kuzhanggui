@@ -151,7 +151,7 @@ def help(rule, info):
         else:
             data['description'] = consts.DEFAULT_HELP_MSG
 
-        if trend_app.message_cover:
+        if helppage.message_cover:
             data['pic_url'] = siteurl + settings.STATIC_URL + helppage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
