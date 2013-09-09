@@ -32,5 +32,5 @@ urlpatterns = patterns('microsite.views',
     url(r'^menu/(?P<menu_id>\d+)/delete', 'menu_delete'),
     url(r'^menu', 'menu'),
     url(r'^preview/', include('microsite.previewurls')),
-    url(r'^delete/(?P<page_id>\d+)', 'delete_page')
+    url(r'^delete/(?P<page_id>\d+)', 'page_delete')
 )

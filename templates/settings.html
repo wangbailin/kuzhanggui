@@ -30,7 +30,7 @@
     <form id='page_form' action="/save/{{page.pk}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
         {% include page.template_name with form=f only %}
         <div class="form-bottom-buttons text-right">
-            {% if page.template_name == "content_page.html" or page.real_type == "link_page.html" %}
+            {% if page.template_name == "content_page.html" or page.template_name == "link_page.html" %}
             <a href="#delete_page" class="btn btn-danger" data-toggle="modal">删除页面</a>
             {% endif %}
             <button class="btn" id="tab-preview">预览</button>
@@ -45,10 +45,10 @@
         <h3>删除页面</h3>
     </div>
     <div class="modal-body">
-        <span>确认删除 <strong>{{ page.title }}</strong>?</span>
+        <span>确认删除页面 <strong>{{ page.tab_name }}</strong>?</span>
     </div>
     <div class="modal-footer">
-        <button href="/delete?{{ page.id }}" class="btn btn-danger">删除</button>
+        <a href="/delete/{{ page.pk }}" class="btn btn-danger">删除</a>
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>
