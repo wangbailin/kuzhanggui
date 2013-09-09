@@ -176,7 +176,7 @@ def generate_menu(request):
             wx_access_token = get_wx_access_token(wx_account.app_id, wx_account.app_secret)
 
         if wx_access_token is None:
-            dajax.add_data({ 'ret_code' : 1001, 'ret_msg' : '由于网络原因生成菜单失败，请稍后再试！' }, 'generateMenuCallback')
+            dajax.add_data({ 'ret_code' : 1001, 'ret_msg' : '微信系统繁忙，请重试生成菜单' }, 'generateMenuCallback')
         else:
             buttons = []
             for menu in wx_account.menu_set.all():
@@ -199,7 +199,7 @@ def generate_menu(request):
             if create_wx_menu(wx_access_token, menu_data):
                 dajax.add_data({ 'ret_code' : 0, 'ret_msg' : '' }, 'generateMenuCallback')
             else:
-                dajax.add_data({ 'ret_code' : 1002, 'ret_msg' : '生成菜单失败！' }, 'generateMenuCallback')
+                dajax.add_data({ 'ret_code' : 1002, 'ret_msg' : '微信系统繁忙，请重试生成菜单!' }, 'generateMenuCallback')
     else:
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '菜单项数量应该为2~3个！' }, 'generateMenuCallback')
 
