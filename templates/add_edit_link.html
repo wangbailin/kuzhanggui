@@ -2,6 +2,12 @@
 
 {% block title %}添加链接页面{% endblock %}
 
+{% block document_ready %}
+if ($('#id_message_description').text() == "") {
+    $('#id_message_description').text('点击查看全部内容。');   
+}
+{% endblock %}
+
 {% block content %}
 <div id="content" class="container">
     <div class="page-header">

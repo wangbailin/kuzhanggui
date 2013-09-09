@@ -193,8 +193,7 @@ class WeiboPageForm(ModelForm):
 class ContentPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
     content = forms.CharField(label=u'内容', widget=CKEditorWidget())
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, initial=consts.DEFAULT_CONTENT_COVER)
-    message_description = forms.CharField(label=u'消息内容', widget=forms.Textarea(), required=True, initial=consts.DEFAULT_MSG)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = ContentPage
         fields = (
@@ -209,8 +208,7 @@ class ContentPageForm(ModelForm):
 
 class LinkPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, initial=consts.DEFAULT_LINK_COVER)
-    message_description = forms.CharField(label=u'消息内容', widget=forms.Textarea(), required=True, initial=consts.DEFAULT_MSG)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
     class Meta:
         model = LinkPage
         fields = (
