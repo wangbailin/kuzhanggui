@@ -237,3 +237,62 @@ def content(request, item_id):
         content_page = form.save(commit=False)
         return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content})
 
+def trend_item(request):
+    form = TrendItemForm(request.POST, request.FILES, instance=None)
+    if not form.is_valid():
+        return HttpResponse("%s" % str(form.errors))
+    else:
+        trenditem = form.save(commit=False)
+        return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
+
+def case_item(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(CaseItem, pk=item_id)
+    else:
+        item = None
+    logger.debug("post %s" % str(request.POST))
+    form = CaseItemForm(request.POST, request.FILES, instance=item)
+    if not form.is_valid():
+        return HttpResponse("%s" % str(form.errors))
+    else:
+        caseitem = form.save(commit=False)
+        pics = []
+        if caseitem.case_pic1:
+            pics.append(caseitem.case_pic1)
+        if caseitem.case_pic2:
+            pics.append(caseitem.case_pic2)
+        if caseitem.case_pic3:
+            pics.append(caseitem.case_pic3)
+        if caseitem.case_pic4:
+            pics.append(caseitem.case_pic4)
+
+        logger.debug("pics %s" % str(pics))
+        logger.debug("pic1 %s" % caseitem.case_pic1)
+
+        return render(request, 'microsite/item.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro})
+
+def product_item(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(ProductItem, pk=item_id)
+    else:
+        item = None
+    form = ProductItemForm(request.POST, request.FILES, instance=item)
+    if not form.is_valid():
+        return HttpResponse("%s" % str(form.errors))
+    else:
+        pitem = form.save(commit=False)
+        pics = []
+        if pitem.product_pic1:
+            pics.append(pitem.product_pic1)
+        if pitem.product_pic2:
+            pics.append(pitem.product_pic2)
+        if pitem.product_pic3:
+            pics.append(pitem.product_pic3)
+        if pitem.product_pic4:
+            pics.append(pitem.product_pic4)
+
+        logger.debug("pics %s" % str(pics))
+
+        return render(request, 'microsite/item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro})
+
+

@@ -127,11 +127,7 @@
 
             this.$previewArea.show();
             this.$changeButton.show();
-            if(this.$element.data('required') === 'True') {
-                this.$removeButton.hide();
-            } else {
-                this.$removeButton.show();
-            }
+            this.$removeButton.show();
             this.$element.hide();
         } else {
             this.$previewArea.slideUp();

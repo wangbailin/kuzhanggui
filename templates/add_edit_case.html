@@ -8,7 +8,7 @@
         <h1>添加案例</h1>
     </div>
 
-    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <form id="case_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
         <div class="control-group">
             <label class="control-label" for="title"><span style="color:red;">*</span>{{form.title.label}}</label>
             <div class="controls">
@@ -53,9 +53,32 @@
             </div>
         </div>
         <div class="form-actions">
-            <button id="save" type="submit" class="btn btn-primary">保存</button>
+            <button id="preview" class="btn">预览</button>
+            <button id="save" class="btn btn-primary">保存</button>
             <button id="cancel" type="button" class="btn">取消</button>
         </div>
     </form>
 </div>
+<script>
+$('#preview').click(function() {
+    bootbox.alert("<iframe name='iframe_preview' width='360' height='640'></iframe>");
+    {% if item_id %}
+    $("#case_form").attr('action', "/preview/case_item/{{ item_id }}");
+    {% else %}
+    $("#case_form").attr('action', "/preview/case_item");
+    {% endif %}
+    $("#case_form").attr('target', 'iframe_preview');
+    $("#case_form").submit();
+    $('.bootbox').css('width', '400px');
+    $('.modal-body').css('height', '660px');
+});
+$("#save").click(function() {
+    $("#case_form").attr('action', "");
+    $("#case_form").attr('target', '_self');
+    $("#case_form").submit();
+});
+
+</script>
+
+
 {% endblock %}

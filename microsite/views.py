@@ -315,7 +315,7 @@ def add_edit_case(request, item_id=None):
         form = CaseItemForm(instance=item)
     form.fields['cls'].queryset = CaseClass.objects.filter(case_app=case_app)
 
-    return render(request, 'add_edit_case.html', {'form':form})
+    return render(request, 'add_edit_case.html', {'form':form, 'item_id':item_id})
 
 @login_required
 @case_class_verify('item_id')
@@ -384,7 +384,7 @@ def add_edit_product(request, item_id=None):
 
     form.fields['cls'].queryset = ProductClass.objects.filter(product_app=product_app)
 
-    return render(request, 'add_edit_product.html', {'form':form})
+    return render(request, 'add_edit_product.html', {'form':form, 'item_id':item_id})
 
 @login_required
 @product_class_verify('item_id')
