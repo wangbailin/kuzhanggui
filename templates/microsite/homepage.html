@@ -45,13 +45,17 @@
         </div>
 
         <div class="items">
-            {% for item in items %}
+            {% for row in rows %}
+            <div class="row">
+                {% for item in row %}
                 <div class="item span4">
                     <a href="{{ item.0 }}">
                         <img src="{{ item.1 }}" />
                     </a>
                     <p>{{ item.2 }}</p>
                 </div>
+                {% endfor %}
+            </div>
             {% empty %}
             {% endfor %}
         </div>

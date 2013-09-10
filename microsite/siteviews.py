@@ -70,6 +70,7 @@ def homepage(request, item_id):
     if homepage.pic4:
         pics.append((homepage.pic4, homepage.exp4))
     logger.debug("%s" % str(pics))
+    rows = []
     items = []
     pages = Page.objects.filter(wx=homepage.wx)
     for p in pages:
@@ -78,9 +79,14 @@ def homepage(request, item_id):
         subp = p.cast()
         if not is_enable(subp):
             continue
+        if len(items) >= 3:
+            rows.append(items)
+            items = []
         items.append(get_home_info(subp))
+    if len(items) > 0:
+        rows.append(items)
 
-    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'items':items})
+    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'rows':rows})
 
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
