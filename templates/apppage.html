@@ -1,3 +1,4 @@
+
 {% include "table_head_page.html" %}
 <table class="table">
     <tbody>
@@ -6,11 +7,5 @@
     </tbody>
 </table>
 
-{% include "table_head_weixin.html" %}
-<table class="table">
-    <tbody>
-    <tr><th><span style="color:red;">*</span>{{ form.message_cover.label }}</th><td>{{ form.message_cover }}{{ form.message_cover.errors }}</td></tr>
-    <tr><th><span style="color:red;">*</span>{{ form.message_description.label }}</th><td>{{ form.message_description }}<span class="help-inline">{{form.message_description.help_text}}</span>{{ form.message_description.errors }}</td></tr>
-    </tbody>
-</table>
+{% include "weixin_message_section.html" %}
 

@@ -18,14 +18,4 @@
     </tbody>
 </table>
 
-<div class="navbar" style="margin-bottom:0;"> 
-    <div class="navbar-inner">
-        <p class="navbar-text">微信消息设置</p>
-    </div>
-</div>
-<table class="table">
-    <tbody>
-    <tr><th><span style="color:red;">*</span>{{ form.message_cover.label }}</th><td>{{ form.message_cover }}{{ form.message_cover.errors }}</td></tr>
-    <tr><th><span style="color:red;">*</span>{{ form.message_description.label }}</th><td>{{ form.message_description }}<span class="help-inline">{{form.message_description.help_text}}</span>{{ form.message_description.errors }}</td></tr>
-    </tbody>
-<table>
+{% include "weixin_message_section.html" %}

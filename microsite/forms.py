@@ -48,7 +48,7 @@ class HomePageForm(ModelForm):
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
 
     class Meta:
         model = HomePage
@@ -68,7 +68,7 @@ class HomePageForm(ModelForm):
         )
 
 class IntroPageForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     content = forms.CharField(label=u'内容', widget=CKEditorWidget()) 
     class Meta:
         model = IntroPage
@@ -81,7 +81,7 @@ class IntroPageForm(ModelForm):
         )
 
 class JoinPageForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     content = forms.CharField(label=u'内容', widget=CKEditorWidget()) 
     class Meta:
         model = JoinPage
@@ -94,7 +94,7 @@ class JoinPageForm(ModelForm):
         )
 
 class ContactAppForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     class Meta:
         model = ContactApp
         fields = (
@@ -104,7 +104,7 @@ class ContactAppForm(ModelForm):
             'message_description',
         )
 class TrendsAppForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     class Meta:
         model = TrendsApp
         fields = (
@@ -152,7 +152,7 @@ class ContactPeopleForm(ModelForm):
         )
 
 class CulturePageForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     content = forms.CharField(label='内容', widget=CKEditorWidget()) 
     class Meta:
         model = CulturePage 
@@ -165,7 +165,7 @@ class CulturePageForm(ModelForm):
         )
 
 class BusinessPageForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     content = forms.CharField(label='内容', widget=CKEditorWidget()) 
     class Meta:
         model = BusinessPage 
@@ -178,7 +178,7 @@ class BusinessPageForm(ModelForm):
         )
 
 class HelpPageForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     content = forms.CharField(label='内容', widget=CKEditorWidget()) 
     class Meta:
         model = BusinessPage 
@@ -192,7 +192,7 @@ class HelpPageForm(ModelForm):
 
 
 class WeiboPageForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     class Meta:
         model = WeiboPage 
         fields = (
@@ -206,7 +206,7 @@ class WeiboPageForm(ModelForm):
 class ContentPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
     content = forms.CharField(label=u'内容', widget=CKEditorWidget())
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     class Meta:
         model = ContentPage
         fields = (
@@ -221,7 +221,7 @@ class ContentPageForm(ModelForm):
 
 class LinkPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput())
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     class Meta:
         model = LinkPage
         fields = (
@@ -234,7 +234,7 @@ class LinkPageForm(ModelForm):
         )
 
 class CaseAppForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     class Meta:
         model = CaseApp
         fields = (
@@ -245,7 +245,7 @@ class CaseAppForm(ModelForm):
         )
 
 class ProductAppForm(ModelForm):
-    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True)
+    message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     class Meta:
         model = ProductApp
         fields = (
