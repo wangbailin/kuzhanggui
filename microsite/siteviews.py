@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response, get_object_or_404, render, redi
 from django.http import HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+import datetime
 
 from rocket import settings
 from models import *
@@ -111,7 +112,11 @@ def trend(request, item_id):
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
-        items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, True, 'http://r.limijiaoyin.com/media/ckeditor/2013/08/30/weixinapp2.png') )
+        cover_url = settings.STATIC_URL + consts.DEFAULT_TRENDITEM_COVER
+        if i.cover:
+            cover_url = i.cover.url
+        new = (datetime.date.today() - i.pub_time) <= datetime.timedelta(days=7)
+        items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items})
 
 def trenditem(request, item_id):

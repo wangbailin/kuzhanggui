@@ -18,12 +18,15 @@
                 <a href="{{ item.1 }}">
                     <div class="trend card">
                         <img src="{{ item.4 }}" />
+                        {% if item.3 %}
+                            <div class="new"></div>
+                        {% endif %}
                         <div class="trend-meta">
                             <h4>{{ item.0 }}</h4>
                             <p>{{ item.2 | date:"Y-m-d" }}</p>
                         </div>
                         <div class="trend-abs">
-                            <span>拥有每日答题，针锋相对，专题赛等功能的百度“寻找搜神”已经顺利上线了。</span>
+                            <span>{{ item.5 }}</span>
                         </div>
                     </div>
                 </a>

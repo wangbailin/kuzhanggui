@@ -84,6 +84,7 @@ body {
 
 .trends .trend .trend-meta h4 {
     margin-top: 0px;
+    margin-right: 20px;
 }
 
 .trends .trend .trend-meta p {
@@ -95,6 +96,7 @@ body {
     margin-top: 6px;
     font-size: 12px;
     line-height: 18px;
+    clear: both;
 }
 
 .trends .trend .new {
@@ -104,6 +106,7 @@ body {
     float: right;
     margin-top: -8px;
     margin-right: -8px;
+    background-size: 30px 30px;
 }
 
 .trends .empty {
