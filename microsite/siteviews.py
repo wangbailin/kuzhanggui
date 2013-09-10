@@ -265,7 +265,8 @@ def telephone(request, item_id):
     infos = []
     for item in items:
         contact_peoples = ContactPeople.objects.filter(contact_item=item)
-        infos.append( (item, contact_peoples) )
+        if contact_peoples.count() > 0:
+            infos.append( (item, contact_peoples) )
     return render(request, 'microsite/telephone.html', {'title':app._get_tab_name(), 'infos':infos})
 
 def pic(request):
