@@ -40,18 +40,24 @@
                 {% endif %}
             {% endfor %}
             </div>
+            {% if pics|length > 1 %}
             <a class="carousel-control left" href="#focus" data-slide="prev">&lsaquo;</a>
             <a class="carousel-control right" href="#focus" data-slide="next">&rsaquo;</a>
+            {% endif %}
         </div>
 
         <div class="items">
-            {% for item in items %}
+            {% for row in rows %}
+            <div class="row">
+                {% for item in row %}
                 <div class="item span4">
                     <a href="{{ item.0 }}">
                         <img src="{{ item.1 }}" />
                     </a>
                     <p>{{ item.2 }}</p>
                 </div>
+                {% endfor %}
+            </div>
             {% empty %}
             {% endfor %}
         </div>

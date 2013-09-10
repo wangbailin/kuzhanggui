@@ -14,6 +14,7 @@ DEFAULT_HELP_COVER = 'img/help_message.png'
 DEFAULT_CONTENT_COVER = 'img/content_message.png'
 DEFAULT_LINK_COVER = 'img/link_message.png'
 DEFAULT_FINDME_COVER = 'img/findme_message.png'
+DEFAULT_TRENDITEM_COVER = 'img/default_trenditem_cover.png'
 DEFAULT_COVER = "img/empty.png"
 
 DEFAULT_HOMEPAGE_MSG = u'点击查看%s微官网。'

@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response, get_object_or_404, render, redi
 from django.http import HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+import datetime
 
 from rocket import settings
 from models import *
@@ -69,6 +70,7 @@ def homepage(request, item_id):
     if homepage.pic4:
         pics.append((homepage.pic4, homepage.exp4))
     logger.debug("%s" % str(pics))
+    rows = []
     items = []
     pages = Page.objects.filter(wx=homepage.wx)
     for p in pages:
@@ -77,9 +79,14 @@ def homepage(request, item_id):
         subp = p.cast()
         if not is_enable(subp):
             continue
+        if len(items) >= 3:
+            rows.append(items)
+            items = []
         items.append(get_home_info(subp))
+    if len(items) > 0:
+        rows.append(items)
 
-    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'items':items})
+    return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'rows':rows})
 
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
@@ -111,7 +118,11 @@ def trend(request, item_id):
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
-        items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, True, 'http://r.limijiaoyin.com/media/ckeditor/2013/08/30/weixinapp2.png') )
+        cover_url = settings.STATIC_URL + consts.DEFAULT_TRENDITEM_COVER
+        if i.cover:
+            cover_url = i.cover.url
+        new = (datetime.date.today() - i.pub_time) <= datetime.timedelta(days=7)
+        items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items})
 
 def trenditem(request, item_id):
@@ -254,7 +265,8 @@ def telephone(request, item_id):
     infos = []
     for item in items:
         contact_peoples = ContactPeople.objects.filter(contact_item=item)
-        infos.append( (item, contact_peoples) )
+        if contact_peoples.count() > 0:
+            infos.append( (item, contact_peoples) )
     return render(request, 'microsite/telephone.html', {'title':app._get_tab_name(), 'infos':infos})
 
 def pic(request):

@@ -17,12 +17,11 @@ body {
 }
 
 .items {
-    text-align: center;
     margin-bottom: 8px;
 }
 
 .items .item {
-    width: 95px;
+    width: 32%;
     height: 118px;
     display: inline-block;
     text-align: center;
@@ -30,13 +29,13 @@ body {
 
 @media (min-width: 340px) { 
     .items .item {
-        margin: 8px;
+        margin: 8px 0px;
     }
 }
 
 @media (max-width: 340px) {
     .items .item {
-        margin: 4px;
+        margin: 4px 0px;
     }
 }
 
@@ -48,6 +47,7 @@ body {
 
 .items .item img {
     width: 95px;
+    height: 118px;
 }
 
 .content-page {
@@ -79,11 +79,12 @@ body {
 
 .trends .trend .trend-meta {
     margin-left: 60px;
-    height: 52px;
+    min-height: 52px;
 }
 
 .trends .trend .trend-meta h4 {
     margin-top: 0px;
+    margin-right: 20px;
 }
 
 .trends .trend .trend-meta p {
@@ -104,6 +105,7 @@ body {
     float: right;
     margin-top: -8px;
     margin-right: -8px;
+    background-size: 30px 30px;
 }
 
 .trends .empty {

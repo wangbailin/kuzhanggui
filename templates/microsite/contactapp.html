@@ -79,6 +79,7 @@ map.centerAndZoom(point, 15);
         var point = new BMap.Point({{ item.0.lng }}, {{ item.0.lat }});
         map.centerAndZoom(point, 15);
         console.log("click {{ forloop.counter0 }}");
+        $('html,body').animate({scrollTop:0},'slow');
     });
 
     marker = new BMap.Marker(new BMap.Point( {{ item.0.lng }}, {{ item.0.lat }}));
