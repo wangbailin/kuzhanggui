@@ -88,10 +88,16 @@ def add_case_class(request, form):
     form = AddCaseClassForm(deserialize_form(form))
  
     if form.is_valid():
-        CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
-        dajax.remove_css_class('#add_case_class_form .control-group', 'error')  
-        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addCaseClassCallback')
-        dajax.redirect(form.cleaned_data.get('tab_id'))
+        if len(CaseClass.objects.filter(case_app_id=form.cleaned_data.get('tab_id'))) >= 4:
+            dajax.remove_css_class('#add_case_class_form .control-group', 'error')
+            for error in form.errors:
+                dajax.add_css_class('#%s' % error, 'error')
+            dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '最多只能添加4个分类！' }, 'addCaseClassCallback')
+        else:
+            CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
+            dajax.remove_css_class('#add_case_class_form .control-group', 'error')  
+            dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addCaseClassCallback')
+            dajax.redirect(form.cleaned_data.get('tab_id'))
 
     else:
         dajax.remove_css_class('#add_case_class_form .control-group', 'error')
@@ -107,10 +113,16 @@ def add_product_class(request, form):
     form = AddProductClassForm(deserialize_form(form))
 
     if form.is_valid():
-        ProductClass.objects.create(name=form.cleaned_data.get('name'), product_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
-        dajax.remove_css_class('#add_product_class_form .control-group', 'error')
-        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addProductClassCallback')
-        dajax.redirect(form.cleaned_data.get('tab_id'))
+        if len(ProductClass.objects.filter(product_app_id=form.cleaned_data.get('tab_id'))) >= 4:
+            dajax.remove_css_class('#add_product_class_form .control-group', 'error')
+            for error in form.errors:
+                dajax.add_css_class('#%s' % error, 'error')
+            dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '最多只能添加4个分类！' }, 'addProductClassCallback')
+        else:
+            ProductClass.objects.create(name=form.cleaned_data.get('name'), product_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
+            dajax.remove_css_class('#add_product_class_form .control-group', 'error')
+            dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addProductClassCallback')
+            dajax.redirect(form.cleaned_data.get('tab_id'))
 
     else:
         dajax.remove_css_class('#add_product_class_form .control-group', 'error')
