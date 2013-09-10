@@ -9,6 +9,7 @@ import datetime
 
 from rocket import settings
 from models import *
+from microsite import consts
 logger = logging.getLogger('default')
 
 def is_enable(subpage):
@@ -34,23 +35,50 @@ def is_enable(subpage):
 def get_home_info(subpage):
     site_base_url = '/microsite'
     if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
-        return (site_base_url + "/intro/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_intro.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/intro/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/intro/%d" % subpage.pk, consts.DEFAULT_INTRO_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return (site_base_url + "/business/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_business.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/business/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/business/%d" % subpage.pk, consts.DEFAULT_BUSINESS_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return (site_base_url + "/trend/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_news.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/trend/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/trend/%d" % subpage.pk, consts.DEFAULT_NEWS_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
-        return (site_base_url + "/join/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_joinus.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/join/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/join/%d" % subpage.pk, consts.DEFAULT_JOIN_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
-        return (site_base_url + "/contact/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_contact.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/contact/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/contact/%d" % subpage.pk, consts.DEFAULT_CONTACT_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return (subpage.url, settings.STATIC_URL + "/themes/default/home_weibo.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (subpage.url, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (subpage.url, consts.DEFAULT_WEIBO_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
-        return (site_base_url + "/case/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_case.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/case/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/case/%d" % subpage.pk, consts.DEFAULT_CASE_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
-        return (site_base_url + "/product/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_product.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/product/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/product/%d" % subpage.pk, consts.DEFAULT_PRODUCT_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(HelpPage):
-        return (site_base_url + "/help/%d" % subpage.pk, settings.STATIC_URL + "/themes/default/home_help.png", subpage._get_tab_name())
+        if subpage._get_icon:
+            return (site_base_url + "/help/%d" % subpage.pk, subpage._get_icon, subpage._get_tab_name())
+        else:
+            return (site_base_url + "/help/%d" % subpage.pk, consts.DEFAULT_HELP_ICON, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(LinkPage):
         return (site_base_url + "/link/%d" % subpage.pk, subpage.icon.url, subpage._get_tab_name())
     elif subpage.real_type == ContentType.objects.get_for_model(ContentPage):
