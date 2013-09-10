@@ -2,10 +2,28 @@
 
 {% block app %}
 <script type="text/javascript">
+$(document).ready(function() {
+$('#backend_intro_messagecover').popover({
+    title: '消息封面帮助',
+    html: true,
+    placement: 'top',
+    trigger: 'hover',
+    content: '<img src="{{ STATIC_URL }}/img/backend_intro_messagecover.png"/>',
+    offset: '300',
+    });
+$('#backend_intro_messagecontent').popover({
+    title: '消息内容帮助',
+    html: true,
+    placement: 'top',
+    trigger: 'hover',
+    content: '<img src="{{ STATIC_URL }}/img/backend_intro_messagecontent.png"/>',
+    offset: '300',
+    });
 
+});
 </script>
 <div class="btn-group" style="margin-bottom:10px;">
-    <button class="btn btn-primary"><i class="icon-plus icon-white"></i>新建页面</button>
+    <button class="btn btn-primary"><i class="icon-plus icon-white"></i>新增页面</button>
     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
         <span class="caret"></span>
     </button>

@@ -22,8 +22,13 @@
     margin-bottom: 10px;
 }
 
+#page_form .table th{
+    text-align: left;
+    vertical-align: middle;
+    padding: 10px 20px;
+    width:15%;
+}
 .table th{
-    width: 15%;
     text-align: left;
     vertical-align: middle;
     padding: 10px 20px;
