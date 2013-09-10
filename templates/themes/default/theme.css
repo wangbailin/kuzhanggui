@@ -79,7 +79,7 @@ body {
 
 .trends .trend .trend-meta {
     margin-left: 60px;
-    height: 52px;
+    min-height: 52px;
 }
 
 .trends .trend .trend-meta h4 {
@@ -96,7 +96,6 @@ body {
     margin-top: 6px;
     font-size: 12px;
     line-height: 18px;
-    clear: both;
 }
 
 .trends .trend .new {
