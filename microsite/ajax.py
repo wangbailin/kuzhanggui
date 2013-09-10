@@ -185,10 +185,12 @@ def generate_menu(request):
                     product_app = menu.page.cast()
                     for cls in product_app.productclass_set.all():
                         sub_buttons.append(u'{ "type": "click", "name": "%s", "key": "submenu_%d_%d" }' % (cls.name, menu.id, cls.id))
+                    sub_buttons.append(u'{ "type": "click", "name": "全部产品", "key": "menu_%d" }' % (menu.id))
                 elif menu.page.real_type == ContentType.objects.get_for_model(CaseApp):
                     case_app = menu.page.cast()
                     for cls in case_app.caseclass_set.all():
                         sub_buttons.append(u'{ "type": "click", "name": "%s", "key": "submenu_%d_%d" }' % (cls.name, menu.id, cls.id))
+                    sub_buttons.append(u'{ "type": "click", "name": "全部成功案例", "key": "menu_%d" }' % (menu.id))
 
                 if len(sub_buttons) > 0:
                     buttons.append(u'{ "type": "click", "name": "%s", "sub_button": [%s] }' % (menu.name, ','.join(sub_buttons)))
