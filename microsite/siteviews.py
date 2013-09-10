@@ -138,15 +138,12 @@ def case(request, item_id, class_id=None):
     if class_id:
         caseclass = get_object_or_404(CaseClass, pk=class_id)
     else:
-        if len(caseclasses) == 0:
-            caseclass = None
-        else:
-            caseclass = caseclasses[0]
+        caseclass = None
     
     if caseclass is not None:
         caseitems = CaseItem.objects.filter(cls=caseclass)
     else:
-        caseitems = []
+        caseitems = caseapp.caseitem_set.all()
 
     rows = []
     items = []
@@ -169,7 +166,7 @@ def case(request, item_id, class_id=None):
     if len(items) > 0:
         rows.append(items)
 
-    return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows, 'caseclass':caseclass, 'caseclasses':caseclasses})
+    return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows, 'caseclass':caseclass, 'caseclasses':caseclasses, 'app':caseapp})
 
 def caseitem(request, item_id):
     logger.debug("caseitem %d", item_id)
@@ -199,15 +196,12 @@ def product(request, item_id, class_id=None):
     if class_id:
         pclass = get_object_or_404(ProductClass, pk=class_id)
     else:
-        if len(pclasses) == 0:
-            pclass = None
-        else:
-            pclass = pclasses[0]
+        pclass = None
 
     if pclass is not None:
         pitems = ProductItem.objects.filter(cls=pclass)
     else:
-        pitems = []
+        pitems = papp.productitem_set.all()
 
     rows = []
     items = []
@@ -230,7 +224,7 @@ def product(request, item_id, class_id=None):
     if len(items) > 0:
         rows.append(items)
 
-    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'rows':rows, 'pclass':pclass, 'pclasses':pclasses})
+    return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'rows':rows, 'pclass':pclass, 'pclasses':pclasses, 'app' : papp})
 
 def productitem(request, item_id):
     logger.debug("product item %d", item_id)

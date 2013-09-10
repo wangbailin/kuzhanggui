@@ -17,17 +17,20 @@
             <div class="navbar-inner">
                 <ul class="nav">
                     <li class="dropdown">
-                        {% if pclass %}
                         <a id="product-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+                            {% if pclass %}
                             {{ pclass.name }}
+                            {% else %}
+                            全部产品
+                            {% endif %}
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="product-category">
+                            <li><a href="/microsite/product/{{ app.pk }}/">全部产品</a></li>
                             {% for c in pclasses %}
-                            <li><a href="/microsite/product/{{ c.product_app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
+                            <li><a href="/microsite/product/{{ app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
                             {% endfor %}
                         </ul>
-                        {% endif %}
                     </li>
                 </ul>
             </div>

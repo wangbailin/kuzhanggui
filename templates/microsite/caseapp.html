@@ -17,17 +17,20 @@
             <div class="navbar-inner">
                 <ul class="nav">
                     <li class="dropdown">
-                        {% if caseclass %}
                         <a id="case-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+                            {% if caseclass %}
                             {{ caseclass.name }}
+                            {% else %}
+                            全部成功案例
+                            {% endif %}
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="case-category">
+                            <li><a href="/microsite/case/{{ app.pk }}/">全部成功案例</a></li>
                             {% for c in caseclasses %}
-                            <li><a href="/microsite/case/{{ c.case_app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
+                            <li><a href="/microsite/case/{{ app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
                             {% endfor %}
                         </ul>
-                        {% endif %}
                     </li>
                 </ul>
             </div>
