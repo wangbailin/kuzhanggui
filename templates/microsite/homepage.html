@@ -40,8 +40,10 @@
                 {% endif %}
             {% endfor %}
             </div>
+            {% if pics|length > 1 %}
             <a class="carousel-control left" href="#focus" data-slide="prev">&lsaquo;</a>
             <a class="carousel-control right" href="#focus" data-slide="next">&rsaquo;</a>
+            {% endif %}
         </div>
 
         <div class="items">
