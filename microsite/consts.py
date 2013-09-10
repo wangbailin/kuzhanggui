@@ -28,3 +28,15 @@ DEFAULT_CONTACT_MSG = u'点击查看公司联系方式。'
 DEFAULT_JOIN_MSG = u'点击查看公司最新招聘信息。'
 DEFAULT_HELP_MSG = u'点击查看新手指导。'
 DEFAULT_MSG = "点击查看全部内容。"
+
+DEFAULT_INTRO_ICON = 'themes/default/home_intro.png'
+DEFAULT_BUSINESS_ICON = 'themes/default/home_business.png'
+DEFAULT_NEWS_ICON = 'themes/default/home_news.png'
+DEFAULT_PRODUCT_ICON = 'themes/default/home_product.png'
+DEFAULT_CASE_ICON = 'themes/default/home_case.png'
+DEFAULT_WEIBO_ICON = 'themes/default/home_weibo.png'
+DEFAULT_CONTACT_ICON = 'themes/default/home_contact.png'
+DEFAULT_JOIN_ICON = 'themes/default/home_joinus.png'
+DEFAULT_HELP_ICON = 'themes/default/home_help.png'
+
+

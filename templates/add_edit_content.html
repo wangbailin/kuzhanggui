@@ -24,7 +24,7 @@ if ($('#id_message_description').text() == "") {
         <div class="control-group">
             <label class="control-label" for="icon"><span style="color:red;">*</span>{{form.icon.label}}</label>
             <div class="controls">
-                {{ form.icon }}{{ form.icon.errors }}
+                {{ form.icon }}<span class="help-inline">{{form.icon.help_text}}<a style="margin-left:10px;" id="icon_help" rel="popover"><i class="icon-question-sign"></i>帮助</a></span>{{ form.icon.errors }}
             </div>
         </div>
         <div class="control-group">

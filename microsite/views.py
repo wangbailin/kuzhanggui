@@ -18,8 +18,6 @@ from microsite.forms import MenuForm
 
 from wx_match import *
 
-
-
 logger = logging.getLogger('default')
 
 def get_tabs(request):

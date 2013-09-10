@@ -19,7 +19,13 @@ $('#backend_intro_messagecontent').popover({
     content: '<img src="{{ STATIC_URL }}/img/backend_intro_messagecontent.png"/>',
     offset: '300',
     });
-
+$('#icon_help').popover({
+    title: '首页图标帮助',
+    html: true,
+    placement: 'left',
+    trigger: 'hover',
+    content: '<img src="{{ STATIC_URL }}/img/backend_intro_icon.png"/>',
+    });
 });
 </script>
 <div class="btn-group" style="margin-bottom:10px;">

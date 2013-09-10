@@ -16,6 +16,7 @@ class Page(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
     tab_name = models.CharField(u'页面名称', max_length=20)
     template_name = models.CharField(u'template的文件路径', max_length=260)
+    icon = models.ImageField(u"图标",upload_to='upload/', help_text=u"建议图片大小为190px*235px", max_length=255, blank=True)
     message_cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
     message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000, blank=True)
 
@@ -397,7 +398,6 @@ class WeiboPage(Page):
 class ContentPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
-    icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
     content = models.TextField(u'内容')
     
     def save(self, *args, **kwargs):
@@ -418,7 +418,6 @@ class ContentPage(Page):
 class LinkPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
-    icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
     url = models.URLField(u'链接地址', max_length=200)
     
     def save(self, *args, **kwargs):
@@ -652,3 +651,24 @@ def get_default_cover(page):
         return consts.DEFAULT_CONTENT_COVER
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         return consts.DEFAULT_LINK_COVER
+
+def get_default_icon(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return consts.DEFAULT_CONTACT_ICON
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return consts.DEFAULT_NEWS_ICON
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return consts.DEFAULT_CASE_ICON
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return consts.DEFAULT_PRODUCT_ICON
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return consts.DEFAULT_INTRO_ICON
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return consts.DEFAULT_BUSINESS_ICON
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return consts.DEFAULT_JOIN_ICON
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return consts.DEFAULT_WEIBO_ICON
+    elif page.real_type == ContentType.objects.get_for_model(HelpPage):
+        return consts.DEFAULT_HELP_ICON
+
