@@ -45,7 +45,7 @@ class RegisterForm(forms.Form):
         new_account = Account.objects.create(user=new_user, 
             phone=self.cleaned_data['phone'], 
             qq=self.cleaned_data['qq'],
-            expired_time=datetime.datetime.now() + datetime.timedelta(weeks=4))
+            expired_time=datetime.datetime.now() + datetime.timedelta(weeks=8))
 
         # add new account as trial account
         new_account.user.groups = Group.objects.filter(name=u'试用账户')
