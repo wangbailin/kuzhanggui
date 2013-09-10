@@ -2,25 +2,50 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <title>{{ title }}</title>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
     <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
 </head>
 <style type="text/css">
-html{height:100%}
-body{height:100%;margin:0px;padding:0px}
-#baidumap{height:100%}
+html {
+    height:100%;
+}
+body {
+    height:100%;
+    margin:0px;
+    padding:0px;
+}
+#address {
+    position:fixed; 
+    bottom:0px; 
+    background-color: rgba(0,0,0,0.7); 
+    width:100%; 
+    padding: 8px; 
+    color: #e8e8e8;
+}
+#address p {
+    margin: 0px;
+}
+#address .phone {
+    position: fixed;
+    bottom: 7px;
+    right: 30%;
+}
+#map {
+    height:100%;
+}
 /*baidu map conflict with bootstrap, this is a workaround*/
-#baidumap img {
+#map img {
     max-width:none;
 }
 </style>
 <body>
-<div id="baidumap"></div>
-<div>
-<p>{{ item.name }}</p>
+<div id="map"></div>
+<div id="address">
+<h4>{{ item.name }}</h4>
 <p>地址:{{ item.address }}</p>
 {% if people %}
 <p>联系电话：{{ people.phone }}({{ people.name }})</p>
@@ -29,7 +54,7 @@ body{height:100%;margin:0px;padding:0px}
 </div>
 </body>
 <script>
-var map = new BMap.Map("baidumap");
+var map = new BMap.Map("map");
 map.addControl(new BMap.NavigationControl());
 var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
 var startpoint = new BMap.Point({{ cur_lng }}, {{ cur_lat }});
