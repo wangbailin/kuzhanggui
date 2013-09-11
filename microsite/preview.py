@@ -36,6 +36,8 @@ def page(request, page_id):
         return link(request, page_id)
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
         return content(request, page_id)
+    elif page.real_type == ContentType.objects.get_for_model(HelpPage):
+        return helppage(request, page_id)
 
 def deal_with_errors(form):
     msg = ''
@@ -166,6 +168,16 @@ def content(request, item_id = None):
             content_page.wx = wx
 
         return content_(request, content_page)
+
+def helppage(request, item_id):
+    page = get_object_or_404(HelpPage, pk=item_id)
+    form = HelpPageForm(request.POST, request.FILES, instance=page)
+    if form.is_valid():
+        helppage = form.save(commit=False)
+        return help_(request, helppage)
+    else:
+        return deal_with_errors(form)        
+
 
 def trend_item(request):
     form = TrendItemForm(request.POST, request.FILES, instance=None)
