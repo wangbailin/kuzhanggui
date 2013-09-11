@@ -242,9 +242,7 @@ def telephone(request, item_id):
     return render(request, 'microsite/telephone.html', {'title':app._get_tab_name(), 'infos':infos, 'theme': site_templates[app.wx.wsite_template].site_template})
 
 def pic(request):
-    account = Account.objects.get(user=request.user)
-    wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
-    return render(request, 'microsite/pic.html', {'title':request.GET['title'], 'path' : request.GET['p'], 'theme': site_templates[wx_account.wsite_template].site_template});
+    return render(request, 'microsite/pic.html', {'title':request.GET['title'], 'path' : request.GET['p'], 'theme': request.GET['t']});
 
 
 def contact_map(request, item_id, cur_lat, cur_lng):
