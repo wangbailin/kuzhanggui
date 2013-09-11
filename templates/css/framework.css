@@ -51,9 +51,10 @@
 }
 
 .table input[type="file"] {
-    width: 52%;
+    width: 160px;
 }
 
 #margin_bottom {
     margin-bottom: 7px;
 }
+
