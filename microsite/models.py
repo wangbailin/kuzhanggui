@@ -655,3 +655,22 @@ def get_default_icon(page):
         default_icon = consts.DEFAULT_HELP_ICON
     return default_icon % site_templates[page.wx.wsite_template].site_template
 
+
+def page_is_enable(subpage):
+    if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
+        return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
+        return subpage.enable
+    return True

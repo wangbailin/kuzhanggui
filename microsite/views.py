@@ -217,9 +217,7 @@ def add_edit_trend(request, item_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                user = auth.get_user(request)
-                account = Account.objects.get(user=user)
-                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 trends_app = TrendsApp.objects.get(wx=wx)
                 item.trend = trends_app
             item.pub_time = datetime.now()
@@ -250,9 +248,7 @@ def add_edit_link_page(request, link_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                user = auth.get_user(request)
-                account = Account.objects.get(user=user)
-                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 item.enable = True
                 item.wx = wx
             item.save()
@@ -275,11 +271,10 @@ def add_edit_content_page(request, content_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                user = auth.get_user(request)
-                account = Account.objects.get(user=user)
-                wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 item.enable = True
                 item.wx = wx
+            logger.debug("icon url %s" % item.icon.url)
             item.save()
             return redirect('/settings')
         else:
@@ -371,8 +366,6 @@ def add_edit_product(request, item_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                user = auth.get_user(request)
-                account = Account.objects.get(user=user)
                 item.product_app= product_app
             item.pub_time = datetime.now()
             item.save()

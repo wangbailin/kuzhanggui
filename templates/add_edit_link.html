@@ -14,7 +14,7 @@ if ($('#id_message_description').text() == "") {
         <h1>添加链接页面</h1>
     </div>
 
-    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <form id='link_form' class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
         <div class="control-group">
             <label class="control-label" for="title"><span style="color:red;">*</span>{{form.title.label}}</label>
             <div class="controls">
@@ -48,8 +48,45 @@ if ($('#id_message_description').text() == "") {
             </div>
         </div>
         <div class="form-actions">
-            <button id="save" type="submit" class="btn btn-primary">保存</button>
+            <button id="preview"  class="btn">预览</button>
+            <button id="save" class="btn btn-primary">保存</button>
         </div>
     </form>
 </div>
+
+<style type="text/css">
+.leftbutton {
+    float:left;
+}
+</style>
+
+<script>
+start_preview_history_length = 0;
+function preview_back() {
+    if (iframe_preview.history.length > start_preview_history_length) {
+        //can't not solve all problems, we can't get the index of current page in history
+        iframe_preview.history.back();
+    }
+    return false;
+}
+$('#preview').click(function() {
+    bootbox.dialog("<iframe style='margin-left:auto margin-right:auto' id='iframe_preview' name='iframe_preview' width='100%' height='640'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}]);
+    $("#link_form").attr('action', "/preview/link_page");
+    $("#link_form").attr('target', 'iframe_preview');
+    $("#link_form").submit();
+    $('.bootbox').css('width', '400px');
+    $('.modal-body').css('height', '660px');
+    start_preview_history_length = iframe_preview.history.length;
+});
+$("#save").click(function() {
+    $("#link_form").attr('action', "");
+    $("#link_form").attr('target', '_self');
+    $("#link_form").submit();
+    window.opener=null;
+    window.close();
+});
+
+</script>
+
+
 {% endblock %}

@@ -14,35 +14,13 @@ from framework.models import Account, WXAccount
 from site_template import site_templates
 logger = logging.getLogger('default')
 
-def is_enable(subpage):
-    if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
-        return subpage.enable
-    return True
-
-
 def get_home_info(subpage):
     if subpage.real_type == ContentType.objects.get_for_model(WeiboPage) or subpage.real_type == ContentType.objects.get_for_model(LinkPage):
         return (subpage.url, subpage._get_icon(), subpage._get_tab_name())
     else:
         return (get_page_url(subpage), subpage._get_icon(), subpage._get_tab_name())
 
-            
-def homepage(request, item_id):
-    homepage = get_object_or_404(HomePage, pk=item_id)
+def homepage_(request, homepage):
     pics = []
     exps = []
     if homepage.pic1:
@@ -61,7 +39,7 @@ def homepage(request, item_id):
         if p.real_type == homepage.real_type:
             continue
         subp = p.cast()
-        if not is_enable(subp):
+        if not page_is_enable(subp):
             continue
         if len(items) >= 3:
             rows.append(items)
@@ -72,32 +50,52 @@ def homepage(request, item_id):
 
     return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'rows':rows, 'theme': site_templates[homepage.wx.wsite_template].site_template})
 
+            
+def homepage(request, item_id):
+    homepage = get_object_or_404(HomePage, pk=item_id)
+    return homepage_(request, homepage)
+    
+def intro_(request, intropage):
+    return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content, 'theme': site_templates[intropage.wx.wsite_template].site_template})
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
-    return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content, 'theme': site_templates[intropage.wx.wsite_template].site_template})
+    return intro_(request, intropage)
 
+def business_(request, business_page):
+    return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content, 'theme': site_templates[business_page.wx.wsite_template].site_template})
+    
 def business(request, item_id):
     business_page = get_object_or_404(BusinessPage, pk=item_id)
-    return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content, 'theme': site_templates[business_page.wx.wsite_template].site_template})
+    return business_(request, business_page)
 
+def join_(request, joinpage):
+    return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content, 'theme': site_templates[joinpage.wx.wsite_template].site_template})
+    
 def join(request, item_id):
     joinpage = get_object_or_404(JoinPage, pk=item_id)
-    return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content, 'theme': site_templates[joinpage.wx.wsite_template].site_template})
+    return join_(request, joinpage)
+
+def help_(request, helppage):
+    return render(request, 'microsite/contentpage.html', {'title':helppage.title, 'content':helppage.content, 'theme': site_templates[helppage.wx.wsite_template].site_template})
 
 def help(request, item_id):
     helppage = get_object_or_404(HelpPage, pk=item_id)
-    return render(request, 'microsite/contentpage.html', {'title':helppage.title, 'content':helppage.content, 'theme': site_templates[helppage.wx.wsite_template].site_template})
+    return help_(request, helppage)
 
+def content_(request, content_page):
+    return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content, 'theme': site_templates[content_page.wx.wsite_template].site_template})
 def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
-    return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content, 'theme': site_templates[content_page.wx.wsite_template].site_template})
+    return content_(request, content_page)
+
+def weibo_(request, weibopage):
+    return render(request, 'microsite/weibopage.html', {'title':weibopage.title, 'url':weibopage.url})
 
 def weibo(request, item_id):
     weibopage = get_object_or_404(WeiboPage, pk=item_id)
-    return render(request, 'microsite/weibopage.html', {'title':weibopage.title, 'url':weibopage.url})
+    return weibo_(request, weibopage)
 
-def trend(request, item_id):
-    trendapp = get_object_or_404(TrendsApp, pk=item_id)
+def trend_(request, trendapp):
     trenditems = TrendItem.objects.filter(trend=trendapp).order_by("-pub_time")
     items = []
     for i in trenditems:
@@ -109,14 +107,19 @@ def trend(request, item_id):
         items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items, 'theme': site_templates[trendapp.wx.wsite_template].site_template})
 
+
+def trend(request, item_id):
+    trendapp = get_object_or_404(TrendsApp, pk=item_id)
+    return trend_(request, trendapp)
+
+def trenditem_(request, trenditem):
+    return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8"), 'theme': site_templates[trenditem.trend.wx.wsite_template].site_template})
 def trenditem(request, item_id):
     trenditem = get_object_or_404(TrendItem, pk=item_id)
     logger.debug("content %s" % trenditem.content)
-    return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8"), 'theme': site_templates[trenditem.trend.wx.wsite_template].site_template})
+    return trenditem_(request, trenditem)
 
-def case(request, item_id, class_id=None):
-    logger.debug("case %d" % int(item_id))
-    caseapp = get_object_or_404(CaseApp, pk=item_id)
+def case_(request, caseapp, class_id):
     caseclasses = CaseClass.objects.filter(case_app=caseapp)
     
     if class_id:
@@ -152,9 +155,13 @@ def case(request, item_id, class_id=None):
 
     return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows, 'caseclass':caseclass, 'caseclasses':caseclasses, 'app':caseapp, 'theme': site_templates[caseapp.wx.wsite_template].site_template})
 
-def caseitem(request, item_id):
-    logger.debug("caseitem %d", item_id)
-    caseitem = get_object_or_404(CaseItem, pk=item_id)
+
+def case(request, item_id, class_id=None):
+    logger.debug("case %d" % int(item_id))
+    caseapp = get_object_or_404(CaseApp, pk=item_id)
+    return case_(request, caseapp, class_id)
+
+def caseitem_(request, caseitem):
     pics = []
     if caseitem.case_pic1:
         pics.append(caseitem.case_pic1)
@@ -167,9 +174,13 @@ def caseitem(request, item_id):
 
     return render(request, 'microsite/item.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro, 'theme': site_templates[caseitem.case_app.wx.wsite_template].site_template})
 
-def product(request, item_id, class_id=None):
-    logger.debug("product %d" % int(item_id))
-    papp = get_object_or_404(ProductApp, pk=item_id)
+
+def caseitem(request, item_id):
+    logger.debug("caseitem %d", item_id)
+    caseitem = get_object_or_404(CaseItem, pk=item_id)
+    return caseitem_(request, caseitem)
+
+def product_(request, papp, class_id):
     pclasses = ProductClass.objects.filter(product_app=papp)
     if class_id:
         pclass = get_object_or_404(ProductClass, pk=class_id)
@@ -204,9 +215,13 @@ def product(request, item_id, class_id=None):
 
     return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'rows':rows, 'pclass':pclass, 'pclasses':pclasses, 'app' : papp, 'theme': site_templates[papp.wx.wsite_template].site_template})
 
-def productitem(request, item_id):
-    logger.debug("product item %d", item_id)
-    pitem = get_object_or_404(ProductItem, pk=item_id)
+
+def product(request, item_id, class_id=None):
+    logger.debug("product %d" % int(item_id))
+    papp = get_object_or_404(ProductApp, pk=item_id)
+    return product_(request, papp, class_id)
+
+def productitem_(request, pitem):
     pics = []
     if pitem.product_pic1:
         pics.append(pitem.product_pic1)
@@ -220,15 +235,24 @@ def productitem(request, item_id):
     return render(request, 'microsite/item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro, 'theme': site_templates[pitem.product_app.wx.wsite_template].site_template})
     
 
-def contact(request, item_id):
-    logger.debug("contact app %d" % int(item_id))
-    app = get_object_or_404(ContactApp, pk=item_id)
+def productitem(request, item_id):
+    logger.debug("product item %d", item_id)
+    pitem = get_object_or_404(ProductItem, pk=item_id)
+    return productitem_(request, pitem)
+
+def contact_(request, app):
     items = ContactItem.objects.filter(contact=app)
     infos = []
     for item in items:
         contact_peoples = ContactPeople.objects.filter(contact_item=item)
         infos.append( (item, contact_peoples) )
     return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos, 'theme': site_templates[app.wx.wsite_template].site_template})
+
+
+def contact(request, item_id):
+    logger.debug("contact app %d" % int(item_id))
+    app = get_object_or_404(ContactApp, pk=item_id)
+    return contact_(request, app)
 
 def telephone(request, item_id):
     logger.debug("contact app %d" % int(item_id))
