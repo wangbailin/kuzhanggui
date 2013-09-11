@@ -36,9 +36,9 @@ def is_enable(subpage):
 
 def get_home_info(subpage):
     if subpage.real_type == ContentType.objects.get_for_model(WeiboPage) or subpage.real_type == ContentType.objects.get_for_model(LinkPage):
-        return (subpage.url, settings.STATIC_URL + subpage._get_icon(), subpage._get_tab_name())
+        return (subpage.url, subpage._get_icon(), subpage._get_tab_name())
     else:
-        return (get_page_url(subpage), settings.STATIC_URL + subpage._get_icon(), subpage._get_tab_name())
+        return (get_page_url(subpage), subpage._get_icon(), subpage._get_tab_name())
 
             
 def homepage(request, item_id):
