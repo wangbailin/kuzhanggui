@@ -34,12 +34,25 @@ def page(request, page_id):
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
         return content(request, page_id)
 
+def deal_with_errors(form):
+    msg = ''
+    logger.debug(str(form.fields))
+    for k,v in form.errors.iteritems():
+        item = form.fields[k]
+        if len(msg) > 0:
+            msg += u'、'
+        msg += item.label
+    msg += u'</font>字段有错误'
+    msg = '页面设置包含错误，目前无法预览<br/><br/><font color="red">' + msg + '<br/>请修正后再预览'
+    return HttpResponse(msg)
+
 
 def homepage(request, page_id):
     page = get_object_or_404(HomePage, pk=page_id)
     form = HomePageForm(request.POST, request.FILES, instance=page)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
+        
     homepage = form.save(commit=False)
     pics = []
     exps = []
@@ -68,7 +81,7 @@ def intropage(request, page_id):
         intropage = form.save(commit=False)
         return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content})
     else:
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
 
 
 def businesspage(request, page_id):
@@ -78,7 +91,7 @@ def businesspage(request, page_id):
         businesspage = form.save(commit=False)
         return render(request, 'microsite/contentpage.html', {'tilte':businesspage.title, 'content':businesspage.content})
     else:
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
 
 def trend(request, page_id):
     app = get_object_or_404(TrendsApp, pk=page_id)
@@ -101,7 +114,7 @@ def join(request, page_id):
         joinpage = form.save(commit=False)
         return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content})
     else:
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
 
 def contact(request, page_id):
     app = get_object_or_404(ContactApp, pk=page_id)
@@ -115,14 +128,14 @@ def contact(request, page_id):
             infos.append( (item, contact_peoples) )
         return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos})
     else:
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
 
 def case(request, item_id):
     logger.debug("case %d" % int(item_id))
     caseapp = get_object_or_404(CaseApp, pk=item_id)
     form = CaseAppForm(request.POST, request.FILES, instance=caseapp)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         caseapp = form.save(commit=False)
         caseclasses = CaseClass.objects.filter(case_app=caseapp)
@@ -166,7 +179,7 @@ def product(request, item_id):
     papp = get_object_or_404(ProductApp, pk=item_id)
     form = ProductAppForm(request.POST, request.FILES, instance=papp)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         papp = form.save(commit=False)
         pclasses = ProductClass.objects.filter(product_app=papp)
@@ -210,7 +223,7 @@ def weibo(request, item_id):
     weibopage = get_object_or_404(WeiboPage, pk=item_id)
     form = WeiboPageForm(request.POST, request.FILES, instance=weibopage)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         weibopage = form.save(commit=False)
         return redirect(weibopage.url)
@@ -219,7 +232,7 @@ def link(request, item_id):
     linkpage = get_object_or_404(LinkPage, pk=item_id)
     form = LinkPageForm(request.POST, request.FILES, instance=linkpage)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         linkpage = form.save(commit=False)
         return redirect(linkpage.url)
@@ -229,7 +242,7 @@ def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
     form = ContentPage(request.POST, request.FILES, instance=content_page)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         content_page = form.save(commit=False)
         return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content})
@@ -237,7 +250,7 @@ def content(request, item_id):
 def trend_item(request):
     form = TrendItemForm(request.POST, request.FILES, instance=None)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         trenditem = form.save(commit=False)
         return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8")})
@@ -250,7 +263,7 @@ def case_item(request, item_id=None):
     logger.debug("post %s" % str(request.POST))
     form = CaseItemForm(request.POST, request.FILES, instance=item)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         caseitem = form.save(commit=False)
         pics = []
@@ -275,7 +288,7 @@ def product_item(request, item_id=None):
         item = None
     form = ProductItemForm(request.POST, request.FILES, instance=item)
     if not form.is_valid():
-        return HttpResponse("%s" % str(form.errors))
+        return deal_with_errors(form)        
     else:
         pitem = form.save(commit=False)
         pics = []

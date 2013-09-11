@@ -81,14 +81,26 @@ $('#tab-save').click(function() {
     $("#page_form").attr('target', "_self");
     $(this).closest('form').submit();
 });
+start_preview_history_length = 0;
+function preview_back() {
+    console.log(start_preview_history_length);
+    console.log(iframe_preview.history.length);
+    if (iframe_preview.history.length > start_preview_history_length) {
+        //can't not solve all problems, we can't get the index of current page in history
+        iframe_preview.history.back();
+        return false;
+    }
+}
 $('#tab-preview').click(function() {
-    bootbox.dialog("<iframe id='iframe_preview' name='iframe_preview' width='360' height='640'></iframe>", [{'label':'后退','callback':function(){iframe_preview.history.back(); return false;}}, {'label':'关闭','callback':function(){}}]);
+    bootbox.dialog("<iframe id='iframe_preview' name='iframe_preview' width='360' height='640'></iframe>", [{'label':'后退','callback':preview_back}, {'label':'关闭','callback':function(){}}]);
     $("#page_form").attr('action', "/preview/page/{{page.pk}}");
     $("#page_form").attr('target', "iframe_preview");
 
     $("#page_form").submit();
     $('.bootbox').css('width', '400px');
     $('.modal-body').css('height', '660px');
+    start_preview_history_length = iframe_preview.history.length;
+    console.log(iframe_preview.history.length);
 });
 </script>
 {% endblock %}
