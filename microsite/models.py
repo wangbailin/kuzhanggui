@@ -450,7 +450,7 @@ def add_default_site(wx_account):
         homepage = HomePage()
         homepage.wx = wx_account
         homepage.name = wx_account.name
-        homepage.message_cover = consts.DEFAULT_HOMEPAGE_COVER % site_templates[wx_account.wsite_template].site_template
+        homepage.message_cover = consts.DEFAULT_HOMEPAGE_COVER
         homepage.message_description = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         homepage.template_type = 0
         homepage.save()
