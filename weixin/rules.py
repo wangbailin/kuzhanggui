@@ -69,7 +69,7 @@ def micro_site(rule, info):
             data['pic_url'] = siteurl + homepage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
-        data['url'] = siteurl + '/microsite/homepage/%d' % int(homepage.pk)
+        data['url'] = siteurl + get_page_url(homepage)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -111,13 +111,11 @@ def telephone(rule, info):
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
         data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
-        data['url'] = siteurl + "/microsite/telephone/%d" % contact_app.pk
+        data['url'] = siteurl + "/microsite/telephone/%d" % (contact_app.pk)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
-
-   
 
 def trend(rule, info):
     try:
@@ -134,7 +132,7 @@ def trend(rule, info):
             data['pic_url'] = siteurl + trend_app.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_NEWS_COVER
-        data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
+        data['url'] = siteurl + get_page_url(trend_app)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -155,7 +153,7 @@ def help(rule, info):
             data['pic_url'] = siteurl + helppage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
-        data['url'] = siteurl + "/microsite/help/%d" % helppage.pk
+        data['url'] = siteurl + get_page_url(helppage)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -175,7 +173,7 @@ def join(rule, info):
             data['pic_url'] = siteurl + joinpage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
-        data['url'] = siteurl + "/microsite/join/%d" % joinpage.pk
+        data['url'] = siteurl + get_page_url(joinpage)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())

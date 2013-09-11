@@ -67,6 +67,14 @@ class HomePageForm(ModelForm):
             'message_description',
         )
 
+    def save(self, force_insert=False, force_update=False, commit=True):
+        m = super(HomePageForm, self).save(commit=False)
+        m.wx.wsite_template = m.template_type
+        m.wx.save()
+        if commit:
+            m.save()
+        return m
+
 class IntroPageForm(ModelForm):
     message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
     content = forms.CharField(label=u'内容', widget=CKEditorWidget())

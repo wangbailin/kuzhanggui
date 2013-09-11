@@ -40,10 +40,10 @@ class Page(models.Model):
         raise NotImplementedError
 
     def _get_icon(self):
-        raise NotImplementedError
-
-    def get_url(self):
-        raise NotImplementedError
+        if self.icon:
+            return self.icon.url
+        else:
+            return get_default_icon(self)
 
     class Meta:
         db_table = 'page'
@@ -92,9 +92,6 @@ class HomePage(Page):
     def _get_template(self):
         return 'homepage.html'
 
-    def get_url(self):
-        return '/microsite/homepage/%d' % self.pk
-
     class Meta:
         db_table = u"homepage"
         app_label = u'microsite'
@@ -120,12 +117,6 @@ class IntroPage(Page):
     def _get_tab_name(self):
         return self.title
 
-    def _get_icon(self):
-        return self.icon
-
-    def get_url(self):
-        return '/microsite/intro/%d' % self.pk
-
 class JoinPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
@@ -141,12 +132,6 @@ class JoinPage(Page):
 
     def _get_template(self):
         return 'intropage.html'
-
-    def _get_icon(self):
-        return self.icon
-
-    def get_url(self):
-        return '/microsite/join/%d' % self.pk
 
     class Meta:
         db_table = u'joinpage'
@@ -167,12 +152,6 @@ class ContactApp(App):
     def _get_app_template(self):
         return 'contact_app.html'
 
-    def _get_icon(self):
-        return self.icon
-
-    def get_url(self):
-        return '/microsite/contact/%d' % self.pk
-
     class Meta:
         db_table = u'contactapp'
         app_label = u'microsite'
@@ -191,14 +170,8 @@ class TrendsApp(App):
     def _get_tab_name(self):
         return self.title
 
-    def _get_icon(self):
-        return self.icon
-
     def _get_app_template(self):
         return 'trends_app.html'
-
-    def get_url(self):
-        return '/microsite/trend/%d' % self.pk
 
     class Meta:
         db_table = u"trendsapp"
@@ -216,12 +189,6 @@ class CaseApp(App):
 
     def _get_app_template(self):
         return 'case_app.html'
-
-    def _get_icon(self):
-        return self.icon
-
-    def get_url(self):
-        return '/microsite/case/%d' % self.pk
 
     class Meta:
         db_table = u'case_app'
@@ -269,12 +236,6 @@ class ProductApp(App):
 
     def _get_app_template(self):
         return 'product_app.html'
-
-    def _get_icon(self):
-        return self.icon
-
-    def get_url(self):
-        return '/microsite/product/%d' % self.pk
 
     class Meta:
         db_table = u'product_app'
@@ -364,14 +325,9 @@ class CulturePage(Page):
         db_table = u"culture"
         app_label = u'microsite'
 
-    def get_url(self):
-        return '/microsite/culture/%d' % self.pk
-
-    def _get_icon(self):
-        return self.icon
-
     def _get_template(self):
         return 'intropage.html'
+
     def _get_tab_name(self):
         return self.title
 
@@ -388,12 +344,6 @@ class BusinessPage(Page):
     class Meta:
         db_table = u"business"
         app_label = u'microsite'
-
-    def get_url(self):
-        return '/microsite/business/%d' % self.pk
-
-    def _get_icon(self):
-        return self.icon
 
     def _get_template(self):
         return 'intropage.html'
@@ -419,9 +369,6 @@ class WeiboPage(Page):
     def _get_template(self):
         return 'official_weibo.html'
 
-    def _get_icon(self):
-        return self.icon
-
     def _get_tab_name(self):
         return self.title
 
@@ -441,9 +388,6 @@ class ContentPage(Page):
 
     def _get_template(self):
         return 'content_page.html'
-
-    def _get_icon(self):
-        return self.icon
 
     def _get_tab_name(self):
         return self.title
@@ -465,14 +409,8 @@ class LinkPage(Page):
     def _get_template(self):
         return 'link_page.html'
 
-    def _get_icon(self):
-        return self.icon
-
     def _get_tab_name(self):
         return self.title
-
-    def get_url(self):
-        return '/microsite/link/%d' % self.pk
 
 class HelpPage(Page):
     enable = models.BooleanField(u'是否启用', default=True, help_text=u'启用 (启用后该页面内容会显示在微官网)')
@@ -487,12 +425,6 @@ class HelpPage(Page):
     class Meta:
         db_table = u"helppage"
         app_label = u'microsite'
-
-    def get_url(self):
-        return '/microsite/help/%d' % self.pk
-
-    def _get_icon(self):
-        return self.icon
 
     def _get_template(self):
         return 'intropage.html'
@@ -623,30 +555,31 @@ def add_default_site(wx_account):
 
 def get_page_url(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
-        return '/microsite/contact/%d' % page.id
+        return '/microsite/contact/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return '/microsite/trend/%d' % page.id
+        return '/microsite/trend/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-        return '/microsite/case/%d' % page.id
+        return '/microsite/case/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
-        return '/microsite/product/%d' % page.id
+        return '/microsite/product/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(HomePage):
-        return '/microsite/homepage/%d' % page.id
+        return '/microsite/homepage/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-        return '/microsite/intro/%d' % page.id
+        return '/microsite/intro/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return '/microsite/business/%d' % page.id
+        return '/microsite/business/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(JoinPage):
-        return '/microsite/join/%d' % page.id
+        return '/microsite/join/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         weibo = page.cast()
         return weibo.url
     elif page.real_type == ContentType.objects.get_for_model(HelpPage):
-        return '/microsite/help/%d' % page.id
+        return '/microsite/help/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
-        return '/microsite/content/%d' % page.id
+        return '/microsite/content/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
-        return '/microsite/link/%d' % page.id
+        link = page.cast()
+        return page.url
 
 def get_default_msg(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
@@ -701,22 +634,24 @@ def get_default_cover(page):
         return consts.DEFAULT_LINK_COVER
 
 def get_default_icon(page):
+    default_icon = consts.DEFAULT_ICON
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
-        return consts.DEFAULT_CONTACT_ICON
+        default_icon = consts.DEFAULT_CONTACT_ICON
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return consts.DEFAULT_NEWS_ICON
+        default_icon = consts.DEFAULT_NEWS_ICON
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-        return consts.DEFAULT_CASE_ICON
+        default_icon = consts.DEFAULT_CASE_ICON
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
-        return consts.DEFAULT_PRODUCT_ICON
+        default_icon = consts.DEFAULT_PRODUCT_ICON
     elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-        return consts.DEFAULT_INTRO_ICON
+        default_icon = consts.DEFAULT_INTRO_ICON
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return consts.DEFAULT_BUSINESS_ICON
+        default_icon = consts.DEFAULT_BUSINESS_ICON
     elif page.real_type == ContentType.objects.get_for_model(JoinPage):
-        return consts.DEFAULT_JOIN_ICON
+        default_icon = consts.DEFAULT_JOIN_ICON
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return consts.DEFAULT_WEIBO_ICON
+        default_icon = consts.DEFAULT_WEIBO_ICON
     elif page.real_type == ContentType.objects.get_for_model(HelpPage):
-        return consts.DEFAULT_HELP_ICON
+        default_icon = consts.DEFAULT_HELP_ICON
+    return default_icon % site_templates[page.wx.wsite_template].site_template
 
