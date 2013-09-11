@@ -16,6 +16,7 @@ class Page(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
     tab_name = models.CharField(u'页面名称', max_length=20)
     template_name = models.CharField(u'template的文件路径', max_length=260)
+    icon = models.ImageField(u"图标",upload_to='upload/', help_text=u"建议图片大小为190px*235px", max_length=255, blank=True)
     message_cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
     message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000, blank=True)
 
@@ -36,6 +37,9 @@ class Page(models.Model):
         raise NotImplementedError
 
     def _get_template(self):
+        raise NotImplementedError
+
+    def _get_icon(self):
         raise NotImplementedError
 
     def get_url(self):
@@ -116,6 +120,9 @@ class IntroPage(Page):
     def _get_tab_name(self):
         return self.title
 
+    def _get_icon(self):
+        return self.icon
+
     def get_url(self):
         return '/microsite/intro/%d' % self.pk
 
@@ -134,6 +141,9 @@ class JoinPage(Page):
 
     def _get_template(self):
         return 'intropage.html'
+
+    def _get_icon(self):
+        return self.icon
 
     def get_url(self):
         return '/microsite/join/%d' % self.pk
@@ -157,6 +167,9 @@ class ContactApp(App):
     def _get_app_template(self):
         return 'contact_app.html'
 
+    def _get_icon(self):
+        return self.icon
+
     def get_url(self):
         return '/microsite/contact/%d' % self.pk
 
@@ -177,6 +190,9 @@ class TrendsApp(App):
 
     def _get_tab_name(self):
         return self.title
+
+    def _get_icon(self):
+        return self.icon
 
     def _get_app_template(self):
         return 'trends_app.html'
@@ -200,6 +216,9 @@ class CaseApp(App):
 
     def _get_app_template(self):
         return 'case_app.html'
+
+    def _get_icon(self):
+        return self.icon
 
     def get_url(self):
         return '/microsite/case/%d' % self.pk
@@ -250,6 +269,9 @@ class ProductApp(App):
 
     def _get_app_template(self):
         return 'product_app.html'
+
+    def _get_icon(self):
+        return self.icon
 
     def get_url(self):
         return '/microsite/product/%d' % self.pk
@@ -345,6 +367,9 @@ class CulturePage(Page):
     def get_url(self):
         return '/microsite/culture/%d' % self.pk
 
+    def _get_icon(self):
+        return self.icon
+
     def _get_template(self):
         return 'intropage.html'
     def _get_tab_name(self):
@@ -366,6 +391,9 @@ class BusinessPage(Page):
 
     def get_url(self):
         return '/microsite/business/%d' % self.pk
+
+    def _get_icon(self):
+        return self.icon
 
     def _get_template(self):
         return 'intropage.html'
@@ -391,13 +419,15 @@ class WeiboPage(Page):
     def _get_template(self):
         return 'official_weibo.html'
 
+    def _get_icon(self):
+        return self.icon
+
     def _get_tab_name(self):
         return self.title
 
 class ContentPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
-    icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
     content = models.TextField(u'内容')
     
     def save(self, *args, **kwargs):
@@ -412,13 +442,15 @@ class ContentPage(Page):
     def _get_template(self):
         return 'content_page.html'
 
+    def _get_icon(self):
+        return self.icon
+
     def _get_tab_name(self):
         return self.title
 
 class LinkPage(Page):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
-    icon = models.ImageField(u'首页图标', upload_to='upload/', max_length=255)
     url = models.URLField(u'链接地址', max_length=200)
     
     def save(self, *args, **kwargs):
@@ -432,6 +464,9 @@ class LinkPage(Page):
 
     def _get_template(self):
         return 'link_page.html'
+
+    def _get_icon(self):
+        return self.icon
 
     def _get_tab_name(self):
         return self.title
@@ -455,6 +490,9 @@ class HelpPage(Page):
 
     def get_url(self):
         return '/microsite/help/%d' % self.pk
+
+    def _get_icon(self):
+        return self.icon
 
     def _get_template(self):
         return 'intropage.html'
@@ -491,6 +529,7 @@ def add_default_site(wx_account):
         intropage.wx = wx_account
         intropage.enable = True
         intropage.title = u"公司简介"
+        intropage.icon = consts.DEFAULT_INTRO_ICON
         intropage.message_cover = consts.DEFAULT_INTRO_COVER
         intropage.message_description = consts.DEFAULT_INTRO_MSG
         intropage.save()
@@ -501,6 +540,7 @@ def add_default_site(wx_account):
         businesspage.wx = wx_account
         businesspage.enable = True
         businesspage.title = '公司业务'
+        businesspage.icon = consts.DEFAULT_BUSINESS_ICON
         businesspage.message_cover = consts.DEFAULT_BUSINESS_COVER
         businesspage.message_description = consts.DEFAULT_BUSINESS_MSG
         businesspage.save()
@@ -510,6 +550,7 @@ def add_default_site(wx_account):
         trendsapp = TrendsApp()
         trendsapp.wx = wx_account
         trendsapp.enable = True
+        trendsapp.icon = consts.DEFAULT_NEWS_ICON
         trendsapp.message_cover = consts.DEFAULT_NEWS_COVER
         trendsapp.message_description = consts.DEFAULT_NEWS_MSG
         trendsapp.save()
@@ -520,6 +561,7 @@ def add_default_site(wx_account):
         productapp.wx = wx_account
         productapp.enable = True
         productapp.title = u'产品中心'
+        productapp.icon = consts.DEFAULT_PRODUCT_ICON
         productapp.message_cover = consts.DEFAULT_PRODUCT_COVER
         productapp.message_description = consts.DEFAULT_PRODUCT_MSG
         productapp.save()
@@ -530,6 +572,7 @@ def add_default_site(wx_account):
         caseapp.wx = wx_account
         caseapp.enable = True
         caseapp.title = u'成功案例'
+        caseapp.icon = consts.DEFAULT_CASE_ICON
         caseapp.message_cover = consts.DEFAULT_CASE_COVER
         caseapp.message_description = consts.DEFAULT_CASE_MSG
         caseapp.save()
@@ -540,6 +583,7 @@ def add_default_site(wx_account):
         weibopage.wx = wx_account
         weibopage.enable = True
         weibopage.title = u'官方微博'
+        weibopage.icon = consts.DEFAULT_WEIBO_ICON
         weibopage.message_cover = consts.DEFAULT_WEIBO_COVER
         weibopage.message_description = consts.DEFAULT_WEIBO_MSG
         weibopage.save()
@@ -549,6 +593,7 @@ def add_default_site(wx_account):
         contactapp = ContactApp()
         contactapp.wx = wx_account
         contactapp.enable = True
+        contactapp.icon = consts.DEFAULT_CONTACT_ICON
         contactapp.message_cover = consts.DEFAULT_CONTACT_COVER
         contactapp.message_description = consts.DEFAULT_CONTACT_MSG
         contactapp.save()
@@ -559,6 +604,7 @@ def add_default_site(wx_account):
         joinpage.wx = wx_account
         joinpage.enable = True
         joinpage.title = u'加入我们'
+        joinpage.icon = consts.DEFAULT_JOIN_ICON
         joinpage.message_cover = consts.DEFAULT_JOIN_COVER
         joinpage.message_description = consts.DEFAULT_JOIN_MSG
         joinpage.save()
@@ -569,6 +615,7 @@ def add_default_site(wx_account):
         helppage.wx = wx_account
         helppage.enable = True
         helppage.title = u'新手指导'
+        helppage.icon = consts.DEFAULT_HELP_ICON
         helppage.message_cover = consts.DEFAULT_HELP_COVER
         helppage.message_description = consts.DEFAULT_HELP_MSG
         helppage.content = render_to_string('helppage_content.html', {})
@@ -652,3 +699,24 @@ def get_default_cover(page):
         return consts.DEFAULT_CONTENT_COVER
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         return consts.DEFAULT_LINK_COVER
+
+def get_default_icon(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return consts.DEFAULT_CONTACT_ICON
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return consts.DEFAULT_NEWS_ICON
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return consts.DEFAULT_CASE_ICON
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return consts.DEFAULT_PRODUCT_ICON
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return consts.DEFAULT_INTRO_ICON
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return consts.DEFAULT_BUSINESS_ICON
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return consts.DEFAULT_JOIN_ICON
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return consts.DEFAULT_WEIBO_ICON
+    elif page.real_type == ContentType.objects.get_for_model(HelpPage):
+        return consts.DEFAULT_HELP_ICON
+
