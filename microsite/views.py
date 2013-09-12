@@ -52,6 +52,7 @@ def get_tabs_names(request):
     return tabs_names
 
 @login_required
+@bind_wx_check
 def settings(request, active_tab_id = None):
     user = auth.get_user(request)
     if active_tab_id:
@@ -70,6 +71,7 @@ def settings(request, active_tab_id = None):
     return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':tabs[active_tab_id][0], 'f':tabs[active_tab_id][1], 'apps':apps, 'active_side_id':-1})
 
 @login_required
+@bind_wx_check
 @page_verify('app_id')
 def app(request, app_id):
     app_id = int(app_id)

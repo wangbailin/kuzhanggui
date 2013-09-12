@@ -10,6 +10,16 @@ from models import *
 
 logger = logging.getLogger('default')
 
+def bind_wx_check(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        account = Account.objects.get(user=request.user)
+        if account.has_wx_bound:
+            return func(request, *args, **kwargs)
+        else:
+            return redirect('/bind')
+
+    return wrapper
 def page_verify(id_name):
     def real_decorate(func):
         @wraps(func)
