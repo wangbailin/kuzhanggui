@@ -211,7 +211,7 @@ class CaseClass(models.Model):
 
 class CaseItem(models.Model):
     case_app = models.ForeignKey(CaseApp, verbose_name=u'案例')
-    cls = models.ForeignKey(CaseClass, verbose_name=u'分类')
+    cls = models.ForeignKey(CaseClass, verbose_name=u'分类', blank=True, null=True)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
     title = models.CharField(u'案例名称', max_length=100)
     case_pic1 = models.ImageField(u"案例截图1", upload_to='upload/', max_length=255, blank=True)
@@ -258,7 +258,7 @@ class ProductClass(models.Model):
 
 class ProductItem(models.Model):
     product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
-    cls = models.ForeignKey(ProductClass, verbose_name=u'分类')
+    cls = models.ForeignKey(ProductClass, verbose_name=u'分类', blank=True, null=True)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
     title = models.CharField(u'产品名称', max_length=100)
     product_pic1 = models.ImageField(u"产品截图1", upload_to='upload/', max_length=255, blank=True)
