@@ -7,18 +7,18 @@ from router import Router
 from message_builder import MessageBuilder, BuildConfig
 from framework.models import WXAccount
 from microsite.models import *
-from datetime import datetime
+import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from rocket import settings
 from microsite import consts
+from data.models import WeixinDailyData
 
 logger = logging.getLogger('weixin')
 siteurl = 'http://r.limijiaoyin.com'
 
-def subscribe(rule, info):
-    return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)
-
 def unsubscribe(rule, info):
+    WeixinDailyData.today_unsubscribe_one(info.wx)
+
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s unsubscribe" % info.user)
 
 def check_bind_state(rule, info):
@@ -27,7 +27,7 @@ def check_bind_state(rule, info):
 
         if not wx_account.account.has_wx_bound:
             wx_account.state = WXAccount.STATE_BOUND
-            wx_account.bind_time = datetime.now()
+            wx_account.bind_time = datetime.datetime.now()
             wx_account.wxid = info.sp
             wx_account.save()
 
@@ -58,6 +58,7 @@ def match_submenu(rule, info):
 def micro_site(rule, info):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
+        WeixinDailyData.today_subscribe_one(info.wx)
         homepage = HomePage.objects.get(wx=wx_account)
         data = {}
         data['title'] = homepage.name

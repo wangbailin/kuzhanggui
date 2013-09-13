@@ -44,7 +44,11 @@ def index(request, wx):
     elif request.method == 'POST':
         try:
             weixin = WeiXin.on_message(smart_str(request.raw_post_data))
+            
             message = weixin.to_json()
+            wx_account = WXAccount.objects.get(id=wx)
+            wx_account.message_count += 1
+            wx_account.save()
             wxlogger.info("receive one message %s" % str(message))
 
             Router.get_instance().reply(wx, message, _route_callback)

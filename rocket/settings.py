@@ -216,10 +216,18 @@ LOGGING = {
         },
         'weixin': {
             'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
+            'class':'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join(PROJECT_ROOT + '/logs/','weixin.log'),
-            'maxBytes': 1024*1024*5,
-            'backupCount': 5,
+            'when':'d',
+            'backupCount': 0,
+            'formatter':'standard',
+        },
+        'sts': {
+            'level':'DEBUG',
+            'class':'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(PROJECT_ROOT + '/logs/','sts.log'),
+            'when':'d',
+            'backupCount': 0,
             'formatter':'standard',
         },
     },
@@ -236,6 +244,11 @@ LOGGING = {
         },
         'weixin': {
             'handlers': ['weixin'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'sts': {
+            'handlers': ['sts'],
             'level': 'DEBUG',
             'propagate': False,
         },
