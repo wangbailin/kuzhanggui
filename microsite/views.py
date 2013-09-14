@@ -21,10 +21,14 @@ from wx_match import *
 logger = logging.getLogger('default')
 
 def get_tabs(request):
-    user = auth.get_user(request)
-    account = Account.objects.get(user=user)
+    if 'active_wx_id' in request.session:
+        wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+    else:
+        user = auth.get_user(request)
+        account = Account.objects.get(user=user)
 
-    wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+        wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+        request.session['active_wx_id'] = wx.pk
     pages = Page.objects.filter(wx=wx)
     tabs = []
     logger.debug("wx id %d" % wx.pk)
@@ -35,22 +39,34 @@ def get_tabs(request):
     return tabs
 
 def get_apps(request):
-    user = auth.get_user(request)
-    account = Account.objects.get(user=user)
-    wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+    if 'active_wx_id' in request.session:
+        wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+    else:
+        user = auth.get_user(request)
+        account = Account.objects.get(user=user)
+
+        wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+        request.session['active_wx_id'] = wx.pk
+
     apps = App.objects.filter(wx=wx)
     return apps
 
 def get_tabs_names(request):
-    user = auth.get_user(request)
-    account = Account.objects.get(user=user)
-    wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+    if 'active_wx_id' in request.session:
+        wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+    else:
+        user = auth.get_user(request)
+        account = Account.objects.get(user=user)
+
+        wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+ 
     pages = Page.objects.filter(wx=wx)
     tabs_names = []
     for p in pages:
         tabs_names.append(p.tab_name)
     return tabs_names
 
+@cal_time
 @login_required
 @bind_wx_check
 def settings(request, active_tab_id = None):
@@ -70,6 +86,7 @@ def settings(request, active_tab_id = None):
     apps = get_apps(request)
     return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':tabs[active_tab_id][0], 'f':tabs[active_tab_id][1], 'apps':apps, 'active_side_id':-1})
 
+@cal_time
 @login_required
 @bind_wx_check
 @page_verify('app_id')

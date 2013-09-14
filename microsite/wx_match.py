@@ -20,6 +20,16 @@ def bind_wx_check(func):
             return redirect('/bind')
 
     return wrapper
+
+def cal_time(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        logger.debug("start call %s" % str(func))
+        resp = func(request, *args, **kwargs)
+        logger.debug("end call %s" % str(func))
+        return resp
+
+    return wrapper
 def page_verify(id_name):
     def real_decorate(func):
         @wraps(func)

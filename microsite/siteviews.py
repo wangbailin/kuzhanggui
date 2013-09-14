@@ -13,6 +13,7 @@ from microsite import consts
 from framework.models import Account, WXAccount
 from site_template import site_templates
 logger = logging.getLogger('default')
+from wx_match import cal_time
 
 def get_home_info(subpage):
     if subpage.real_type == ContentType.objects.get_for_model(WeiboPage) or subpage.real_type == ContentType.objects.get_for_model(LinkPage):
@@ -50,7 +51,8 @@ def homepage_(request, homepage):
 
     return render(request, 'microsite/homepage.html', {'name':homepage.name, 'pics':pics, 'rows':rows, 'theme': site_templates[homepage.wx.wsite_template].site_template})
 
-            
+
+@cal_time            
 def homepage(request, item_id):
     homepage = get_object_or_404(HomePage, pk=item_id)
     return homepage_(request, homepage)
