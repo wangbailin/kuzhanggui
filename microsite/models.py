@@ -11,6 +11,8 @@ from ckeditor.fields import RichTextField
 from rocket import settings
 from microsite import consts
 
+site_url = 'http://r.limijiaoyin.com'
+
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
@@ -204,7 +206,7 @@ class CaseClass(models.Model):
         app_label = u'microsite'
 
     def get_url(self):
-        return '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
+        return site_url + '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -251,7 +253,7 @@ class ProductClass(models.Model):
         app_label = u'microsite'
 
     def get_url(self):
-        return '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
+        return site_url + '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -555,28 +557,28 @@ def add_default_site(wx_account):
 
 def get_page_url(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
-        return '/microsite/contact/%d' % (page.id)
+        return site_url + '/microsite/contact/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return '/microsite/trend/%d' % (page.id)
+        return site_url + '/microsite/trend/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-        return '/microsite/case/%d' % (page.id)
+        return site_url + '/microsite/case/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
-        return '/microsite/product/%d' % (page.id)
+        return site_url + '/microsite/product/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(HomePage):
-        return '/microsite/homepage/%d' % (page.id)
+        return site_url + '/microsite/homepage/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-        return '/microsite/intro/%d' % (page.id)
+        return site_url + '/microsite/intro/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return '/microsite/business/%d' % (page.id)
+        return site_url + '/microsite/business/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(JoinPage):
-        return '/microsite/join/%d' % (page.id)
+        return site_url + '/microsite/join/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         weibo = page.cast()
         return weibo.url
     elif page.real_type == ContentType.objects.get_for_model(HelpPage):
-        return '/microsite/help/%d' % (page.id)
+        return site_url + '/microsite/help/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
-        return '/microsite/content/%d' % (page.id)
+        return site_url + '/microsite/content/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         link = page.cast()
         return page.url

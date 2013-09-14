@@ -18,7 +18,7 @@ import datetime
 
 from framework.models import Account, WXAccount
 from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm, AddEditContactPeopleForm
-from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople
+from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople, get_page_url
 from utils import get_wx_access_token, create_wx_menu
 
 @dajaxice_register
@@ -196,20 +196,21 @@ def generate_menu(request):
                 if menu.page.real_type == ContentType.objects.get_for_model(ProductApp):
                     product_app = menu.page.cast()
                     for cls in product_app.productclass_set.all():
-                        sub_buttons.append(u'{ "type": "click", "name": "%s", "key": "submenu_%d_%d" }' % (cls.name, menu.id, cls.id))
-                    sub_buttons.append(u'{ "type": "click", "name": "全部产品", "key": "menu_%d" }' % (menu.id))
+                        sub_buttons.append(u'{ "type": "view", "name": "%s", "url": "%s" }' % (cls.name, cls.get_url()))
+                    sub_buttons.append(u'{ "type": "view", "name": "全部产品", "url": "%s" }' % get_page_url(menu.page))
                 elif menu.page.real_type == ContentType.objects.get_for_model(CaseApp):
                     case_app = menu.page.cast()
                     for cls in case_app.caseclass_set.all():
-                        sub_buttons.append(u'{ "type": "click", "name": "%s", "key": "submenu_%d_%d" }' % (cls.name, menu.id, cls.id))
-                    sub_buttons.append(u'{ "type": "click", "name": "全部成功案例", "key": "menu_%d" }' % (menu.id))
+                        sub_buttons.append(u'{ "type": "view", "name": "%s", "url": "%s" }' % (cls.name, cls.get_url()))
+                    sub_buttons.append(u'{ "type": "view", "name": "全部成功案例", "url": "%s" }' % get_page_url(menu.page))
 
                 if len(sub_buttons) > 0:
                     buttons.append(u'{ "type": "click", "name": "%s", "sub_button": [%s] }' % (menu.name, ','.join(sub_buttons)))
                 else:
-                    buttons.append(u'{ "type": "click", "name": "%s", "key": "menu_%d" }' % (menu.name, menu.id))
+                    buttons.append(u'{ "type": "view", "name": "%s", "url": "%s" }' % (menu.name, get_page_url(menu.page)))
 
             menu_data = u'{"button":[%s]}' % ','.join(buttons)
+            print menu_data
             if create_wx_menu(wx_access_token, menu_data):
                 dajax.add_data({ 'ret_code' : 0, 'ret_msg' : '' }, 'generateMenuCallback')
             else:
