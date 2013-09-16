@@ -2,19 +2,13 @@
 
 {% block title %}添加内容页面{% endblock %}
 
-{% block document_ready %}
-if ($('#id_message_description').text() == "") {
-    $('#id_message_description').text('点击查看全部内容。');   
-}
-{% endblock %}
-
 {% block content %}
 <div id="content" class="container">
     <div class="page-header">
         <h1>添加内容页面</h1>
     </div>
 
-    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <form id="content_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
         <div class="control-group">
             <label class="control-label" for="title"><span style="color:red;">*</span>{{form.title.label}}</label>
             <div class="controls">
@@ -33,22 +27,45 @@ if ($('#id_message_description').text() == "") {
                 {{ form.content }}{{ form.content.errors }}
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label" for="message_cover"><span style="color:red;">*</span>{{form.message_cover.label}}</label>
-            <div class="controls">
-                {{ form.message_cover }}{{ form.message_cover.errors }}
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="message_description"><span style="color:red;">*</span>{{form.message_description.label}}</label>
-            <div class="controls">
-                <textarea cols="40" id="id_message_description" name="message_description" rows="10" style="margin-left: 0px; margin-right: 0px; width: 746px;"></textarea>
-                {{ form.message_description.errors }}
-            </div>
-        </div>
         <div class="form-actions">
-            <a id="save" type="submit" class="btn btn-primary" href="javascript:window.opener=null;window.close();">保存</a>
+            <a id="preview" class="btn" >预览</a>
+            <a id="save" class="btn btn-primary" >保存</a>
         </div>
     </form>
 </div>
+<style type="text/css">
+.leftbutton {
+    float:left;
+}
+</style>
+
+<script>
+start_preview_history_length = 0;
+function preview_back() {
+    if (iframe_preview.history.length > start_preview_history_length) {
+        //can't not solve all problems, we can't get the index of current page in history
+        iframe_preview.history.back();
+    }
+    return false;
+}
+$('#preview').click(function() {
+    bootbox.dialog("<iframe style='margin-left:auto margin-right:auto' id='iframe_preview' name='iframe_preview' width='100%' height='640'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}]);
+    $("#content_form").attr('action', "/preview/content_page");
+    $("#content_form").attr('target', 'iframe_preview');
+    $("#content_form").submit();
+    $('.bootbox').css('width', '400px');
+    $('.modal-body').css('height', '660px');
+    start_preview_history_length = iframe_preview.history.length;
+});
+$("#save").click(function() {
+    $("#content_form").attr('action', "");
+    $("#content_form").attr('target', '_self');
+    $("#content_form").submit();
+    window.opener=null;
+    window.close();
+});
+
+</script>
+
+
 {% endblock %}

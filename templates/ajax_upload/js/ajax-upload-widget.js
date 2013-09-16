@@ -124,10 +124,13 @@
         if(filename !== '') {
             this.$previewArea.empty();
             this.$previewArea.append(this.generateFilePreview(filename));
-
             this.$previewArea.show();
             this.$changeButton.show();
-            this.$removeButton.show();
+            if(this.$element.data('required') === 'True') {
+                this.$removeButton.hide();
+            } else {
+                this.$removeButton.show();
+            }
             this.$element.hide();
         } else {
             this.$previewArea.slideUp();

@@ -7,18 +7,18 @@ from router import Router
 from message_builder import MessageBuilder, BuildConfig
 from framework.models import WXAccount
 from microsite.models import *
-from datetime import datetime
+import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from rocket import settings
 from microsite import consts
+from data.models import WeixinDailyData
 
 logger = logging.getLogger('weixin')
 siteurl = 'http://r.limijiaoyin.com'
 
-def subscribe(rule, info):
-    return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s subscribe" % info.user)
-
 def unsubscribe(rule, info):
+    WeixinDailyData.today_unsubscribe_one(info.wx)
+
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s unsubscribe" % info.user)
 
 def check_bind_state(rule, info):
@@ -27,7 +27,7 @@ def check_bind_state(rule, info):
 
         if not wx_account.account.has_wx_bound:
             wx_account.state = WXAccount.STATE_BOUND
-            wx_account.bind_time = datetime.now()
+            wx_account.bind_time = datetime.datetime.now()
             wx_account.wxid = info.sp
             wx_account.save()
 
@@ -58,6 +58,7 @@ def match_submenu(rule, info):
 def micro_site(rule, info):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
+        WeixinDailyData.today_subscribe_one(info.wx)
         homepage = HomePage.objects.get(wx=wx_account)
         data = {}
         data['title'] = homepage.name
@@ -69,7 +70,7 @@ def micro_site(rule, info):
             data['pic_url'] = siteurl + homepage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
-        data['url'] = siteurl + '/microsite/homepage/%d' % int(homepage.pk)
+        data['url'] = get_page_url(homepage)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -111,30 +112,7 @@ def telephone(rule, info):
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
         data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
-        data['url'] = siteurl + "/microsite/telephone/%d" % contact_app.pk
-        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
-    except:
-        logger.error(traceback.format_exc())
-        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
-
-   
-
-def trend(rule, info):
-    try:
-        wx_account = WXAccount.objects.get(id=info.wx)
-        trend_app = TrendsApp.objects.get(wx=wx_account)
-        data = {}
-        data['title'] = trend_app.title
-        if trend_app.message_description:
-            data['description'] = message_description
-        else:
-            data['description'] = consts.DEFAULT_NEWS_MSG
-
-        if trend_app.message_cover:
-            data['pic_url'] = siteurl + trend_app.message_cover.url
-        else:
-            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_NEWS_COVER
-        data['url'] = siteurl + "/microsite/trend/%d" % trend_app.pk
+        data['url'] = siteurl + "/microsite/telephone/%d" % (contact_app.pk)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -146,36 +124,10 @@ def help(rule, info):
         helppage = HelpPage.objects.get(wx=wx_account)
         data = {}
         data['title'] = helppage.title
-        if helppage.message_description:
-            data['description'] = helppage.message_description
-        else:
-            data['description'] = consts.DEFAULT_HELP_MSG
+        data['description'] = consts.DEFAULT_HELP_MSG
 
-        if helppage.message_cover:
-            data['pic_url'] = siteurl + helppage.message_cover.url
-        else:
-            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
-        data['url'] = siteurl + "/microsite/help/%d" % helppage.pk
-        return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
-    except:
-        logger.error(traceback.format_exc())
-        return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
-
-def join(rule, info):
-    try:
-        wx_account = WXAccount.objects.get(id=info.wx)
-        joinpage = JoinPage.objects.get(wx=wx_account)
-        data = {}
-        data['title'] = joinpage.title
-        if joinpage.message_description:
-            data['description'] = joinpage.message_description
-        else:
-            data['description'] = u'点击查看最新招聘信息。'
-        if joinpage.message_cover:
-            data['pic_url'] = siteurl + joinpage.message_cover.url
-        else:
-            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
-        data['url'] = siteurl + "/microsite/join/%d" % joinpage.pk
+        data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
+        data['url'] = siteurl + get_page_url(helppage)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -201,7 +153,7 @@ def menu(rule, info):
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
 
-        data['url'] = siteurl + get_page_url(menu.page)
+        data['url'] = get_page_url(menu.page)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -233,7 +185,7 @@ def submenu(rule, info):
                 data['pic_url'] = siteurl + menu.page.message_cover.url
             else:
                 data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
-            data['url'] = siteurl + cls.get_url()
+            data['url'] = cls.get_url()
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
             return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
@@ -260,16 +212,6 @@ Router.get_instance().set({
         'name' : u'microsite',
         'pattern' : u'(官网|网站|你好|hi|hello|你是谁)',
         'handler' : micro_site,
-    })
-Router.get_instance().set({
-        'name' : u'microsite',
-        'pattern' : u'(动态|公司动态|新闻|公司新闻)',
-        'handler' : trend,
-    })
-Router.get_instance().set({
-        'name' : u'microsite',
-        'pattern' : u'(招聘|职位|工作)',
-        'handler' : join,
     })
 Router.get_instance().set({
         'name' : u'location',

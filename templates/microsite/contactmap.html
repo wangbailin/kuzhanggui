@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>{{ title }}</title>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
-    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
-</head>
+{% extends "microsite/page.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
+<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+{% endblock %}
+
+{% block css %}
 <style type="text/css">
 html {
     height:100%;
@@ -21,10 +19,8 @@ body {
 #address {
     position:fixed; 
     bottom:0px; 
-    background-color: rgba(0,0,0,0.7); 
     width:100%; 
     padding: 0 8px 4px 8px; 
-    color: #e8e8e8;
 }
 #address p {
     margin: 0px;
@@ -42,7 +38,9 @@ body {
     max-width:none;
 }
 </style>
-<body>
+{% endblock %}
+
+{% block content %}
 <div id="map"></div>
 <div id="address">
 <h4>{{ item.name }}</h4>
@@ -52,7 +50,6 @@ body {
 <a href="tel:{{ people.phone }}" class="phone"><div></div></a>
 {% endif %}
 </div>
-</body>
 <script>
 var map = new BMap.Map("map");
 map.addControl(new BMap.NavigationControl());
@@ -69,4 +66,4 @@ route.search(startpoint, point);
 //BMap.Convertor.translate(startpoint, 0, function(spoint) {
 //});
 </script>
-
+{% endblock %}

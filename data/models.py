@@ -1,6 +1,7 @@
 #coding:utf-8
 from django.db import models
 from framework.models import WXAccount
+import datetime
 
 class WeixinDailyData(models.Model):
     weixin = models.ForeignKey(WXAccount)
@@ -13,6 +14,41 @@ class WeixinDailyData(models.Model):
 
     class Meta:
         db_table = u'd_weixin_daily'
+    def save(self, *args, **kwargs):
+        self.date_str = self.date.strftime("%Y-%m-%d")
+        super(WeixinDailyData, self).save(args, kwargs)
+
+    @classmethod
+    def today_subscribe_one(cls, wx_id):
+        wx_account = WXAccount.objects.get(id=wx_id)
+        wx_account.follower_count += 1
+        wx_account.save()
+        try:
+            today_data = WeixinDailyData.objects.get(weixin=wx_account, date=datetime.date.today())
+        except:
+            today_data = WeixinDailyData()
+            today_data.weixin = wx_account
+            today_data.date = datetime.date.today()
+
+        today_data.follow_count += 1
+        today_data.new_count += 1
+        today_data.save()
+    
+    @classmethod
+    def today_unsubscribe_one(cls, wx_id):
+        wx_account = WXAccount.objects.get(id=wx_id)
+        wx_account.follower_count -= 1
+        wx_account.save()
+        try:
+            today_data = WeixinDailyData.objects.get(weixin=wx_account, date=datetime.date.today())
+        except:
+            today_data = WeixinDailyData()
+            today_data.weixin = wx_account
+            today_data.date = datetime.date.today()
+
+        today_data.unfollow_count += 1
+        today_data.new_count -= 1
+        today_data.save()
 
 class WSiteDailyData(models.Model):
     weixin = models.ForeignKey(WXAccount)
@@ -23,3 +59,7 @@ class WSiteDailyData(models.Model):
 
     class Meta:
         db_table = u'd_wsite_daily'
+
+    def save(self, *args, **kwargs):
+        self.date_str = self.date.strftime("%Y-%m-%d")
+        super(WSiteDailyData, self).save(args, kwargs)

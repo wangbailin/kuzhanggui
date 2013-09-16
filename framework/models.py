@@ -39,6 +39,7 @@ class WXAccount(models.Model):
 	bind_time = models.DateTimeField(u'绑定时间', blank=True, null=True)
 	app_id = models.CharField(u'AppId', max_length=255, blank=True, null=True)
 	app_secret = models.CharField(u'AppSecret', max_length=255, blank=True, null=True)
+	wsite_template = models.IntegerField(u'微官网模板', default = 1)
 
 	class Meta:
 		db_table = u"wx_account"

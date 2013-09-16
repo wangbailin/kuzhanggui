@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="cls"><span style="color:red;">*</span>{{form.cls.label}}</label>
+            <label class="control-label" for="cls">{{form.cls.label}}</label>
             <div class="controls">
                 {{ form.cls }}{{ form.cls.errors }}
             </div>
@@ -59,10 +59,23 @@
         </div>
     </form>
 </div>
+<style type="text/css">
+.leftbutton {
+    float:left;
+}
+</style>
 
 <script>
+start_preview_history_length = 0;
+function preview_back() {
+    if (iframe_preview.history.length > start_preview_history_length) {
+        //can't not solve all problems, we can't get the index of current page in history
+        iframe_preview.history.back();
+    }
+    return false;
+}
 $('#preview').click(function() {
-    bootbox.alert("<iframe name='iframe_preview' width='360' height='640'></iframe>");
+    bootbox.dialog("<iframe style='margin-left:auto margin-right:auto' id='iframe_preview' name='iframe_preview' width='100%' height='640'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}]);
     {% if item_id %}
     $("#product_form").attr('action', "/preview/product_item/{{ item_id }}");
     {% else %}
@@ -72,6 +85,7 @@ $('#preview').click(function() {
     $("#product_form").submit();
     $('.bootbox').css('width', '400px');
     $('.modal-body').css('height', '660px');
+    start_preview_history_length = iframe_preview.history.length;
 });
 $("#save").click(function() {
     $("#product_form").attr('action', "");

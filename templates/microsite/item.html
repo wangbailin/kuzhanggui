@@ -1,44 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-        var picsWidth = 0;
-        var picsLoaded = 0;
-        $(document).ready(function() {
-            picsWidth = 0;
-            $('#pics img').load(function() {
-                picsWidth += this.width;
-                picsLoaded += 1;
+{% extends "microsite/page.html" %}
+{% block title %}{{ title }}{% endblock %}
 
-                if (picsLoaded == $('#pics img').size()) {
-                    console.log(picsWidth);
-                    $('#pics').width(picsWidth + (picsLoaded-1)*4);
-                }
-            });
+{% block js %}
+<script type="text/javascript">
+    var picsWidth = 0;
+    var picsLoaded = 0;
+    $(document).ready(function() {
+        picsWidth = 0;
+        $('#pics img').load(function() {
+            picsWidth += this.width;
+            picsLoaded += 1;
+
+            if (picsLoaded == $('#pics img').size()) {
+                console.log(picsWidth);
+                $('#pics').width(picsWidth + (picsLoaded-1)*4);
+            }
         });
-    </script>
-</head>
-<body>
-    <div class="container content-page">
-        <div style="height:290px;width:100%;overflow:scroll;">
-            <div id="pics" style="width:1000px;">
-                {% for pic in pics %}
-                <a href="microsite/pic?t={{ title }}&p={{ MEDIA_URL }}{{ pic }}"><img style="height:290px;" src="{{ MEDIA_URL }}{{ pic }}" /></a>
-                {% endfor %}
-            </div>
-        </div>
-        <div style="margin-top:8px;">
-        {{ intro|safe }}
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container content-page">
+    <div style="height:290px;width:100%;overflow:scroll;">
+        <div id="pics" style="width:1000px;">
+            {% for pic in pics %}
+            <a href="/microsite/pic?title={{ title }}&p={{ MEDIA_URL }}{{ pic }}&t={{ theme | default:'default' }}"><img style="height:290px;" src="{{ MEDIA_URL }}{{ pic }}" /></a>
+            {% endfor %}
         </div>
     </div>
-</body>
-</html>
+    <div style="margin-top:8px;">
+    {{ intro|safe }}
+    </div>
+</div>
+{% endblock %}

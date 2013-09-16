@@ -1,72 +1,64 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
-</head>
-<body>
-    <div class="container">
-        {% if infos|length > 0 %}
-        <div id="baidumap">
-        </div>
-        {% endif %}
+{% extends "microsite/page.html" %}
+{% block title %}{{ title }}{% endblock %}
 
-        <div class="locs">
-            {% for item in infos %}
-                <div id="item_{{ forloop.counter0 }}" lat="{{ item.0.lat }}" lng="{{ item.0.lng }}" class="loc card">
-                    <h4>{{ item.0.name }}</h4>
-                    {% for people in item.1 %}
-                        <a href="tel:{{ people.phone }}" class="phone"><div></div></a>
-                        <p>联系电话
-                        {% if item.1|length > 1 %}
+{% block js %}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if infos|length > 0 %}
+    <div id="baidumap">
+    </div>
+    {% endif %}
+
+    <div class="locs">
+        {% for item in infos %}
+            <div id="item_{{ forloop.counter0 }}" lat="{{ item.0.lat }}" lng="{{ item.0.lng }}" class="loc card">
+                <h4>{{ item.0.name }}</h4>
+                {% for people in item.1 %}
+                    <a href="tel:{{ people.phone }}" class="phone"><div></div></a>
+                    <p>联系电话
+                    {% if item.1|length > 1 %}
+                    {{ forloop.counter }}
+                    {% endif %}
+                    ：{{ people.phone }}({{ people.name }})</p>
+                {% endfor %}
+
+
+                {% for people in item.1 %}
+                    {% if people.qq %}
+                        <p>QQ
+                        {% if item.1|length > 1%}
                         {{ forloop.counter }}
                         {% endif %}
-                        ：{{ people.phone }}({{ people.name }})</p>
-                    {% endfor %}
-
-
-                    {% for people in item.1 %}
-                        {% if people.qq %}
-                            <p>QQ
-                            {% if item.1|length > 1%}
-                            {{ forloop.counter }}
-                            {% endif %}
-                            ：{{ people.qq }}({{ people.name }})</p>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% for people in item.1 %}
-                        {% if people.email %}
-                            <p>邮箱
-                            {% if item.1|length > 1%}
-                            {{ forloop.counter }}
-                            {% endif %}
-                            ：{{ people.email }}({{ people.name }})</p>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if item.0.fax_code %}
-                        <p>传真：{{ item.0.fax_code }}</p>
+                        ：{{ people.qq }}({{ people.name }})</p>
                     {% endif %}
-            
-                    <p>地址：{{ item.0.address }}</p>
-                </div>
-            {% empty %}
-            <div class="empty">
-                <p>暂无联系方式</p>
+                {% endfor %}
+
+                {% for people in item.1 %}
+                    {% if people.email %}
+                        <p>邮箱
+                        {% if item.1|length > 1%}
+                        {{ forloop.counter }}
+                        {% endif %}
+                        ：{{ people.email }}({{ people.name }})</p>
+                    {% endif %}
+                {% endfor %}
+
+                {% if item.0.fax_code %}
+                    <p>传真：{{ item.0.fax_code }}</p>
+                {% endif %}
+        
+                <p>地址：{{ item.0.address }}</p>
             </div>
-            {% endfor %}  
+        {% empty %}
+        <div class="empty">
+            <p>暂无联系方式</p>
         </div>
+        {% endfor %}  
     </div>
-</body>
+</div>
 <script>
 var map = new BMap.Map("baidumap");
 {% if infos|length > 0 %}
@@ -90,6 +82,5 @@ map.centerAndZoom(point, 15);
     marker.getIcon().setSize(new BMap.Size(30,30));
     map.addOverlay(marker);
 {% endfor %}
-
 </script>
-</html>
+{% endblock %}

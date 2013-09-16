@@ -1,60 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}themes/default/theme.css"/>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
-</head>
-<body>
-    <div class="container text-center">
-        <div class="navbar navbar-inverse">
-            <div class="navbar-inner">
-                <ul class="nav">
-                    <li class="dropdown">
+{% extends "microsite/page.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <div class="navbar {% if theme == 'default' %}navbar-inverse{% endif %}">
+        <div class="navbar-inner">
+            <ul class="nav">
+                <li class="dropdown">
+                    <a id="case-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
                         {% if caseclass %}
-                        <a id="case-category" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
-                            {{ caseclass.name }}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="case-category">
-                            {% for c in caseclasses %}
-                            <li><a href="/microsite/case/{{ c.case_app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
-                            {% endfor %}
-                        </ul>
+                        {{ caseclass.name }}
+                        {% else %}
+                        全部成功案例
                         {% endif %}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="cases">
-            <table>
-                <thead><th style="width:50%;"></th><th style="width:50%;"></th></thead>
-                {% for row in rows %}
-                <tr>
-                    {% for item in row %}
-                    <td>
-                        <a href="/microsite/caseitem/{{ item.0.pk }}">
-                            <div class="case" style="background-image: url('{{ item.1 }}')">
-                                <div class="title">{{ item.0.title }}</div>
-                            </div>
-                        </a>
-                    </td>
-                    {% endfor %}
-                </tr>
-                {% empty %}
-                    <div class="empty">
-                        <p>暂无成功案例</p>
-                    </div>
-                {% endfor %}
-            </table>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="case-category">
+                        <li><a href="/microsite/case/{{ app.pk }}/">全部成功案例</a></li>
+                        {% for c in caseclasses %}
+                        <li><a href="/microsite/case/{{ app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
-</body>
-</html>
+    <div class="cases">
+        <table>
+            <thead><th style="width:50%;"></th><th style="width:50%;"></th></thead>
+            {% for row in rows %}
+            <tr>
+                {% for item in row %}
+                <td>
+                    <a href="/microsite/caseitem/{{ item.0.pk }}">
+                        <div class="case" style="background-image: url('{{ item.1 }}')">
+                            <div class="title">{{ item.0.title }}</div>
+                        </div>
+                    </a>
+                </td>
+                {% endfor %}
+            </tr>
+            {% empty %}
+                <div class="empty">
+                    <p>暂无成功案例</p>
+                </div>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
 
