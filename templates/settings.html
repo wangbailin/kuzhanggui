@@ -26,6 +26,9 @@ $('#icon_help').popover({
     trigger: 'hover',
     content: '<img src="{{ STATIC_URL }}/img/backend_intro_icon.png"/>',
     });
+$("input, select, textarea").change(function(){
+    $("#change_or_not").text("*");
+    });
 });
 function backToDefaultIcon(icon_url) {
     $("input[name='icon']").val({{ STATIC_URL }}+icon_url);
@@ -52,7 +55,7 @@ function backToDefaultIcon(icon_url) {
     <ul class="nav nav-tabs" style="margin-bottom:10px">
     {% for t in tabs %}
         {% if forloop.counter0 == active_tab_id %}
-        <li class='active'><a href="#">{{ t.0.tab_name }}</a></li>
+        <li class='active'><a href="#">{{ t.0.tab_name }}<span id="change_or_not" style="color:red;"></span></a></li>
         {% else %}
         <li><a href="/settings/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
         {% endif %}
@@ -86,6 +89,7 @@ function backToDefaultIcon(icon_url) {
 
 <script>
 $('#tab-save').click(function() {
+    $("#change_or_not").text("");
     $("#page_form").attr('action', "/save/{{page.pk}}");
     $("#page_form").attr('target', "_self");
     $(this).closest('form').submit();
