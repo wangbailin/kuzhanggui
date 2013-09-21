@@ -30,8 +30,16 @@ $("input, select, textarea").change(function(){
     $("#change_or_not").text("*");
     });
 });
-function backToDefaultIcon(icon_url) {
-    $("input[name='icon']").val({{ STATIC_URL }}+icon_url);
+function backToDefaultIcon(icon_url, icon_name) {
+    var icon_url={{MEDIA_URL}} + icon_url;
+   // $("input[name='icon']").val(icon_url);
+   // $(".ajax-upload-preview-area a").attr('href', icon_url);
+   // $(".ajax-upload-preview-area a").text(icon_name);
+   // $(".ajax-upload").attr('data-filename', icon_url);
+   // $(".ajax-upload").attr('name','file');
+   // $(".ajax-upload-preview-area a").append("<img src=/>");
+   // $(".ajax-upload-preview-area img").attr('src', icon_url);
+      $("input.ajax-upload").outerHTML=$("input.ajax-upload").outerHTML.replace(/(value=\").+\"/i,"$1\"rrrrr");
 };
 
 </script>
