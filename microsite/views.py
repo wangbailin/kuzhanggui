@@ -271,7 +271,7 @@ def add_edit_link_page(request, link_id=None):
                 item.enable = True
                 item.wx = wx
             item.save()
-            return redirect('/settings')
+            return render(request, 'close_page.html')
     else:
         form = LinkPageForm(instance=item)
 
@@ -295,7 +295,7 @@ def add_edit_content_page(request, content_id=None):
                 item.wx = wx
             logger.debug("icon url %s" % item.icon.url)
             item.save()
-            return redirect('/settings')
+            return render(request,'close_page.html')
         else:
             logger.debug("form is not valid")
     else:
