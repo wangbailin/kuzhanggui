@@ -10,16 +10,17 @@ from ckeditor.fields import RichTextField
 
 from rocket import settings
 from microsite import consts
+from baidu_yun.storage import BaiduYunStorage
 
-site_url = 'http://r.limijiaoyin.com'
+baidu_storage = BaiduYunStorage()
 
 class Page(models.Model):
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
     tab_name = models.CharField(u'页面名称', max_length=20)
     template_name = models.CharField(u'template的文件路径', max_length=260)
-    icon = models.ImageField(u"图标",upload_to='upload/', help_text=u"建议图片大小为190px*235px", max_length=255, blank=True)
-    message_cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
+    icon = models.ImageField(u"图标", storage=baidu_storage, upload_to='upload/', help_text=u"建议图片大小为190px*235px", max_length=255, blank=True)
+    message_cover = models.ImageField(u"消息封面", storage=baidu_storage, upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
     message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000, blank=True)
 
     def save(self, *args, **kwargs):
@@ -79,13 +80,13 @@ class HomePage(Page):
     for k,v in site_templates.items():
         choices.append( (k, v.name) )
     template_type = models.IntegerField(u'模板类型', choices=choices, default = 1)
-    pic1 = models.ImageField(u"焦点图1", upload_to='upload/', max_length=255, blank=True)
+    pic1 = models.ImageField(u"焦点图1", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp1 = models.CharField(u"焦点图1注释", max_length=255, blank=True)
-    pic2 = models.ImageField(u"焦点图2", upload_to='upload/', max_length=255, blank=True)
+    pic2 = models.ImageField(u"焦点图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp2 = models.CharField(u"焦点图2注释", max_length=255, blank=True)
-    pic3 = models.ImageField(u"焦点图3", upload_to='upload/', max_length=255, blank=True)
+    pic3 = models.ImageField(u"焦点图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp3 = models.CharField(u"焦点图3注释", max_length=255, blank=True)
-    pic4 = models.ImageField(u"焦点图4", upload_to='upload/', max_length=255, blank=True)
+    pic4 = models.ImageField(u"焦点图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp4 = models.CharField(u"焦点图4注释", max_length=255, blank=True)
 
     def _get_tab_name(self):
@@ -206,7 +207,7 @@ class CaseClass(models.Model):
         app_label = u'microsite'
 
     def get_url(self):
-        return site_url + '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
+        return settings.SITE_URL + '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -216,10 +217,10 @@ class CaseItem(models.Model):
     cls = models.ForeignKey(CaseClass, verbose_name=u'分类', blank=True, null=True)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
     title = models.CharField(u'案例名称', max_length=100)
-    case_pic1 = models.ImageField(u"案例截图1", upload_to='upload/', max_length=255, blank=True)
-    case_pic2 = models.ImageField(u"案例截图2", upload_to='upload/', max_length=255, blank=True)
-    case_pic3 = models.ImageField(u"案例截图3", upload_to='upload/', max_length=255, blank=True)
-    case_pic4 = models.ImageField(u"案例截图4", upload_to='upload/', max_length=255, blank=True)
+    case_pic1 = models.ImageField(u"案例截图1", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    case_pic2 = models.ImageField(u"案例截图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    case_pic3 = models.ImageField(u"案例截图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    case_pic4 = models.ImageField(u"案例截图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     case_intro = models.TextField(u"案例介绍")
 
     class Meta:
@@ -253,7 +254,7 @@ class ProductClass(models.Model):
         app_label = u'microsite'
 
     def get_url(self):
-        return site_url + '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
+        return settings.SITE_URL + '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -263,10 +264,10 @@ class ProductItem(models.Model):
     cls = models.ForeignKey(ProductClass, verbose_name=u'分类', blank=True, null=True)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
     title = models.CharField(u'产品名称', max_length=100)
-    product_pic1 = models.ImageField(u"产品截图1", upload_to='upload/', max_length=255, blank=True)
-    product_pic2 = models.ImageField(u"产品截图2", upload_to='upload/', max_length=255, blank=True)
-    product_pic3 = models.ImageField(u"产品截图3", upload_to='upload/', max_length=255, blank=True)
-    product_pic4 = models.ImageField(u"产品截图4", upload_to='upload/', max_length=255, blank=True)
+    product_pic1 = models.ImageField(u"产品截图1", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    product_pic2 = models.ImageField(u"产品截图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    product_pic3 = models.ImageField(u"产品截图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    product_pic4 = models.ImageField(u"产品截图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     product_intro = models.TextField(u"产品介绍")
 
     class Meta:
@@ -280,7 +281,7 @@ class TrendItem(models.Model):
     pub_time = models.DateField(u'日期')
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
-    cover = models.ImageField(u'封面', upload_to='upload/', max_length=255, blank=True)
+    cover = models.ImageField(u'封面', storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     summary = models.CharField(u'摘要', max_length=255, blank=True)
 
     class Meta:
@@ -557,28 +558,28 @@ def add_default_site(wx_account):
 
 def get_page_url(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
-        return site_url + '/microsite/contact/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/contact/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return site_url + '/microsite/trend/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/trend/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-        return site_url + '/microsite/case/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/case/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
-        return site_url + '/microsite/product/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/product/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(HomePage):
-        return site_url + '/microsite/homepage/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/homepage/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-        return site_url + '/microsite/intro/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/intro/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return site_url + '/microsite/business/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/business/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(JoinPage):
-        return site_url + '/microsite/join/%d' % (page.id)
+        return settings.SITE_URL+ '/microsite/join/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         weibo = page.cast()
         return weibo.url
     elif page.real_type == ContentType.objects.get_for_model(HelpPage):
-        return site_url + '/microsite/help/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/help/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
-        return site_url + '/microsite/content/%d' % (page.id)
+        return settings.SITE_URL + '/microsite/content/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         link = page.cast()
         return page.url

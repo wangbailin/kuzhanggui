@@ -43,6 +43,7 @@ TIME_ZONE = None
 LANGUAGE_CODE = 'zh_CN'
 FILE_CHARSET='UTF-8'
 DEFAULT_CHARSET = 'UTF-8'
+#DEFAULT_FILE_STORAGE = 'baidu_yun.storage.BaiduYunStorage'
 
 SITE_ID = 1
 
@@ -85,6 +86,8 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
+#SITE_URL = "http://r.limijiaoyin.com"
+SITE_URL = "http://jianfei.bestgames7.com"
 
 CKEDITOR_RESTRICT_BY_USER = True
 CKEDITOR_UPLOAD_PATH = '/data/media/ckeditor/'
@@ -181,6 +184,7 @@ INSTALLED_APPS = (
     'chartit',
     'ckeditor',
     'cronjobs',
+    'baidu_yun',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -244,6 +248,11 @@ LOGGING = {
             'propagate': False,
         },
         'cron': {
+            'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'pyhttpclient': {
             'handlers': ['default'],
             'level': 'DEBUG',
             'propagate': False,

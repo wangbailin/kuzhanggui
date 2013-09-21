@@ -67,7 +67,7 @@ def micro_site(rule, info):
         else:
             data['description'] = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         if homepage.message_cover:
-            data['pic_url'] = siteurl + homepage.message_cover.url
+            data['pic_url'] = homepage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
         data['url'] = get_page_url(homepage) + "?user=%s&wx=%s" % (info.user, info.wx)
@@ -149,7 +149,7 @@ def menu(rule, info):
             data['description'] = get_default_msg(menu.page)
 
         if menu.page.message_cover:
-            data['pic_url'] = siteurl + menu.page.message_cover.url
+            data['pic_url'] = menu.page.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
 
@@ -182,7 +182,7 @@ def submenu(rule, info):
                 data['description'] = get_default_msg(menu.page)
             
             if menu.page.message_cover:
-                data['pic_url'] = siteurl + menu.page.message_cover.url
+                data['pic_url'] = menu.page.message_cover.url
             else:
                 data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
             data['url'] = cls.get_url() + "?user=%s&wx=%s" % (info.user, info.wx)
