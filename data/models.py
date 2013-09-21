@@ -46,7 +46,7 @@ class WeixinDailyData(models.Model):
             today_data.weixin = wx_account
             today_data.date = datetime.date.today()
 
-        today_data.unfollow_count += 1
+        today_data.unfollow_count -= 1
         today_data.new_count -= 1
         today_data.save()
 
@@ -63,3 +63,17 @@ class WSiteDailyData(models.Model):
     def save(self, *args, **kwargs):
         self.date_str = self.date.strftime("%Y-%m-%d")
         super(WSiteDailyData, self).save(args, kwargs)
+
+    @classmethod
+    def today(cls, wx_id, pv, uv):
+        wx_account = WXAccount.objects.get(id=wx_id)
+        try:
+            today_data = WSiteDailyData.objects.get(weixin=wx_account, date=datetime.date.today())
+        except:
+            today_data = WSiteDailyData()
+            today_data.weixin = wx_account;
+            today_data.date = datetime.date.today()
+
+        today_data.visitor_count = uv
+        today_data.visit_count = pv
+        today_data.save()

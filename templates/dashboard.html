@@ -6,7 +6,7 @@
 {{ block.super }}
 <script type="text/javascript" src="{{ STATIC_URL }}js/highcharts.js"></script>
 {% load chartit %}
-{{ charts|load_charts:"weixin_daily_data" }}
+{{ charts|load_charts:"weixin_daily_data,wsite_daily_data" }}
 {% endblock %}
 
 {% block app %}
@@ -38,4 +38,5 @@
 </script>
 
 <div id="weixin_daily_data" class="well" style="height:400px;"></div>
+<div id="wsite_daily_data" class="well" style="height:400px;"></div>
 {% endblock %}

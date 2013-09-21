@@ -70,7 +70,7 @@ def micro_site(rule, info):
             data['pic_url'] = siteurl + homepage.message_cover.url
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
-        data['url'] = get_page_url(homepage)
+        data['url'] = get_page_url(homepage) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -96,7 +96,7 @@ def find_nearest(rule, info):
             data['title'] = u'找到我们'
             data['description'] = u'点击查看如何找到我们。'
             data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_FINDME_COVER
-            data['url'] = siteurl + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng)
+            data['url'] = siteurl + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng) + "?user=%s&wx=%s" % (info.user, info.wx)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
             return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'不知道怎么找到我们。')
@@ -112,7 +112,7 @@ def telephone(rule, info):
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
         data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
-        data['url'] = siteurl + "/microsite/telephone/%d" % (contact_app.pk)
+        data['url'] = siteurl + "/microsite/telephone/%d" % (contact_app.pk) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -127,7 +127,7 @@ def help(rule, info):
         data['description'] = consts.DEFAULT_HELP_MSG
 
         data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
-        data['url'] = siteurl + get_page_url(helppage)
+        data['url'] = siteurl + get_page_url(helppage) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -153,7 +153,7 @@ def menu(rule, info):
         else:
             data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
 
-        data['url'] = get_page_url(menu.page)
+        data['url'] = get_page_url(menu.page) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -185,7 +185,7 @@ def submenu(rule, info):
                 data['pic_url'] = siteurl + menu.page.message_cover.url
             else:
                 data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
-            data['url'] = cls.get_url()
+            data['url'] = cls.get_url() + "?user=%s&wx=%s" % (info.user, info.wx)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
             return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')

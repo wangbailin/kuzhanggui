@@ -111,28 +111,28 @@ def dashboard(request):
                 'colors' : ['#f77f74', '#58ace8', '#3a3a3a']
             })
 
-        #wsite_ds = DataPool(
-        #    series = [{
-        #    'options' : { 'source' : WSiteDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=30)).order_by('date')},
-        #    'terms' : ['date_str', 'visitor_count', 'visit_count']
-        #    }])
-        #wsite_chart = Chart(
-        #    datasource = wsite_ds,
-        #    series_options = [
-        #    { 'options' : {
-        #        'type' : 'line',
-        #        'xAxis' : 0,
-        #        'yAxis' : 0,
-        #        'zIndex' : 1},
-        #    'terms' : {
-        #        'date_str' : ['visitor_count', 'visit_count']
-        #    }}],
-        #    chart_options = {
-        #        'title' : {'text' : u'微官网日访问人数/访问次数'},
-        #        'xAxis' : {'title' : {'text' : u'日期'}},
-        #        'colors' : ['#58ace8', '#f77f74']
-        #   })
-        return render(request, 'dashboard.html', {'weixin' : wx_account, 'charts' : [weixin_chart], 'apps' : get_apps(request)})
+        wsite_ds = DataPool(
+            series = [{
+            'options' : { 'source' : WSiteDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=30)).order_by('date')},
+            'terms' : ['date_str', 'visitor_count', 'visit_count']
+            }])
+        wsite_chart = Chart(
+            datasource = wsite_ds,
+            series_options = [
+            { 'options' : {
+                'type' : 'line',
+                'xAxis' : 0,
+                'yAxis' : 0,
+                'zIndex' : 1},
+            'terms' : {
+                'date_str' : ['visitor_count', 'visit_count']
+            }}],
+            chart_options = {
+                'title' : {'text' : u'微官网日访问人数/访问次数'},
+                'xAxis' : {'title' : {'text' : u'日期'}},
+                'colors' : ['#58ace8', '#f77f74']
+           })
+        return render(request, 'dashboard.html', {'weixin' : wx_account, 'charts' : [weixin_chart, wsite_chart], 'apps' : get_apps(request)})
     else:
         return redirect('/bind')
 

@@ -13,7 +13,8 @@ from microsite import consts
 from framework.models import Account, WXAccount
 from site_template import site_templates
 logger = logging.getLogger('default')
-from wx_match import cal_time
+sts_logger = logging.getLogger('sts')
+from wx_match import cal_time, sts_decorate
 
 def get_home_info(subpage):
     if subpage.real_type == ContentType.objects.get_for_model(WeiboPage) or subpage.real_type == ContentType.objects.get_for_model(LinkPage):
@@ -53,12 +54,14 @@ def homepage_(request, homepage):
 
 
 @cal_time            
+@sts_decorate
 def homepage(request, item_id):
     homepage = get_object_or_404(HomePage, pk=item_id)
     return homepage_(request, homepage)
     
 def intro_(request, intropage):
     return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content, 'theme': site_templates[intropage.wx.wsite_template].site_template})
+@sts_decorate
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
     return intro_(request, intropage)
@@ -66,6 +69,7 @@ def intro(request, item_id):
 def business_(request, business_page):
     return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content, 'theme': site_templates[business_page.wx.wsite_template].site_template})
     
+@sts_decorate
 def business(request, item_id):
     business_page = get_object_or_404(BusinessPage, pk=item_id)
     return business_(request, business_page)
@@ -73,6 +77,7 @@ def business(request, item_id):
 def join_(request, joinpage):
     return render(request, 'microsite/contentpage.html', {'title':joinpage.title, 'content':joinpage.content, 'theme': site_templates[joinpage.wx.wsite_template].site_template})
     
+@sts_decorate
 def join(request, item_id):
     joinpage = get_object_or_404(JoinPage, pk=item_id)
     return join_(request, joinpage)
@@ -80,12 +85,14 @@ def join(request, item_id):
 def help_(request, helppage):
     return render(request, 'microsite/contentpage.html', {'title':helppage.title, 'content':helppage.content, 'theme': site_templates[helppage.wx.wsite_template].site_template})
 
+@sts_decorate
 def help(request, item_id):
     helppage = get_object_or_404(HelpPage, pk=item_id)
     return help_(request, helppage)
 
 def content_(request, content_page):
     return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content, 'theme': site_templates[content_page.wx.wsite_template].site_template})
+@sts_decorate
 def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
     return content_(request, content_page)
@@ -93,6 +100,7 @@ def content(request, item_id):
 def weibo_(request, weibopage):
     return render(request, 'microsite/weibopage.html', {'title':weibopage.title, 'url':weibopage.url})
 
+@sts_decorate
 def weibo(request, item_id):
     weibopage = get_object_or_404(WeiboPage, pk=item_id)
     return weibo_(request, weibopage)
@@ -110,12 +118,14 @@ def trend_(request, trendapp):
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items, 'theme': site_templates[trendapp.wx.wsite_template].site_template})
 
 
+@sts_decorate
 def trend(request, item_id):
     trendapp = get_object_or_404(TrendsApp, pk=item_id)
     return trend_(request, trendapp)
 
 def trenditem_(request, trenditem):
     return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8"), 'theme': site_templates[trenditem.trend.wx.wsite_template].site_template})
+@sts_decorate
 def trenditem(request, item_id):
     trenditem = get_object_or_404(TrendItem, pk=item_id)
     logger.debug("content %s" % trenditem.content)
@@ -158,6 +168,7 @@ def case_(request, caseapp, class_id):
     return render(request, 'microsite/caseapp.html', {'title':caseapp._get_tab_name(), 'rows':rows, 'caseclass':caseclass, 'caseclasses':caseclasses, 'app':caseapp, 'theme': site_templates[caseapp.wx.wsite_template].site_template})
 
 
+@sts_decorate
 def case(request, item_id, class_id=None):
     logger.debug("case %d" % int(item_id))
     caseapp = get_object_or_404(CaseApp, pk=item_id)
@@ -177,6 +188,7 @@ def caseitem_(request, caseitem):
     return render(request, 'microsite/item.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro, 'theme': site_templates[caseitem.case_app.wx.wsite_template].site_template})
 
 
+@sts_decorate
 def caseitem(request, item_id):
     logger.debug("caseitem %d", item_id)
     caseitem = get_object_or_404(CaseItem, pk=item_id)
@@ -218,6 +230,7 @@ def product_(request, papp, class_id):
     return render(request, 'microsite/productapp.html', {'title':papp._get_tab_name(), 'rows':rows, 'pclass':pclass, 'pclasses':pclasses, 'app' : papp, 'theme': site_templates[papp.wx.wsite_template].site_template})
 
 
+@sts_decorate
 def product(request, item_id, class_id=None):
     logger.debug("product %d" % int(item_id))
     papp = get_object_or_404(ProductApp, pk=item_id)
@@ -237,6 +250,7 @@ def productitem_(request, pitem):
     return render(request, 'microsite/item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro, 'theme': site_templates[pitem.product_app.wx.wsite_template].site_template})
     
 
+@sts_decorate
 def productitem(request, item_id):
     logger.debug("product item %d", item_id)
     pitem = get_object_or_404(ProductItem, pk=item_id)
@@ -251,11 +265,13 @@ def contact_(request, app):
     return render(request, 'microsite/contactapp.html', {'title':app._get_tab_name(), 'infos':infos, 'theme': site_templates[app.wx.wsite_template].site_template})
 
 
+@sts_decorate
 def contact(request, item_id):
     logger.debug("contact app %d" % int(item_id))
     app = get_object_or_404(ContactApp, pk=item_id)
     return contact_(request, app)
 
+@sts_decorate
 def telephone(request, item_id):
     logger.debug("contact app %d" % int(item_id))
     app = get_object_or_404(ContactApp, pk=item_id)
@@ -267,10 +283,12 @@ def telephone(request, item_id):
             infos.append( (item, contact_peoples) )
     return render(request, 'microsite/telephone.html', {'title':app._get_tab_name(), 'infos':infos, 'theme': site_templates[app.wx.wsite_template].site_template})
 
+@sts_decorate
 def pic(request):
     return render(request, 'microsite/pic.html', {'title':request.GET['title'], 'path' : request.GET['p'], 'theme': request.GET['t']});
 
 
+@sts_decorate
 def contact_map(request, item_id, cur_lat, cur_lng):
     logger.debug("contact item %d" % int(item_id))
     item = get_object_or_404(ContactItem, pk=item_id)

@@ -9,6 +9,7 @@ from framework.models import WXAccount, Account
 from models import *
 
 logger = logging.getLogger('default')
+sts_logger = logging.getLogger('sts')
 
 def bind_wx_check(func):
     @wraps(func)
@@ -213,4 +214,17 @@ def product_item_verify(id_name):
                 return func(request, *args, **kwargs)
         return wrapper
     return real_decorate
+
+def sts_decorate(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        if 'user' in request.GET:
+            sts_logger.info("wx %s user %s" % (request.GET['wx'], request.GET['user']))
+            request.session['user'] = request.GET['user']
+            request.session['wx'] = request.GET['wx']
+        else:
+            if 'user' in request.session:
+                sts_logger.info("wx %s user %s" % (request.session['wx'], request.session['user']))
+        return func(request, *args, **kwargs)
+    return wrapper
 
