@@ -19,5 +19,5 @@ urlpatterns = patterns('',
     url(r'^ckeditor/', include('ckeditor.urls')),
     url(r'^api/microsite/', include('microsite.apiurls')),
     url(r'^microsite/', include('microsite.siteurls')),
-) #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
