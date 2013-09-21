@@ -14,7 +14,8 @@ setup_environ(settings)
 
 logger = logging.getLogger("cron")
 
-from data.models import WSiteDailyData
+from data.models import WSiteDailyData, WeixinDailyData
+from framework.models import WXAccount
 
 @cronjobs.register
 def sts_log_analyse():
@@ -44,3 +45,17 @@ def sts_log_analyse():
     for wx_id, v in wx.iteritems():
         WSiteDailyData.today(wx_id, v[1], v[0])
 
+@cronjobs.register
+def weixin_daily_analyse():
+    for wx in WXAccount.objects.filter(state=WXAccount.STATE_BOUND):
+        try:
+            data = WeixinDailyData.objects.get(weixin=wx, date=datetime.date.today())
+            logger.debug("already have one")
+        except:
+            data = WeixinDailyData()
+            data.weixin = wx
+            data.date = datetime.date.today()
+            data.save()
+
+
+    
