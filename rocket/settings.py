@@ -86,8 +86,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-#SITE_URL = "http://r.limijiaoyin.com"
-SITE_URL = "http://jianfei.bestgames7.com"
+SITE_URL = "http://r.limijiaoyin.com"
 
 CKEDITOR_RESTRICT_BY_USER = True
 CKEDITOR_UPLOAD_PATH = '/data/media/ckeditor/'
