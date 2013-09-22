@@ -101,6 +101,7 @@ CKEDITOR_CONFIGS = {
             ['Styles','Format','Font','FontSize'],        
             ['Maximize','ShowBlocks','Preview','Source'],
         ],
+        'language': 'zh-cn',
         'width': 760,
         'height': 300,
         'toolbarCanCollapse': False,
