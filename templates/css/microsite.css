@@ -1,7 +1,5 @@
 body {
     padding: 0;
-    position: absolute;
-    width: 100%;
     font-family: "Microsoft Yahei", "微软雅黑", "Tahoma", "Arial", "Helvetica","STHeiti";
 }
 
@@ -34,8 +32,6 @@ body {
     border-top: 1px solid #ababab;
     line-height: 40px;
     text-align: center;
-    position: absolute;
-    bottom: 0px;
     width: 100%;
 }
 
