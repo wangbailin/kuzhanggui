@@ -29,12 +29,16 @@ body {
 }
 
 .footer {
-    border-top: 1px solid #828282;
+    border-top: 1px solid #ababab;
     line-height: 40px;
     text-align: center;
+}
+
+.footer a span {
+    color: #66bb11;
 }
 
 .footer a, .footer a:active, .footer a:hover {
     color: #828282;
     text-decoration: none;
-};
+}
