@@ -117,10 +117,7 @@ $('#tab-back-default').click(function() {
 
 start_preview_history_length = 0;
 function preview_back() {
-    if (iframe_preview.history.length > start_preview_history_length) {
-        //can't not solve all problems, we can't get the index of current page in history
-        iframe_preview.history.back();
-    }
+    iframe_preview.history.back();
     return false;
 }
 $('#tab-preview').click(function() {
