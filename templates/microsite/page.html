@@ -12,7 +12,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.container').css('min-height', ($(window).height()-40) + 'px');
+            $('.container').css('min-height', $(window).height() + 'px');
         });
     </script>
     {% block js %}{% endblock %}
