@@ -46,7 +46,7 @@ class Page(models.Model):
         if self.icon:
             return self.icon.url
         else:
-            return DEFAULT_PRE + get_default_icon(self)
+            return consts.DEFAULT_PRE + get_default_icon(self)
 
     class Meta:
         db_table = 'page'
