@@ -1,5 +1,7 @@
 body {
     padding: 0;
+    position: absolute;
+    width: 100%;
     font-family: "Microsoft Yahei", "微软雅黑", "Tahoma", "Arial", "Helvetica","STHeiti";
 }
 
