@@ -48,7 +48,7 @@ class BaiduYunStorage(Storage):
         if name.startswith('baidu_yun'):
             return "http://bcs.duapp.com/jianfei-baidu/" + name
         else:
-            return "http://r.limijiaoyin.com/media/" + name
+            return settings.SITE_URL + settings.MEDIA_URL + name
 
     def exists(self, name):
         return False

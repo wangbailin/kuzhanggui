@@ -110,7 +110,7 @@ def trend_(request, trendapp):
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
-        cover_url = consts.DEFAULT_TRENDITEM_COVER
+        cover_url = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_TRENDITEM_COVER
         if i.cover:
             cover_url = i.cover.url
         new = (datetime.date.today() - i.pub_time) <= datetime.timedelta(days=7)
