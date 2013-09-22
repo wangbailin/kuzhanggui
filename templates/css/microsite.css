@@ -27,3 +27,14 @@ body {
     position: absolute;
     padding: 8px;
 }
+
+.footer {
+    border-top: 1px solid #828282;
+    line-height: 40px;
+    text-align: center;
+}
+
+.footer a, .footer a:active, .footer a:hover {
+    color: #828282;
+    text-decoration: none;
+};
