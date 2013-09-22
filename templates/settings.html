@@ -30,10 +30,6 @@ $("input, select, textarea").change(function(){
     $("#change_or_not").text("*");
     });
 });
-function backToDefaultIcon(icon_url) {
-    $("input[name='icon']").val({{ STATIC_URL }}+icon_url);
-};
-
 </script>
 <style type="text/css">
 .leftbutton {
@@ -55,7 +51,7 @@ function backToDefaultIcon(icon_url) {
     <ul class="nav nav-tabs" style="margin-bottom:10px">
     {% for t in tabs %}
         {% if forloop.counter0 == active_tab_id %}
-        <li class='active'><a href="#">{{ t.0.tab_name }}<span id="change_or_not" style="color:red;"></span></a></li>
+        <li class='active'><a href="#"><span id="change_or_not"></span>{{ t.0.tab_name }}</a></li>
         {% else %}
         <li><a href="/settings/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
         {% endif %}
@@ -67,6 +63,9 @@ function backToDefaultIcon(icon_url) {
             <button class="btn" id="tab-preview">预览</button>
             {% if page.template_name == "content_page.html" or page.template_name == "link_page.html" %}
             <a href="#delete_page" class="btn btn-danger" data-toggle="modal">删除</a>
+            {% endif %}
+            {% if page.template_name == "intropage.html" or page.template_name == "apppage.html" or page.template_name == "official_weibo.html" %}
+            <a class="btn" href="#back_default" data-toggle="modal">恢复默认</a>
             {% endif %}
             <button class="btn btn-primary" id="tab-save">保存</button>
         </div>
@@ -87,6 +86,20 @@ function backToDefaultIcon(icon_url) {
     </div>
 </div>
 
+<div id="back_default" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>恢复默认</h3>
+    </div>
+    <div class="modal-body">
+        <span>点击确定将会对启用、标题、首页图标恢复到默认状态，并且对内容进行保存!</span>
+    </div>
+    <div class="modal-footer">
+        <button id="tab-back-default" class="btn btn-primary">确定</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
 <script>
 $('#tab-save').click(function() {
     $("#change_or_not").text("");
@@ -94,6 +107,14 @@ $('#tab-save').click(function() {
     $("#page_form").attr('target', "_self");
     $(this).closest('form').submit();
 });
+$('#tab-back-default').click(function() {
+    $('#back_default').modal('hide');
+    $("#change_or_not").text("");
+    $("#page_form").attr('action', "/back_default/{{page.pk}}");
+    $("#page_form").attr('target', "_self");
+    $("#tab-save").closest('form').submit();
+});
+
 start_preview_history_length = 0;
 function preview_back() {
     if (iframe_preview.history.length > start_preview_history_length) {

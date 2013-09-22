@@ -114,6 +114,45 @@ def app(request, app_id):
 
 @login_required
 @page_verify('page_id')
+def back_default(request, page_id):
+    if page_id:
+        page_id = int(page_id)
+        tabs = get_tabs(request)
+        active_tab_id = -1
+        for i in range(len(tabs)):
+            if tabs[i][0].pk == page_id:
+                active_tab_id = i
+                logger.debug("find form active tab id %d" % i)
+                break
+
+        if active_tab_id == -1:
+            return redirect('/settings')
+
+        apps = get_apps(request)
+
+        logger.debug("save page id %d" % page_id)
+        page = get_object_or_404(Page, id = page_id)
+        sub_page = page.cast()
+        form = FormManager.get_form(sub_page, request)
+        if request.method == 'POST':
+            if form.is_valid():
+                intropage = form.save(commit=False)
+                intropage.title = get_default_title(sub_page)
+                intropage.enable = True
+                intropage.icon = get_default_icon(sub_page)
+                intropage.save()
+                return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+            else:
+                logger.debug("form is not valid")
+                return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+        else:
+            return redirect("/settings/%d" % active_tab_id)
+    else:
+        logger.error("no page id")
+    return redirect("/settings")
+
+@login_required
+@page_verify('page_id')
 def save(request, page_id):
     if page_id:
         page_id = int(page_id)
@@ -271,7 +310,7 @@ def add_edit_link_page(request, link_id=None):
                 item.enable = True
                 item.wx = wx
             item.save()
-            return redirect('/settings')
+            return render(request, 'close_page.html')
     else:
         form = LinkPageForm(instance=item)
 
@@ -295,7 +334,7 @@ def add_edit_content_page(request, content_id=None):
                 item.wx = wx
             logger.debug("icon url %s" % item.icon.url)
             item.save()
-            return redirect('/settings')
+            return render(request,'close_page.html')
         else:
             logger.debug("form is not valid")
     else:

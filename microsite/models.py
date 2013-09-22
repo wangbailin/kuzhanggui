@@ -658,6 +658,25 @@ def get_default_icon(page):
         default_icon = consts.DEFAULT_HELP_ICON
     return default_icon % site_templates[page.wx.wsite_template].site_template
 
+def get_default_title(page):
+    if page.real_type == ContentType.objects.get_for_model(ContactApp):
+        return u"联系我们"
+    elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
+        return u"公司动态"
+    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+        return u"成功案例"
+    elif page.real_type == ContentType.objects.get_for_model(ProductApp):
+        return u"产品中心"
+    elif page.real_type == ContentType.objects.get_for_model(IntroPage):
+        return u"公司简介"
+    elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
+        return u"公司业务"
+    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        return u"加入我们"
+    elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
+        return u"官方微博"
+    elif page.real_type == ContentType.objects.get_for_model(HelpPage):
+        return u"新手指导"
 
 def page_is_enable(subpage):
     if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
