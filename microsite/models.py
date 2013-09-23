@@ -278,7 +278,7 @@ class ProductItem(models.Model):
     
 class TrendItem(models.Model):
     trend = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
-    pub_time = models.DateField(u'日期')
+    pub_time = models.DateTimeField(u'日期', auto_now_add=True)
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
     cover = models.ImageField(u'封面', storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
