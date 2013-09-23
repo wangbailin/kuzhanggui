@@ -15,6 +15,7 @@ from app_manager import AppMgr
 from framework.models import *
 from datetime import datetime
 from microsite.forms import MenuForm
+import django_tables2 as tables
 
 from wx_match import *
 
@@ -102,6 +103,8 @@ def app(request, app_id):
         if apps[i].pk == app_id:
             active_side_id = i + 1
             app_info = AppMgr.get_app_info(apps[i].cast())
+           # app_info = app_info.paginate(page=request.GET.get("ti-page",1), per_page=10)
+           
             active_app = apps[i]
             active_app_specific= AppMgr.get_app_enable(apps[i].cast())
     logger.debug("active side id is %d" % active_side_id)
@@ -141,7 +144,7 @@ def back_default(request, page_id):
                 intropage.enable = True
                 intropage.icon = get_default_icon(sub_page)
                 intropage.save()
-                return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+                return redirect("/settings/%d" % active_tab_id)
             else:
                 logger.debug("form is not valid")
                 return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
@@ -177,7 +180,7 @@ def save(request, page_id):
             if form.is_valid():
                 intropage = form.save()
                 intropage.save()
-                return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+                return redirect("/settings/%d" % active_tab_id)
             else:
                 logger.debug("form is not valid")
                 return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
@@ -215,7 +218,8 @@ def add_edit_contact(request, item_id=None):
                 contact_app = ContactApp.objects.get(wx=wx)
                 item.contact = contact_app
             item.save()
-            return redirect('/app/%d' % item.contact.id)
+           # return redirect('/app/%d' % item.contact.id)
+            return render(request,'close_page.html')
     else:
         form = ContactItemForm(instance=item)
 
@@ -280,7 +284,8 @@ def add_edit_trend(request, item_id=None):
                 item.trend = trends_app
             item.pub_time = datetime.now()
             item.save()
-            return redirect('/app/%d' % item.trend.id)
+           # return redirect('/app/%d' % item.trend.id)
+            return render(request,'close_page.html')
     else:
         form = TrendItemForm(instance=item)
 
@@ -361,7 +366,8 @@ def add_edit_case(request, item_id=None):
             item.pub_time = datetime.now()
             logger.debug("item picurl %s" % item.case_pic1)
             item.save()
-            return redirect('/app/%d' % item.case_app.id)
+            #return redirect('/app/%d' % item.case_app.id)
+            return render(request,'close_page.html')
     else:
         form = CaseItemForm(instance=item)
     form.fields['cls'].queryset = CaseClass.objects.filter(case_app=case_app)
@@ -427,7 +433,8 @@ def add_edit_product(request, item_id=None):
                 item.product_app= product_app
             item.pub_time = datetime.now()
             item.save()
-            return redirect('/app/%d' % item.product_app.id)
+            #return redirect('/app/%d' % item.product_app.id)
+            return render(request,'close_page.html')
     else:
         form = ProductItemForm(instance=item)
 
