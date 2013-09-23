@@ -103,8 +103,12 @@ def app(request, app_id):
         if apps[i].pk == app_id:
             active_side_id = i + 1
             app_info = AppMgr.get_app_info(apps[i].cast())
-           # app_info = app_info.paginate(page=request.GET.get("ti-page",1), per_page=10)
-           
+            if isinstance(app_info, tuple):
+                app_info[0].paginate(page=request.GET.get(app_info[0].prefix+"page",1), per_page=10)
+                if app_info[1].prefix:
+                    app_info[1].paginate(page=request.GET.get(app_info[1].prefix+"page",1), per_page=10)
+            else:
+                app_info.paginate(page=request.GET.get(app_info.prefix+"page",1), per_page=10)
             active_app = apps[i]
             active_app_specific= AppMgr.get_app_enable(apps[i].cast())
     logger.debug("active side id is %d" % active_side_id)
