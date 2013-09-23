@@ -2,7 +2,7 @@
 from models import HomePage
 import django_tables2 as tables
 from django.contrib.contenttypes.models import ContentType
-from models import ContactApp, TrendsApp, ContactItem, TrendItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
+from models import ContactApp, TrendsApp, ContactItem, TrendItem, TeamItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
 from django_tables2.columns import DateTimeColumn, TemplateColumn
 
 class HomePageTable(tables.Table):
@@ -35,13 +35,26 @@ class ContactPeopleTable(tables.Table):
 
 
 class TrendsTable(tables.Table):
+    id = tables.Column(orderable=True, visible=False)
     ops = TemplateColumn(template_name="trend_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
     class Meta:
         model = TrendItem
-        order_by = '-pub_time'
+        order_by = '-id'
         empty_text = u'暂无公司动态'
+        orderable = False
         attrs = {'class' : 'table table-striped'}
         fields = ('title', 'pub_time', 'summary')
+
+class TeamTable(tables.Table):
+    id = tables.Column(orderable=True, visible=False)
+    ops = TemplateColumn(template_name="team_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    class Meta:
+        model = TeamItem
+        empty_text = u'暂无团队成员介绍'
+        order_by = '-id'
+        orderable = False
+        attrs = {'class' : 'table table-striped'}
+        fields = ('name', 'job_title', 'person_digest')
 
 class CaseItemTable(tables.Table):
     id = tables.Column(orderable=True, visible=False)

@@ -116,12 +116,26 @@ def trend_(request, trendapp):
         new = (datetime.date.today() - i.pub_time) <= datetime.timedelta(days=7)
         items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items, 'theme': site_templates[trendapp.wx.wsite_template].site_template})
-
-
 @sts_decorate
 def trend(request, item_id):
     trendapp = get_object_or_404(TrendsApp, pk=item_id)
     return trend_(request, trendapp)
+
+def team_(request, teamapp):
+    teamitems = TeamItem.objects.filter(team=teamapp).order_by("-pub_time")
+    items = []
+    for i in teamitems:
+        logger.debug("one team title %s" % i.title)
+        cover_url = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_TEAMITEM_COVER
+        if i.cover:
+            cover_url = i.cover.url
+        new = (datetime.date.today() - i.pub_time) <= datetime.timedelta(days=7)
+        items.append( (i.title, '/microsite/teamitem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
+    return render(request, 'microsite/teamapp.html', {'title':teamapp._get_tab_name(), 'items':items, 'theme': site_templates[teamapp.wx.wsite_template].site_template})
+@sts_decorate
+def team(request, item_id):
+    teamapp = get_object_or_404(TeamApp, pk=item_id)
+    return team_(request, teamapp)
 
 def trenditem_(request, trenditem):
     return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8"), 'theme': site_templates[trenditem.trend.wx.wsite_template].site_template})
@@ -130,6 +144,14 @@ def trenditem(request, item_id):
     trenditem = get_object_or_404(TrendItem, pk=item_id)
     logger.debug("content %s" % trenditem.content)
     return trenditem_(request, trenditem)
+
+def teamitem_(request, teamitem):
+    return render(request, 'microsite/contentpage.html', {'title':teamitem.name, 'content':teamitem.person_content.encode("utf8"), 'theme': site_templates[teamitem.team.wx.wsite_template].site_template})
+@sts_decorate
+def teamitem(request, item_id):
+    teamitem = get_object_or_404(TeamItem, pk=item_id)
+    logger.debug("content %s" % teamitem.content)
+    return teamitem_(request, teamitem)
 
 def case_(request, caseapp, class_id):
     caseclasses = CaseClass.objects.filter(case_app=caseapp)

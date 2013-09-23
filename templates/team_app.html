@@ -1,7 +1,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/app_dialog.js"></script>
 
 <div id="margin_bottom">
-<a type="button" class="btn btn-default btn-primary" href="/trend/add" target="_blank"><i class="icon-plus icon-white"></i>新增动态</a>
+<a type="button" class="btn btn-default btn-primary" href="/team/add" target="_blank"><i class="icon-plus icon-white"></i>新增团队成员</a>
 </div>
 
 {% if not active_app_specific.enable %}
@@ -10,22 +10,22 @@
 
 <div class="navbar" style="margin-bottom:0;">
     <div class="navbar-inner">
-        <p class="navbar-text">公司动态</p>
+        <p class="navbar-text">团队成员</p>
     </div>
 </div>
 {% load render_table from django_tables2 %}
 {% render_table app_info "django_tables2/table.html" %}
 
-<div id="delete_trend" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_trend_header" aria-hidden="true">
+<div id="delete_team" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_team_header" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>删除动态</h3>
+        <h3>删除团队成员</h3>
     </div>
     <div class="modal-body">
-        <span>确认删除动态 <strong id="trend_name"></strong>?</span>
+        <span>确认删除团队成员 <strong id="team_name"></strong>?</span>
     </div>
     <div class="modal-footer">
-        <a id="delete_trend_ok" href="#" class="btn btn-danger btn-del">删除</a>
+        <a id="delete_team_ok" href="#" class="btn btn-danger btn-del">删除</a>
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>

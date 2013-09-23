@@ -304,6 +304,39 @@ def trend_delete(request, item_id):
     return redirect('/app/%d' % app_id)
 
 @login_required
+@team_item_verify('item_id')
+def add_edit_team(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(TeamItem, pk = item_id)
+    else:
+        peoples = None
+        item = None
+    if request.method == 'POST':
+        form = TeamItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+                team_app = TeamApp.objects.get(wx=wx)
+                item.team = team_app
+            item.pub_time = datetime.now()
+            item.save()
+           # return redirect('/app/%d' % item.trend.id)
+            return render(request,'close_page.html')
+    else:
+        form = TeamItemForm(instance=item)
+
+    return render(request, 'add_edit_team.html', {'form':form})
+
+@login_required
+@team_item_verify('item_id')
+def team_delete(request, item_id):
+    item = get_object_or_404(TeamItem, pk = item_id)
+    app_id = item.team.pk
+    item.delete()
+    return redirect('/app/%d' % app_id)
+
+@login_required
 @page_verify('link_id')
 def add_edit_link_page(request, link_id=None):
     if link_id:

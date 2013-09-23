@@ -8,7 +8,7 @@ from models import *
 from framework.models import *
 from forms import *
 from django.contrib import auth
-from siteviews import homepage_, intro_, business_, join_, help_, weibo_, content_, trend_, contact_, productitem_, product_, caseitem_, case_, trenditem_
+from siteviews import homepage_, intro_, business_, join_, help_, weibo_, content_, trend_, team_, contact_, productitem_, product_, caseitem_, case_, trenditem_, teamitem_
 
 logger = logging.getLogger('default')
 
@@ -22,6 +22,8 @@ def page(request, page_id):
         return businesspage(request, page_id)
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
         return trend(request, page_id)
+    elif page.real_type == ContentType.objects.get_for_model(TeamApp):
+        return team(request, page_id)
     elif page.real_type == ContentType.objects.get_for_model(JoinPage):
         return join(request, page_id)
     elif page.real_type == ContentType.objects.get_for_model(ContactApp):
@@ -85,6 +87,15 @@ def trend(request, page_id):
     if form.is_valid():
         trendapp = form.save(commit=False)
         return trend_(request, app)
+    else:
+        return HttpResponse("%s" % str(form.errors))
+
+def team(request, page_id):
+    app = get_object_or_404(TeamApp, pk=page_id)
+    form = TeamAppForm(request.POST, request.FILES, instance=app)
+    if form.is_valid():
+        teamapp = form.save(commit=False)
+        return team_(request, app)
     else:
         return HttpResponse("%s" % str(form.errors))
 
@@ -193,6 +204,21 @@ def trend_item(request):
             item.trend = trends_app
         item.pub_time = datetime.now()
         return trenditem_(request, item)
+
+def team_item(request):
+    form = TeamItemForm(request.POST, request.FILES, instance=None)
+    if not form.is_valid():
+        return deal_with_errors(form)
+    else:
+        item = form.save(commit=False)
+        if item.pk is None:
+            user = auth.get_user(request)
+            account = Account.objects.get(user=user)
+            wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+            team_app = TeamApp.objects.get(wx=wx)
+            item.team = team_app
+        item.pub_time = datetime.now()
+        return teamitem_(request, item)
 
 def case_item(request, item_id=None):
     if item_id:
