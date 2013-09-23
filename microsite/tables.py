@@ -16,7 +16,7 @@ class ContactTable(tables.Table):
     ops = TemplateColumn(template_name="contact_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
     class Meta:
         model = ContactItem
-        order_by = '-pub_time'
+        order_by = '-id'
         empty_text = u'暂无联系地址'
         attrs = {'class' : 'table table-striped'}
         orderable = False
@@ -27,7 +27,7 @@ class ContactPeopleTable(tables.Table):
     ops = TemplateColumn(template_name="contact_people_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
     class Meta:
         model = ContactPeople
-        order_by = '-pub_time'
+        order_by = '-id'
         attrs = {'class' : 'table table-striped'}
         orderable = False
         empty_text = u'暂无联系人'
@@ -48,7 +48,7 @@ class CaseItemTable(tables.Table):
     ops = TemplateColumn(template_name="case_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
     class Meta:
         model = CaseItem
-        order_by = '-pub_time'
+        order_by = '-id'
         empty_text = u'暂无成功案例'
         orderable = False
         attrs = {'class' : 'table table-striped'}
@@ -60,7 +60,7 @@ class CaseClassTable(tables.Table):
     ops = TemplateColumn(template_name="case_class_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
     class Meta:
         model = CaseClass
-        order_by = '-pub_time'
+        order_by = '-id'
         empty_text = u'暂无案例分类'
         orderable = False
         attrs = {'class' : 'table table-striped'}
@@ -71,7 +71,7 @@ class ProductItemTable(tables.Table):
     ops = TemplateColumn(template_name="product_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
     class Meta:
         model = ProductItem
-        order_by = '-pub_time'
+        order_by = '-id'
         empty_text = u'暂无产品'
         orderable = False
         attrs = {'class' : 'table table-striped'}
@@ -94,6 +94,7 @@ class MenuTable(tables.Table):
     ops = TemplateColumn(template_name="menu_ops.html", verbose_name=u"操作", orderable=False,attrs={"class":"ops"})
     class Meta:
         model = Menu
+        order_by = '-id'
         empty_text = u'暂无菜单项'
         orderable = False
         attrs = {'class' : 'table table-striped'}
