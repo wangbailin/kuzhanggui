@@ -19,10 +19,10 @@
     </button>
     <ul class="dropdown-menu">
         <li>
-            <a href="/case/add" target="_blank">新增成功案例</a>
+            <a href="#add_case_class" data-toggle="modal">新增案例分类</a>
         </li>
         <li>
-            <a href="#add_case_class" data-toggle="modal">新增案例分类</a>
+            <a href="/case/add" target="_blank">新增成功案例</a>
         </li>
     </ul>
 </div>
@@ -33,17 +33,18 @@
 
 <div class="navbar" style="margin-bottom:0;">
     <div class="navbar-inner">
-        <p class="navbar-text">成功案例</p>
-    </div>
-</div>
-{% load render_table from django_tables2 %}
-{% render_table app_info.0 "django_tables2/table.html" %}
-<div class="navbar" style="margin-bottom:0;">
-    <div class="navbar-inner">
         <p class="navbar-text">案例分类</p>
     </div>
 </div>
+{% load render_table from django_tables2 %}
 {% render_table app_info.1 "django_tables2/table.html" %}
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">成功案例</p>
+    </div>
+</div>
+{% render_table app_info.0 "django_tables2/table.html" %}
+
 
 <div id="add_case_class" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
