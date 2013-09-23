@@ -90,6 +90,13 @@ var deleteTrend = function(id, name) {
     $('#delete_trend').modal('show');
 };
 
+var deleteTeam = function(id, name) {
+    $('#team_name').text(name);
+    $('#delete_team_ok').attr('href', '/team/' + id + '/delete');
+    $('#delete_team').modal('show');
+};
+
+
 var deleteContact = function(id, name) {
     $('#contact_name').text(name);
     $('#delete_contact_ok').attr('href', '/contact/' + id + '/delete');

@@ -80,7 +80,7 @@ class HomePage(Page):
     for k,v in site_templates.items():
         choices.append( (k, v.name) )
     template_type = models.IntegerField(u'模板类型', choices=choices, default = 1)
-    pic1 = models.ImageField(u"焦点图1", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    pic1 = models.ImageField(u"焦点图1", storage=baidu_storage, upload_to='upload/', max_length=255)
     exp1 = models.CharField(u"焦点图1注释", max_length=255, blank=True)
     pic2 = models.ImageField(u"焦点图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp2 = models.CharField(u"焦点图2注释", max_length=255, blank=True)
@@ -179,6 +179,27 @@ class TrendsApp(App):
     class Meta:
         db_table = u"trendsapp"
         app_label = u'microsite'
+
+class TeamApp(App):
+    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
+    title = models.CharField(u'标题', max_length=50)
+
+    def save(self, *args, **kwargs):
+        if len(self.title) == 0:
+            self.title = '团队介绍'
+        super(TeamApp, self).save(*args, **kwargs)
+
+
+    def _get_tab_name(self):
+        return self.title
+
+    def _get_app_template(self):
+        return 'team_app.html'
+
+    class Meta:
+        db_table = u"teamapp"
+        app_label = u'microsite'
+
 
 class CaseApp(App):
     enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
@@ -286,6 +307,19 @@ class TrendItem(models.Model):
 
     class Meta:
         db_table = u"trend_item"
+        app_label = u'microsite'
+
+class TeamItem(models.Model):
+    team = models.ForeignKey(TeamApp, verbose_name = u'团队')
+    pub_time = models.DateTimeField(u'日期', auto_now_add=True)
+    name = models.CharField(u'姓名', max_length=100)
+    job_title = models.CharField(u'职位名称', max_length=100)
+    picture = models.ImageField(u"照片", storage=baidu_storage, upload_to='upload/', max_length=255)
+    person_digest = models.CharField(u'简要介绍', max_length=255)
+    person_content = models.TextField(u'详细介绍')
+
+    class Meta:
+        db_table = u"team_item"
         app_label = u'microsite'
 
 class ContactItem(models.Model):

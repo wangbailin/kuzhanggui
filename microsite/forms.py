@@ -130,6 +130,29 @@ class TrendItemForm(ModelForm):
             'summary',
         )
 
+class TeamAppForm(ModelForm):
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    class Meta:
+        model = TeamApp
+        fields = (
+            'title',
+            'icon',
+            'enable',
+        )
+
+class TeamItemForm(ModelForm):
+    person_content = forms.CharField(label='详细介绍', widget=CKEditorWidget())
+    picture = forms.ImageField(label=u'照片', widget=AjaxClearableFileInput(), required = True, help_text=u'建议图片大小为105px*105px')
+    class Meta:
+        model = TeamItem
+        fields = (
+            'name',
+            'job_title',
+            'picture',
+            'person_digest',
+            'person_content',
+        )
+
 class ContactItemForm(ModelForm):
     lat = forms.CharField(widget=forms.HiddenInput())
     lng = forms.CharField(widget=forms.HiddenInput())
@@ -415,5 +438,11 @@ class FormManager(object):
                 return ProductAppForm(request.POST, request.FILES, instance=page)
             else:
                 return ProductAppForm(instance=page)
+        elif page.real_type == ContentType.objects.get_for_model(TeamApp):
+            if (request):
+                return TeamAppForm(request.POST, request.FILES, instance=page)
+            else:
+                return TeamAppForm(instance=page)
+
 
 
