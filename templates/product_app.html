@@ -19,10 +19,10 @@
     </button>
     <ul class="dropdown-menu">
         <li>
-            <a href="/product/add" target="_blank">新增产品</a>
+            <a href="#add_product_class" data-toggle="modal">新增产品分类</a>
         </li>
         <li>
-            <a href="#add_product_class" data-toggle="modal">新增产品分类</a>
+            <a href="/product/add" target="_blank">新增产品</a>
         </li>
     </ul>
 </div>
@@ -33,17 +33,17 @@
 
 <div class="navbar" style="margin-bottom:0;">
     <div class="navbar-inner">
-        <p class="navbar-text">产品</p>
-    </div>
-</div>
-{% load render_table from django_tables2 %}
-{% render_table app_info.0 "django_tables2/table.html" %}
-<div class="navbar" style="margin-bottom:0;">
-    <div class="navbar-inner">
         <p class="navbar-text">产品分类</p>
     </div>
 </div>
+{% load render_table from django_tables2 %}
 {% render_table app_info.1 "django_tables2/table.html" %}
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">产品</p>
+    </div>
+</div>
+{% render_table app_info.0 "django_tables2/table.html" %}
 
 <div id="add_product_class" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
