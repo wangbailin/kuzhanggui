@@ -11,14 +11,14 @@ class AppMgr(object):
             peoples = []
             for item in items:
                 peoples.extend(ContactPeople.objects.filter(contact_item=item))
-            return (ContactTable(items), ContactPeopleTable(peoples))
+            return (ContactTable(items, prefix='ct-'), ContactPeopleTable(peoples, prefix='cp-'))
         elif app.real_type == ContentType.objects.get_for_model(TrendsApp):
-            return TrendsTable(TrendItem.objects.filter(trend=app))
+            return TrendsTable(TrendItem.objects.filter(trend=app), prefix='ti-')
         elif app.real_type == ContentType.objects.get_for_model(CaseApp):
-            return (CaseItemTable(CaseItem.objects.filter(case_app=app)),
+            return (CaseItemTable(CaseItem.objects.filter(case_app=app), prefix='ci-'),
                 CaseClassTable(CaseClass.objects.filter(case_app=app)))
         elif app.real_type == ContentType.objects.get_for_model(ProductApp):
-            return (ProductItemTable(ProductItem.objects.filter(product_app=app)),
+            return (ProductItemTable(ProductItem.objects.filter(product_app=app),prefix='pi-'),
                 ProductClassTable(ProductClass.objects.filter(product_app=app)))
     @classmethod
     def get_app_enable(cls, app):
