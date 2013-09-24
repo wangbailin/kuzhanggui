@@ -1,0 +1,28 @@
+{% extends "microsite/page.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="teams">
+        {% for item in items %}
+            <a href="{{ item.1 }}">
+                <div class="team card">
+                    <img src="{{ item.3 }}" />
+                    <div class="team-meta">
+                        <h4>{{ item.0 }}</h4>
+                        <p>{{ item.2 }}</p>
+                    </div>
+                    <div class="team-abs">
+                        <span>{{ item.4 }}</span>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <div class="empty">
+                <p>暂无团队成员</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

@@ -63,6 +63,15 @@ body {
     text-decoration: none;
 }
 
+.teams {
+    padding: 8px;
+}
+
+.teams a, .teams a:hover, .teams a:visited, .teams a:active {
+    color: #e8e8e8;
+    text-decoration: none;
+}
+
 .card {
     border-radius: 5px;
     padding: 8px;
@@ -118,6 +127,46 @@ body {
 }
 
 .trends .empty p {
+    margin-top: 60px;
+}
+
+.teams img {
+    float: left;
+    width: 52px;
+    height: 52px;
+}
+
+.teams .team .team-meta {
+    margin-left: 60px;
+    min-height: 52px;
+}
+
+.teams .team .team-meta h4 {
+    margin-top: 0px;
+    margin-right: 20px;
+}
+
+.teams .team .team-meta p {
+    color: #828282;
+    font-size: 11px;
+}
+
+.teams .team .team-abs {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.teams .empty {
+    background-image: url('team_empty.png');
+    margin-top: -45px;
+    margin-left: -33px;
+    height: 52px;
+    width: 66px;
+    background-size: 66px 52px;
+}
+
+.teams .empty p {
     margin-top: 60px;
 }
 

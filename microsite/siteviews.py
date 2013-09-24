@@ -113,7 +113,7 @@ def trend_(request, trendapp):
         cover_url = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_TRENDITEM_COVER
         if i.cover:
             cover_url = i.cover.url
-        new = (datetime.date.today() - i.pub_time) <= datetime.timedelta(days=7)
+        new = (datetime.date.today() - i.pub_time.date()) <= datetime.timedelta(days=7)
         items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items, 'theme': site_templates[trendapp.wx.wsite_template].site_template})
 @sts_decorate
@@ -122,15 +122,12 @@ def trend(request, item_id):
     return trend_(request, trendapp)
 
 def team_(request, teamapp):
-    teamitems = TeamItem.objects.filter(team=teamapp).order_by("-pub_time")
+    teamitems = TeamItem.objects.filter(team=teamapp).order_by("pub_time")
     items = []
     for i in teamitems:
-        logger.debug("one team title %s" % i.title)
-        cover_url = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_TEAMITEM_COVER
-        if i.cover:
-            cover_url = i.cover.url
-        new = (datetime.date.today() - i.pub_time) <= datetime.timedelta(days=7)
-        items.append( (i.title, '/microsite/teamitem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
+        logger.debug("one team name %s" % i.name)
+        picture_url = i.picture.url
+        items.append( (i.name, '/microsite/teamitem/%d' % i.pk, i.job_title, picture_url, i.person_digest))
     return render(request, 'microsite/teamapp.html', {'title':teamapp._get_tab_name(), 'items':items, 'theme': site_templates[teamapp.wx.wsite_template].site_template})
 @sts_decorate
 def team(request, item_id):
@@ -150,7 +147,7 @@ def teamitem_(request, teamitem):
 @sts_decorate
 def teamitem(request, item_id):
     teamitem = get_object_or_404(TeamItem, pk=item_id)
-    logger.debug("content %s" % teamitem.content)
+    logger.debug("content %s" % teamitem.person_content)
     return teamitem_(request, teamitem)
 
 def case_(request, caseapp, class_id):
