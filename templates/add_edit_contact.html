@@ -32,19 +32,19 @@ $(document).ready(function(){
         <div class="control-group">
             <label class="control-label" for="name"><span style="color:red;">*</span>{{form.name.label}}</label>
             <div class="controls">
-               	<input class="input-xxlarge" id="id_name" name="name" type="text" />{{ form.name.errors }}
+               	{{ form.name }}{{ form.name.errors }}
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="fax_code">{{form.fax_code.label}}</label>
             <div class="controls">
-                <input class="input-xxlarge" id="id_fax_code" name="fax_code" type="text" />{{ form.fax_code.errors }}
+                {{ form.fax_code }}{{ form.fax_code.errors }}
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="address"><span style="color:red;">*</span>{{form.address.label}}</label>
             <div class="controls">
-                <input class="input-xxlarge" id="id_address" name="address" type="text" /><span class="help-block">填写具体地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</span>{{ form.address.errors }}
+                {{ form.address }}<span class="help-block">填写具体地址后，将鼠标移到下方地图上，在正确位置右键点击进行确认！</span>{{ form.address.errors }}
             </div>
         </div>
         <div>{{ form.lng }}</div>

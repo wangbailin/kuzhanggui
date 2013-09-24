@@ -119,7 +119,7 @@ class TrendsAppForm(ModelForm):
         )
 
 class TrendItemForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget())
+    content = forms.CharField(label=u'内容', widget=CKEditorWidget())
     cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False, help_text=u'建议图片大小为105px*105px') 
     class Meta:
         model = TrendItem
@@ -141,7 +141,7 @@ class TeamAppForm(ModelForm):
         )
 
 class TeamItemForm(ModelForm):
-    person_content = forms.CharField(label='详细介绍', widget=CKEditorWidget())
+    person_content = forms.CharField(label=u'详细介绍', widget=CKEditorWidget())
     picture = forms.ImageField(label=u'照片', widget=AjaxClearableFileInput(), required = True, help_text=u'建议图片大小为105px*105px')
     class Meta:
         model = TeamItem
@@ -154,15 +154,17 @@ class TeamItemForm(ModelForm):
         )
 
 class ContactItemForm(ModelForm):
+    name = forms.CharField(label=u'地址名称', widget=forms.TextInput(attrs={'class':'input-xxlarge'}))
+    fax_code = forms.CharField(label=u'传真号码', widget=forms.TextInput(attrs={'class':'input-xxlarge'}), required = False)
+    address = forms.CharField(label=u'具体地址', widget=forms.TextInput(attrs={'class':'input-xxlarge'}))
     lat = forms.CharField(widget=forms.HiddenInput())
     lng = forms.CharField(widget=forms.HiddenInput())
     class Meta:
         model = ContactItem
         fields = (
             'name',
-            'address',
-            'mail_code',
             'fax_code',
+            'address',
             'lat',
             'lng',
         )
