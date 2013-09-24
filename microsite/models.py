@@ -595,6 +595,8 @@ def get_page_url(page):
         return settings.SITE_URL + '/microsite/contact/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
         return settings.SITE_URL + '/microsite/trend/%d' % (page.id)
+    elif page.real_type == ContentType.objects.get_for_model(TeamApp):
+        return settings.SITE_URL + '/microsite/team/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
         return settings.SITE_URL + '/microsite/case/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
@@ -711,6 +713,8 @@ def get_default_title(page):
         return u"官方微博"
     elif page.real_type == ContentType.objects.get_for_model(HelpPage):
         return u"新手指导"
+    elif page.real_type == ContentType.objects.get_for_model(TeamApp):
+        return u"团队介绍"
 
 def page_is_enable(subpage):
     if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
