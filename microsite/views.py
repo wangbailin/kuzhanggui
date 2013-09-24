@@ -207,9 +207,9 @@ def page_delete(request, page_id):
 def add_edit_contact(request, item_id=None):
     if item_id:
         item = get_object_or_404(ContactItem, pk = item_id)
-        peoples = ContactPeopleTable(ContactPeople.objects.filter(contact_item=item))
+        #peoples = ContactPeopleTable(ContactPeople.objects.filter(contact_item=item))
     else:
-        peoples = None
+        #peoples = None
         item = None
     if request.method == 'POST':
         form = ContactItemForm(request.POST, request.FILES, instance=item)
@@ -227,7 +227,7 @@ def add_edit_contact(request, item_id=None):
     else:
         form = ContactItemForm(instance=item)
 
-    return render(request, 'add_edit_contact.html', {'form':form, 'peoples':peoples, 'contact_id':item_id})
+    return render(request, 'add_edit_contact.html', {'form':form, 'contact_id':item_id})
 
 @login_required
 @contact_item_verify('item_id')
