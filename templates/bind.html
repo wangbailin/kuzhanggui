@@ -15,12 +15,21 @@ $('#get_url_token').click(getUrlToken);
 $('#wxaccount_restart').click(clearBindInfo);
 $('#wxaccount_bound').click(isBindSuccessed);
 $('#wxaccount_name').bind('textchange', function() {
-    if ($(this).val() && $(this).val().length > 1) {
+    if ($(this).val() && $(this).val().length > 1 && $('#wxaccount_fans').val() && $('#wxaccount_fans').val().length > 0) {
         $('#get_url_token').removeClass('disabled');
     } else {
         $('#get_url_token').addClass('disabled');
     }
 });
+
+$('#wxaccount_fans').bind('textchange', function() {
+    if ($(this).val() && $(this).val().length > 0 && $('#wxaccount_name').val() && $('#wxaccount_name').val().length > 1) {
+        $('#get_url_token').removeClass('disabled');
+    } else {
+        $('#get_url_token').addClass('disabled');
+    }
+});
+
 {% endblock %}
 
 {% block content %}
@@ -65,8 +74,9 @@ $('#wxaccount_name').bind('textchange', function() {
     <div class="page-header">
         <span class="badge badge-success">2</span><span style="margin-left:4px;">获取接口配置信息</span>
     </div>
+    <input id="wxaccount_name" type="text" class="span3" placeholder="微信公众号名称">
     <div class="input-append">
-        <input id="wxaccount_name" type="text" class="span3" placeholder="微信公众号名称">
+        <input id="wxaccount_fans" type="text" class="span3" placeholder="微信公众号粉丝数">
         <button id="get_url_token" type="button" class="btn btn-primary disabled" data-loading-text="获取接口配置信息中...">获取接口配置信息</button>
     </div>
     <div class="alert alert-success" style="padding-top:18px;">

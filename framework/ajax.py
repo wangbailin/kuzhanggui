@@ -44,17 +44,25 @@ def signin(request, username, password):
     return dajax.json()
 
 @dajaxice_register
-def get_url_token(request, name):
+def get_url_token(request, name, fans):
     dajax = Dajax()
 
     account = Account.objects.get(user=request.user)
     wx_account, created = WXAccount.objects.get_or_create(account=account, name=name)
 
+    follower_count = 0
+    try:
+        follower_count = int(fans)
+    except ValueError:
+        follower_count = 0
+
     # generate url and token
     if created:
         wx_account.url = 'http://r.limijiaoyin.com/wx/%d' % wx_account.id
         wx_account.token = str(random.randint(1000,10000))
-        wx_account.save()
+
+    wx_account.follower_count = follower_count
+    wx_account.save()
     
     cache.set('wx_%d_token' % wx_account.id, wx_account.token, 15 * 60 * 1000)
     dajax.add_data({ 'url' : wx_account.url, 'token' : wx_account.token }, 'getUrlTokenCallback')
