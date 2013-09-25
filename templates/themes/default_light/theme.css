@@ -206,10 +206,9 @@ body {
 .teams .empty {
     background-image: url('team_noinfo_w.png');
     margin-top: -45px;
-    margin-left: -33px;
+    margin-left: -42px;
     height: 52px;
-    width: 66px;
-    background-size: 66px 52px;
+    background-size: 42px 52px;
 }
 
 .teams .empty p {
