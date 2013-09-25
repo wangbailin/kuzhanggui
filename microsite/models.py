@@ -508,7 +508,7 @@ def add_default_site(wx_account):
         businesspage = BusinessPage()
         businesspage.wx = wx_account
         businesspage.enable = True
-        businesspage.title = '公司业务'
+        businesspage.title = u'公司业务'
         businesspage.icon = consts.DEFAULT_BUSINESS_ICON % site_templates[wx_account.wsite_template].site_template
         businesspage.message_cover = consts.DEFAULT_BUSINESS_COVER
         businesspage.message_description = consts.DEFAULT_BUSINESS_MSG
@@ -523,6 +523,16 @@ def add_default_site(wx_account):
         trendsapp.message_cover = consts.DEFAULT_NEWS_COVER
         trendsapp.message_description = consts.DEFAULT_NEWS_MSG
         trendsapp.save()
+
+    teamapps = TeamApp.objects.filter(wx=wx_account)
+    if len(teamapps) == 0:
+        teamapp = TeamApp()
+        teamapp.wx = wx_account
+        teamapp.enable = True
+        teamapp.title = u'团队介绍'
+        teamapp.icon = consts.DEFAULT_TEAM_ICON % site_templates[wx_account.wsite_template].site_template
+        teamapp.message_description = consts.DEFAULT_TEAM_MSG
+        teamapp.save()
 
     productapps = ProductApp.objects.filter(wx=wx_account)
     if len(productapps) == 0:
@@ -625,6 +635,8 @@ def get_default_msg(page):
         return consts.DEFAULT_CONTACT_MSG
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
         return consts.DEFAULT_NEWS_MSG
+    elif page.real_type == ContentType.objects.get_for_model(TeamApp):
+        return consts.DEFAULT_TEAM_MSG
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
         return consts.DEFAULT_CASE_MSG
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
@@ -678,6 +690,8 @@ def get_default_icon(page):
         default_icon = consts.DEFAULT_CONTACT_ICON
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
         default_icon = consts.DEFAULT_NEWS_ICON
+    elif page.real_type == ContentType.objects.get_for_model(TeamApp):
+        default_icon = consts.DEFAULT_TEAM_ICON
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
         default_icon = consts.DEFAULT_CASE_ICON
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):

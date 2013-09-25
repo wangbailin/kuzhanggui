@@ -6,14 +6,17 @@
     <div class="teams">
         {% for item in items %}
             <a href="{{ item.1 }}">
-                <div class="team card">
-                    <img src="{{ item.3 }}" />
-                    <div class="team-meta">
-                        <h4>{{ item.0 }}</h4>
-                        <p>{{ item.2 }}</p>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="{{ item.3 }}" class="img-circle" />
                     </div>
-                    <div class="team-abs">
-                        <span>{{ item.4 }}</span>
+                    <div class="team-meta">
+                        <div class="name">
+                           <h4>{{ item.0 }}<span id="title">{{ item.2 }}</span></h4>
+                        </div>
+                        <div class="digest">
+                            {{ item.4 }}
+                        </div>
                     </div>
                 </div>
             </a>
