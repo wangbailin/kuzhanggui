@@ -144,7 +144,7 @@ def trenditem(request, item_id):
 
 def teamitem_(request, teamitem):
     picture_url = teamitem.picture.url
-    item = (teamitem.name, '/microsite/teamitem/%d' % teamitem.pk, teamitem.job_title, picture_url, teamitem.person_digest)
+    item = (teamitem.name, '/microsite/teamitem/%s' % teamitem.id, teamitem.job_title, picture_url, teamitem.person_digest)
     return render(request, 'microsite/teamitempage.html', {'title':teamitem.name, 'item':item,  'content':teamitem.person_content.encode("utf8"), 'theme': site_templates[teamitem.team.wx.wsite_template].site_template})
 @sts_decorate
 def teamitem(request, item_id):

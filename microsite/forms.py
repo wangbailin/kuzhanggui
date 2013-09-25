@@ -44,7 +44,7 @@ class AddEditContactPeopleForm(ModelForm):
         fields = ('contact_item', 'name', 'email', 'phone', 'qq', 'id', 'tab_id')
 
 class HomePageForm(ModelForm):
-    pic1 = forms.ImageField(label=u'焦点图1', widget=AjaxClearableFileInput(), required = False, help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
+    pic1 = forms.ImageField(label=u'焦点图1', widget=AjaxClearableFileInput(), help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
     pic2 = forms.ImageField(label=u'焦点图2', widget=AjaxClearableFileInput(), required = False)
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
