@@ -141,6 +141,9 @@ class TeamAppForm(ModelForm):
         )
 
 class TeamItemForm(ModelForm):
+    name = forms.CharField(label=u'姓名', widget=forms.TextInput(attrs={'class':'input-xxlarge'}))
+    job_title = forms.CharField(label=u'职位名称', widget=forms.TextInput(attrs={'class':'input-xxlarge'}))
+    person_digest = forms.CharField(label=u'简要介绍', widget=forms.Textarea(attrs={'class':'input-xxlarge','rows':2}), help_text=u"建议字数限制在50字以内")
     person_content = forms.CharField(label=u'详细介绍', widget=CKEditorWidget())
     picture = forms.ImageField(label=u'照片', widget=AjaxClearableFileInput(), required = True, help_text=u'建议图片大小为105px*105px')
     class Meta:

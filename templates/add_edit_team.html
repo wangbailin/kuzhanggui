@@ -36,7 +36,7 @@
         <div class="control-group">
             <label class="control-label" for="person_digest"><span style="color:red;">*</span>{{form.person_digest.label}}</label>
             <div class="controls">
-                {{ form.person_digest }}{{ form.person_digest.errors }}
+                {{ form.person_digest }}<span class="help-inline">{{form.person_digest.help_text}}</span>{{ form.person_digest.errors }}
             </div>
         </div>
         <div class="control-group">
