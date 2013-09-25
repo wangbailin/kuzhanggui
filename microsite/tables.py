@@ -51,7 +51,7 @@ class TeamTable(tables.Table):
     class Meta:
         model = TeamItem
         empty_text = u'暂无团队成员介绍'
-        order_by = '-id'
+        order_by = 'id'
         orderable = False
         attrs = {'class' : 'table table-striped'}
         fields = ('name', 'job_title', 'person_digest')

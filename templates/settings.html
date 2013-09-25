@@ -121,7 +121,7 @@ function preview_back() {
     return false;
 }
 $('#tab-preview').click(function() {
-    bootbox.dialog("<iframe style='margin-left:auto margin-right:auto' id='iframe_preview' scrolling='no' name='iframe_preview' width='350' height='640'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}],{header:"预览"});
+    bootbox.dialog("<iframe style='margin-left:auto margin-right:auto' id='iframe_preview' scrolling='auto' name='iframe_preview' width='350' height='700'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}],{header:"预览"});
     $("#page_form").attr('action', "/preview/page/{{page.pk}}");
     $("#page_form").attr('target', "iframe_preview");
 
@@ -129,7 +129,8 @@ $('#tab-preview').click(function() {
     $('.bootbox').css('width', '398px');
     $('.modal').css('margin-left', '-200px');
     $('.modal-body').css('overflow-x', 'hidden');
-    $('.modal-body').css('height', '660px');
+   // $('.modal-body').css('height', '660px');
+   // $('.modal-body').css('overflow-y', 'scroll');
     start_preview_history_length = iframe_preview.history.length;
 });
 </script>
