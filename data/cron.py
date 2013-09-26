@@ -23,9 +23,10 @@ def sts_log_analyse():
     today_begin_time = int((time.time() + 8 * 3600) / (24 * 3600)) * 24 * 3600 - 8 * 3600
     for wx in WXAccount.objects.filter(state=WXAccount.STATE_BOUND):
         try:
-            data = WSiteDailyData.objects.get(wexin=wx, date=datetime.date.today())
+            data = WSiteDailyData.objects.get(weixin=wx, date=datetime.date.today())
             logger.debug("already have one")
         except:
+            logger.error(traceback.format_exc())
             data = WSiteDailyData()
             data.weixin = wx
             data.date = datetime.date.today()
