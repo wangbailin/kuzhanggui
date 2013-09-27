@@ -47,7 +47,8 @@ var getUrlToken = function() {
         $('#get_url_token').button('loading');
 
         wxAccountName = $('#wxaccount_name').val();
-        Dajaxice.framework.get_url_token(Dajax.process, { 'name' : wxAccountName });
+        wxAccountFans = $('#wxaccount_fans').val();
+        Dajaxice.framework.get_url_token(Dajax.process, { 'name' : wxAccountName, 'fans' : wxAccountFans });
     }
 }
 

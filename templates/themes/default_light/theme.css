@@ -366,3 +366,11 @@ a.phone:active div {
     background-color: rgba(198,198,198,0.9); 
     color: #333333;
 }
+
+#left {
+    background: url('findme_leftarrow.png') no-repeat center;
+}
+
+#right {
+    background: url('findme_rightarrow.png') no-repeat center;
+}
