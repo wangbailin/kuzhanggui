@@ -360,8 +360,10 @@ a.phone:active div {
 
 #left {
     border-right: 1px solid #4c4c4c;
+    background: url('findme_leftarrow.png') no-repeat center;
 }
 
 #right {
     border-left: 1px solid #4c4c4c;
+    background: url('findme_rightarrow.png') no-repeat center;
 }

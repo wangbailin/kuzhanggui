@@ -369,8 +369,10 @@ a.phone:active div {
 
 #left {
     border-right: 1px solid #c2c2c2;
+    background: url('findme_leftarrow.png') no-repeat center;
 }
 
 #right {
     border-left: 1px solid #c2c2c2;
+    background: url('findme_rightarrow.png') no-repeat center;
 }
