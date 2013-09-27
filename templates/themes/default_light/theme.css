@@ -362,7 +362,7 @@ a.phone:active div {
     padding-left: 0px;
 }
 
-#address, #route {
+#address {
     background-color: rgba(198,198,198,0.9); 
     color: #333333;
 }

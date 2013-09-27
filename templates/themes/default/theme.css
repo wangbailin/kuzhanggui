@@ -353,7 +353,7 @@ a.phone:active div {
     padding-left: 0px;
 }
 
-#address, #route {
+#address {
     background-color: rgba(0,0,0,0.7); 
     color: #e8e8e8;
 }
