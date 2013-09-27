@@ -54,11 +54,8 @@ body {
 var map = new BMap.Map("map");
 map.addControl(new BMap.NavigationControl());
 
-var geoLocation = Geolocation();
+var geoLocation = new BMap.Geolocation();
 geoLocation.getCurrentPosition(function(result) {
-    if (result) {
-        console.log(result);
-    }
     if (result) {
         var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
         map.centerAndZoom(point, 15);
