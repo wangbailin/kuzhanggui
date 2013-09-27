@@ -207,9 +207,7 @@ def page_delete(request, page_id):
 def add_edit_contact(request, item_id=None):
     if item_id:
         item = get_object_or_404(ContactItem, pk = item_id)
-        #peoples = ContactPeopleTable(ContactPeople.objects.filter(contact_item=item))
     else:
-        #peoples = None
         item = None
     if request.method == 'POST':
         form = ContactItemForm(request.POST, request.FILES, instance=item)
@@ -222,7 +220,6 @@ def add_edit_contact(request, item_id=None):
                 contact_app = ContactApp.objects.get(wx=wx)
                 item.contact = contact_app
             item.save()
-           # return redirect('/app/%d' % item.contact.id)
             return render(request,'close_page.html')
     else:
         form = ContactItemForm(instance=item)
@@ -288,7 +285,6 @@ def add_edit_trend(request, item_id=None):
                 item.trend = trends_app
             item.pub_time = datetime.now()
             item.save()
-           # return redirect('/app/%d' % item.trend.id)
             return render(request,'close_page.html')
     else:
         form = TrendItemForm(instance=item)
@@ -321,7 +317,6 @@ def add_edit_team(request, item_id=None):
                 item.team = team_app
             item.pub_time = datetime.now()
             item.save()
-           # return redirect('/app/%d' % item.trend.id)
             return render(request,'close_page.html')
     else:
         form = TeamItemForm(instance=item)
@@ -403,7 +398,6 @@ def add_edit_case(request, item_id=None):
             item.pub_time = datetime.now()
             logger.debug("item picurl %s" % item.case_pic1)
             item.save()
-            #return redirect('/app/%d' % item.case_app.id)
             return render(request,'close_page.html')
     else:
         form = CaseItemForm(instance=item)
@@ -470,7 +464,6 @@ def add_edit_product(request, item_id=None):
                 item.product_app= product_app
             item.pub_time = datetime.now()
             item.save()
-            #return redirect('/app/%d' % item.product_app.id)
             return render(request,'close_page.html')
     else:
         form = ProductItemForm(instance=item)
