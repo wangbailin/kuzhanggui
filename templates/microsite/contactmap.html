@@ -6,10 +6,6 @@
 <script type="text/javascript">
     var route = function(type) {
         map.clearOverlays();
-        if (!currentPoint) {
-            currentPoint = new BMap.Point({{ cur_lng }}, {{ cur_lat }});
-        }
-
         var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
         map.centerAndZoom(point, 15);
 
@@ -133,6 +129,8 @@ var currentPoint = null;
 geoLocation.getCurrentPosition(function(result) {
     if (result) {
         currentPoint = result.point;
+    } else {
+	currentPoint = new BMap.Point({{ cur_lng }}, {{ cur_lat }});
     }
 
     route(routes[currentRouteIndex]);
