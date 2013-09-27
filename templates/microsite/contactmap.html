@@ -86,11 +86,9 @@ body {
 }
 #left {
     left:0;
-    border-right: 1px solid #c2c2c2;
 }
 #right {
     right: 0;
-    border-left: 1px solid #c2c2c2;
 }
 #map {
     height:100%;
@@ -101,20 +99,22 @@ body {
 }
 #route {
     position: fixed;
-    right:30px;
+    right: 30px;
+    top: 30px;
     font-size: 14px; 
-    border: 1px solid #c2c2c2;
+    padding: 4px;
+    border-radius: 4px;
 }
 </style>
 {% endblock %}
 
 {% block content %}
 <div id="map"></div>
+<div id="route"></div>
 <div id="address">
 <div id="left"></div>
 <div id="right"></div>
 <div>
-<div id="route"></div>
 <h4>{{ item.name }}</h4>
 <p>地址:{{ item.address }}</p>
 {% if people %}
