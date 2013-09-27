@@ -6,24 +6,26 @@
 <script type="text/javascript">
     var route = function(type) {
         map.clearOverlays();
-        if (currentPoint) {
-            var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
-            map.centerAndZoom(point, 15);
-
-            if (type == 'transit') {
-                var route = new BMap.TransitRoute(map, {renderOptions:{map: map}});
-            } else if (type == 'driving') {
-                var route = new BMap.DrivingRoute(map, {renderOptions:{map: map}});
-            } else {
-                var route = new BMap.WalkingRoute(map, {renderOptions:{map: map}});
-            }
-                
-            route.setSearchCompleteCallback(function () {
-                console.log("search complete");
-            });
-            
-	    route.search(currentPoint, point);
+        if (!currentPoint) {
+            currentPoint = new BMap.Point({{ cur_lng }}, {{ cur_lat }});
         }
+
+        var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
+        map.centerAndZoom(point, 15);
+
+        if (type == 'transit') {
+            var route = new BMap.TransitRoute(map, {renderOptions:{map: map}});
+        } else if (type == 'driving') {
+            var route = new BMap.DrivingRoute(map, {renderOptions:{map: map}});
+        } else {
+            var route = new BMap.WalkingRoute(map, {renderOptions:{map: map}});
+        }
+            
+        route.setSearchCompleteCallback(function () {
+            console.log("search complete");
+        });
+        
+        route.search(currentPoint, point);
     };
 
     var routes = ['walking', 'driving', 'transit'];
@@ -131,9 +133,10 @@ var currentPoint = null;
 geoLocation.getCurrentPosition(function(result) {
     if (result) {
         currentPoint = result.point;
-        route(routes[currentRouteIndex]);
-        $('#route').text(routeStrs[currentRouteIndex]);
     }
+
+    route(routes[currentRouteIndex]);
+    $('#route').text(routeStrs[currentRouteIndex]);
 });
 </script>
 {% endblock %}
