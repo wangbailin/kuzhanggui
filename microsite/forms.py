@@ -275,7 +275,7 @@ class ProductAppForm(ModelForm):
             'enable',
         )
 class CaseItemForm(ModelForm):
-    case_pic1 = forms.ImageField(label=u'案例截图1', widget=AjaxClearableFileInput(), required = False, help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
+    case_pic1 = forms.ImageField(label=u'案例截图1', widget=AjaxClearableFileInput(), help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
     case_pic2 = forms.ImageField(label=u'案例截图2', widget=AjaxClearableFileInput(), required = False)
     case_pic3 = forms.ImageField(label=u'案例截图3', widget=AjaxClearableFileInput(), required = False)
     case_pic4 = forms.ImageField(label=u'案例截图4', widget=AjaxClearableFileInput(), required = False)
@@ -301,7 +301,7 @@ class CaseClassForm(ModelForm):
         
 
 class ProductItemForm(ModelForm):
-    product_pic1 = forms.ImageField(label=u'产品截图1', widget=AjaxClearableFileInput(), required = False, help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
+    product_pic1 = forms.ImageField(label=u'产品截图1', widget=AjaxClearableFileInput(), help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
     product_pic2 = forms.ImageField(label=u'产品截图2', widget=AjaxClearableFileInput(), required = False)
     product_pic3 = forms.ImageField(label=u'产品截图3', widget=AjaxClearableFileInput(), required = False)
     product_pic4 = forms.ImageField(label=u'产品截图4', widget=AjaxClearableFileInput(), required = False)

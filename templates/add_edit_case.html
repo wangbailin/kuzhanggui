@@ -77,7 +77,7 @@ function preview_back() {
 }
 
 $('#preview').click(function() {
-    bootbox.dialog("<iframe align='middle' id='iframe_preview' name='iframe_preview' width='360' height='640'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}]);
+    bootbox.dialog("<iframe align='middle' id='iframe_preview' name='iframe_preview' scrolling='auto' width='350' height='700'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}], {header:'预览'});
     {% if item_id %}
     $("#case_form").attr('action', "/preview/case_item/{{ item_id }}");
     {% else %}
@@ -85,7 +85,9 @@ $('#preview').click(function() {
     {% endif %}
     $("#case_form").attr('target', 'iframe_preview');
     $("#case_form").submit();
-    $('.bootbox').css('width', '400px');
+    $('.bootbox').css('width', '398px');
+    $('.modal').css('margin-left', '-200px');
+    $('.modal-body').css('overflow-x', 'hidden');
     $('.modal-body').css('height', '660px');
     start_preview_history_length = iframe_preview.history.length;
 });
