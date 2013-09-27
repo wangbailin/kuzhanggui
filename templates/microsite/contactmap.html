@@ -53,17 +53,23 @@ body {
 <script>
 var map = new BMap.Map("map");
 map.addControl(new BMap.NavigationControl());
-var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
-var startpoint = new BMap.Point({{ cur_lng }}, {{ cur_lat }});
-map.centerAndZoom(point, 15);
 
-var route = new BMap.DrivingRoute(map, {renderOptions:{map: map}});
-route.setSearchCompleteCallback(function () {
-    console.log("search complete");
+var geoLocation = Geolocation();
+geoLocation.getCurrentPosition(function(result) {
+    if (result) {
+        console.log(result);
+    }
+    if (result) {
+        var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
+        map.centerAndZoom(point, 15);
+
+        var route = new BMap.WalkingRoute(map, {renderOptions:{map: map}});
+        route.setSearchCompleteCallback(function () {
+            console.log("search complete");
+        });
+
+        route.search(result.point, point);
+    }
 });
-
-route.search(startpoint, point);
-//BMap.Convertor.translate(startpoint, 0, function(spoint) {
-//});
 </script>
 {% endblock %}
