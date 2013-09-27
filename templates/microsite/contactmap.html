@@ -5,35 +5,36 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BFd6600742ae05307e9b9b50a00d1fd2"></script>
 <script type="text/javascript">
     var route = function(type) {
-        var geoLocation = new BMap.Geolocation();
-        geoLocation.getCurrentPosition(function(result) {
-            if (result) {
-                var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
-                map.centerAndZoom(point, 15);
+        map.clearOverlays();
+        if (currentPoint) {
+            var point = new BMap.Point({{ item.lng }}, {{ item.lat }});
+            map.centerAndZoom(point, 15);
 
-                if (type == 'transit') {
-                    var route = new BMap.TransitRoute(map, {renderOptions:{map: map}});
-                } else if (type == 'driving') {
-                    var route = new BMap.DrivingRoute(map, {renderOptions:{map: map}});
-                } else {
-                    var route = new BMap.WalkingRoute(map, {renderOptions:{map: map}});
-                }
-                
-                route.setSearchCompleteCallback(function () {
-                    console.log("search complete");
-                });
-
-                route.search(result.point, point);
+            if (type == 'transit') {
+                var route = new BMap.TransitRoute(map, {renderOptions:{map: map}});
+            } else if (type == 'driving') {
+                var route = new BMap.DrivingRoute(map, {renderOptions:{map: map}});
+            } else {
+                var route = new BMap.WalkingRoute(map, {renderOptions:{map: map}});
             }
-        });
+                
+            route.setSearchCompleteCallback(function () {
+                console.log("search complete");
+            });
+            
+	    route.search(currentPoint, point);
+        }
     };
 
-    var routes = ['walking', 'transit', 'driving'];
+    var routes = ['walking', 'driving', 'transit'];
     var currentRouteIndex = 0;
 
     $(document).ready(function() {
         $('#left').click(function(){
             currentRouteIndex = (currentRouteIndex - 1) % 3;
+	    if (currentRouteIndex < 0) {
+		currentRouteIndex = currentRouteIndex + 3;
+	    }
             route(routes[currentRouteIndex]);
         });
         $('#right').click(function(){
@@ -58,15 +59,19 @@ body {
     position:fixed; 
     bottom:0px; 
     width:100%; 
-    padding: 0 28px 4px 28px; 
+    padding-bottom: 4px;
+    padding-left: 28px;
+    padding-right:28px; 
 }
 #address p {
+    display: inline-block;
+    max-width: 80%;
     margin: 0px;
 }
 #address .phone {
     position: fixed;
     bottom: 3px;
-    right: 40px;
+    right: 30px;
 }
 #left, #right {
     width: 20px;
@@ -83,10 +88,6 @@ body {
     right: 0;
     border-left: 1px solid #c2c2c2;
 }
-#left i, #right i {
-    position: relative;
-    top:5%;
-}
 #map {
     height:100%;
 }
@@ -100,8 +101,8 @@ body {
 {% block content %}
 <div id="map"></div>
 <div id="address">
-<div id="left"><i class="icon-chevron-left"></i></div>
-<div id="right"><i class="icon-chevron-right"></i></div>
+<div id="left"></div>
+<div id="right"></div>
 <div>
 <h4>{{ item.name }}</h4>
 <p>地址:{{ item.address }}</p>
@@ -114,6 +115,13 @@ body {
 <script>
 var map = new BMap.Map("map");
 map.addControl(new BMap.NavigationControl());
-route(routes[currentRouteIndex]);
+var geoLocation = new BMap.Geolocation();
+var currentPoint = null;
+geoLocation.getCurrentPosition(function(result) {
+    if (result) {
+        currentPoint = result.point;
+        route(routes[currentRouteIndex]);
+    }
+});
 </script>
 {% endblock %}
