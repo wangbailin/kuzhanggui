@@ -749,4 +749,6 @@ def page_is_enable(subpage):
         return subpage.enable
     elif subpage.real_type == ContentType.objects.get_for_model(TeamApp):
         return subpage.enable
+    elif subpage.real_type == ContentType.objects.get_for_model(HelpPage):
+        return subpage.enable
     return True
