@@ -13,6 +13,7 @@ import random
 from utils import send_sms
 from models import Account, WXAccount
 from forms import ChangePasswordForm, EditAccountForm, ChangePhoneForm
+from rocket import settings
 AUTH_CODE_TIMEOUT = 15 * 60 * 1000
 
 @dajaxice_register
@@ -58,7 +59,7 @@ def get_url_token(request, name, fans):
 
     # generate url and token
     if created:
-        wx_account.url = 'http://r.limijiaoyin.com/wx/%d' % wx_account.id
+        wx_account.url = settings.SITE_URL + '/wx/%d' % wx_account.id
         wx_account.token = str(random.randint(1000,10000))
 
     wx_account.follower_count = follower_count
