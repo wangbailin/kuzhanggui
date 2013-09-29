@@ -14,7 +14,6 @@ from microsite import consts
 from data.models import WeixinDailyData
 
 logger = logging.getLogger('weixin')
-siteurl = 'http://r.limijiaoyin.com'
 
 def unsubscribe(rule, info):
     WeixinDailyData.today_unsubscribe_one(info.wx)
@@ -69,7 +68,7 @@ def micro_site(rule, info):
         if homepage.message_cover:
             data['pic_url'] = homepage.message_cover.url
         else:
-            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
+            data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
         data['url'] = get_page_url(homepage) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
@@ -95,8 +94,8 @@ def find_nearest(rule, info):
             data = {}
             data['title'] = u'找到我们'
             data['description'] = u'点击查看如何找到我们。'
-            data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_FINDME_COVER
-            data['url'] = siteurl + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng) + "?user=%s&wx=%s" % (info.user, info.wx)
+            data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_FINDME_COVER
+            data['url'] = settings.SITE_URL + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng) + "?user=%s&wx=%s" % (info.user, info.wx)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
             return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'不知道怎么找到我们。')
@@ -111,8 +110,8 @@ def telephone(rule, info):
         data = {}
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
-        data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
-        data['url'] = siteurl + "/microsite/telephone/%d" % (contact_app.pk) + "?user=%s&wx=%s" % (info.user, info.wx)
+        data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
+        data['url'] = settings.SITE_URL + "/microsite/telephone/%d" % (contact_app.pk) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -126,8 +125,8 @@ def help(rule, info):
         data['title'] = helppage.title
         data['description'] = consts.DEFAULT_HELP_MSG
 
-        data['pic_url'] = siteurl + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
-        data['url'] = siteurl + get_page_url(helppage) + "?user=%s&wx=%s" % (info.user, info.wx)
+        data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
+        data['url'] = get_page_url(helppage) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
@@ -151,7 +150,7 @@ def menu(rule, info):
         if menu.page.message_cover:
             data['pic_url'] = menu.page.message_cover.url
         else:
-            data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
+            data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + get_default_cover(menu.page)
 
         data['url'] = get_page_url(menu.page) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
@@ -184,7 +183,7 @@ def submenu(rule, info):
             if menu.page.message_cover:
                 data['pic_url'] = menu.page.message_cover.url
             else:
-                data['pic_url'] = siteurl + settings.STATIC_URL + get_default_cover(menu.page)
+                data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + get_default_cover(menu.page)
             data['url'] = cls.get_url() + "?user=%s&wx=%s" % (info.user, info.wx)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
