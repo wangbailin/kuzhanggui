@@ -187,13 +187,13 @@ def case(request, item_id, class_id=None):
 def caseitem_(request, caseitem):
     pics = []
     if caseitem.case_pic1:
-        pics.append(caseitem.case_pic1)
+        pics.append(caseitem.case_pic1.url)
     if caseitem.case_pic2:
-        pics.append(caseitem.case_pic2)
+        pics.append(caseitem.case_pic2.url)
     if caseitem.case_pic3:
-        pics.append(caseitem.case_pic3)
+        pics.append(caseitem.case_pic3.url)
     if caseitem.case_pic4:
-        pics.append(caseitem.case_pic4)
+        pics.append(caseitem.case_pic4.url)
 
     return render(request, 'microsite/item.html', {'title':caseitem.title, 'pics':pics, 'intro':caseitem.case_intro, 'theme': site_templates[caseitem.case_app.wx.wsite_template].site_template})
 
@@ -247,13 +247,13 @@ def product(request, item_id, class_id=None):
 def productitem_(request, pitem):
     pics = []
     if pitem.product_pic1:
-        pics.append(pitem.product_pic1)
+        pics.append(pitem.product_pic1.url)
     if pitem.product_pic2:
-        pics.append(pitem.product_pic2)
+        pics.append(pitem.product_pic2.url)
     if pitem.product_pic3:
-        pics.append(pitem.product_pic3)
+        pics.append(pitem.product_pic3.url)
     if pitem.product_pic4:
-        pics.append(pitem.product_pic4)
+        pics.append(pitem.product_pic4.url)
 
     return render(request, 'microsite/item.html', {'title':pitem.title, 'pics':pics, 'intro':pitem.product_intro, 'theme': site_templates[pitem.product_app.wx.wsite_template].site_template})
     

@@ -25,7 +25,7 @@
     <div style="height:290px;width:100%;overflow:scroll;">
         <div id="pics" style="width:1000px;">
             {% for pic in pics %}
-            <a href="/microsite/pic?title={{ title }}&p={{ MEDIA_URL }}{{ pic }}&t={{ theme | default:'default' }}"><img style="height:290px;" src="{{ MEDIA_URL }}{{ pic }}" /></a>
+            <a href="/microsite/pic?title={{ title }}&p={{ pic }}&t={{ theme | default:'default' }}"><img style="height:290px;" src="{{ pic }}" /></a>
             {% endfor %}
         </div>
     </div>
