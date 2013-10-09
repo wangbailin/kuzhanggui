@@ -42,7 +42,7 @@ def register(request):
     return render(request, 'register.html', {'form' : reg_form})
 
 def intro(request):
-	return render(request, "loader.html")
+	return render(request, "intro.html")
 
 @login_required
 def index(request):
