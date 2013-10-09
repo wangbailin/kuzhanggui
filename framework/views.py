@@ -41,6 +41,9 @@ def register(request):
 
     return render(request, 'register.html', {'form' : reg_form})
 
+def intro(request):
+	return render(request, "intro.html")
+
 @login_required
 def index(request):
     account = Account.objects.get(user=request.user)

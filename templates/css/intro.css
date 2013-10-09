@@ -1,0 +1,150 @@
+body {
+	font-family: "微软雅黑";
+	background-color: #ddd;
+	font-size: 15px;
+	color: #3f4352;
+	padding-top: 40px;
+}
+
+.nav li {
+	margin: 0px 8px;
+	line-height: 40px;
+}
+
+.nav li.phone {
+	font-size: 17px;
+}	
+
+.navbar-fixed-top .navbar-inner {
+	border-bottom: 1px solid #fff;
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, .35);
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fefefe), to(#ebebeb))
+}
+
+.nav i {
+	display: block;
+	height: 40px;
+	float: left;	
+}
+
+i.phone {
+	background: url(../img/contact_phone.png) no-repeat center center;
+	background-size: 18px 16px;
+	margin-right: 1px;
+	width: 18px;
+}
+
+i.mail {
+	background: url(../img/contact_mail.png) no-repeat center center;
+	margin-right: 3px;
+	width: 21px;
+}
+
+.function.container, .cases.container {
+	width: 942px;
+	border: 1px solid #ccc;
+	background: #f4f4f4;
+	border-radius: 10px;
+	margin-top: 20px;
+}
+
+.function {
+	padding: 10px 0px 15px;
+}
+
+.desc {
+	vertical-align: middle;
+	padding: 0px 10px;
+}
+
+.desc p {
+	margin: 0px;
+}
+
+.desc h3 {
+	margin-top: 20px;
+	margin-bottom: 0px;
+	font-size: 15px;
+	line-height: 22px;
+}
+
+.desc h3.top {
+	margin-top: 0px;
+}
+
+.desc h2 {
+		font-size: 30px;	
+}
+
+p.small {
+	font-size: 13px;
+}
+
+p.medium {
+	font-size: 14px;
+}
+
+.pic {
+	position: relative;
+	z-index: 1;
+}
+
+.cards {
+	z-index: 2;
+	position: relative;
+	border-top: 1px solid #fff;
+	box-shadow: 0px -2px 3px rgba(0, 0, 0, .1);
+}
+
+.wrapper {
+	border-right: 1px solid #ccc;
+	margin: 15px 0px;
+}
+
+.wrapper.last {
+	border: none;
+}
+
+.cards img {
+	display: block;
+	border: none;
+	margin: 0px auto;
+	width: 280px;
+}
+
+.cards p {
+	text-align: center;
+	margin-bottom: 0px;
+}
+
+div.cases {
+	padding: 0px 0px 40px;
+}
+
+div.cases h3 {
+	text-align: center;
+	font-size: 17px;
+	font-weight: normal;
+	line-height: 30px;
+}
+
+.case {
+	margin: 0px auto;
+	width: 85px;
+}
+
+.case a {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.case p {
+	text-align: center;
+	margin-bottom: 0px;
+}
+
+.footer p {
+	font-size: 12px;
+	text-align: center;
+	margin: 30px 0px;
+}
