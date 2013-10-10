@@ -554,7 +554,16 @@ def menu(request):
         if request.method == "GET":
             menu_info = MenuTable(Menu.objects.filter(wx=wx_account))
             form = AddEditMenuForm()
-            form.fields['page'].queryset = Page.objects.filter(wx=wx_account)
+            pages = Page.objects.filter(wx=wx_account)
+            pages_id = []
+            for page in pages:
+                if not page.tab_name == u'首页':
+                    subpage = page.cast()
+                    if subpage.enable == True:
+                        pages_id.append(page.id)      
+                else:
+                    pages_id.append(page.id)      
+            form.fields['page'].queryset = Page.objects.filter(wx=wx_account, pk__in=pages_id)
         return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form})
 
 @login_required
