@@ -103,11 +103,9 @@ class ProductClassTable(tables.Table):
         fields = ('name',)
 
 class MenuTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
     ops = TemplateColumn(template_name="menu_ops.html", verbose_name=u"操作", orderable=False,attrs={"class":"ops"})
     class Meta:
         model = Menu
-        order_by = '-id'
         empty_text = u'暂无菜单项'
         orderable = False
         attrs = {'class' : 'table table-striped'}
