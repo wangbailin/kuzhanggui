@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('microsite.siteviews',
+    url(r'landing_page', 'landing_page'),
     url(r'homepage/(?P<item_id>\d+)', 'homepage'),
     url(r'intro/(?P<item_id>\d+)', 'intro'),
     url(r'business/(?P<item_id>\d+)', 'business'),

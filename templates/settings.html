@@ -52,8 +52,10 @@ $("input, select, textarea").change(function(){
     {% for t in tabs %}
         {% if forloop.counter0 == active_tab_id %}
         <li class='active'><a href="#"><span id="change_or_not"></span>{{ t.0.tab_name }}</a></li>
-        {% else %}
+        {% elif t.0.enable %}
         <li><a href="/settings/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
+        {% else %}
+        <li class="disabled"><a href="/settings/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
         {% endif %}
     {% endfor %}
     </ul>

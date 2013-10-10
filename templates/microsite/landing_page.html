@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>酷掌柜</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/microsite.css"/>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <style>
+    body {
+        background: #ddd;
+    }
+
+    .banner img, .photo img {
+        display: block;
+        margin: 0px auto;
+        width: 100%;
+    }
+
+    .function, .cases {
+        border: 1px solid #ccc; 
+        border-radius: 10px;
+        margin: 13px 10px;
+        background: #f4f4f4;
+    }
+
+    .photo {
+        padding: 0px 10px;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .sketch-list {
+        padding: 10px 0px;
+        position: relative;
+        z-index: 1001;
+        border-top: 1px solid #fff;
+        box-shadow: 0px -2px 3px rgba(0, 0, 0, .1);
+        overflow: hidden;
+    }
+
+    .sketch {
+        float: left;
+        width: 33.3%;
+    }
+
+    .sketch p {
+        text-align: center;
+    }
+
+    .pic {
+        border-right: 1px solid #ccc;
+        padding: 0px 5px;
+        box-sizing: border-box;
+    }
+
+    .sketch:last-child .pic {
+        border: none;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="banner">
+            <img src="{{ STATIC_URL }}img/banner_phone.png"/>
+        </section>
+        <section class="function">
+            <div class="desc"></div>
+            <div class="photo">
+                <img src="{{ STATIC_URL }}img/part1_largepic.png"/>
+            </div>
+            <div class="sketch-list">
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part1_sketchnamecard.png"/></p>
+                    <p>公司微信名片</p>
+                </div>
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part1_sketchmedia.png"/></p>
+                    <p>传统广告延伸</p>
+                </div>
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part1_sketchshare.png"/></p>
+                    <p>微信传播公司名片</p>
+                </div>
+            </div>
+        </section>
+        <section class="function">
+            <div class="desc"></div>
+            <div class="photo">
+                <img src="{{ STATIC_URL }}img/part2_largepic.png"/>
+            </div>
+            <div class="sketch-list">
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part2_sketchfindme.png"/></p>
+                    <p>导航公司位置</p>
+                </div>
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part2_sketchphonecall.png"/></p>
+                    <p>一键拨号</p>
+                </div>
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part2_sketchmenu.png"/></p>
+                    <p>生成自定义菜单</p>
+                </div>
+            </div>
+        </section>
+        <section class="function">
+            <div class="desc"></div>
+            <div class="photo">
+                <img src="{{ STATIC_URL }}img/part3_largepic.png"/>
+            </div>
+            <div class="sketch-list">
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part3_sketchmeeting.png"/></p>
+                    <p>会议现场</p>
+                </div>
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part3_sketchwedding.png"/></p>
+                    <p>婚礼现场</p>
+                </div>
+                <div class="sketch">
+                    <p class="pic"><img src="{{ STATIC_URL }}img/part3_sketchactivity.png"/></p>
+                    <p>活动现场</p>
+                </div>
+            </div>
+        </section>
+        <section class="cases"></section>
+        <section class="contact"></section>
+    </div>
+    <div class="footer">
+        <p>版权所有 ©2013 北京厘米脚印科技有限公司</p>
+    </div>
+</body>
+</html>
