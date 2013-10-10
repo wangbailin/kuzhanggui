@@ -1,0 +1,50 @@
+#navbar {
+	padding-bottom: 4px;
+	background: url(../img/shadow_navigation.png) repeat-x left bottom;
+}
+
+#navbar .navbar-inner {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ebebeb', GradientType=0);
+}
+
+.cards-wrapper {
+	padding-top: 8px;
+	margin-top: -8px;
+	background: url(../img/shadow_part123.png) repeat-x left top;
+}
+
+.cards {
+	zoom: 1;
+}
+
+.fillet_up.container, .fillet_down.container  {
+	height: 10px;
+	width: 942px;
+}
+
+.fillet_down.container {
+	background: url(../img/fillet_down.png) no-repeat left bottom #f4f4f4;
+}
+
+.fillet_up.container {
+	background: url(../img/fillet_up.png) no-repeat left top #f4f4f4;
+}
+
+.function.container, .cases.container {
+	margin-top: 0px;
+	border-top: none;
+	border-bottom: none;
+}
+
+.function.container {
+	padding-top: 0px;
+	padding-bottom: 5px;
+}
+
+.cases h3 {
+	margin-top: 0px;
+}
+
+.fillet_up.container {
+	margin-top: 20px;
+}

@@ -6,11 +6,14 @@
 
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/intro.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/intro.css"/>
+	<!--[if lte IE 8]>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/intro_ie.css">
+	<![endif]-->
 
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 </head>
-
 <body>
 	<div id="navbar" class="navbar navbar-fixed-top">
   		<div class="navbar-inner">
@@ -27,6 +30,7 @@
 		<img src="{{ STATIC_URL }}img/banner.png" style="width: 100%"/>
 	</div>
 
+	<div class="container fillet_up"></div>
 	<div class="function container">
 			<div class="row">
 				<div class="span4">
@@ -40,29 +44,34 @@
 					<img class="pic" src="{{ STATIC_URL }}img/part1_largepic.png"/>
 				</div>
 			</div>
-			<div class="cards">
-				<div class="row">
-					<div class="span4">
-						<div class="wrapper">
-							<img src="{{ STATIC_URL }}img/part1_sketchnamecard.png"/>
+			<div class="cards-wrapper">
+				<div class="cards">
+					<div class="row">
+						<div class="span4">
+							<div class="wrapper">
+								<img src="{{ STATIC_URL }}img/part1_sketchnamecard.png"/>
+							</div>
+							<p>公司微信名片</p>
 						</div>
-						<p>公司微信名片</p>
-					</div>
-					<div class="span4">
-						<div class="wrapper">
-							<img src="{{ STATIC_URL }}img/part1_sketchmedia.png"/>
+						<div class="span4">
+							<div class="wrapper">
+								<img src="{{ STATIC_URL }}img/part1_sketchmedia.png"/>
+							</div>
+							<p>传统广告延伸</p>
 						</div>
-						<p>传统广告延伸</p>
-					</div>
-					<div class="span4">
-						<div class="wrapper last">
-							<img src="{{ STATIC_URL }}img/part1_sketchshare.png"/>
+						<div class="span4">
+							<div class="wrapper last">
+								<img src="{{ STATIC_URL }}img/part1_sketchshare.png"/>
+							</div>
+							<p>微信传播公司名片</p>
 						</div>
-						<p>微信传播公司名片</p>
 					</div>
 				</div>
 			</div>
 	</div>
+	<div class="container fillet_down"></div>
+
+	<div class="container fillet_up"></div>
 	<div class="function container">
 			<div class="row">
 				<div class="span8">
@@ -82,29 +91,34 @@
 					</div>
 				</div>
 			</div>
-			<div class="cards">
-				<div class="row">
-					<div class="span4">
-						<div class="wrapper">
-							<img src="{{ STATIC_URL }}img/part2_sketchfindme.png"/>
+			<div class="cards-wrapper">
+				<div class="cards">
+					<div class="row">
+						<div class="span4">
+							<div class="wrapper">
+								<img src="{{ STATIC_URL }}img/part2_sketchfindme.png"/>
+							</div>
+							<p>导航公司位置</p>
 						</div>
-						<p>导航公司位置</p>
-					</div>
-					<div class="span4">
-						<div class="wrapper">
-							<img src="{{ STATIC_URL }}img/part2_sketchphonecall.png"/>
+						<div class="span4">
+							<div class="wrapper">
+								<img src="{{ STATIC_URL }}img/part2_sketchphonecall.png"/>
+							</div>
+							<p>一键拨号</p>
 						</div>
-						<p>一键拨号</p>
-					</div>
-					<div class="span4">
-						<div class="wrapper last">
-							<img src="{{ STATIC_URL }}img/part2_sketchmenu.png"/>
+						<div class="span4">
+							<div class="wrapper last">
+								<img src="{{ STATIC_URL }}img/part2_sketchmenu.png"/>
+							</div>
+							<p>生成自定义菜单</p>
 						</div>
-						<p>生成自定义菜单</p>
 					</div>
 				</div>
 			</div>
 	</div>
+	<div class="container fillet_down"></div>
+
+	<div class="container fillet_up"></div>
 	<div class="function container">
 			<div class="row">
 				<div class="span4">
@@ -120,31 +134,36 @@
 					<img class="pic" src="{{ STATIC_URL }}img/part3_largepic.png"/>
 				</div>
 			</div>
-			<div class="cards">
-				<div class="row">
-					<div class="span4">
-						<div class="wrapper">
-							<img src="{{ STATIC_URL }}img/part3_sketchmeeting.png"/>
+			<div class="cards-wrapper">
+				<div class="cards">
+					<div class="row">
+						<div class="span4">
+							<div class="wrapper">
+								<img src="{{ STATIC_URL }}img/part3_sketchmeeting.png"/>
+							</div>
+							<p>会议现场</p>
 						</div>
-						<p>会议现场</p>
-					</div>
-					<div class="span4">
-						<div class="wrapper">
-							<img src="{{ STATIC_URL }}img/part3_sketchwedding.png"/>
+						<div class="span4">
+							<div class="wrapper">
+								<img src="{{ STATIC_URL }}img/part3_sketchwedding.png"/>
+							</div>
+							<p>婚礼现场</p>
+						</div class="span4">
+						<div class="span4">
+							<div class="wrapper last">
+								<img src="{{ STATIC_URL }}img/part3_sketchactivity.png"/>
+							</div>
+							<p>活动现场</p>
 						</div>
-						<p>婚礼现场</p>
-					</div class="span4">
-					<div class="span4">
-						<div class="wrapper last">
-							<img src="{{ STATIC_URL }}img/part3_sketchactivity.png"/>
-						</div>
-						<p>活动现场</p>
 					</div>
 				</div>
 			</div>
 	</div>
+	<div class="container fillet_down"></div>
+
+	<div class="container fillet_up"></div>
 	<div class="cases container">
-			<h3>成功案例</h3>
+		<h3>成功案例</h3>
 		<div class="row">
 			<div class="span2">
 				<div class="case">
@@ -157,7 +176,8 @@
 			</div>
 		</div>
 	</div>
-	</div>
+	<div class="container fillet_down"></div>
+
 	<div class="footer">
 		<p>版权所有 ©2013 北京厘米脚印科技有限公司</p>
 	</div>
