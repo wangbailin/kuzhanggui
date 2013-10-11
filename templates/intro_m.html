@@ -14,7 +14,9 @@
 <body>
     <div class="container">
         <section class="banner">
-            <img src="{{ STATIC_URL }}img/banner_phone.png"/>
+            <a href="tel://400-014-7588">
+                <img src="{{ STATIC_URL }}img/banner_phone.png"/>
+            </a>
         </section>
         <section class="function">
             <div class="desc">
@@ -115,8 +117,12 @@
 			</article>
 		</section>
         <section class="contact">
-				<i class="phone"></i>
-				<span class="phone-number">400-014-7588</span>
+				<a href="tel://400-014-7588" class="phone-number">
+				    <i class="phone"></i>
+                </a>
+				<a href="tel://400-014-7588" class="phone-number">
+                    400-014-7588
+                </a>
 				&nbsp;&nbsp;
 				<i class="mail"></i>
 				kzg@jiaoyin.cm
