@@ -6,6 +6,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('framework.views',
 	url(r'^intro$', 'intro'),
+	url(r'^intro/m$', 'intro_for_mobile'),
     url(r'^$', 'index'),
     url(r'^welcome', 'welcome'),
     url(r'^bind', 'bind'),

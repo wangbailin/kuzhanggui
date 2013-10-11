@@ -82,6 +82,10 @@ def settings(request, active_tab_id = None):
     wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
     request.session['active_wx_id'] = wx.pk
     tabs = get_tabs(request)
+    for t in tabs:
+        page = t[0]
+        if not hasattr(page, "enable"):
+            page.enable = True
     if active_tab_id > len(tabs):
         active_tab_id = 0
     apps = get_apps(request)
