@@ -59,9 +59,6 @@ def homepage(request, item_id):
     homepage = get_object_or_404(HomePage, pk=item_id)
     return homepage_(request, homepage)
 
-def landing_page(request):
-    return render(request, 'microsite/landing_page.html');
-    
 def intro_(request, intropage):
     return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content, 'theme': site_templates[intropage.wx.wsite_template].site_template})
 def intro(request, item_id):
