@@ -1,5 +1,11 @@
 {% extends "framework.html" %}
 
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/settings.css"/>
+{% endblock %}
+
+
 {% block app %}
 <script type="text/javascript">
 $(document).ready(function() {
