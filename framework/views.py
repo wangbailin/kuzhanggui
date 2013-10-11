@@ -42,6 +42,9 @@ def register(request):
     return render(request, 'register.html', {'form' : reg_form})
 
 def intro(request):
+	if not request.user_agent.is_pc:
+	    return redirect("intro/m")
+	
 	return render(request, "intro.html")
 
 def intro_for_mobile(request):
