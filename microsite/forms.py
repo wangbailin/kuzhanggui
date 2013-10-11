@@ -121,6 +121,7 @@ class TrendsAppForm(ModelForm):
 class TrendItemForm(ModelForm):
     content = forms.CharField(label=u'内容', widget=CKEditorWidget())
     cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False, help_text=u'建议图片大小为105px*105px') 
+
     class Meta:
         model = TrendItem
         fields = (
@@ -129,6 +130,10 @@ class TrendItemForm(ModelForm):
             'cover',
             'summary',
         )
+        
+        widgets = {
+            'summary': forms.Textarea(attrs={'rows': 2})
+        }
 
 class TeamAppForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
