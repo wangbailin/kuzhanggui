@@ -3,8 +3,8 @@ $(function() {
 		html: true,
 		placement: "right",
 		// trigger: "click",
-		trigger: "hover",
-		content: "<img src='/static/img/case_lmjy_hover.jpg'/>"
+        trigger: "hover",
+		content: "<div style='width: 140px; height: 140px'><img src='/static/img/case_lmjy_hover.jpg'/></div>"
     });
 });
 

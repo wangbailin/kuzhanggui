@@ -165,3 +165,7 @@ div.cases h3 {
 .popover-content {
     padding: 0px;
 }
+
+.popover {
+    margin-top: -50px;
+}
