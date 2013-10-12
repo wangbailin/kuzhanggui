@@ -47,7 +47,7 @@
 
     	{% if user.is_authenticated %}
 			<div class="btn-group pull-right">
-				<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{user.username}}</a>
+				<a class="btn btn-primary" data-toggle="dropdown" href="#"><i class="icon-user icon-white"></i> {{user.username}}</a>
 				<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 				<ul class="dropdown-menu">
 		  			<li><a href="/signout"><i class="icon-off"></i>退出</a></li>
