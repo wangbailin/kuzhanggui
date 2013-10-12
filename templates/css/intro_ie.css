@@ -48,3 +48,7 @@
 .fillet_up.container {
 	margin-top: 20px;
 }
+
+.popover-title {
+    display: none;
+}

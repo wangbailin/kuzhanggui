@@ -6,7 +6,6 @@
 
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/intro.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/intro.css"/>
 	<!--[if lte IE 8]>
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/intro_ie.css">
 	<![endif]-->
@@ -181,15 +180,5 @@
 	<div class="footer">
 		<p>版权所有 ©2013 北京厘米脚印科技有限公司</p>
 	</div>
-	<script type="text/javascript">
-		$(function() {
-			$(".case img ").popover({
-				html: true,
-				placement: "right",
-				// trigger: "click",
-				trigger: "hover",
-				content: "<img src='{{ STATIC_URL }}img/case_lmjy_hover.jpg' width='140px' height='140px'/>"
-			});
-		});
-	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/intro.js"></script>
 </body>
