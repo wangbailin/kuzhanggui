@@ -12,7 +12,15 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.container').css('min-height', ($(window).height()-40) + 'px');
+            var footerHeight = 40;
+            var $container = $('.container');
+            var $win = $(window);
+            if ($container.outerHeight(true) >= $win.height() - footerHeight) {
+                return;
+            }
+
+            var minHeight = $win.height() - ($container.outerHeight(true) - $container.height()) - footerHeight;
+            $container.css('min-height', minHeight + 'px');
         });
     </script>
     {% block js %}{% endblock %}
