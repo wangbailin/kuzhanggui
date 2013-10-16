@@ -380,7 +380,7 @@ def add_edit_content_page(request, content_id=None):
                 wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 item.enable = True
                 item.wx = wx
-                ensure_new_page_order(item, wx)
+                ensure_new_page_position(item, wx)
             logger.debug("icon url %s" % item.icon.url)
             item.save()
             return render(request,'close_page.html')

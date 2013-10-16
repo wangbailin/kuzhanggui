@@ -748,17 +748,19 @@ def page_is_enable(subpage):
     return True
 
 def ensure_new_page_position(page, wx):
-    pages = Page.objects.filter(wx=wx, enable=True).order_by('position')
+    pages = Page.objects.filter(wx=wx, enable=True)
+    pos = len(pages)
     cursor = connection.cursor()
-    cursor.execute('update page set position = position + 1 where wx_id = %s and position >= %s', (wx.pk, len(pages)))
-    page.setPosition(len(pages))
+    cursor.execute('update page set position = position + 1 where wx_id = %s and position >= %s', (wx.pk, pos))
+    page.setPosition(pos)
 
 
 def set_page_enable(page):
-    pages = Page.objects.filter(wx=page.wx, enable=True).order_by('position')
+    pages = Page.objects.filter(wx=page.wx, enable=True)
+    pos = len(pages)
     cursor = connection.cursor()
-    cursor.execute('update page set position = position + 1 where wx_id = %s and position >= %s', (page.wx.pk, len(pages)))
-    page.setPosition(len(pages))
+    cursor.execute('update page set position = position + 1 where wx_id = %s and position >= %s and position < %s', (page.wx.pk, pos, page.position))
+    page.setPosition(pos)
     page.enable = True
     page.save()
 
@@ -766,7 +768,8 @@ def set_page_disabled(page):
     cursor = connection.cursor()
     cursor.execute('update page set position = position - 1 where wx_id = %s and position > %s', (page.wx.pk, page.position))
     pages = Page.objects.filter(wx=page.wx).order_by('position')
-    page.setPosition(len(pages)-1)
+    pos = len(pages) - 1
+    page.setPosition(pos)
     page.enable = False
     page.save()
 
