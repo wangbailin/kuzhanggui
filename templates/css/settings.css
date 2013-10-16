@@ -8,6 +8,11 @@
 
 .move-up, .move-down {
     padding: 0px 3px;
+    opacity: .8;
+}
+
+.move-up:hover, .move-down:hover {
+    opacity: 1;
 }
 
 .move-up {
@@ -18,6 +23,7 @@
 
 .move-up.disabled, .move-down.disabled {
     background-color: transparent;
+    opacity: .3;
 }
 
 .move-up.disabled:hover, .move-down.disabled:hover {
