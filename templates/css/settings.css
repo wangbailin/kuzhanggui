@@ -11,6 +11,10 @@
     opacity: .8;
 }
 
+.move-up:focus, .move-down:focus {
+    outline: none;
+}
+
 .move-up:hover, .move-down:hover {
     opacity: 1;
 }

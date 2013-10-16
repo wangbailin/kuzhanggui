@@ -36,16 +36,14 @@ def homepage_(request, homepage):
     logger.debug("%s" % str(pics))
     rows = []
     items = []
-    pages = Page.objects.filter(wx=homepage.wx)
+    pages = Page.objects.filter(wx=homepage.wx, enable=True).order_by("position")
     for p in pages:
         if p.real_type == homepage.real_type:
-            continue
-        subp = p.cast()
-        if not page_is_enable(subp):
             continue
         if len(items) >= 3:
             rows.append(items)
             items = []
+        subp = p.cast()
         items.append(get_home_info(subp))
     if len(items) > 0:
         rows.append(items)
