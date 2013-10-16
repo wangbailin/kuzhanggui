@@ -725,27 +725,7 @@ def get_default_title(page):
         return u"团队介绍"
 
 def page_is_enable(subpage):
-    if subpage.real_type == ContentType.objects.get_for_model(IntroPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(JoinPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(ContactApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(WeiboPage):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(CaseApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(ProductApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(TeamApp):
-        return subpage.enable
-    elif subpage.real_type == ContentType.objects.get_for_model(HelpPage):
-        return subpage.enable
-    return True
+    return subpage.enable
 
 def ensure_new_page_position(page, wx):
     pages = Page.objects.filter(wx=wx, enable=True)

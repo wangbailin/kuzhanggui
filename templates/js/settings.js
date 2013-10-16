@@ -1,5 +1,6 @@
 $(function() {
     var $modal = $("#reorder-pages-modal");
+
     function ensureBtns() {
         $(".move-up, .move-down", $modal).removeClass("disabled");
         $(".move-up", $modal).first().addClass("disabled");
@@ -7,9 +8,7 @@ $(function() {
     }
 
     function swap(r1, r2) {
-        r1.remove();
-        $(".move-up", r1).click(moveUp);
-        $(".move-down", r1).click(moveDown);
+        r1.detach();
         r1.insertAfter(r2);
     }
 
@@ -23,16 +22,6 @@ $(function() {
         var $prevRow = $curRow.prev();
         swap($prevRow, $curRow);
         ensureBtns();
-
-    }
-
-    function getPages() {
-        var pages = []
-        $("td.page", $modal).each(function(index) {
-            var $this = $(this);
-            pages.push($this.data("pageid"));
-        });
-        return pages;
     }
 
     function moveDown() {
@@ -50,14 +39,23 @@ $(function() {
     $(".move-up", $modal).click(moveUp);
     $(".move-down", $modal).click(moveDown);
 
+    function getPages() {
+        var pages = []
+        $("td.page", $modal).each(function(index) {
+            var $this = $(this);
+            pages.push($this.data("pageid"));
+        });
+        return pages;
+    }
+
+    function on_error(msg) {
+        $this.button("reset");
+        toast('error', msg || '操作失败，请稍后再试。');
+    }
+
     $("#reorder-pages").click(function() {
         var $this = $(this);
         $this.button("loading");
-
-        function on_error(msg) {
-            $this.button("reset");
-            toast('error', msg || '操作失败，请稍后再试。');
-        }
 
         Dajaxice.microsite.reorder_pages(function(data) {
             $this.button("reset");
