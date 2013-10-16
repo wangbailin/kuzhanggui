@@ -50,6 +50,9 @@ var Dajaxice = {
         generate_menu : function(callback_function, argv, custom_settings){
             return Dajaxice.call('microsite.generate_menu', 'POST', callback_function, argv, custom_settings);
         },
+        reorder_pages : function(callback_function, argv, custom_settings) {
+            return Dajaxice.call('microsite.reorder_pages', 'POST', callback_function, argv, custom_settings);
+        }
     }
 ,
     get_cookie: function(name)

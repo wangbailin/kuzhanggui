@@ -1,5 +1,7 @@
 {% extends "framework.html" %}
 
+{% load tab_filters %}
+
 {% block css %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/settings.css"/>
@@ -42,26 +44,29 @@ $("input, select, textarea").change(function(){
     });
 });
 </script>
-<div class="btn-group" style="margin-bottom:10px;">
-    <button class="btn btn-primary" data-toggle="dropdown"><i class="icon-plus icon-white"></i>新增页面</button>
-    <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
-        <span class="caret"></span>
-    </button>
-
-    <ul class="dropdown-menu">
-        <li><a href="/content_page/add" target="_blank">内容页面</a></li>
-        <li><a href="/link_page/add" target="_blank">链接页面</a></li>
-    </ul>
+<div id="toolbar">
+    <div class="btn-group">
+        <button class="btn btn-primary" data-toggle="dropdown"><i class="icon-plus icon-white"></i>新增页面</button>
+        <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="/content_page/add" target="_blank">内容页面</a></li>
+            <li><a href="/link_page/add" target="_blank">链接页面</a></li>
+        </ul>
+    </div>
+    
+    <a href="#reorder-pages-modal" class="clearfix btn btn-primary" data-toggle="modal">设置页面顺序</a>
 </div>
 <div>
     <ul class="nav nav-tabs" style="margin-bottom:10px">
     {% for t in tabs %}
-        {% if forloop.counter0 == active_tab_id %}
+        {% if t.0.position == active_tab_id %}
         <li class='active'><a href="#"><span id="change_or_not"></span>{{ t.0.tab_name }}</a></li>
         {% elif t.0.enable %}
-        <li><a href="/settings/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
+        <li><a href="/settings/{{ t.0.position }}">{{ t.0.tab_name }}</a></li>
         {% else %}
-        <li class="disabled"><a href="/settings/{{ forloop.counter0 }}">{{ t.0.tab_name }}</a></li>
+        <li class="disabled"><a href="/settings/{{ t.0.position }}">{{ t.0.tab_name }}</a></li>
         {% endif %}
     {% endfor %}
     </ul>
@@ -78,6 +83,47 @@ $("input, select, textarea").change(function(){
             <button class="btn btn-primary" id="tab-save">保存</button>
         </div>
     </form>
+</div>
+
+<div id="reorder-pages-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>设置页面顺序</h3>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-striped table-hover" style="border-left: none">
+            <thead>
+                <tr>
+                    <th>页面</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for t in tabs|sortable_tabs %}
+                <tr>
+                    <td class='page' data-pageid="{{ t.0.pk }}">{{ t.0.tab_name }}</td>
+                    <td>
+                        {% if forloop.first %}
+                            <button class="btn btn-link move-up disabled">上移</button>
+                        {% else %}
+                            <button class="btn btn-link move-up">上移</button>
+                        {% endif %}
+
+                        {% if forloop.last %}
+                        <button class="btn btn-link move-down disabled">下移</button>
+                        {% else %}
+                        <button class="btn btn-link move-down">下移</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button id="reorder-pages" data-loading-text="保存..." class="btn btn-primary">保存</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
 </div>
 
 <div id="delete_page" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -141,4 +187,5 @@ $('#tab-preview').click(function() {
     start_preview_history_length = iframe_preview.history.length;
 });
 </script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/settings.js"></script>
 {% endblock %}

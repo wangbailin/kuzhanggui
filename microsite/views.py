@@ -30,7 +30,7 @@ def get_tabs(request):
 
         wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
         request.session['active_wx_id'] = wx.pk
-    pages = Page.objects.filter(wx=wx)
+    pages = Page.objects.filter(wx=wx).order_by('position')
     tabs = []
     logger.debug("wx id %d" % wx.pk)
     for p in pages:
@@ -82,10 +82,6 @@ def settings(request, active_tab_id = None):
     wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
     request.session['active_wx_id'] = wx.pk
     tabs = get_tabs(request)
-    for t in tabs:
-        page = t[0]
-        if not hasattr(page, "enable"):
-            page.enable = True
     if active_tab_id > len(tabs):
         active_tab_id = 0
     apps = get_apps(request)
@@ -117,8 +113,9 @@ def app(request, app_id):
             active_app_specific= AppMgr.get_app_enable(apps[i].cast())
     logger.debug("active side id is %d" % active_side_id)
 
-    tabs_names=get_tabs_names(request)
-    tab_id=tabs_names.index(active_app_specific.title)
+    tabs_names = get_tabs_names(request)
+    tab_id = active_app.position
+    #tab_id = tabs_names.index(active_app_specific.title)
     logger.debug("tab id is %d" % tab_id)
     
     return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app, 'active_app_specific':active_app_specific, 'tab_id':tab_id})
@@ -130,10 +127,10 @@ def back_default(request, page_id):
         page_id = int(page_id)
         tabs = get_tabs(request)
         active_tab_id = -1
-        for i in range(len(tabs)):
-            if tabs[i][0].pk == page_id:
-                active_tab_id = i
-                logger.debug("find form active tab id %d" % i)
+        for tab in tabs:
+            if tab[0].pk == page_id:
+                active_tab_id = tab[0].position 
+                logger.debug("find form active tab id %d" % active_tab_id)
                 break
 
         if active_tab_id == -1:
@@ -165,43 +162,52 @@ def back_default(request, page_id):
 @login_required
 @page_verify('page_id')
 def save(request, page_id):
-    if page_id:
-        page_id = int(page_id)
-        tabs = get_tabs(request)
-        active_tab_id = -1
-        for i in range(len(tabs)):
-            if tabs[i][0].pk == page_id:
-                active_tab_id = i
-                logger.debug("find form active tab id %d" % i)
-                break
-
-        if active_tab_id == -1:
-            return redirect('/settings')
-
-        apps = get_apps(request)
-
-        logger.debug("save page id %d" % page_id)
-        page = get_object_or_404(Page, id = page_id)
-        sub_page = page.cast()
-        form = FormManager.get_form(sub_page, request)
-        if request.method == 'POST':
-            if form.is_valid():
-                intropage = form.save()
-                intropage.save()
-                return redirect("/settings/%d" % active_tab_id)
-            else:
-                logger.debug("form is not valid")
-                return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
-        else:
-            return redirect("/settings/%d" % active_tab_id)
-    else:
+    if page_id is None:
         logger.error("no page id")
-    return redirect("/settings")
+        return redirect("/settings")
+
+    page_id = int(page_id)
+    tabs = get_tabs(request)
+    tabs_filtered = filter(lambda tab: tab[0].pk == page_id, tabs)
+    active_tab_id = -1 if len(tabs_filtered) == 0 else tabs_filtered[0][0].position
+    logger.debug("find form active tab id %d" % active_tab_id)
+
+    if active_tab_id == -1:
+        return redirect('/settings')
+
+    if request.method == 'GET':
+        return redirect("/settings/%d" % active_tab_id)
+
+    logger.debug("save page id %d" % page_id)
+    page = get_object_or_404(Page, id = page_id)
+    sub_page = page.cast()
+    enable = sub_page.enable
+    form = FormManager.get_form(sub_page, request)
+    if not form.is_valid():
+        logger.error("form is not valid")
+        apps = get_apps(request)
+        return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':sub_page, 'f':form, 'apps':apps, 'active_side_id':-1})
+
+    page = form.save(commit=False)
+    logger.debug("page is enable? " + str(enable))
+    logger.debug("form.enable is? " + str(page.enable))
+    if enable == page.enable:
+        page.save()
+        return redirect("/settings/%d" % active_tab_id)
+
+    if enable:
+        set_page_disabled(page)
+    else:
+        set_page_enable(page)
+
+    return redirect("/settings/%d" % Page.objects.get(pk=page_id).position)
 
 @login_required
 @page_verify('page_id')
 def page_delete(request, page_id):
     page = get_object_or_404(Page, pk = page_id)
+    cursor = connection.cursor()
+    cursor.execute('update page set position = position - 1 where wx_id = %s and position > %s', (page.wx.pk, page.position))
     page.delete()
     return redirect("/settings")
 
@@ -350,6 +356,7 @@ def add_edit_link_page(request, link_id=None):
                 wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 item.enable = True
                 item.wx = wx
+                ensure_new_page_position(item, wx)
             item.save()
             return render(request, 'close_page.html')
     else:
@@ -373,6 +380,7 @@ def add_edit_content_page(request, content_id=None):
                 wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 item.enable = True
                 item.wx = wx
+                ensure_new_page_order(item, wx)
             logger.debug("icon url %s" % item.icon.url)
             item.save()
             return render(request,'close_page.html')

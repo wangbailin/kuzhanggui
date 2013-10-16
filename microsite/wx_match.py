@@ -31,6 +31,7 @@ def cal_time(func):
         return resp
 
     return wrapper
+
 def page_verify(id_name):
     def real_decorate(func):
         @wraps(func)
