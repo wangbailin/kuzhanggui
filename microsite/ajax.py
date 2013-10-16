@@ -6,20 +6,26 @@ sys.setdefaultencoding('utf8')
 import urllib  
 import urllib2
 import json
+import random
+import datetime
+import logging
 
 from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
+from django.utils import simplejson
+from django.db import transaction
 from dajax.core import Dajax
 from django.core.cache import cache
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-import random
-import datetime
 
 from framework.models import Account, WXAccount
 from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm, AddEditContactPeopleForm
-from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople, get_page_url
+from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople, get_page_url, Page
 from utils import get_wx_access_token, create_wx_menu
+
+logger = logging.getLogger('default')
 
 @dajaxice_register
 def add_edit_menu(request, form):
@@ -219,3 +225,30 @@ def generate_menu(request):
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '菜单项数量应该为2~3个！' }, 'generateMenuCallback')
 
     return dajax.json()
+
+@dajaxice_register
+@transaction.commit_manually
+def reorder_pages(request, page_list):
+    pages = page_list.split(',')
+    account = Account.objects.get(user=request.user)
+    wx = WXAccount.objects.get(account=account)
+    for page_id in pages:
+        page = Page.objects.filter(pk=page_id, wx=wx)
+        if len(page) != 1 or not page[0].enable:
+            return simplejson.dumps({'ret_code': 1000, 'ret_msg': '数据出错，请稍后重试。'})
+
+    try:
+        for i in range(len(pages)):
+            page_id = pages[i]
+            page = Page.objects.get(pk=page_id)
+            subp = page.cast()
+            subp.position = i + 1
+            subp.save()
+    except Exception as e:
+        logger.exception("reorder_pages error")
+        transaction.rollback()
+        return simplejson.dumps({'ret_code': 1000, 'ret_msg': '操作出错，请稍后重试。'})
+    else:
+        transaction.commit()
+        return simplejson.dumps({'ret_code': 0, 'ret_msg': '操作成功'})
+    
