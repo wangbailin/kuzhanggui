@@ -1,5 +1,6 @@
 #coding:utf8
-from django.db import models
+import sys
+from django.db import models, connection
 from django.contrib.contenttypes.models import ContentType
 from django.template.loader import render_to_string
 
@@ -15,6 +16,7 @@ from baidu_yun.storage import BaiduYunStorage
 baidu_storage = BaiduYunStorage()
 
 class Page(models.Model):
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
     tab_name = models.CharField(u'页面名称', max_length=20)
@@ -22,6 +24,7 @@ class Page(models.Model):
     icon = models.ImageField(u"图标", storage=baidu_storage, upload_to='upload/', help_text=u"建议图片大小为190px*235px", max_length=255, blank=True)
     message_cover = models.ImageField(u"消息封面", storage=baidu_storage, upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
     message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000, blank=True)
+    position = models.IntegerField(default = 0)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -32,6 +35,9 @@ class Page(models.Model):
 
     def _get_real_type(self):
         return ContentType.objects.get_for_model(type(self))
+
+    def setPosition(self, pos):
+        self.position = pos
 
     def cast(self):
         return self.real_type.get_object_for_this_type(pk=self.pk)
@@ -101,7 +107,6 @@ class HomePage(Page):
 
 
 class IntroPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
     content = models.TextField(u'内容')
 
@@ -121,7 +126,6 @@ class IntroPage(Page):
         return self.title
 
 class JoinPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
     content = models.TextField(u'内容')
 
@@ -141,7 +145,6 @@ class JoinPage(Page):
         app_label = u'microsite'
 
 class ContactApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50) 
 
     def save(self, *args, **kwargs):
@@ -161,7 +164,6 @@ class ContactApp(App):
 
 
 class TrendsApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
  
     def save(self, *args, **kwargs):
@@ -181,7 +183,6 @@ class TrendsApp(App):
         app_label = u'microsite'
 
 class TeamApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=50)
 
     def save(self, *args, **kwargs):
@@ -202,7 +203,6 @@ class TeamApp(App):
 
 
 class CaseApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=20)
 
     def _get_tab_name(self):
@@ -249,7 +249,6 @@ class CaseItem(models.Model):
         app_label = u'microsite'
 
 class ProductApp(App):
-    enable = models.BooleanField(u'是否启用', help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=20)
 
     def _get_tab_name(self):
@@ -349,7 +348,6 @@ class ContactPeople(models.Model):
         app_label = u'microsite'
 
 class CulturePage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用")
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
 
@@ -369,7 +367,6 @@ class CulturePage(Page):
         return self.title
 
 class BusinessPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
 
@@ -390,7 +387,6 @@ class BusinessPage(Page):
 
 
 class WeiboPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     url = models.URLField(u"微博链接", max_length=100)
 
@@ -410,7 +406,6 @@ class WeiboPage(Page):
         return self.title
 
 class ContentPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
     
@@ -430,7 +425,6 @@ class ContentPage(Page):
         return self.title
 
 class LinkPage(Page):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
     title = models.CharField(u'标题', max_length=100)
     url = models.URLField(u'链接地址', max_length=200)
     
@@ -450,7 +444,6 @@ class LinkPage(Page):
         return self.title
 
 class HelpPage(Page):
-    enable = models.BooleanField(u'是否启用', default=True, help_text=u'启用 (启用后该页面内容会显示在微官网)')
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
 
@@ -490,114 +483,115 @@ def add_default_site(wx_account):
         homepage.message_cover = consts.DEFAULT_HOMEPAGE_COVER
         homepage.message_description = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         homepage.template_type = 0
+        homepage.position = 0
         homepage.save()
 
     intropages = IntroPage.objects.filter(wx=wx_account)
     if len(intropages) == 0:
         intropage = IntroPage()
         intropage.wx = wx_account
-        intropage.enable = True
         intropage.title = u"公司简介"
         intropage.icon = consts.DEFAULT_INTRO_ICON % site_templates[wx_account.wsite_template].site_template
         intropage.message_cover = consts.DEFAULT_INTRO_COVER
         intropage.message_description = consts.DEFAULT_INTRO_MSG
+        intropage.position = 1
         intropage.save()
 
     businesspages = BusinessPage.objects.filter(wx=wx_account)
     if len(businesspages) == 0:
         businesspage = BusinessPage()
         businesspage.wx = wx_account
-        businesspage.enable = True
         businesspage.title = u'公司业务'
         businesspage.icon = consts.DEFAULT_BUSINESS_ICON % site_templates[wx_account.wsite_template].site_template
         businesspage.message_cover = consts.DEFAULT_BUSINESS_COVER
         businesspage.message_description = consts.DEFAULT_BUSINESS_MSG
+        businesspage.position = 2
         businesspage.save()
 
     trendsapps = TrendsApp.objects.filter(wx=wx_account)
     if len(trendsapps) == 0:
         trendsapp = TrendsApp()
         trendsapp.wx = wx_account
-        trendsapp.enable = True
         trendsapp.icon = consts.DEFAULT_NEWS_ICON % site_templates[wx_account.wsite_template].site_template
         trendsapp.message_cover = consts.DEFAULT_NEWS_COVER
         trendsapp.message_description = consts.DEFAULT_NEWS_MSG
+        trendsapp.position = 3
         trendsapp.save()
 
     teamapps = TeamApp.objects.filter(wx=wx_account)
     if len(teamapps) == 0:
         teamapp = TeamApp()
         teamapp.wx = wx_account
-        teamapp.enable = True
         teamapp.title = u'团队介绍'
         teamapp.icon = consts.DEFAULT_TEAM_ICON % site_templates[wx_account.wsite_template].site_template
         teamapp.message_description = consts.DEFAULT_TEAM_MSG
+        teamapp.position = 4
         teamapp.save()
 
     productapps = ProductApp.objects.filter(wx=wx_account)
     if len(productapps) == 0:
         productapp = ProductApp()
         productapp.wx = wx_account
-        productapp.enable = True
         productapp.title = u'产品中心'
         productapp.icon = consts.DEFAULT_PRODUCT_ICON % site_templates[wx_account.wsite_template].site_template
         productapp.message_cover = consts.DEFAULT_PRODUCT_COVER
         productapp.message_description = consts.DEFAULT_PRODUCT_MSG
+        productapp.position = 5
         productapp.save()
 
     caseapps = CaseApp.objects.filter(wx=wx_account)
     if len(caseapps) == 0:
         caseapp = CaseApp()
         caseapp.wx = wx_account
-        caseapp.enable = True
         caseapp.title = u'成功案例'
         caseapp.icon = consts.DEFAULT_CASE_ICON % site_templates[wx_account.wsite_template].site_template
         caseapp.message_cover = consts.DEFAULT_CASE_COVER
         caseapp.message_description = consts.DEFAULT_CASE_MSG
+        caseapp.position = 6
         caseapp.save()
     
     weibopages= WeiboPage.objects.filter(wx=wx_account)
     if len(weibopages) == 0:
         weibopage = WeiboPage()
         weibopage.wx = wx_account
-        weibopage.enable = True
         weibopage.title = u'官方微博'
         weibopage.icon = consts.DEFAULT_WEIBO_ICON % site_templates[wx_account.wsite_template].site_template
         weibopage.message_cover = consts.DEFAULT_WEIBO_COVER
         weibopage.message_description = consts.DEFAULT_WEIBO_MSG
+        weibopage.position = 7
         weibopage.save()
 
     contactapps = ContactApp.objects.filter(wx=wx_account)
     if len(contactapps) == 0:
         contactapp = ContactApp()
         contactapp.wx = wx_account
-        contactapp.enable = True
         contactapp.icon = consts.DEFAULT_CONTACT_ICON % site_templates[wx_account.wsite_template].site_template
         contactapp.message_cover = consts.DEFAULT_CONTACT_COVER
         contactapp.message_description = consts.DEFAULT_CONTACT_MSG
+        contactapp.position = 8
         contactapp.save()
 
     joinpages = JoinPage.objects.filter(wx=wx_account)
     if len(joinpages) == 0:
         joinpage = JoinPage()
         joinpage.wx = wx_account
-        joinpage.enable = True
         joinpage.title = u'加入我们'
         joinpage.icon = consts.DEFAULT_JOIN_ICON % site_templates[wx_account.wsite_template].site_template
         joinpage.message_cover = consts.DEFAULT_JOIN_COVER
         joinpage.message_description = consts.DEFAULT_JOIN_MSG
+        joinpage.position = 9
         joinpage.save()
 
     helppages = HelpPage.objects.filter(wx=wx_account)
     if len(helppages) == 0:
         helppage = HelpPage()
         helppage.wx = wx_account
-        helppage.enable = True
         helppage.title = u'新手指导'
         helppage.icon = consts.DEFAULT_HELP_ICON % site_templates[wx_account.wsite_template].site_template
         helppage.message_cover = consts.DEFAULT_HELP_COVER
         helppage.message_description = consts.DEFAULT_HELP_MSG
         helppage.content = render_to_string('helppage_content.html', {})
+        helppage.position = 10 
         helppage.save()
 
 def get_page_url(page):
@@ -752,3 +746,30 @@ def page_is_enable(subpage):
     elif subpage.real_type == ContentType.objects.get_for_model(HelpPage):
         return subpage.enable
     return True
+
+def ensure_new_page_position(page, wx):
+    pages = Page.objects.filter(wx=wx, enable=True)
+    pos = len(pages)
+    cursor = connection.cursor()
+    cursor.execute('update page set position = position + 1 where wx_id = %s and position >= %s', (wx.pk, pos))
+    page.setPosition(pos)
+
+
+def set_page_enable(page):
+    pages = Page.objects.filter(wx=page.wx, enable=True)
+    pos = len(pages)
+    cursor = connection.cursor()
+    cursor.execute('update page set position = position + 1 where wx_id = %s and position >= %s and position < %s', (page.wx.pk, pos, page.position))
+    page.setPosition(pos)
+    page.enable = True
+    page.save()
+
+def set_page_disabled(page):
+    cursor = connection.cursor()
+    cursor.execute('update page set position = position - 1 where wx_id = %s and position > %s', (page.wx.pk, page.position))
+    pages = Page.objects.filter(wx=page.wx).order_by('position')
+    pos = len(pages) - 1
+    page.setPosition(pos)
+    page.enable = False
+    page.save()
+

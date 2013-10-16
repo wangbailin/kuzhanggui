@@ -1,3 +1,37 @@
 .nav.nav-tabs li.disabled a {
     cursor: pointer;
 }
+
+.move-up {
+    border-right: 1px solid #ccc;
+}
+
+.move-up, .move-down {
+    padding: 0px 3px;
+    opacity: .8;
+}
+
+.move-up:hover, .move-down:hover {
+    opacity: 1;
+}
+
+.move-up {
+    padding-left: 0px;
+    padding-right: 6px;
+    border-left: none;
+}
+
+.move-up.disabled, .move-down.disabled {
+    background-color: transparent;
+    opacity: .3;
+}
+
+.move-up.disabled:hover, .move-down.disabled:hover {
+    text-decoration: none;
+    color: #333;
+}
+
+#reorder-pages-modal table td, #reorder-pages-modal table th {
+    padding: 6px 12px;
+}
+

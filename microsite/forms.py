@@ -6,6 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 from ajax_upload.widgets import AjaxClearableFileInput
 from utils import get_wx_access_token
 
+from widgets import LongTextInput
+from widgets import LongTextarea
 from ckeditor.widgets import CKEditorWidget
 
 class MenuForm(forms.Form):
@@ -132,7 +134,8 @@ class TrendItemForm(ModelForm):
         )
         
         widgets = {
-            'summary': forms.Textarea(attrs={'rows': 2})
+            'title': LongTextInput(),
+            'summary': LongTextarea(attrs={'rows': 2})
         }
 
 class TeamAppForm(ModelForm):
@@ -146,9 +149,9 @@ class TeamAppForm(ModelForm):
         )
 
 class TeamItemForm(ModelForm):
-    name = forms.CharField(label=u'姓名', widget=forms.TextInput(attrs={'class':'input-xxlarge'}))
-    job_title = forms.CharField(label=u'职位名称', widget=forms.TextInput(attrs={'class':'input-xxlarge'}))
-    person_digest = forms.CharField(label=u'简要介绍', widget=forms.Textarea(attrs={'class':'input-xxlarge','rows':2}), help_text=u"建议字数限制在50字以内")
+    name = forms.CharField(label=u'姓名', widget=LongTextInput)
+    job_title = forms.CharField(label=u'职位名称', widget=LongTextInput)
+    person_digest = forms.CharField(label=u'简要介绍', widget=LongTextarea(attrs={'rows': 2}), help_text=u"建议字数限制在50字以内")
     person_content = forms.CharField(label=u'详细介绍', widget=CKEditorWidget())
     picture = forms.ImageField(label=u'照片', widget=AjaxClearableFileInput(), required = True, help_text=u'建议图片大小为105px*105px')
     class Meta:
@@ -247,6 +250,9 @@ class ContentPageForm(ModelForm):
             'icon',
             'content',
         )
+        widgets = {
+            'title': LongTextInput
+        }
 
 
 class LinkPageForm(ModelForm):
@@ -259,6 +265,10 @@ class LinkPageForm(ModelForm):
             'icon',
             'url',
         )
+        widgets = {
+            'title': LongTextInput,
+            'url': LongTextInput
+        }
 
 class CaseAppForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
@@ -279,6 +289,7 @@ class ProductAppForm(ModelForm):
             'icon',
             'enable',
         )
+
 class CaseItemForm(ModelForm):
     case_pic1 = forms.ImageField(label=u'案例截图1', widget=AjaxClearableFileInput(), help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
     case_pic2 = forms.ImageField(label=u'案例截图2', widget=AjaxClearableFileInput(), required = False)
@@ -296,6 +307,9 @@ class CaseItemForm(ModelForm):
             'case_pic4',
             'case_intro',
         )
+        widgets = {
+            'title': LongTextInput
+        }
 
 class CaseClassForm(ModelForm):
     class Meta:
@@ -322,6 +336,9 @@ class ProductItemForm(ModelForm):
             'product_pic4',
             'product_intro',
         )
+        widgets = {
+            'title': LongTextInput
+        }
 
 class ProductClassForm(ModelForm):
     class Meta:

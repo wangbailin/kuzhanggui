@@ -58,3 +58,16 @@
     margin-bottom: 7px;
 }
 
+#toolbar {
+    height: 40px;
+}
+
+#toolbar > a {
+    display: block;
+}
+
+#toolbar > div, #toolbar > a {
+    margin-right: 10px;
+    float: left;
+}
+
