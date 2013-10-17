@@ -608,7 +608,7 @@ def menu(request):
                         pages_id.append(page.id)      
                 else:
                     pages_id.append(page.id)      
-            form.fields['page'].queryset = Page.objects.filter(wx=wx_account, pk__in=pages_id)
+            form.fields['pages'].queryset = Page.objects.filter(wx=wx_account, pk__in=pages_id)
         return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form})
 
 @login_required

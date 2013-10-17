@@ -36,7 +36,7 @@ class AddEditMenuForm(ModelForm):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     class Meta:
         model = Menu
-        fields = ('id', 'page', 'name')
+        fields = ('id', 'pages', 'name')
 
 class AddEditContactPeopleForm(ModelForm):
     id = forms.CharField(required=False)

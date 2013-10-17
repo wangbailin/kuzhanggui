@@ -465,7 +465,7 @@ class HelpPage(Page):
 class Menu(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name=u'微信帐号')
     name = models.CharField(verbose_name=u'菜单项名称', max_length=4, blank=False, null=False)
-    page = models.ForeignKey(Page, verbose_name=u'页面')
+    pages = models.ManyToManyField(Page, verbose_name=u'页面')
 
     class Meta:
         db_table = u'menus'

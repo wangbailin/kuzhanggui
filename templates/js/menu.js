@@ -14,10 +14,10 @@ var addEditMenuCallback = function(data) {
     $('#add_edit_menu_save').button('reset');
 };
 
-var editMenu = function(id, name, page) {
+var editMenu = function(id, name) {
     $('#id_id').val(id);
     $('#name input').val(name);
-    $('#page select').val(page);
+    //$('#page select').val(page);
     $('#add_edit_menu').modal('show');
 };
 

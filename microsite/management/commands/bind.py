@@ -36,13 +36,13 @@ class Command(BaseCommand):
             return
 
         account = accounts[0]
-        wx = WXAccount.objects.filter(account=account)
+        wxAccounts = WXAccount.objects.filter(account=account)
+        if len(wxAccounts) > 0:
+            result = raw_input("weixin account exists, rebind?(y no n):")
+            if result != 'y' and result != 'Y':
+                return
 
-        if len(wx) > 0:
-            print 'Weixin account exists'
-            return
-
-        wx = WXAccount()
+        wx = wxAccounts[0] if len(wxAccounts) > 0 else WXAccount()
         wx.account = account
         wx.name = username
         wx.follower_count = 0
@@ -52,6 +52,8 @@ class Command(BaseCommand):
         wx.url = 'abc'
         wx.token = 'abc'
         wx.bind_time = datetime.utcnow().replace(tzinfo=utc)
+        wx.app_id = 'test'
+        wx.app_secret = 'test, too'
         wx.save()
         add_default_site(wx)
 
