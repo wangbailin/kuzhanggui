@@ -244,6 +244,7 @@ def reorder_pages(request, page_list):
             subp = page.cast()
             subp.position = i + 1
             subp.save()
+        #raise Exception()
     except Exception as e:
         logger.exception("reorder_pages error")
         transaction.rollback()
