@@ -18,8 +18,12 @@ tr.highlight td {
     background-color: #dff0d8;
 }
 
-.move-up {
-    border-right: 1px solid #ccc;
+.table-hover tbody tr.highlight:hover td {
+    background-color: #dff0d8;
+}
+
+td.operations {
+    width: 50px;
 }
 
 .move-up, .move-down {
@@ -33,12 +37,6 @@ tr.highlight td {
 
 .move-up:hover, .move-down:hover {
     opacity: 1;
-}
-
-.move-up {
-    padding-left: 0px;
-    padding-right: 6px;
-    border-left: none;
 }
 
 .move-up.disabled, .move-down.disabled {
