@@ -1,5 +1,7 @@
 $(function() {
     var $modal = $("#reorder-pages-modal");
+    var highLightTask = -1;
+    var DURATION = 1000;
 
     function ensureBtns() {
         $(".move-up, .move-down", $modal).removeClass("disabled");
@@ -8,8 +10,19 @@ $(function() {
     }
 
     function swap(r1, r2) {
+        if(highLightTask != -1) {
+            $("tr.highlight", $modal).removeClass("highlight");
+            clearTimeout(highLightTask);
+            highLightTask = -1;
+        }
+
         r1.detach();
+        r1.addClass("highlight");
         r1.insertAfter(r2);
+        highLightTask = setTimeout(function() {
+            r1.removeClass("highlight");
+            highLightTask = -1;
+        }, DURATION);
     }
 
     function moveUp() {

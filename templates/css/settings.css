@@ -2,6 +2,22 @@
     cursor: pointer;
 }
 
+@keyframes highlight {
+from { background: #dff0d8; } 
+to  { background: #f9f9f9; }
+}
+
+@-webkit-keyframes highlight {
+from { background: #dff0d8; } 
+to  { background: #f9f9f9; }
+}
+
+tr.highlight td {
+    animation: highlight 2s;
+    -webkit-animation: highlight 2s;
+    background-color: #dff0d8;
+}
+
 .move-up {
     border-right: 1px solid #ccc;
 }
