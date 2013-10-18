@@ -2,8 +2,28 @@
     cursor: pointer;
 }
 
-.move-up {
-    border-right: 1px solid #ccc;
+@keyframes highlight {
+from { background: #dff0d8; } 
+to  { background: #f9f9f9; }
+}
+
+@-webkit-keyframes highlight {
+from { background: #dff0d8; } 
+to  { background: #f9f9f9; }
+}
+
+tr.highlight td {
+    animation: highlight 2s;
+    -webkit-animation: highlight 2s;
+    background-color: #dff0d8;
+}
+
+.table-hover tbody tr.highlight:hover td {
+    background-color: #dff0d8;
+}
+
+td.operations {
+    width: 50px;
 }
 
 .move-up, .move-down {
@@ -11,14 +31,12 @@
     opacity: .8;
 }
 
-.move-up:hover, .move-down:hover {
-    opacity: 1;
+.move-up:focus, .move-down:focus {
+    outline: none;
 }
 
-.move-up {
-    padding-left: 0px;
-    padding-right: 6px;
-    border-left: none;
+.move-up:hover, .move-down:hover {
+    opacity: 1;
 }
 
 .move-up.disabled, .move-down.disabled {

@@ -106,5 +106,24 @@
 {% autoescape off %}
 {% block content %} Content here! {% endblock %}
 {% endautoescape %}
+<script type="text/javascript">
+   var _usersnapconfig = {
+       apiKey: '77ec96d5-df3f-4a53-8ae9-df33e358510a',
+       valign: 'bottom',
+       halign: 'right',
+       tools: ["pen", "highlight", "note"],
+       lang: 'en',
+       commentBox: true,
+       emailBox: true
+   }; 
+   (function() {
+       var s = document.createElement('script');
+       s.type = 'text/javascript';
+       s.async = true;
+       s.src = '//api.usersnap.com/usersnap.js';
+       var x = document.getElementsByTagName('head')[0];
+       x.appendChild(s);
+   })();
+</script>
 </body>
 </html>
