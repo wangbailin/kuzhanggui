@@ -90,7 +90,7 @@ def dashboard(request):
             series=
             [{
             'options' : {
-            'source' : WeixinDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=30)).order_by('date')
+            'source' : WeixinDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=15)).order_by('date')
             },
             'terms' : [
             'date_str',
@@ -122,7 +122,7 @@ def dashboard(request):
 
         wsite_ds = DataPool(
             series = [{
-            'options' : { 'source' : WSiteDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=30)).order_by('date')},
+            'options' : { 'source' : WSiteDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=15)).order_by('date')},
             'terms' : ['date_str', 'visitor_count', 'visit_count']
             }])
         wsite_chart = Chart(
