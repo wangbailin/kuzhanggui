@@ -202,6 +202,16 @@ def change_product_class(request, form):
 
     return dajax.json()
 
+def is_app_menu(menu):
+    items = PageGroup.objects.filter(menu=menu)
+    if len(items) > 1:
+        return False
+
+    subPage = items[0].page.cast()
+    caseAppType = ContentType.objects.get_for_model(CaseApp)
+    productAppType = ContentType.objects.get_for_model(ProductApp)
+    return subPage.real_type == caseAppType or subPage.real_type == productAppType
+
 @dajaxice_register
 def generate_menu(request):
     dajax = Dajax()
@@ -220,31 +230,43 @@ def generate_menu(request):
         if wx_access_token is None:
             dajax.add_data({ 'ret_code' : 1001, 'ret_msg' : '微信系统繁忙，请重试生成菜单' }, 'generateMenuCallback')
         else:
+            view_fmt = u'{"type": "view", "name": "%s", "url": "%s"}'
             buttons = []
             for menu in wx_account.menu_set.all():
                 sub_buttons = []
-                if menu.page.real_type == ContentType.objects.get_for_model(ProductApp):
-                    product_app = menu.page.cast()
-                    for cls in product_app.productclass_set.all():
-                        sub_buttons.append(u'{ "type": "view", "name": "%s", "url": "%s" }' % (cls.name, cls.get_url()))
-                    sub_buttons.append(u'{ "type": "view", "name": "全部产品", "url": "%s" }' % get_page_url(menu.page))
-                elif menu.page.real_type == ContentType.objects.get_for_model(CaseApp):
-                    case_app = menu.page.cast()
-                    for cls in case_app.caseclass_set.all():
-                        sub_buttons.append(u'{ "type": "view", "name": "%s", "url": "%s" }' % (cls.name, cls.get_url()))
-                    sub_buttons.append(u'{ "type": "view", "name": "全部成功案例", "url": "%s" }' % get_page_url(menu.page))
+                menuItems = PageGroup.objects.filter(menu=menu)
+                if not is_app_menu(menu):
+                    if len(menuItems) > 1:
+                        for item in menuItems:
+                            values = (item.page.tab_name, get_page_url(item.page))
+                            sub_buttons.append(view_fmt % values)
+                else:
+                    page = menuItems[0].page
+                    if page.real_type == ContentType.objects.get_for_model(ProductApp):
+                        product_app = page.cast()
+                        for cls in product_app.productclass_set.all():
+                            sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
+                        sub_buttons.append(view_fmt % (u'全部产品', get_page_url(page)))
+                    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+                        case_app = page.cast()
+                        for cls in case_app.caseclass_set.all():
+                            sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
+                        sub_buttons.append(view_fmt % (u'全部成功案例', get_page_url(page)))
 
                 if len(sub_buttons) > 0:
-                    buttons.append(u'{ "type": "click", "name": "%s", "sub_button": [%s] }' % (menu.name, ','.join(sub_buttons)))
+                    fmt = u'{ "type": "click", "name": "%s", "sub_button": [%s] }'
+                    buttons.append(fmt % (menu.name, ','.join(sub_buttons)))
                 else:
-                    buttons.append(u'{ "type": "view", "name": "%s", "url": "%s" }' % (menu.name, get_page_url(menu.page)))
+                    buttons.append(view_fmt % (menu.name, get_page_url(menuItems[0].page)))
 
             menu_data = u'{"button":[%s]}' % ','.join(buttons)
-            print menu_data
+            logger.debug("menu_data:")
+            logger.debug(menu_data)
             if create_wx_menu(wx_access_token, menu_data):
-                dajax.add_data({ 'ret_code' : 0, 'ret_msg' : '' }, 'generateMenuCallback')
+                dajax.add_data({'ret_code' : 0, 'ret_msg' : ''}, 'generateMenuCallback')
             else:
-                dajax.add_data({ 'ret_code' : 1002, 'ret_msg' : '微信系统繁忙，请重试生成菜单!' }, 'generateMenuCallback')
+                dajax.add_data({'ret_code' : 1002, 'ret_msg' : '微信系统繁忙，请重试生成菜单!'}, 
+                                'generateMenuCallback')
     else:
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '菜单项数量应该为2~3个！' }, 'generateMenuCallback')
 

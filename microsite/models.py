@@ -635,8 +635,7 @@ def get_page_url(page):
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
         return settings.SITE_URL + '/microsite/content/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
-        link = page.cast()
-        return page.url
+        return page.cast().url
 
 def get_default_msg(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
