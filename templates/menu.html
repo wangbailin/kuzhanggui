@@ -13,6 +13,7 @@
 {% block js %}
 {% import_django_select2_js %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3.sortable.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal-lockable.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/menu.js"></script>
 {% endblock %}
 
@@ -80,7 +81,7 @@
             </div>
     <div class="modal-footer">
         <button id="add_edit_menu_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button id="add_edit_menu_cancel" class="btn" data-dismiss="modal" aria-hidden="true" data-loading-text="取消">取消</button>
     </div>
 </div>
 <div id="delete_menu" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_menu_header" aria-hidden="true">

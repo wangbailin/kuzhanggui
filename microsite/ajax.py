@@ -56,6 +56,7 @@ def menu_name_exists(name, exclude=None):
 
 @dajaxice_register
 def add_edit_menu(request, id, name, pages): 
+    #raise Exception()
     account = Account.objects.get(user=request.user)
     wx_account = None
     if account.has_wx_bound:
@@ -294,7 +295,7 @@ def reorder_pages(request, page_list):
     except Exception as e:
         logger.exception("reorder_pages error")
         transaction.rollback()
-        return simplejson.dumps({'ret_code': 1000, 'ret_msg': '操作出错，请稍后重试。'})
+        raise e
     else:
         transaction.commit()
         return simplejson.dumps({'ret_code': 0, 'ret_msg': '操作成功'})

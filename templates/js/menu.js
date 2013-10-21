@@ -1,5 +1,7 @@
 var on_error = function() {
     $('#add_edit_menu_save').button('reset');
+    $('#add_edit_menu_cancel').button('reset');
+    $("#add_edit_menu").modal('unlock');
     toast('error', '添加/编辑菜单项失败！');
 }
 
@@ -12,8 +14,13 @@ var addEditMenu = function() {
     };
 
     $('#add_edit_menu_save').button('loading');
+    $('#add_edit_menu_cancel').button('loading');
+    $("#add_edit_menu").modal('lock');
     Dajaxice.microsite.add_edit_menu(function(data) {
+        // setTimeout(function() {
         $('#add_edit_menu_save').button('reset');
+        $('#add_edit_menu_cancel').button('reset');
+        $("#add_edit_menu").modal('unlock');
 
         if(!data || data.ret_code != 0) {
             toast('error', data.ret_msg);
@@ -26,6 +33,7 @@ var addEditMenu = function() {
             $('#add_edit_menu').modal('hide');
             location.reload();
         }, 2000);
+        // }, 10000);
     }, data, {'error_callback': on_error});
 };
 
