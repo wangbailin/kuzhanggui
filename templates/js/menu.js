@@ -16,7 +16,7 @@ var addEditMenu = function() {
         $('#add_edit_menu_save').button('reset');
 
         if(!data || data.ret_code != 0) {
-            toast('error', '添加/编辑菜单项失败！');
+            toast('error', data.ret_msg);
             return;
         }
 

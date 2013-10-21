@@ -14,6 +14,6 @@ def menu_pages(menu):
 
 @register.filter
 def menu_page_names(menu):
-    items = PageGroup.objects.filter(menu=menu)
+    items = PageGroup.objects.filter(menu=menu).order_by("position")
     return ', '.join([item.page.tab_name for item in items]) if len(items) != 0 else u'－'
 

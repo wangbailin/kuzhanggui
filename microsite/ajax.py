@@ -27,54 +27,65 @@ from utils import get_wx_access_token, create_wx_menu
 
 logger = logging.getLogger('default')
 
-def validate_menu_args(name, pages):
-    return name is not None and name != '' and pages is not None and pages != ''
+@transaction.commit_on_success
+def add_menu(wx_account, name, page_ids):
+    menu = Menu(wx=wx_account, name=name)
+    menu.save()
+    modify_menu_items(menu, page_ids)
+
+@transaction.commit_on_success
+def edit_menu(id, name, page_ids):
+    menu = Menu.objects.get(id=id)
+    menu.name = name
+    menu.save()
+    PageGroup.objects.filter(menu=menu).delete()
+    modify_menu_items(menu, page_ids)
+
+def modify_menu_items(menu, page_ids):
+    for index in range(len(page_ids)):
+        page_id = page_ids[index]
+        page = Page.objects.get(pk=page_id)
+        pageGroup = PageGroup(page=page, menu=menu, position=index)
+        pageGroup.save()
+
+def menu_name_exists(name, exclude=None):
+    if exclude is None:
+        return Menu.objects.filter(name=name).exists()
+    else:
+        return Menu.objects.filter(name=name).exclude(pk=exclude).exists()
 
 @dajaxice_register
-@transaction.commit_manually
 def add_edit_menu(request, id, name, pages): 
     account = Account.objects.get(user=request.user)
     wx_account = None
     if account.has_wx_bound:
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
 
-    if not validate_menu_args(name, pages):
-        if name is None or name == '':
-            ret_msg = '名称是必填项'
-        else:
-            ret_msg = '显示页面是必填项'
+    if name is None or name == '':
+        ret_msg = '名称是必填项'
         logger.error("add_edit_menu form is invalid, msg %s" % ret_msg)
         return simplejson.dumps({'ret_code': 1000, 'ret_msg': ret_msg})
-
+    elif pages is None or pages == '':
+        ret_msg = '显示页面是必填项'
+        logger.error("add_edit_menu form is invalid, msg %s" % ret_msg)
+        return simplejson.dumps({'ret_code': 1000, 'ret_msg': ret_msg})
+    
     page_ids = [int(p) for p in pages.split(',')]
+    logger.debug("pages' id: " + str(page_ids))
 
     if id is not None and id != '':
-        if Menu.objects.filter(name=name).exclude(pk=id).exists():
+        if menu_name_exists(name, exclude=id):
             return simplejson.dumps({'ret_code': 1000, 'ret_msg': '菜单名称已存在'})
-        menu = Menu.objects.get(id=id)
-        menu.name = name
-        PageGroup.objects.filter(menu=menu).delete()
-    else:
-        if Menu.objects.filter(name=name).exists():
-            return simplejson.dumps({'ret_code': 1000, 'ret_msg': '菜单名称已存在'})
-        menu = Menu(wx=wx_account, name=name)
 
-    try:
-        for index in range(len(page_ids)):
-            page_id = page_ids[index]
-            page = Page.objects.get(pk=page_id)
-            pageGroup = PageGroup(page=page, menu=menu, position=index)
-            pageGroup.save()
-
-        menu.save()
-    except Exception as e:
-        logger.exception(e)
-        transaction.rollback()
-        raise e
-    else:
-        transaction.commit()
+        edit_menu(id, name, page_ids)
         return simplejson.dumps({'ret_code': 0})
+    else:
+        if menu_name_exists(name):
+            return simplejson.dumps({'ret_code': 1000, 'ret_msg': '菜单名称已存在'})
 
+        add_menu(wx_account, name, page_ids)
+        return simplejson.dumps({'ret_code': 0})
+    
 @dajaxice_register
 def add_edit_contact_people(request, form):
     dajax = Dajax()
