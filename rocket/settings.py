@@ -113,6 +113,8 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+AUTO_RENDER_SELECT2_STATICS = False
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -182,6 +184,7 @@ INSTALLED_APPS = (
     'data',
     'ajax_upload',
     'django_tables2',
+    'django_select2',
     'dajaxice',
     'dajax',
     'chartit',

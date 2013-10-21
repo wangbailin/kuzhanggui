@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/img/favicon.ico')),
     url(r'^ajax-upload/', include('ajax_upload.urls')),
     url(r'^ckeditor/', include('ckeditor.urls')),
+    #url(r'^select2/', include('django_select2.urls')),
     url(r'^api/microsite/', include('microsite.apiurls')),
     url(r'^microsite/', include('microsite.siteurls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

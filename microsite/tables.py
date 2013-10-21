@@ -1,6 +1,7 @@
 #coding:utf8
 import logging
-from models import HomePage
+from models import HomePage, PageGroup
+import django_tables2 as tables
 import django_tables2 as tables
 from django.contrib.contenttypes.models import ContentType
 from models import ContactApp, TrendsApp, ContactItem, TrendItem, TeamItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
@@ -106,22 +107,12 @@ class ProductClassTable(tables.Table):
         fields = ('name',)
 
 class MenuTable(tables.Table):
+    pages = TemplateColumn(template_name="menu_pages.html", verbose_name=u'页面')
     ops = TemplateColumn(template_name="menu_ops.html", verbose_name=u"操作", orderable=False,attrs={"class":"ops"})
-
-    def render_pages(self, value):
-        page_list = value.all();
-        if len(page_list) == 0:
-            result = '-'
-        else:
-            tab_names = []
-            for p in page_list:
-                tab_names.append(p.tab_name)
-            result = ', '.join(tab_names)
-        return result
 
     class Meta:
         model = Menu
         empty_text = u'暂无菜单项'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('name', 'pages',)
+        fields = ('name',)

@@ -22,45 +22,58 @@ from django.contrib.contenttypes.models import ContentType
 
 from framework.models import Account, WXAccount
 from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm, AddEditContactPeopleForm
-from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople, get_page_url, Page
+from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople, get_page_url, Page, PageGroup
 from utils import get_wx_access_token, create_wx_menu
 
 logger = logging.getLogger('default')
 
-@dajaxice_register
-def add_edit_menu(request, form):
-    dajax = Dajax()
-    form = AddEditMenuForm(deserialize_form(form))
+def validate_menu_args(name, pages):
+    return name is not None and name != '' and pages is not None and pages != ''
 
+@dajaxice_register
+@transaction.commit_manually
+def add_edit_menu(request, id, name, pages): 
     account = Account.objects.get(user=request.user)
     wx_account = None
     if account.has_wx_bound:
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
 
-    if form.is_valid():
-        if form.cleaned_data.has_key('id') and form.cleaned_data.get('id') is not None and form.cleaned_data.get('id') != '':
-            menu = Menu.objects.get(id=form.cleaned_data.get('id'))
-            menu.name = form.cleaned_data.get('name')
-            menu.page = form.cleaned_data.get('page')
+    if not validate_menu_args(name, pages):
+        if name is None or name == '':
+            ret_msg = '名称是必填项'
         else:
-            if Menu.objects.filter(wx=wx_account, name=form.cleaned_data.get('name')).exists():
-                dajax.remove_css_class('#add_edit_menu_form .control-group', 'error')
-                dajax.add_css_class('#name', 'error')
-                dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'addEditMenuCallback')
-                return dajax.json()
-            else:
-                menu = Menu(wx=wx_account, page=form.cleaned_data.get('page'), name=form.cleaned_data.get('name'))
-        
-        menu.save()
-        dajax.remove_css_class('#add_edit_menu_form .control-group', 'error')
-        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'addEditMenuCallback')
-    else:
-        dajax.remove_css_class('#add_edit_menu_form .control-group', 'error')
-        for error in form.errors:
-            dajax.add_css_class('#%s' % error, 'error')
-        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'addEditMenuCallback')
+            ret_msg = '显示页面是必填项'
+        logger.error("add_edit_menu form is invalid, msg %s" % ret_msg)
+        return simplejson.dumps({'ret_code': 1000, 'ret_msg': ret_msg})
 
-    return dajax.json()
+    page_ids = [int(p) for p in pages.split(',')]
+
+    if id is not None and id != '':
+        if Menu.objects.filter(name=name).exclude(pk=id).exists():
+            return simplejson.dumps({'ret_code': 1000, 'ret_msg': '菜单名称已存在'})
+        menu = Menu.objects.get(id=id)
+        menu.name = name
+        PageGroup.objects.filter(menu=menu).delete()
+    else:
+        if Menu.objects.filter(name=name).exists():
+            return simplejson.dumps({'ret_code': 1000, 'ret_msg': '菜单名称已存在'})
+        menu = Menu(wx=wx_account, name=name)
+
+    try:
+        for index in range(len(page_ids)):
+            page_id = page_ids[index]
+            page = Page.objects.get(pk=page_id)
+            pageGroup = PageGroup(page=page, menu=menu, position=index)
+            pageGroup.save()
+
+        menu.save()
+    except Exception as e:
+        logger.exception(e)
+        transaction.rollback()
+        raise e
+    else:
+        transaction.commit()
+        return simplejson.dumps({'ret_code': 0})
 
 @dajaxice_register
 def add_edit_contact_people(request, form):

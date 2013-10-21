@@ -1,5 +1,5 @@
-var toast = function(type, text) {
-    $.pnotify({
+var toast = function(type, text, callback) {
+    var options = {
         text: text,
         type: type,
         delay: 3000,
@@ -13,5 +13,10 @@ var toast = function(type, text) {
                 "left": ($(window).width() / 2) - (pnotify.width() / 2)
             });
         }
-    });
+    };
+
+    if(typeof callback == 'function') {
+        options.after_close = callback;
+    }
+    $.pnotify(options);
 };

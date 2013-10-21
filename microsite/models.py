@@ -465,14 +465,28 @@ class HelpPage(Page):
 class Menu(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name=u'微信帐号')
     name = models.CharField(verbose_name=u'菜单项名称', max_length=4, blank=False, null=False)
-    pages = models.ManyToManyField(Page, verbose_name=u'页面')
 
     class Meta:
         db_table = u'menus'
         app_label = u'microsite'
 
+    def pages(self):
+        pages = PageGroup.objects.filter(menu=self).order_by('position')
+        result = ', '.join([p.name for p in pages])
+        logger.debug("result: " + result)
+        return result
+
     def __unicode__(self):
         return self.page.tab_name
+
+class PageGroup(models.Model):
+    menu = models.ForeignKey(Menu)
+    page  = models.ForeignKey(Page)
+    position = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = u'menus_pages'
+        app_label = u'microsite'
 
 def add_default_site(wx_account):
     homepages = HomePage.objects.filter(wx=wx_account)

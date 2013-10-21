@@ -608,8 +608,7 @@ def menu(request):
                         pages_id.append(page.id)      
                 else:
                     pages_id.append(page.id)      
-            form.fields['pages'].queryset = Page.objects.filter(wx=wx_account, pk__in=pages_id)
-        return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form})
+        return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form, 'pages': pages})
 
 @login_required
 def menu_delete(request, menu_id):

@@ -1,0 +1,35 @@
+.pages {
+    padding-right: 20px;
+}
+
+.pages button {
+    padding: 2px 4px;
+    outline: none;
+    margin: 3px;
+    text-shadow: none;
+}
+
+.pages .selected {
+    background-color: #007FCE;
+    color: #fff;
+}
+
+.pages button.btn-link:focus {
+    text-decoration: none;
+    outline: none;
+    color: #08c;
+}
+
+.pages button.btn-link:hover {
+    background-color: #009DFF;
+    color: #fff;
+    text-decoration: none;
+}
+
+.pages button.selected.btn-link:focus {
+    color: #fff;
+}
+
+#id_name {
+    width: 286px;
+}

@@ -1,21 +1,24 @@
 {% extends "framework.html" %}
+{% load django_select2_tags %}
 
 {% block title %}自定义菜单{% endblock %}
 
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/menu.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-1.10.3.sortable.custom.min.css" />
+{% import_django_select2_css %}
+{% endblock %}
+
 {% block js %}
+{% import_django_select2_js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3.sortable.custom.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/menu.js"></script>
 {% endblock %}
 
 {% block document_ready %}
 {{ block.super }}
-$('#nav-menu').addClass('active');
-$('#add_edit_menu_save').click(addEditMenu);
-$('#add_edit_menu').on('hidden', function() {
-    $('#name input').val('');
-    $('#page input').val('');
-    $('#id_id').val('');
-    $('#add_edit_menu .control-group').removeClass('error');
-});
+
 {% endblock %}
 
 {% block app %}
@@ -27,7 +30,7 @@ $('#add_edit_menu').on('hidden', function() {
     </ul>
 </div>
 <div style="margin-bottom:16px;">
-    <a type="button" class="btn btn-default btn-primary" role="button" data-toggle="modal" href="#add_edit_menu"><i class="icon-plus icon-white"></i>新增菜单项</a>
+    <a type="button" class="btn btn-default btn-primary" data-toggle='modal' role="button" href="#add_edit_menu"><i class="icon-plus icon-white"></i>新增菜单项</a>
 </div>
 
 <div class="navbar" style="margin-bottom:0;">
@@ -52,18 +55,29 @@ $('#add_edit_menu').on('hidden', function() {
             <div class="control-group" id="name">
                 <label class="control-label" for="name"><span style="color:red;">*</span>菜单项名称</label>
                 <div class="controls">
-                    {{ form.name }}{{ form.name.errors }}
+                    {{ form.name }}
                 </div>
             </div>
             <div class="control-group" id="page">
                 <label class="control-label" for="page"><span style="color:red;">*</span>显示页面</label>
                 <div class="controls">
-                    {{ form.pages }}{{ form.page.errors }}
+                    <input type="text" name="pages" id="pages">
                 </div>
             </div>
             {{ form.id }}
+            <div class="control-group">
+                <div class="controls">
+                    <div class="pages">
+                    {% for p in pages %}
+                        {% if p.enable %}
+                        <button class='btn btn-link' id="page_{{ p.pk }}" data-pageid="{{ p.pk }}">{{ p.tab_name }}</button>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
         </form>
-    </div>
+            </div>
     <div class="modal-footer">
         <button id="add_edit_menu_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
         <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
