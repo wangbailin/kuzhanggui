@@ -36,7 +36,7 @@ $(function() {
         $modal.modal('lock');
 
         Dajaxice.microsite.reorder_pages(function(data) {
-            setTimeout(function() {
+            // setTimeout(function() {
             $this.button("reset");
             $("#cancel-reorder-pages").button('reset');
             $modal.modal('unlock');
@@ -51,7 +51,7 @@ $(function() {
                 $modal.modal('hide');
                 window.location.reload();
             }, 2000);
-            }, 10000);
+            // }, 10000);
         }, {'page_list': getPages().join(',')}, {'error_callback': on_error});
     });
 });
