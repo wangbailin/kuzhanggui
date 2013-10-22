@@ -38,4 +38,3 @@ class Command(BaseCommand):
             expired_time=datetime.datetime.now() + datetime.timedelta(weeks=8))
         new_account.user.groups = Group.objects.filter(name=u'试用账户')
 
-

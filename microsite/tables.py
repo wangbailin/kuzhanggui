@@ -1,9 +1,13 @@
 #coding:utf8
-from models import HomePage
+import logging
+from models import HomePage, PageGroup
+import django_tables2 as tables
 import django_tables2 as tables
 from django.contrib.contenttypes.models import ContentType
 from models import ContactApp, TrendsApp, ContactItem, TrendItem, TeamItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
 from django_tables2.columns import DateTimeColumn, TemplateColumn
+
+logger = logging.getLogger("default")
 
 class HomePageTable(tables.Table):
     class Meta:
@@ -103,10 +107,12 @@ class ProductClassTable(tables.Table):
         fields = ('name',)
 
 class MenuTable(tables.Table):
+    pages = TemplateColumn(template_name="menu_pages.html", verbose_name=u'页面')
     ops = TemplateColumn(template_name="menu_ops.html", verbose_name=u"操作", orderable=False,attrs={"class":"ops"})
+
     class Meta:
         model = Menu
         empty_text = u'暂无菜单项'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('name', 'page.tab_name',)
+        fields = ('name',)
