@@ -2,54 +2,24 @@
     cursor: pointer;
 }
 
-@keyframes highlight {
-from { background: #dff0d8; } 
-to  { background: #f9f9f9; }
+ul#page-list {
+    list-style: none;
+    margin: 0px;
 }
 
-@-webkit-keyframes highlight {
-from { background: #dff0d8; } 
-to  { background: #f9f9f9; }
+ul#page-list li {
+    margin-top: -1px;
+    background-color: #FFF;
+    line-height: 40px;
+    padding-left: 20px;
+    cursor: move;
+    border: 1px solid #DDD; 
 }
 
-tr.highlight td {
-    animation: highlight 2s;
-    -webkit-animation: highlight 2s;
-    background-color: #dff0d8;
+ul#page-list li.even {
+    background-color: #F1F1F1;
 }
 
-.table-hover tbody tr.highlight:hover td {
-    background-color: #dff0d8;
+ul#page-list li.placeholder {
+    height: 40px;
 }
-
-td.operations {
-    width: 50px;
-}
-
-.move-up, .move-down {
-    padding: 0px 3px;
-    opacity: .8;
-}
-
-.move-up:focus, .move-down:focus {
-    outline: none;
-}
-
-.move-up:hover, .move-down:hover {
-    opacity: 1;
-}
-
-.move-up.disabled, .move-down.disabled {
-    background-color: transparent;
-    opacity: .3;
-}
-
-.move-up.disabled:hover, .move-down.disabled:hover {
-    text-decoration: none;
-    color: #333;
-}
-
-#reorder-pages-modal table td, #reorder-pages-modal table th {
-    padding: 6px 12px;
-}
-

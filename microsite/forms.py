@@ -36,7 +36,7 @@ class AddEditMenuForm(ModelForm):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     class Meta:
         model = Menu
-        fields = ('id', 'page', 'name')
+        fields = ('id', 'name')
 
 class AddEditContactPeopleForm(ModelForm):
     id = forms.CharField(required=False)
@@ -470,6 +470,4 @@ class FormManager(object):
                 return TeamAppForm(request.POST, request.FILES, instance=page)
             else:
                 return TeamAppForm(instance=page)
-
-
 

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 import logging
-from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 
-from forms import *
+from django.shortcuts import render_to_response, get_object_or_404, render, redirect
+from django.db import transaction
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 
+from forms import *
 from models import *
 from tables import ContactPeopleTable, MenuTable
 from app_manager import AppMgr
@@ -204,12 +205,22 @@ def save(request, page_id):
 
 @login_required
 @page_verify('page_id')
+@transaction.commit_manually
 def page_delete(request, page_id):
     page = get_object_or_404(Page, pk = page_id)
     cursor = connection.cursor()
-    cursor.execute('update page set position = position - 1 where wx_id = %s and position > %s', (page.wx.pk, page.position))
-    page.delete()
-    return redirect("/settings")
+    try:
+        sql = 'update page set position = position - 1 where wx_id = %s and position > %s'
+        cursor.execute(sql, (page.wx.pk, page.position))
+        page.delete()
+        #raise Exception()
+    except Exception as e:
+        transaction.rollback()
+        logger.exception("page_delete error")
+        raise e
+    else:
+        transaction.commit()
+        return redirect("/settings")
 
 
 @login_required
@@ -343,22 +354,34 @@ def team_delete(request, item_id):
 
 @login_required
 @page_verify('link_id')
+@transaction.commit_manually
 def add_edit_link_page(request, link_id=None):
     if link_id:
         item = get_object_or_404(LinkPage, pk = link_id)
     else:
         item = None
+
     if request.method == 'POST':
         form = LinkPageForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
-            item = form.save(commit=False)
-            if item.pk is None:
-                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
-                item.enable = True
-                item.wx = wx
-                ensure_new_page_position(item, wx)
-            item.save()
-            return render(request, 'close_page.html')
+            try:
+                item = form.save(commit=False)
+                if item.pk is None:
+                    wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+                    item.enable = True
+                    item.wx = wx
+                    ensure_new_page_position(item, wx)
+                item.save()
+                #raise Exception()
+            except Exception as e:
+                logger.exception("add_edit_link_page error")
+                transaction.rollback()
+                raise e
+            else:
+                transaction.commit()
+                return render(request, 'close_page.html')
+        else:
+            logger.debug("form is not valid")
     else:
         form = LinkPageForm(instance=item)
 
@@ -366,24 +389,34 @@ def add_edit_link_page(request, link_id=None):
 
 @login_required
 @page_verify('content_id')
+@transaction.commit_manually
 def add_edit_content_page(request, content_id=None):
     logger.debug("add edit content page")
     if content_id:
         item = get_object_or_404(ContentPage, pk = content_id)
     else:
         item = None
+
     if request.method == 'POST':
         form = ContentPageForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
-            item = form.save(commit=False)
-            if item.pk is None:
-                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
-                item.enable = True
-                item.wx = wx
-                ensure_new_page_position(item, wx)
-            logger.debug("icon url %s" % item.icon.url)
-            item.save()
-            return render(request,'close_page.html')
+            try:
+                item = form.save(commit=False)
+                if item.pk is None:
+                    wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+                    item.enable = True
+                    item.wx = wx
+                    ensure_new_page_position(item, wx)
+                logger.debug("icon url %s" % item.icon.url)
+                item.save()
+                #raise Exception()
+            except Exception as e:
+                logger.exception("add_edit_content_page error")
+                transaction.rollback()
+                raise e
+            else:
+                transaction.commit()
+                return render(request,'close_page.html')
         else:
             logger.debug("form is not valid")
     else:
@@ -575,8 +608,7 @@ def menu(request):
                         pages_id.append(page.id)      
                 else:
                     pages_id.append(page.id)      
-            form.fields['page'].queryset = Page.objects.filter(wx=wx_account, pk__in=pages_id)
-        return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form})
+        return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form, 'pages': pages})
 
 @login_required
 def menu_delete(request, menu_id):

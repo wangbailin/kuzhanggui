@@ -4,9 +4,15 @@
 
 {% block css %}
 {{ block.super }}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-1.10.3.sortable.custom.min.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/settings.css"/>
 {% endblock %}
 
+{% block js %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3.sortable.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal-lockable.js"></script>
+{% endblock %}
 
 {% block app %}
 <style type="text/css">
@@ -91,38 +97,17 @@ $("input, select, textarea").change(function(){
         <h3>设置页面顺序</h3>
     </div>
     <div class="modal-body">
-        <table class="table table-bordered table-striped table-hover" style="border-left: none">
-            <thead>
-                <tr>
-                    <th>页面</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for t in tabs|sortable_tabs %}
-                <tr>
-                    <td class='page' data-pageid="{{ t.0.pk }}">{{ t.0.tab_name }}</td>
-                    <td class="operations">
-                        {% if forloop.first %}
-                            <button class="btn move-up disabled"><i class="icon-arrow-up"></i></button>
-                        {% else %}
-                            <button class="btn move-up"><i class="icon-arrow-up"></i></button>
-                        {% endif %}
-
-                        {% if forloop.last %}
-                        <button class="btn move-down disabled"><i class="icon-arrow-down"></i></button>
-                        {% else %}
-                        <button class="btn move-down"><i class="icon-arrow-down"></i></button>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <div id='page-list-wrapper'>
+            <ul id="page-list">
+                {% for t in tabs|sortable_tabs %}
+                <li class="{% cycle 'even' 'odd' %}" data-pageid="{{ t.0.pk }}">{{ t.0.tab_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     <div class="modal-footer">
         <button id="reorder-pages" data-loading-text="保存..." class="btn btn-primary">保存</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button id="cancel-reorder-pages" class="btn" data-loading-text="取消" data-dismiss="modal" aria-hidden="true">取消</button>
     </div>
 </div>
 
