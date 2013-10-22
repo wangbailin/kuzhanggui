@@ -188,7 +188,6 @@ INSTALLED_APPS = (
     'ckeditor',
     'cronjobs',
     'baidu_yun',
-    'weixin_wall',
 )
 
 # A sample logging configuration. The only tangible logging
