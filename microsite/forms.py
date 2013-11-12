@@ -22,7 +22,7 @@ class MenuForm(forms.Form):
 
         app_id = self.cleaned_data['app_id']
         app_secret = self.cleaned_data['app_secret']
-        
+
         if app_id and app_secret:
             access_token = get_wx_access_token(app_id, app_secret)
             if access_token is not None:
@@ -79,7 +79,7 @@ class HomePageForm(ModelForm):
 
 class IntroPageForm(ModelForm):
     content = forms.CharField(label=u'内容', widget=CKEditorWidget())
-    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px") 
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = IntroPage
         fields = (
@@ -89,17 +89,52 @@ class IntroPageForm(ModelForm):
             'content',
         )
 
-class JoinPageForm(ModelForm):
-    content = forms.CharField(label=u'内容', widget=CKEditorWidget()) 
-    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+class JoinAppForm(ModelForm):
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), help_text=u"建议图片大小为190px*235px")
+    pic = forms.ImageField(label=u'焦点图', widget=AjaxClearableFileInput(), required=False)
+    contact = forms.CharField(label=u'联系方式', widget=forms.TextInput(attrs={'placeholder':u'邮箱或电话'}))
+    end_words = forms.CharField(label=u'结束语', widget=forms.Textarea(attrs={'placeholder':'期待你的加入！'}), required=False)
     class Meta:
-        model = JoinPage
+        model = JoinApp
         fields = (
             'enable',
             'icon',
             'title',
-            'content',
+            'pic',
+            'front_words',
+            'contact',
+            'end_words',
         )
+
+class JoinItemForm(ModelForm):
+    id = forms.CharField(required=False)
+    tab_id = forms.CharField()
+    content1 = forms.CharField(label=u'工作内容1', widget=forms.Textarea(attrs={'rows':1}))
+    content2 = forms.CharField(label=u'工作内容2', widget=forms.Textarea(attrs={'rows':1}), required=False)
+    content3 = forms.CharField(label=u'工作内容3', widget=forms.Textarea(attrs={'rows':1}), required=False)
+    content4 = forms.CharField(label=u'工作内容4', widget=forms.Textarea(attrs={'rows':1}), required=False)
+    require1 = forms.CharField(label=u'职位要求1', widget=forms.Textarea(attrs={'rows':1}))
+    require2 = forms.CharField(label=u'职位要求2', widget=forms.Textarea(attrs={'rows':1}), required=False)
+    require3 = forms.CharField(label=u'职位要求3', widget=forms.Textarea(attrs={'rows':1}), required=False)
+    require4 = forms.CharField(label=u'职位要求4', widget=forms.Textarea(attrs={'rows':1}), required=False)
+    class Meta:
+        model = JoinItem
+        fields = (
+            'id',
+            'tab_id',
+            'publish',
+            'job_title',
+            'number',
+            'content1',
+            'content2',
+            'content3',
+            'content4',
+            'require1',
+            'require2',
+            'require3',
+            'require4',
+            )
+
 
 class ContactAppForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
@@ -122,7 +157,7 @@ class TrendsAppForm(ModelForm):
 
 class TrendItemForm(ModelForm):
     content = forms.CharField(label=u'内容', widget=CKEditorWidget())
-    cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False, help_text=u'建议图片大小为105px*105px') 
+    cover = forms.ImageField(label=u'封面', widget=AjaxClearableFileInput(), required = False, help_text=u'建议图片大小为105px*105px')
 
     class Meta:
         model = TrendItem
@@ -132,7 +167,7 @@ class TrendItemForm(ModelForm):
             'cover',
             'summary',
         )
-        
+
         widgets = {
             'title': LongTextInput(),
             'summary': LongTextarea(attrs={'rows': 2})
@@ -192,10 +227,10 @@ class ContactPeopleForm(ModelForm):
         )
 
 class CulturePageForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget()) 
+    content = forms.CharField(label='内容', widget=CKEditorWidget())
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
-        model = CulturePage 
+        model = CulturePage
         fields = (
             'enable',
             'icon',
@@ -204,10 +239,10 @@ class CulturePageForm(ModelForm):
         )
 
 class BusinessPageForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget()) 
+    content = forms.CharField(label='内容', widget=CKEditorWidget())
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
-        model = BusinessPage 
+        model = BusinessPage
         fields = (
             'enable',
             'icon',
@@ -216,10 +251,10 @@ class BusinessPageForm(ModelForm):
         )
 
 class HelpPageForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget()) 
+    content = forms.CharField(label='内容', widget=CKEditorWidget())
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
-        model = BusinessPage 
+        model = BusinessPage
         fields = (
             'enable',
             'icon',
@@ -231,7 +266,7 @@ class HelpPageForm(ModelForm):
 class WeiboPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
-        model = WeiboPage 
+        model = WeiboPage
         fields = (
             'enable',
             'icon',
@@ -317,7 +352,7 @@ class CaseClassForm(ModelForm):
         fields = (
             'name',
         )
-        
+
 
 class ProductItemForm(ModelForm):
     product_pic1 = forms.ImageField(label=u'产品截图1', widget=AjaxClearableFileInput(), help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
@@ -410,11 +445,11 @@ class FormManager(object):
                 return IntroPageForm(request.POST, request.FILES, instance=page)
             else:
                 return IntroPageForm(instance=page)
-        elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+        elif page.real_type == ContentType.objects.get_for_model(JoinApp):
             if (request):
-                return JoinPageForm(request.POST, request.FILES, instance=page)
+                return JoinAppForm(request.POST, request.FILES, instance=page)
             else:
-                return JoinPageForm(instance=page)
+                return JoinAppForm(instance=page)
         elif page.real_type == ContentType.objects.get_for_model(ContactApp):
             if (request):
                 return ContactAppForm(request.POST, request.FILES, instance=page)

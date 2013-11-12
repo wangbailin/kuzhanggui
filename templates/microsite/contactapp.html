@@ -49,14 +49,14 @@
                 {% if item.0.fax_code %}
                     <p>传真：{{ item.0.fax_code }}</p>
                 {% endif %}
-        
+
                 <p>地址：{{ item.0.address }}</p>
             </div>
         {% empty %}
         <div class="empty">
             <p>暂无联系方式</p>
         </div>
-        {% endfor %}  
+        {% endfor %}
     </div>
 </div>
 <script>

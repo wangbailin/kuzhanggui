@@ -36,7 +36,7 @@ body {
     text-align: center;
 }
 
-@media (min-width: 340px) { 
+@media (min-width: 340px) {
     .items .item {
         margin: 8px 0px;
     }
@@ -70,6 +70,10 @@ body {
     padding: 8px;
 }
 
+.join {
+    padding: 8px;
+}
+
 .trends {
     padding: 8px;
 }
@@ -98,6 +102,27 @@ body {
     background-color: #ffffff;
     box-shadow: 0px 1px 2px rgb(198,198,198);
     margin-bottom: 12px;
+}
+
+.joins {
+    padding: 8px;
+}
+
+.joins .join .join-meta {
+    margin-left: 10px;
+    min-height: 40px;
+}
+
+.joins a, .joins a:hover, .joins a:visited, .joins a:active {
+    color: #333333;
+    text-decoration: none;
+}
+
+.joins .join .join-meta p {
+    font-size: 20px;
+    float: left;
+    color: #828282;
+
 }
 
 .trends img {
@@ -324,7 +349,7 @@ a.phone:active div {
     margin-top: 54px;
 }
 
-@media (min-width: 340px) { 
+@media (min-width: 340px) {
     .cases td:nth-child(odd),
     .products td:nth-child(odd) {
         padding-left: 16px;
@@ -336,7 +361,7 @@ a.phone:active div {
     }
 }
 
-@media (max-width: 340px) { 
+@media (max-width: 340px) {
     .cases td:nth-child(odd),
     .products td:nth-child(odd) {
         padding-left: 4px;
@@ -363,7 +388,7 @@ a.phone:active div {
 }
 
 #address {
-    background-color: rgba(198,198,198,0.9); 
+    background-color: rgba(198,198,198,0.9);
     color: #333333;
 }
 
@@ -373,4 +398,40 @@ a.phone:active div {
 
 #right {
     background: url('findme_rightarrow.png') no-repeat center;
+}
+
+.share .backhome {
+    width: 90%;
+    color: #828282;
+    text-align: center;
+    border-radius: 5px;
+    padding: 8px;
+    background-color: #ffffff;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+}
+
+.share .backhome a, .backhome a:active, .backhome a:hover {
+    color: #828282;
+    text-decoration: none;
+}
+
+
+.share .to-friend img, .share .to-quan img {
+    margin-right: 5px;
+    height: 18px;
+    width: 20px;
+}
+
+.share {
+    text-align:center;
+    width: 80%;
+    margin: 25px auto;
+    color: #333333;
+}
+
+.share a, .share a:active, .share a:hover {
+    color: #333333;
+}
+.share .click{
+    text-decoration: underline;
 }

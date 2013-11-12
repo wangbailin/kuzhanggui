@@ -114,7 +114,7 @@ class IntroPage(Page):
         if len(self.title) == 0:
             self.title = '公司简介'
         super(IntroPage, self).save(*args, **kwargs)
-        
+
     class Meta:
         db_table = u"intropage"
         app_label = u'microsite'
@@ -125,27 +125,33 @@ class IntroPage(Page):
     def _get_tab_name(self):
         return self.title
 
-class JoinPage(Page):
+class JoinApp(App):
     title = models.CharField(u'标题', max_length=50)
-    content = models.TextField(u'内容')
+    pic = models.ImageField(u"焦点图", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    front_words = models.TextField(u'开场语', blank=True)
+    contact = models.CharField(u'联系方式', max_length=50)
+    end_words = models.TextField(u'结束语', blank=True)
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
             self.title = '加入我们'
-        super(JoinPage, self).save(*args, **kwargs)
-        
+        super(JoinApp, self).save(*args, **kwargs)
+
     def _get_tab_name(self):
         return self.title
 
     def _get_template(self):
-        return 'intropage.html'
+        return 'joinpage.html'
+
+    def _get_app_template(self):
+        return 'join_app.html'
 
     class Meta:
-        db_table = u'joinpage'
+        db_table = u'joinapp'
         app_label = u'microsite'
 
 class ContactApp(App):
-    title = models.CharField(u'标题', max_length=50) 
+    title = models.CharField(u'标题', max_length=50)
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
@@ -165,7 +171,7 @@ class ContactApp(App):
 
 class TrendsApp(App):
     title = models.CharField(u'标题', max_length=50)
- 
+
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
             self.title = '公司动态'
@@ -222,9 +228,9 @@ class CaseClass(models.Model):
     case_app = models.ForeignKey(CaseApp, verbose_name=u'案例')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
-    
+
     class Meta:
-        db_table = u'case_class'        
+        db_table = u'case_class'
         app_label = u'microsite'
 
     def get_url(self):
@@ -248,6 +254,25 @@ class CaseItem(models.Model):
         db_table = u'case_item'
         app_label = u'microsite'
 
+class JoinItem(models.Model):
+    join = models.ForeignKey(JoinApp, verbose_name = u'加入')
+    publish = models.BooleanField(u'发布状态', default=False, help_text=u"发布")
+    job_title = models.CharField(u'职位名称', max_length=100)
+    number = models.IntegerField(u'招聘人数', max_length=100)
+    pub_time = models.DateTimeField(u'发布时间', auto_now_add=True)
+    content1 = models.TextField(u'工作内容1')
+    content2 = models.TextField(u'工作内容2', blank=True)
+    content3 = models.TextField(u'工作内容3', blank=True)
+    content4 = models.TextField(u'工作内容4', blank=True)
+    require1 = models.TextField(u'职位要求1')
+    require2 = models.TextField(u'职位要求2', blank=True)
+    require3 = models.TextField(u'职位要求3', blank=True)
+    require4 = models.TextField(u'职位要求4', blank=True)
+
+    class Meta:
+        db_table = u"join_item"
+        app_label = u'microsite'
+
 class ProductApp(App):
     title = models.CharField(u'标题', max_length=20)
 
@@ -268,9 +293,9 @@ class ProductClass(models.Model):
     product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
-    
+
     class Meta:
-        db_table = u'product_class'        
+        db_table = u'product_class'
         app_label = u'microsite'
 
     def get_url(self):
@@ -295,7 +320,7 @@ class ProductItem(models.Model):
         app_label = u'microsite'
 
 
-    
+
 class TrendItem(models.Model):
     trend = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
     pub_time = models.DateTimeField(u'日期', auto_now_add=True)
@@ -408,7 +433,7 @@ class WeiboPage(Page):
 class ContentPage(Page):
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
-    
+
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
             self.title = '内容页面'
@@ -427,7 +452,7 @@ class ContentPage(Page):
 class LinkPage(Page):
     title = models.CharField(u'标题', max_length=100)
     url = models.URLField(u'链接地址', max_length=200)
-    
+
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
             self.title = '链接页面'
@@ -563,7 +588,7 @@ def add_default_site(wx_account):
         caseapp.message_description = consts.DEFAULT_CASE_MSG
         caseapp.position = 6
         caseapp.save()
-    
+
     weibopages= WeiboPage.objects.filter(wx=wx_account)
     if len(weibopages) == 0:
         weibopage = WeiboPage()
@@ -585,16 +610,16 @@ def add_default_site(wx_account):
         contactapp.position = 8
         contactapp.save()
 
-    joinpages = JoinPage.objects.filter(wx=wx_account)
-    if len(joinpages) == 0:
-        joinpage = JoinPage()
-        joinpage.wx = wx_account
-        joinpage.title = u'加入我们'
-        joinpage.icon = consts.DEFAULT_JOIN_ICON % site_templates[wx_account.wsite_template].site_template
-        joinpage.message_cover = consts.DEFAULT_JOIN_COVER
-        joinpage.message_description = consts.DEFAULT_JOIN_MSG
-        joinpage.position = 9
-        joinpage.save()
+    joinapps = JoinApp.objects.filter(wx=wx_account)
+    if len(joinapps) == 0:
+        joinapp = JoinApp()
+        joinapp.wx = wx_account
+        joinapp.title = u'加入我们'
+        joinapp.icon = consts.DEFAULT_JOIN_ICON % site_templates[wx_account.wsite_template].site_template
+        joinapp.message_cover = consts.DEFAULT_JOIN_COVER
+        joinapp.message_description = consts.DEFAULT_JOIN_MSG
+        joinapp.position = 9
+        joinapp.save()
 
     helppages = HelpPage.objects.filter(wx=wx_account)
     if len(helppages) == 0:
@@ -605,7 +630,7 @@ def add_default_site(wx_account):
         helppage.message_cover = consts.DEFAULT_HELP_COVER
         helppage.message_description = consts.DEFAULT_HELP_MSG
         helppage.content = render_to_string('helppage_content.html', {})
-        helppage.position = 10 
+        helppage.position = 10
         helppage.save()
 
 def get_page_url(page):
@@ -625,7 +650,7 @@ def get_page_url(page):
         return settings.SITE_URL + '/microsite/intro/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
         return settings.SITE_URL + '/microsite/business/%d' % (page.id)
-    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+    elif page.real_type == ContentType.objects.get_for_model(JoinApp):
         return settings.SITE_URL+ '/microsite/join/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         weibo = page.cast()
@@ -654,7 +679,7 @@ def get_default_msg(page):
         return consts.DEFAULT_INTRO_MSG
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
         return consts.DEFAULT_BUSINESS_MSG
-    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+    elif page.real_type == ContentType.objects.get_for_model(JoinApp):
         return consts.DEFAULT_JOIN_MSG
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         return consts.DEFAULT_WEIBO_MSG
@@ -680,7 +705,7 @@ def get_default_cover(page):
         return consts.DEFAULT_INTRO_COVER
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
         return consts.DEFAULT_BUSINESS_COVER
-    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+    elif page.real_type == ContentType.objects.get_for_model(JoinApp):
         return consts.DEFAULT_JOIN_COVER
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         return consts.DEFAULT_WEIBO_COVER
@@ -707,7 +732,7 @@ def get_default_icon(page):
         default_icon = consts.DEFAULT_INTRO_ICON
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
         default_icon = consts.DEFAULT_BUSINESS_ICON
-    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+    elif page.real_type == ContentType.objects.get_for_model(JoinApp):
         default_icon = consts.DEFAULT_JOIN_ICON
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         default_icon = consts.DEFAULT_WEIBO_ICON
@@ -728,7 +753,7 @@ def get_default_title(page):
         return u"公司简介"
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
         return u"公司业务"
-    elif page.real_type == ContentType.objects.get_for_model(JoinPage):
+    elif page.real_type == ContentType.objects.get_for_model(JoinApp):
         return u"加入我们"
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         return u"官方微博"

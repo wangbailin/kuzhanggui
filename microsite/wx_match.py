@@ -102,6 +102,31 @@ def contact_people_verify(id_name):
         return wrapper
     return real_decorate
 
+
+def join_item_verify(id_name):
+    def real_decorate(func):
+        @wraps(func)
+        def wrapper(request, *args, **kwargs):
+            active_wx_id = request.session.get('active_wx_id', 0)
+            if active_wx_id <= 0:
+                logger.debug("active_wx_id is %d" % active_wx_id)
+                return redirect('/settings')
+            wx = get_object_or_404(WXAccount, pk=active_wx_id)
+            if id_name not in kwargs:
+                logger.debug("%s not in kwargs %s" % (id_name, str(kwargs)))
+                return func(request, *args, **kwargs)
+            if kwargs[id_name] is None:
+                return func(request, *args, **kwargs)
+            join_item= get_object_or_404(JoinItem, pk=kwargs[id_name])
+            if join_item.join.wx.pk != active_wx_id:
+                logger.debug("verify failed active wx id is %d, item.wx id is %d" % (active_wx_id, join_item.join.wx.pk))
+                return redirect('/settings')
+            else:
+                return func(request, *args, **kwargs)
+        return wrapper
+    return real_decorate
+
+
 def trend_item_verify(id_name):
     def real_decorate(func):
         @wraps(func)

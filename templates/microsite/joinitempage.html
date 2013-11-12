@@ -1,0 +1,25 @@
+{% extends "microsite/page.html" %}
+{% block title %}{{ job_title }}{% endblock %}
+
+{% block content %}
+<div class="container content-page">
+    <p>发布时间：{{ pub_time | date:"Y年m月d日" }}</p>
+    <p>招聘人数：{{ number }}</p>
+    <div class="contents" style="margin: 0 20px;">
+        <p>工作内容</p>
+        <ul>
+            {% for content in contents%}
+            <li>{{ content}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="requires" style="margin: 0 20px;">
+        <p>职位要求</p>
+        <ul>
+            {% for require in requires %}
+            <li>{{ require }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

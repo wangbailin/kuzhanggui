@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}新增职位{% endblock %}
+
+{% block content %}
+<style type="text/css">
+.leftbutton {
+    float:left;
+}
+</style>
+
+<div id="content" class="container">
+    <div class="page-header">
+        <h1>新增职位</h1>
+    </div>
+
+    <form id="join_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="control-group">
+            <div class="controls" id="publish">
+                {{ form.publish }}<span class="help-inline">{{form.publish.help_text}}</span>{{ form.publish.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="job_title">{{form.job_title.label}}</label>
+            <div class="controls">
+                {{ form.job_title }}{{ form.job_title.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="number">{{form.number.label}}</label>
+            <div class="controls">
+                {{ form.number }}{{ form.number.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="content1"><span style="color:red;">*</span>{{form.content1.label}}</label>
+            <div class="controls">
+                {{ form.content1 }}{{ form.content1.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="content2">{{form.content2.label}}</label>
+            <div class="controls">
+                {{ form.content2 }}{{ form.content2.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="content3">{{form.content3.label}}</label>
+            <div class="controls">
+                {{ form.content3 }}{{ form.content3.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="content4">{{form.content4.label}}</label>
+            <div class="controls">
+                {{ form.content4 }}{{ form.content4.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="require1"><span style="color:red;">*</span>{{form.require1.label}}</label>
+            <div class="controls">
+                {{ form.require1 }}{{ form.require1.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="require2">{{form.require2.label}}</label>
+            <div class="controls">
+                {{ form.require2 }}{{ form.require2.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="require3">{{form.require3.label}}</label>
+            <div class="controls">
+                {{ form.require3 }}{{ form.require3.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="require4">{{form.require4.label}}</label>
+            <div class="controls">
+                {{ form.require4 }}{{ form.require4.errors }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button id="preview" class="btn">预览</button>
+            <button id="save" class="btn btn-primary">保存</button>
+        </div>
+    </form>
+</div>
+<script>
+
+start_preview_history_length = 0;
+function preview_back() {
+    if (iframe_preview.history.length > start_preview_history_length) {
+        //can't not solve all problems, we can't get the index of current page in history
+        iframe_preview.history.back();
+    }
+    return false;
+}
+$('#preview').click(function() {
+    bootbox.dialog("<iframe style='margin-left:auto margin-right:auto' id='iframe_preview' scrolling='auto' name='iframe_preview' width='350' height='700'></iframe>", [{'label':'后退','class':'leftbutton', 'callback':preview_back}, {'label':'关闭','callback':function(){}}], {'header':'预览'});
+    $("#join_form").attr('action', "/preview/join_item");
+    $("#join_form").attr('target', 'iframe_preview');
+    $("#join_form").submit();
+    $('.modal').css('margin-left', '-200px');
+    $('.modal-body').css('overflow-x', 'hidden');
+    $('.bootbox').css('width', '398px');
+    $('.modal-body').css('height', '660px');
+    start_preview_history_length = iframe_preview.history.length;
+});
+$("#save").click(function() {
+    $("#join_form").attr('action', "");
+    $("#join_form").attr('target', '_self');
+    $("#join_form").submit();
+});
+
+</script>
+
+{% endblock %}
