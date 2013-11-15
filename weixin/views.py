@@ -9,11 +9,13 @@ import hashlib
 from datetime import date, timedelta, datetime
 
 import rules
+import redis
 from pyweixin import WeiXin
 from router import Router
 from message_builder import MessageBuilder, BuildConfig
 
 from framework.models import WXAccount
+from wall.models import WallUser, WallItem, WallMsg
 
 router_error = None
 router_reply = None
@@ -26,7 +28,8 @@ def _route_callback(error=None, reply=None):
 def index(request, wx):
     global router_error, router_reply
     wxlogger = logging.getLogger('weixin')
-    
+    r = redis.StrictRedis(host='localhost', port=6379, db=0)    
+ 
     if request.method == 'GET':
         if 'signature' not in request.GET or 'timestamp' not in request.GET or 'nonce' not in request.GET or 'echostr' not in request.GET:
                 return HttpResponse('bad request %s' % str(request.GET))
@@ -50,6 +53,72 @@ def index(request, wx):
             wx_account.message_count += 1
             wx_account.save()
             wxlogger.info("receive one message %s" % str(message))
+            
+
+            if message['MsgType'] == 'event' and message['Event'] == 'subscribe':
+                walluser, created = WallUser.objects.get_or_create(wx=wx_account, openid=message['FromUserName'])
+                walluser.wall_item_id='0'
+                walluser.save() 
+                r.rpush('userList', message['FromUserName'])
+            if message['MsgType'] == 'text' or message['MsgType'] == 'image' or message['MsgType'] == 'voice':
+                if not len(WallUser.objects.filter(wx=wx_account, openid=message['FromUserName']))==0:
+                    walluser = WallUser.objects.filter(wx=wx_account, openid=message['FromUserName'])[0]
+                    if not walluser.wall_item_id == '0':#说明上墙了
+                        #对上墙活动的进行时间进行判断，有可能上墙了但活动已经结束了
+                        wallitem = WallItem.objects.get(id=walluser.wall_item_id)
+                        #结束时间10分钟后的处理
+                        #if (datetime.now()-wallitem.begin_time).seconds <= 600:
+                        if datetime.now()<wallitem.end_time:#说明在上墙时间内
+                            if message['MsgType'] == 'text' or message['MsgType'] == 'voice':
+                                message_str = ""
+                                if message['MsgType'] == 'text':
+                                    message_str = message['Content']
+                                else:
+                                    message_str = message['Recognition']
+                                if not message_str == "退出":
+                                    WallMsg.objects.create(user=walluser, type='text', content=message_str, wall_item_id=walluser.wall_item_id)
+                                    reply_str = "发送成功"
+                                    reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
+                                    return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+
+                                else:#quit the wall
+                                    walluser.wall_item_id = '0'
+                                    walluser.save()
+                                    reply_str = "退出成功"
+                                    reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
+                                    return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+                            else:#image
+                                WallMsg.objects.create(user=walluser, type=message['MsgType'], content=message['PicUrl'], wall_item_id=walluser.wall_item_id)
+                                reply_str = "发送成功"
+                                reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
+                                return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+                        if (datetime.now()-wallitem.end_time).seconds <= 600:#超出上墙时间不到10分钟
+                            reply_str = "活动已结束，您将在10分钟之后自动退出该活动，您也可以回复“退出”直接退出该活动。"
+                            reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
+                            return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+                    else:#说明没有上墙
+                        if message['MsgType'] == 'text':
+                            wxlogger.info(message)
+                            if not len(WallItem.objects.filter(wx=wx_account)) == 0:#说明该微信号有微信墙活动
+                                for wallitem in WallItem.objects.filter(wx=wx_account):
+                                    if message['Content']==wallitem.keyword:#说明有上墙的关键字
+                                        reply_str = ""
+                                        if datetime.now()<wallitem.begin_time:#没有开始
+                                            reply_str = "活动未开始，请在活动开始("+str(wallitem.begin_time)+")之后再发送消息。"
+                                        elif datetime.now()>wallitem.end_time:#说明已经结束
+                                            reply_str = "活动已结束"
+                                        else:
+                                            wxlogger.info(wallitem.welcome)
+                                            walluser.wall_item_id = wallitem.id
+                                            walluser.save()
+                                            reply_str = wallitem.welcome
+                                        reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
+                                        return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+                        
+                           
+
+
+
 
             Router.get_instance().reply(wx, message, _route_callback)
             

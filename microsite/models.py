@@ -108,7 +108,7 @@ class HomePage(Page):
 
 class IntroPage(Page):
     title = models.CharField(u'标题', max_length=50)
-    content = models.TextField(u'内容')
+    content = models.TextField(u'内容', blank=True)
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
@@ -374,7 +374,7 @@ class ContactPeople(models.Model):
 
 class CulturePage(Page):
     title = models.CharField(u'标题', max_length=100)
-    content = models.TextField(u'内容')
+    content = models.TextField(u'内容', blank=True)
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
@@ -393,7 +393,7 @@ class CulturePage(Page):
 
 class BusinessPage(Page):
     title = models.CharField(u'标题', max_length=100)
-    content = models.TextField(u'内容')
+    content = models.TextField(u'内容', blank=True)
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
@@ -432,8 +432,8 @@ class WeiboPage(Page):
 
 class ContentPage(Page):
     title = models.CharField(u'标题', max_length=100)
-    content = models.TextField(u'内容')
-
+    content = models.TextField(u'内容', blank=True)
+   
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
             self.title = '内容页面'
@@ -470,7 +470,7 @@ class LinkPage(Page):
 
 class HelpPage(Page):
     title = models.CharField(u'标题', max_length=100)
-    content = models.TextField(u'内容')
+    content = models.TextField(u'内容', blank=True)
 
     def save(self, *args, **kwargs):
         if len(self.title) == 0:

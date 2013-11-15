@@ -78,8 +78,8 @@ class HomePageForm(ModelForm):
         return m
 
 class IntroPageForm(ModelForm):
-    content = forms.CharField(label=u'内容', widget=CKEditorWidget())
-    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    content = forms.CharField(label=u'内容', widget=CKEditorWidget(), required = False)
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px") 
     class Meta:
         model = IntroPage
         fields = (
@@ -94,6 +94,7 @@ class JoinAppForm(ModelForm):
     pic = forms.ImageField(label=u'焦点图', widget=AjaxClearableFileInput(), required=False)
     contact = forms.CharField(label=u'联系方式', widget=forms.TextInput(attrs={'placeholder':u'邮箱或电话'}))
     end_words = forms.CharField(label=u'结束语', widget=forms.Textarea(attrs={'placeholder':'期待你的加入！'}), required=False)
+class JoinPageForm(ModelForm):
     class Meta:
         model = JoinApp
         fields = (
@@ -227,7 +228,7 @@ class ContactPeopleForm(ModelForm):
         )
 
 class CulturePageForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget())
+    content = forms.CharField(label='内容', widget=CKEditorWidget(), required = False) 
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = CulturePage
@@ -239,7 +240,7 @@ class CulturePageForm(ModelForm):
         )
 
 class BusinessPageForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget())
+    content = forms.CharField(label='内容', widget=CKEditorWidget(), required = False) 
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = BusinessPage
@@ -251,7 +252,7 @@ class BusinessPageForm(ModelForm):
         )
 
 class HelpPageForm(ModelForm):
-    content = forms.CharField(label='内容', widget=CKEditorWidget())
+    content = forms.CharField(label='内容', widget=CKEditorWidget(), required = False) 
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = BusinessPage
@@ -276,7 +277,7 @@ class WeiboPageForm(ModelForm):
 
 class ContentPageForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
-    content = forms.CharField(label=u'内容', widget=CKEditorWidget())
+    content = forms.CharField(label=u'内容', widget=CKEditorWidget(), required = False)
     class Meta:
         model = ContentPage
         fields = (

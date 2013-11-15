@@ -75,4 +75,3 @@ def weixin_daily_analyse():
             data.save()
 
 
-    

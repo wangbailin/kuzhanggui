@@ -57,6 +57,38 @@ var Dajaxice = {
         }
     }
 ,
+
+    wall: {
+        get_new_messages_num: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.get_new_messages_num', 'POST', callback_function, argv, custom_settings);
+        },
+        get_new_messages: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.get_new_messages', 'POST', callback_function, argv, custom_settings);
+        },
+        pass_message: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.pass_message', 'POST', callback_function, argv, custom_settings);
+        },
+        reject_message: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.reject_message', 'POST', callback_function, argv, custom_settings);
+        },
+        refresh_flag_status: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.refresh_flag_status', 'POST', callback_function, argv, custom_settings);
+        },
+        message_on_wall_back: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.message_on_wall_back', 'POST', callback_function, argv, custom_settings);
+        },
+        wall_message: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.wall_message', 'POST', callback_function, argv, custom_settings);
+        },
+        message_on_wall: function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.message_on_wall', 'POST', callback_function, argv, custom_settings);
+        },
+        add_wall_item : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.add_wall_item', 'POST', callback_function, argv, custom_settings);
+        },
+    }
+,
+
     get_cookie: function(name)
     {
         var cookieValue = null;

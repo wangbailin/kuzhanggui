@@ -24,6 +24,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/base.js"></script>
     {% dajaxice_js_import %}
+    {{ form.media }}
     {% block js %}{% endblock %}
 
 	<script type="text/javascript">

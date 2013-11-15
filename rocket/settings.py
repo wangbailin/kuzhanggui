@@ -56,7 +56,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.normpath(__file__)))
 # Absolute filesystem path to the directory that will hold user-uploaded files.
@@ -182,6 +182,7 @@ INSTALLED_APPS = (
     'framework',
     'microsite',
     'data',
+    'wall',
     'ajax_upload',
     'django_tables2',
     'django_select2',
@@ -190,8 +191,9 @@ INSTALLED_APPS = (
     'chartit',
     'ckeditor',
     'cronjobs',
-    'baidu_yun'
-    #'weixin_wall',
+    'baidu_yun',
+    'datetimewidget',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -226,6 +228,14 @@ LOGGING = {
             'backupCount': 5,
             'formatter':'standard',
         },
+        'wall': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(PROJECT_ROOT + '/logs/','wall.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter':'standard',
+        },
         'weixin': {
             'level':'DEBUG',
             'class':'logging.handlers.TimedRotatingFileHandler',
@@ -256,6 +266,11 @@ LOGGING = {
         },
         'cron': {
             'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'wall': {
+            'handlers': ['wall'],
             'level': 'DEBUG',
             'propagate': False,
         },
