@@ -1,0 +1,152 @@
+<script type="text/javascript" src="{{ STATIC_URL }}js/app_dialog.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#add_edit_join_item_save').click(addEditJoinItem);
+        $('#add_edit_join_item').on('hidden', function() {
+        $('#publish').val('');
+        $('#job_title').val('');
+        $('#number').val('');
+        $('#content1').val('');
+        $('#content2').val('');
+        $('#content3').val('');
+        $('#content4').val('');
+        $('#require1').val('');
+        $('#require2').val('');
+        $('#require3').val('');
+        $('#require4').val('');
+        $('#record_id').val('');
+        $('#add_edit_join_item.control-group').removeClass('error');
+        });
+
+    });
+    function showDialog(record_id,publish,job_title,number,content1,content2,content3,content4,require1,require2,require3,require4){
+        $('#add_edit_join_item').modal();
+        $('#record_id').val(record_id);
+        $('#publish').val(publish);
+        $('#job_title').val(job_title);
+        $('#number').val(number);
+        $('#content1').val(content1);
+        $('#content2').val(content2);
+        $('#content3').val(content3);
+        $('#content4').val(content4);
+        $('#require1').val(require1);
+        $('#require2').val(require2);
+        $('#require3').val(require3);
+        $('#require4').val(require4);
+    };
+</script>
+
+<div id="margin_bottom">
+<a type="button" class="btn btn-default btn-primary" href="#add_edit_join_item" data-toggle="modal" role="button" target="_blank"><i class="icon-plus icon-white"></i>新增职位</a>
+</div>
+
+{% if not active_app_specific.enable %}
+{% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id %}
+{% endif %}
+
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">职位名称</p>
+    </div>
+</div>
+{% load render_table from django_tables2 %}
+{% render_table app_info "django_tables2/table.html" %}
+
+<div id="add_edit_join_item" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel">新增/编辑职位信息</h3>
+    </div>
+    <div class="modal-body" style="max-height:600px;">
+        <form id="add_edit_join_item_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox">
+                    <input type="checkbox" name="publish" id="publish" value="True" checked>发布
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="job_title"><span style="color:red;">*</span>职位名称</label>
+                <div class="controls">
+                    <input class="input-xlarge" type="text" name="job_title" id="job_title">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="number"><span style="color:red;">*</span>招聘人数</label>
+                <div class="controls">
+                    <input class="input-xlarge" type="text" name="number" id="number">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="content1"><span style="color:red;">*</span>工作内容1</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="content1" id="content1"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="content2">工作内容2</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="content2" id="content2"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="content3">工作内容3</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="content3" id="content3"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="content4">工作内容4</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="content4" id="content4"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="require1"><span style="color:red;">*</span>职位要求1</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="require1" id="require1"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="require2">职位要求2</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="require2" id="require2"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="require3">职位要求3</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="require3" id="require3"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="require4">职位要求4</label>
+                <div class="controls">
+                    <textarea rows="1" class="input-xlarge" name="require4" id="require4"></textarea>
+                </div>
+            </div>
+            <input type="hidden" name="id" id="record_id">
+            <input type="hidden" name="tab_id" id="tab_id" value="{{ active_app_specific.id }}">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button id="add_edit_join_item_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
+<div id="delete_join_item" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_join_header" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>删除职位</h3>
+    </div>
+    <div class="modal-body">
+        <span>确认删除职位 <strong id="join_item_name"></strong>?</span>
+    </div>
+    <div class="modal-footer">
+        <a id="delete_join_item_ok" href="#" class="btn btn-danger btn-del">删除</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+

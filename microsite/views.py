@@ -61,7 +61,7 @@ def get_tabs_names(request):
         account = Account.objects.get(user=user)
 
         wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
- 
+
     pages = Page.objects.filter(wx=wx)
     tabs_names = []
     for p in pages:
@@ -118,7 +118,7 @@ def app(request, app_id):
     tab_id = active_app.position
     #tab_id = tabs_names.index(active_app_specific.title)
     logger.debug("tab id is %d" % tab_id)
-    
+
     return render(request, 'app.html', {'apps':apps, 'active_side_id':active_side_id, 'app_info':app_info, 'active_app':active_app, 'active_app_specific':active_app_specific, 'tab_id':tab_id})
 
 @login_required
@@ -130,7 +130,7 @@ def back_default(request, page_id):
         active_tab_id = -1
         for tab in tabs:
             if tab[0].pk == page_id:
-                active_tab_id = tab[0].position 
+                active_tab_id = tab[0].position
                 logger.debug("find form active tab id %d" % active_tab_id)
                 break
 
@@ -289,6 +289,37 @@ def contact_people_delete(request, item_id):
     return redirect('/app/%d' % id)
 
 @login_required
+@join_item_verify('item_id')
+def add_edit_join(request, item_id=None):
+    if item_id:
+        item = get_object_or_404(JoinItem, pk = item_id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = JoinItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if item.pk is None:
+                wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
+                join_app = JoinApp.objects.get(wx=wx)
+                item.join = join_app
+            item.pub_time = datetime.now()
+            item.save()
+            return render(request,'close_page.html')
+    else:
+        form = JoinItemForm(instance=item)
+
+    return render(request, 'add_edit_join.html', {'form':form})
+
+@login_required
+@join_item_verify('item_id')
+def join_delete(request, item_id):
+    item = get_object_or_404(JoinItem, pk = item_id)
+    app_id = item.join.pk
+    item.delete()
+    return redirect('/app/%d' % app_id)
+
+@login_required
 @trend_item_verify('item_id')
 def add_edit_trend(request, item_id=None):
     if item_id:
@@ -424,7 +455,7 @@ def add_edit_content_page(request, content_id=None):
         form = ContentPageForm(instance=item)
 
     return render(request, 'add_edit_content.html', {'form':form})
-    
+
 @login_required
 @case_item_verify('item_id')
 def add_edit_case(request, item_id=None):
@@ -551,7 +582,7 @@ def product_class_delete(request, item_id):
     item.delete()
     return redirect('/app/%d' % app_id)
 
- 
+
 @login_required
 @product_item_verify('item_id')
 def product_delete(request, item_id):
@@ -576,7 +607,7 @@ def menu0(request):
             wx_account.app_id = form.cleaned_data.get('app_id')
             wx_account.app_secret = form.cleaned_data.get('app_secret')
             wx_account.save()
-            
+
             cache.set('wx_access_token_%d' % wx_account.id, form.cleaned_data.get('access_token'), 7200)
             return redirect('/menu')
     else:
@@ -605,9 +636,9 @@ def menu(request):
                 if not page.tab_name == u'首页':
                     subpage = page.cast()
                     if subpage.enable == True:
-                        pages_id.append(page.id)      
+                        pages_id.append(page.id)
                 else:
-                    pages_id.append(page.id)      
+                    pages_id.append(page.id)
         return render(request, 'menu.html', {'apps' : apps, 'menu_info' : menu_info, 'form' : form, 'pages': pages})
 
 @login_required

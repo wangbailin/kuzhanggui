@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-import sys 
-reload(sys) 
+import sys
+reload(sys)
 sys.setdefaultencoding('utf8')
 
-import urllib  
+import urllib
 import urllib2
 import json
 import random
@@ -21,8 +21,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 
 from framework.models import Account, WXAccount
-from microsite.forms import AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm, AddEditContactPeopleForm
-from microsite.models import CaseClass, ProductClass, Menu, CaseApp, ProductApp, ContactPeople, get_page_url, Page, PageGroup
+from microsite.forms import JoinItemForm, AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm, AddEditContactPeopleForm
+from microsite.models import CaseClass, JoinItem, ProductClass, Menu, CaseApp, ProductApp, ContactPeople, get_page_url, Page, PageGroup
 from utils import get_wx_access_token, create_wx_menu
 
 logger = logging.getLogger('default')
@@ -55,7 +55,7 @@ def menu_name_exists(name, exclude=None):
         return Menu.objects.filter(name=name).exclude(pk=exclude).exists()
 
 @dajaxice_register
-def add_edit_menu(request, id, name, pages): 
+def add_edit_menu(request, id, name, pages):
     #raise Exception()
     account = Account.objects.get(user=request.user)
     wx_account = None
@@ -70,7 +70,7 @@ def add_edit_menu(request, id, name, pages):
         ret_msg = '显示页面是必填项'
         logger.error("add_edit_menu form is invalid, msg %s" % ret_msg)
         return simplejson.dumps({'ret_code': 1000, 'ret_msg': ret_msg})
-    
+
     page_ids = [int(p) for p in pages.split(',')]
     logger.debug("pages' id: " + str(page_ids))
 
@@ -86,7 +86,7 @@ def add_edit_menu(request, id, name, pages):
 
         add_menu(wx_account, name, page_ids)
         return simplejson.dumps({'ret_code': 0})
-    
+
 @dajaxice_register
 def add_edit_contact_people(request, form):
     dajax = Dajax()
@@ -114,10 +114,41 @@ def add_edit_contact_people(request, form):
     return dajax.json()
 
 @dajaxice_register
+def add_edit_join_item(request, form):
+    dajax = Dajax()
+    form = JoinItemForm(deserialize_form(form))
+    if form.is_valid():
+        if form.cleaned_data.get('id'):
+            joinItem = JoinItem.objects.filter(id=form.cleaned_data.get('id'))[0]
+            joinItem.publish = form.cleaned_data.get('publish')
+            joinItem.job_title = form.cleaned_data.get('job_title')
+            joinItem.number = form.cleaned_data.get('number')
+            joinItem.content1 = form.cleaned_data.get('content1')
+            joinItem.content2 = form.cleaned_data.get('content2')
+            joinItem.content3 = form.cleaned_data.get('content3')
+            joinItem.content4 = form.cleaned_data.get('content4')
+            joinItem.require1 = form.cleaned_data.get('require1')
+            joinItem.require2 = form.cleaned_data.get('require2')
+            joinItem.require3 = form.cleaned_data.get('require3')
+            joinItem.require4 = form.cleaned_data.get('require4')
+            joinItem.save()
+        else:
+            JoinItem.objects.create(join_id=form.cleaned_data.get('tab_id'), publish=form.cleaned_data.get('publish'), job_title=form.cleaned_data.get('job_title'), number=form.cleaned_data.get('number'), content1=form.cleaned_data.get('content1'), content2=form.cleaned_data.get('content2'), content3=form.cleaned_data.get('content3'), content4=form.cleaned_data.get('content4'), require1=form.cleaned_data.get('require1'), require2=form.cleaned_data.get('require2'), require3=form.cleaned_data.get('require3'), require4=form.cleaned_data.get('require4'))
+        dajax.remove_css_class('#add_edit_join_item_form.control-group', 'error')
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'addEditJoinItemCallback')
+        dajax.redirect(form.cleaned_data.get('tab_id'))
+    else:
+        dajax.remove_css_class('#add_edit_join_item_form .control-group', 'error')
+        for error in form.errors:
+            dajax.add_css_class('#%s' % error, 'error')
+        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : 'error' }, 'addEditJoinItemCallback')
+
+    return dajax.json()
+
+@dajaxice_register
 def add_case_class(request, form):
     dajax = Dajax()
     form = AddCaseClassForm(deserialize_form(form))
- 
     if form.is_valid():
         if len(CaseClass.objects.filter(case_app_id=form.cleaned_data.get('tab_id'))) >= 4:
             dajax.remove_css_class('#add_case_class_form .control-group', 'error')
@@ -126,7 +157,7 @@ def add_case_class(request, form):
             dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '最多只能添加4个分类！' }, 'addCaseClassCallback')
         else:
             CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
-            dajax.remove_css_class('#add_case_class_form .control-group', 'error')  
+            dajax.remove_css_class('#add_case_class_form .control-group', 'error')
             dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addCaseClassCallback')
             dajax.redirect(form.cleaned_data.get('tab_id'))
 
@@ -162,7 +193,7 @@ def add_product_class(request, form):
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '该分类已添加过！' }, 'addProductClassCallback')
 
     return dajax.json()
- 
+
 @dajaxice_register
 def change_case_class(request, form):
     dajax = Dajax()
@@ -266,8 +297,7 @@ def generate_menu(request):
             if create_wx_menu(wx_access_token, menu_data):
                 dajax.add_data({'ret_code' : 0, 'ret_msg' : ''}, 'generateMenuCallback')
             else:
-                dajax.add_data({'ret_code' : 1002, 'ret_msg' : '微信系统繁忙，请重试生成菜单!'}, 
-                                'generateMenuCallback')
+                dajax.add_data({'ret_code' : 1002, 'ret_msg' : '微信系统繁忙，请重试生成菜单!'},'generateMenuCallback')
     else:
         dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '菜单项数量应该为2~3个！' }, 'generateMenuCallback')
 
@@ -299,4 +329,8 @@ def reorder_pages(request, page_list):
     else:
         transaction.commit()
         return simplejson.dumps({'ret_code': 0, 'ret_msg': '操作成功'})
-    
+
+@dajaxice_register
+def select_change(request, option):
+    print request
+    print option

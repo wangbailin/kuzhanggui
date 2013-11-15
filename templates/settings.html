@@ -61,7 +61,7 @@ $("input, select, textarea").change(function(){
             <li><a href="/link_page/add" target="_blank">链接页面</a></li>
         </ul>
     </div>
-    
+
     <a href="#reorder-pages-modal" class="clearfix btn btn-primary" data-toggle="modal">设置页面顺序</a>
 </div>
 <div>
@@ -83,7 +83,7 @@ $("input, select, textarea").change(function(){
             {% if page.template_name == "content_page.html" or page.template_name == "link_page.html" %}
             <a href="#delete_page" class="btn btn-danger" data-toggle="modal">删除</a>
             {% endif %}
-            {% if page.template_name == "intropage.html" or page.template_name == "apppage.html" or page.template_name == "official_weibo.html" %}
+            {% if page.template_name == "intropage.html" or page.template_name == "apppage.html" or page.template_name == "official_weibo.html" or page.template_name == "joinpage.html" %}
             <a class="btn" href="#back_default" data-toggle="modal">恢复默认</a>
             {% endif %}
             <button class="btn btn-primary" id="tab-save">保存</button>

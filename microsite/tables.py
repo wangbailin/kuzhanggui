@@ -4,7 +4,7 @@ from models import HomePage, PageGroup
 import django_tables2 as tables
 import django_tables2 as tables
 from django.contrib.contenttypes.models import ContentType
-from models import ContactApp, TrendsApp, ContactItem, TrendItem, TeamItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
+from models import ContactApp, JoinApp, TrendsApp, ContactItem, JoinItem, TrendItem, TeamItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
 from django_tables2.columns import DateTimeColumn, TemplateColumn
 
 logger = logging.getLogger("default")
@@ -37,6 +37,16 @@ class ContactPeopleTable(tables.Table):
         empty_text = u'暂无联系人'
         fields = ('contact_item', 'name', 'email', 'phone', 'qq')
 
+class JoinTable(tables.Table):
+    id = tables.Column(orderable=True, visible=False)
+    ops = TemplateColumn(template_name="join_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    class Meta:
+        model = JoinItem
+        order_by = '-id'
+        empty_text = u'暂无职位'
+        orderable = False
+        attrs = {'class' : 'table table-striped'}
+        fields = ('job_title', 'publish', 'pub_time' )
 
 class TrendsTable(tables.Table):
     id = tables.Column(orderable=True, visible=False)
@@ -47,7 +57,7 @@ class TrendsTable(tables.Table):
         empty_text = u'暂无公司动态'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('title', 'pub_time', 'summary')
+        fields = ('title','pub_time','summary')
 
 class TeamTable(tables.Table):
     id = tables.Column(orderable=True, visible=False)
@@ -82,7 +92,7 @@ class CaseClassTable(tables.Table):
         orderable = False
         attrs = {'class' : 'table table-striped'}
         fields = ('name',)
-    
+
 class ProductItemTable(tables.Table):
     id = tables.Column(orderable=True, visible=False)
     ops = TemplateColumn(template_name="product_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})

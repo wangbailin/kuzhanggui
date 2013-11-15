@@ -1,0 +1,37 @@
+{% extends "microsite/page.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="joins">
+        {% if pic_url %}
+        <div class="pic" sytle="width:100%;">
+            <img src="{{pic_url}}" style="width:100%">
+        </div>
+        {% endif %}
+
+        {% if front_words %}
+        <div class="front-words">
+            <p>{{ front_words }}</p>
+        </div>
+        {% endif %}
+        <p style=" padding: 25px 8px;">有意请联系：{{ contact }}</p>
+        {% for item in items %}
+        <a href="{{ item.1 }}">
+            <div class=" join card">
+                <div class="join-meta">
+                    <p>{{ item.0 }}</p>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="empty">
+            <p>暂无职位招聘</p>
+        </div>
+        {% endfor %}
+        {% if end_words %}
+        <div class="end-words"><p>{{ end_words }}</p></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,20 @@
+var addEditJoinItem = function()  {
+    $('#add_edit_join_item_save').button('loading');
+    Dajaxice.microsite.add_edit_join_item(Dajax.process, {'form' : $('#add_edit_join_item_form').serialize(true)});
+}
+
+var addEditJoinItemCallback = function(data) {
+    var type= 'success';
+    if (data.ret_code==0){
+        $('#add_edit_join_item').modal('hide');
+    }
+    else{
+        type = 'error';
+        $('#add_edit_join_item').button('reset');
+    }
+    toast(type, data.ret_msg);
+};
+
 var addCaseClass = function()  {
     $('#add_case_class_save').button('loading');
     Dajaxice.microsite.add_case_class(Dajax.process, {'form' : $('#add_case_class_form').serialize(true)});
@@ -83,6 +100,12 @@ var addEditContactPeopleCallback = function(data) {
     }
     toast(type, data.ret_msg);
 };
+
+var deleteJoinItem = function(id, name) {
+    $('#join_item_name').text(name);
+    $('#delete_join_item_ok').attr('href', '/join/' + id + '/delete');
+    $('#delete_join_item').modal('show');
+}
 
 var deleteTrend = function(id, name) {
     $('#trend_name').text(name);

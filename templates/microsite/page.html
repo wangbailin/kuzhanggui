@@ -13,13 +13,14 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var footerHeight = 40;
+            var shareBanerHeight = 60;
             var $container = $('.container');
             var $win = $(window);
-            if ($container.outerHeight(true) >= $win.height() - footerHeight) {
+            if ($container.outerHeight(true) >= $win.height() - footerHeight - shareBanerHeight) {
                 return;
             }
 
-            var minHeight = $win.height() - ($container.outerHeight(true) - $container.height()) - footerHeight;
+            var minHeight = $win.height() - ($container.outerHeight(true) - $container.height()) - footerHeight - shareBanerHeight;
             $container.css('min-height', minHeight + 'px');
         });
     </script>
@@ -28,6 +29,7 @@
 </head>
 <body>
     {% block content %}{% endblock %}
+    {% include "microsite/share_section.html" %}
     {% include "microsite/footer.html" %}
 </body>
 </html>
