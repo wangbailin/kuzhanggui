@@ -94,7 +94,6 @@ class JoinAppForm(ModelForm):
     pic = forms.ImageField(label=u'焦点图', widget=AjaxClearableFileInput(), required=False)
     contact = forms.CharField(label=u'联系方式', widget=forms.TextInput(attrs={'placeholder':u'邮箱或电话'}))
     end_words = forms.CharField(label=u'结束语', widget=forms.Textarea(attrs={'placeholder':'期待你的加入！'}), required=False)
-class JoinPageForm(ModelForm):
     class Meta:
         model = JoinApp
         fields = (

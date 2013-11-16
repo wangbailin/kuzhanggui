@@ -193,7 +193,7 @@ INSTALLED_APPS = (
     'cronjobs',
     'baidu_yun',
     'datetimewidget',
-    'south',
+   # 'south',
 )
 
 # A sample logging configuration. The only tangible logging
