@@ -24,7 +24,7 @@ def get_home_info(subpage):
 
 def get_footer(obj):
     try:
-        page = get_object_or_404(Page, pk=obj.id)
+        page = get_object_or_404(Page, pk=obj.pk)
         homepage = ContentType.objects.get_for_model(HomePage).get_object_for_this_type(wx=page.wx)
     except:
         return None
@@ -90,7 +90,7 @@ def join_(request, joinapp):
     for i in joinitems:
         logger.debug("one join job title %s" % i.job_title)
         items.append( (i.job_title, '/microsite/joinitem/%d' % i.pk, i.number, i.pub_time))
-    return render(request, 'microsite/joinapp.html', {'title':joinapp._get_tab_name(), 'pic':pic_url, 'front_words':joinapp.front_words, 'contact':joinapp.contact, 'end_words':joinapp.end_words, 'items':items,'homepage_id':homepage_id, 'theme': site_templates[joinapp.wx.wsite_template].site_template})
+    return render(request, 'microsite/joinapp.html', {'title':joinapp._get_tab_name(), 'pic_url':pic_url, 'front_words':joinapp.front_words, 'contact':joinapp.contact, 'end_words':joinapp.end_words, 'items':items,'homepage_id':homepage_id, 'theme': site_templates[joinapp.wx.wsite_template].site_template})
 def join(request, item_id):
     joinapp = get_object_or_404(JoinApp, pk=item_id)
     return join_(request, joinapp)

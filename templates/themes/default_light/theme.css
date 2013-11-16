@@ -108,6 +108,10 @@ body {
     padding: 8px;
 }
 
+.joins .front-words, .joins .end-words {
+    padding: 8px;
+}
+
 .joins .join .join-meta {
     margin-left: 10px;
     min-height: 40px;
@@ -424,7 +428,6 @@ a.phone:active div {
 
 .share {
     text-align:center;
-    width: 80%;
     margin: 25px auto;
     color: #333333;
 }

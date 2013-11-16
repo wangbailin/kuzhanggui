@@ -5,7 +5,7 @@
 <div class="container">
     <div class="joins">
         {% if pic_url %}
-        <div class="pic" sytle="width:100%;">
+        <div class="pic_url" sytle="width:100%;">
             <img src="{{pic_url}}" style="width:100%">
         </div>
         {% endif %}
@@ -34,4 +34,5 @@
         {% endif %}
     </div>
 </div>
+    {% include "microsite/share_section.html" %}
 {% endblock %}
