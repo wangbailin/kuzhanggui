@@ -129,6 +129,11 @@ body {
 
 }
 
+.joins .empty {
+    margin-top: 20px;
+    position: static;
+}
+
 .trends img {
     float: left;
     width: 52px;
@@ -406,6 +411,7 @@ a.phone:active div {
 
 .share .backhome {
     width: 90%;
+    margin: 25px auto;
     color: #828282;
     text-align: center;
     border-radius: 5px;

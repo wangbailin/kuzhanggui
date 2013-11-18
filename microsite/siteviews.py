@@ -28,7 +28,7 @@ def get_footer(obj):
         homepage = ContentType.objects.get_for_model(HomePage).get_object_for_this_type(wx=page.wx)
     except:
         return None
-    return homepage.id
+    return homepage.pk
 
 def homepage_(request, homepage):
     pics = []
@@ -67,14 +67,14 @@ def homepage(request, item_id):
 
 def intro_(request, intropage):
     homepage_id=get_footer(intropage)
-    return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content, 'homepage_id':homepage.id, 'theme': site_templates[intropage.wx.wsite_template].site_template})
+    return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content, 'homepage_id':homepage_id, 'theme': site_templates[intropage.wx.wsite_template].site_template})
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
     return intro_(request, intropage)
 
 def business_(request, business_page):
     homepage_id=get_footer(business_page)
-    return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content, 'homepage_id':homepage.id, 'theme': site_templates[business_page.wx.wsite_template].site_template})
+    return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content, 'homepage_id':homepage_id, 'theme': site_templates[business_page.wx.wsite_template].site_template})
 
 def business(request, item_id):
     business_page = get_object_or_404(BusinessPage, pk=item_id)

@@ -108,6 +108,11 @@ body {
     color: #e8e8e8;
 }
 
+.joins .empty {
+    margin-top: 20px;
+    position: static;
+}
+
 .trends img {
     float: left;
     width: 52px;
