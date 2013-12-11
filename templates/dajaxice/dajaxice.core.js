@@ -86,6 +86,12 @@ var Dajaxice = {
         add_wall_item : function(callback_function, argv, custom_settings){
             return Dajaxice.call('wall.add_wall_item', 'POST', callback_function, argv, custom_settings);
         },
+        delete_wall_item : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.delete_wall_item', 'POST', callback_function, argv, custom_settings);
+        },
+        get_state : function(callback_function, argv, custom_settings){
+            return Dajaxice.call('wall.get_state', 'POST', callback_function, argv, custom_settings);
+        },
     }
 ,
 

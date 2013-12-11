@@ -16,6 +16,7 @@ from message_builder import MessageBuilder, BuildConfig
 
 from framework.models import WXAccount
 from wall.models import WallUser, WallItem, WallMsg
+from wall.utils import judge_symbol
 
 router_error = None
 router_reply = None
@@ -65,7 +66,15 @@ def index(request, wx):
                     walluser = WallUser.objects.filter(wx=wx_account, openid=message['FromUserName'])[0]
                     if not walluser.wall_item_id == '0':#说明上墙了
                         #对上墙活动的进行时间进行判断，有可能上墙了但活动已经结束了
-                        wallitem = WallItem.objects.get(id=walluser.wall_item_id)
+                        wallitem = WallItem.objects.filter(id=walluser.wall_item_id)
+                        if len(wallitem) == 0:
+                            walluser.wall_item_id = '0'
+                            walluser.save()
+                            reply_str = "活动不存在"
+                            reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
+                            return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+                        else:
+                            wallitem = wallitem[0]
                         #结束时间10分钟后的处理
                         #if (datetime.now()-wallitem.begin_time).seconds <= 600:
                         if datetime.now()<wallitem.end_time:#说明在上墙时间内
@@ -76,8 +85,10 @@ def index(request, wx):
                                 else:
                                     message_str = message['Recognition']
                                 if not message_str == "退出":
+                                    wxlogger.info('receive message %s' % message_str)
                                     WallMsg.objects.create(user=walluser, type='text', content=message_str, wall_item_id=walluser.wall_item_id)
                                     reply_str = "发送成功"
+                                    wxlogger.info(datetime.now())
                                     reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
                                     return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
 
@@ -96,6 +107,12 @@ def index(request, wx):
                             reply_str = "活动已结束，您将在10分钟之后自动退出该活动，您也可以回复“退出”直接退出该活动。"
                             reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
                             return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+                        else:
+                            walluser.wall_item_id = '0'
+                            walluser.save()
+                            reply_str = "活动已经结束超过10分钟，您已经被系统退出上墙。"
+                            reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
+                            return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
                     else:#说明没有上墙
                         if message['MsgType'] == 'text':
                             wxlogger.info(message)
@@ -111,15 +128,13 @@ def index(request, wx):
                                             wxlogger.info(wallitem.welcome)
                                             walluser.wall_item_id = wallitem.id
                                             walluser.save()
-                                            reply_str = wallitem.welcome
+                                            if judge_symbol(wallitem.welcome):
+                                                reply_str = wallitem.welcome+'回复“退出”则退出上墙。'
+                                            else:
+                                                reply_str = wallitem.welcome+','+'回复“退出”则退出上墙。'
                                         reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
                                         return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
-                        
-                           
-
-
-
-
+                                    
             Router.get_instance().reply(wx, message, _route_callback)
             
             if router_error is None and router_reply is not None:
@@ -130,7 +145,9 @@ def index(request, wx):
                 else:
                     wxlogger.info("%s", router_reply.data)
             else:
-                wxlogger.info("router error %s router reply %s" % (str(router_error), str(router_reply)))
+                #wxlogger.info("router error %s router reply %s" % (str(router_error), str(router_reply)))
+                #reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, u"上墙文字发送错喽，请重新发一次吧。 ")
+                #return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
                 return HttpResponse('<xml></xml>', content_type="application/xml")
         except:
             wxlogger.error(traceback.format_exc())

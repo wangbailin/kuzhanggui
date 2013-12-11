@@ -1,0 +1,119 @@
+{% extends "framework.html" %}
+{% autoescape on %}
+{% block title %}微信墙{% endblock %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/weixinwall.css"/>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/wall.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#add_wall_item_save').click(addWallItem);
+    });
+    $(function(){
+        $('#btns_for_ops a').tooltip();
+    });
+</script>
+<script type="text/javascript">
+    function refreshFlagStatus(){
+        Dajaxice.wall.refresh_flag_status(Dajax.process);
+    };
+    setInterval("refreshFlagStatus()", 60000);
+</script>
+{% endblock %}
+{% block app %}
+<div class="alert alert-info">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>微信墙使用说明：</h4>
+    <ul style="margin-top:8px;">
+        <li>每个微信墙活动只能打开一个管理（展示）页面，否则消息会随机出现在多个管理（展示）页面。</li>
+        <li>微信墙活动的展示页面需要全屏显示才能达到最好的展示效果。(Windows和Linux系统用户按F11全屏，再按一次F11取消全屏；Mac系统用户按⌘-Shift-F全屏，再按一次⌘-Shift-F取消全屏)</li>
+    </ul>
+</div>
+<div id="margin_bottom">
+<a class="btn btn-default btn-primary" onclick="showAddDialog()" data-toggle="modal"><i class="icon-plus icon-white"></i>新增活动</a>
+</div>
+
+<div class="navbar" style="margin-bottom:0;">
+    <div class="navbar-inner">
+        <p class="navbar-text">微信墙活动</p>
+    </div>
+</div>
+{% load render_table from django_tables2 %}
+{% render_table wall_info "django_tables2/table.html" %}
+
+<div id="delete_wall" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_wall_header" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>删除微信墙活动</h3>
+    </div>
+    <div class="modal-body">
+        <span>确认删除微信墙活动 <strong id="wall_event_name"></strong>?</span>
+    </div>
+    <div class="modal-footer">
+        <a id="delete_wall_ok" href="#" class="btn btn-danger btn-del">删除</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
+<div id="add_wall_item" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel">新增/编辑微信墙活动</h3>
+    </div>
+    <div class="modal-body">
+        <form name='form' id="add_wall_item_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="control-group">
+                <label class="control-label" for="event_name"><span style="color:red;">*</span>{{form.event_name.label}}</label>
+                <div class="controls">
+                {{ form.event_name|escape }}<span class="help-inline">{{ form.event_name.help_text }}</span>{{ form.event_name.errors }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="keyword"><span style="color:red;">*</span>{{form.keyword.label}}</label>
+                <div class="controls">
+                {{ form.keyword|escape }}<span class="help-inline">{{form.keyword.help_text}}</span>{{ form.keyword.errors }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="begin_time"><span style="color:red;">*</span>{{form.begin_time.label}}</label>
+                <div class="controls">
+                {{ form.begin_time }}{{ form.begin_time.errors }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="end_time"><span style="color:red;">*</span>{{form.end_time.label}}</label>
+                <div class="controls">
+                {{ form.end_time }}{{ form.end_time.errors }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="welcome"><span style="color:red;">*</span>{{form.welcome.label}}</label>
+                <div class="controls">
+                {{ form.welcome|escape }}{{ form.welcome.errors }}<span class="help-inline" style="margin-top:5px">微信用户发送关键字并且成功上墙时回复欢迎语</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="flag_check"><span style="color:red;">*</span>{{form.flag_check.label}}</label>
+                <div class="controls">
+                {{ form.flag_check }} 
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="anonymity"><span style="color:red;">*</span>{{form.anonymity.label}}</label>
+                <div class="controls">
+                {{ form.anonymity }}
+                </div>
+            </div>
+            {{form.id}}
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button id="add_wall_item_save" class="btn btn-primary" data-loading-text="保存...">保存</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+</div>
+
+{% endblock %}
+{% endautoescape %}
+

@@ -106,6 +106,7 @@ CKEDITOR_CONFIGS = {
         'language': 'zh-cn',
         'width': 760,
         'height': 300,
+        'image_previewText': 'image',
         'toolbarCanCollapse': False,
     },
     'awesome_ckeditor': {

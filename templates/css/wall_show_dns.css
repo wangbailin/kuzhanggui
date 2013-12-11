@@ -1,0 +1,51 @@
+body{width:100%;height:100%;min-height:720px; overflow:auto;}
+#event_name{ max-width: 80%; line-height: 80px;font-size:80px; color: #fff; padding-bottom: 2%; padding-top:5%;margin: 0 auto; min-height: 120px}
+@media screen and (min-height:720px){
+#footer {width:100%;height:auto; text-align:center;font-size:20px;position:fixed; bottom:0;}
+}
+
+@media screen and (max-height:719px){
+#footer {width:100%;height:auto; text-align:center;font-size:20px; margin-top:20px;}
+}
+#message{height:auto;  border-radius: 15px;
+         background-color: #fff;
+         opacity:0.8;
+         box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+         margin: 0 auto;
+         width: 600px;
+         max-width:80%;
+         margin-top:4%;
+ }
+
+#datemessage{
+         width: 730px;
+         margin: 0 auto;
+
+}
+#datemessage #days{
+         font-size: 30px;
+         margin-left: 105px;
+}
+#datemessage #hours{
+         font-size: 30px;
+         margin-left: 120px;
+}
+#datemessage #minutes{
+         font-size: 30px;
+         margin-left: 105px;
+}
+#datemessage #seconds{
+         font-size: 30px;
+         margin-left: 120px;
+}
+#keyword{font-size: 35px; color: #930007;}
+@media screen and (min-height:768px){
+#content{line-height:35px;width:1000px;height:650px; position:fixed; top:50%; left:50%;margin:-325px 0 0 -500px}
+}
+
+@media screen and (max-height:767px){
+#content{line-height:35px;width:1000px;height:650px; margin: 0 auto; padding-top:30px;}
+}
+#message p{height: 50%; font-size: 35px; color:#303030;line-height:70px;margin-bottom:0;}
+
+

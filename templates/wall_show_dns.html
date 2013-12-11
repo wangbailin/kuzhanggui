@@ -1,0 +1,98 @@
+{% load dajaxice_templatetags %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{wallitem.event_name}}展示</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.min.js"/></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}artDialog/skins/default.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery-countdown-master/css/media.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/wall_show_dns.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
+<script type="text/javascript" src="{{STATIC_URL}}artDialog/artDialog.min.js"/></script>
+<script type="text/javascript" src="{{STATIC_URL}}jquery-countdown-master/js/jquery.countdown.js"/></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/wall.js"/></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+<script>
+    var begin_time ='{{wallitem.begin_time|date:'m/d/y H:i:s'}}';
+    function reloadPage(){
+        Dajaxice.wall.get_state(Dajax.process, {'item_id':{{wallitem.id}}});
+    };
+    function reloadPages(){
+        $('#loading').modal({
+            keyboard: false,
+            backdrop: 'static'
+        });
+        setInterval('reloadPage()', 5000);
+    };
+    $(function(){
+        $("#holder").countdown({
+            image: "{{STATIC_URL}}jquery-countdown-master/img/digits.png",
+            format: "dd:hh:mm:ss",
+            endTime: new Date(begin_time),
+            digitImages: 6,
+            digitWidth: 67,
+            digitHeight: 90,
+            continuous: false,
+            timerEnd: reloadPages,
+        });
+    });
+</script>
+{{ form.media }}
+{% dajaxice_js_import %}
+</head>
+<body>
+<img src="{{STATIC_URL}}img/wall_back.jpg" style="width:100%;height:100%;position:fixed;z-index:-999"/>
+<div id="content">
+    <div id='event_name'>
+        <center>{{wallitem.event_name}}</center>
+    </div>
+    <div id='holder'>
+    </div>
+    <div id='datemessage'>
+        <span id='days'>天</span><span id='hours'>小时</span><span id = 'minutes'>分钟</span><span id='seconds'>秒</span> 
+    </div>
+    <div id='message'>
+        <center style="padding-top:0.01em"> <p>关注微信公众号<span id="keyword">“{{weixinname}}”</span></p></center>
+        <center style="padding-bottom:0.5em"><p>回复<span id="keyword">“{{wallitem.keyword}}”</span>即可上墙</p></center>
+    </div>
+</div>
+<div id='footer'>
+    <center>Powered by 酷掌柜</center>
+</div>
+
+<script type="text/javascript">
+   var _usersnapconfig = {
+       apiKey: '41d63110-3935-40f5-81ba-913f8e5918b0',
+       valign: 'bottom',
+       halign: 'right',
+       tools: ["pen", "highlight", "note"],
+       lang: 'en',
+       commentBox: true,
+       emailBox: false
+   }; 
+   (function() {
+       var s = document.createElement('script');
+       s.type = 'text/javascript';
+       s.async = true;
+       s.src = '//api.usersnap.com/usersnap.js';
+       var x = document.getElementsByTagName('head')[0];
+       x.appendChild(s);
+   })();
+</script>
+<script type="text/javascript">
+    function deleteItem(){
+        Dajaxice.wall.delete_wall_item(Dajax.process, {'item_id':{{wallitem.id}}});
+    };
+    setInterval("deleteItem()", 5000);
+</script>
+<div class="modal hide fade" tabindex="-1" id="loading" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+    <img src="{{STATIC_URL}}img/loading1.gif" style="width:100px;height:100px"/>
+    <span>正在加载，请稍后。</span>
+  </div>
+</div>
+</body>
+</html>
+

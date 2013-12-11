@@ -1,0 +1,86 @@
+
+.app {
+    margin-top: 8px;
+    margin-left: 240px;
+    margin-right: 8px;
+}
+
+.app .ops {
+    width:10%;
+}
+
+.app .pub_time {
+    width:20%;
+}
+
+.app .fax_code {
+    width:10%;
+}
+
+.table {
+    width: 100%;
+    border: 1px solid #e3e3e3;
+    margin-bottom: 10px;
+}
+
+#page_form .table th{
+    text-align: left;
+    vertical-align: middle;
+    padding: 10px 20px;
+    width:15%;
+}
+.table th{
+    text-align: left;
+    vertical-align: middle;
+    padding: 10px 0 10px 10px;
+}
+
+.table td{
+    text-align: left;
+    vertical-align: middle;
+    padding: 10px 0 10px 10px;
+}
+
+.table .event_name{
+    max-width:150px;
+}
+
+.table .flag_check{
+    min-width:30px;
+}
+
+.table .flag_status{
+    min-width:45px;
+}
+
+.table input[type="text"], textarea {
+    margin-bottom: 0;
+    width: 50%;
+}
+
+.table select{
+    margin-bottom: 0;
+    width: 25%;
+}
+
+.table input[type="file"] {
+    width: 160px;
+}
+
+#margin_bottom {
+    margin-bottom: 7px;
+}
+
+#toolbar {
+    height: 40px;
+}
+
+#toolbar > a {
+    display: block;
+}
+
+#toolbar > div, #toolbar > a {
+    margin-right: 10px;
+    float: left;
+}
+

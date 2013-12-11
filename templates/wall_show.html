@@ -1,0 +1,123 @@
+{% load dajaxice_templatetags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+        <title>{{wallitem.event_name}}展示</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/sidenav.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}ajax_upload/css/ajax-upload-widget.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/rocket.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}css/jquery.pnotify.default.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}css/jquery.pnotify.default.icons.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/wall.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/emotion.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/wall_show.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}artDialog/skins/default.css"/>
+    <script type="text/javascript" src="{{ STATIC_URL }}ckeditor_new/ckeditor.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootbox.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/ajax-upload-widget.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.pnotify.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/base.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/wall.js"/></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/emotion.js"/></script>
+    <script type="text/javascript" src="{{STATIC_URL}}artDialog/artDialog.min.js"/></script>
+    {{ form.media }}
+    {% dajaxice_js_import %}
+</head>
+<body>
+<img src="{{STATIC_URL}}img/wall_back.jpg" style="width:100%;height:100%;position:fixed;z-index:-999"/>
+<div id='all'>
+<div id='title'>
+    <div id='event_name'>
+        <p>{{wallitem.event_name}}</p>
+    </div>
+    <div id='message'> 
+        <div id ='welcome'>
+           <p><span id="normal">关注微信公众号</span><span id="keyword">“{{weixinname}}”</span></p>
+           <p style="margin-bottom:0"><span id ='normal'>回复</span><span id="keyword">“{{wallitem.keyword}}”</span><span id="normal">即可上墙</span></p>
+        </div>
+        <div id="bar"> 
+        </div>
+        <div id="count">
+            <div id='total'>0</div>
+            <div id='total-content'>条微信</div>
+        </div>
+    </div>
+</div>
+<div id='content-on-wall'>
+    <div class="on-wall-msgList">
+   <!-- {% if datas %}
+        {% for data in datas %}
+            {% if data.0 == 'text' %}
+            
+            {% endif %}
+            {% if data.0 == 'image' %}
+                <div type="pic" class="msgItem-on-wall-pic" data-id={{data.3}}>                     <div class="msg-pic-on-wall">
+                        <img src="{{data.4}}"/>
+                    </div>
+                    <div class="msg-content-on-wall">
+                        <span id ="name">{{data.2}}：</span>分享了一张照片
+                    </div> 
+                    <div id="pic-content-on-wall">
+                        <img src="{{data.1}}"/>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}-->
+    </div>
+</div>
+</div>
+<div id='footer'>
+Powered by 酷掌柜
+</div>
+<script type="text/javascript">
+    function messageOnWall(){
+        total = $('#total').text();
+        Dajaxice.wall.message_on_wall(Dajax.process, {'item_id':{{wallitem.id}}, 'total':total});
+    };
+    setInterval("messageOnWall()", 5000);
+    Dajaxice.wall.message_on_wall_back(Dajax.process, {'item_id':{{wallitem.id}}});
+    $().ready(function(){
+        var titleHeight = $('#title').height();
+        var eventnameHeight = $('#event_name').height();
+        var padding_top = (titleHeight-eventnameHeight)/2;
+        $('#event_name').css('padding-top', padding_top);
+       
+        var welcomeHeight = $('#welcome').height();
+        $('#bar').css('height', welcomeHeight);
+        $('#count').css('height', welcomeHeight);
+       
+       
+    });
+</script>
+
+<script type="text/javascript">
+   var _usersnapconfig = {
+       apiKey: '41d63110-3935-40f5-81ba-913f8e5918b0',
+       valign: 'bottom',
+       halign: 'right',
+       tools: ["pen", "highlight", "note"],
+       lang: 'en',
+       commentBox: true,
+       emailBox: false
+   }; 
+   (function() {
+       var s = document.createElement('script');
+       s.type = 'text/javascript';
+       s.async = true;
+       s.src = '//api.usersnap.com/usersnap.js';
+       var x = document.getElementsByTagName('head')[0];
+       x.appendChild(s);
+   })();
+</script>
+</body>
+</html>
+

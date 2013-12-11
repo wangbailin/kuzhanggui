@@ -1,0 +1,17 @@
+{% autoescape on %}
+<div style="width:260px">
+<div style="float:left">
+    <a href="/wall/{{ record.id}}/show" target="_blank" class="btn btn-success" style="margin-right: 10px"><i style="margin-right: 5px;"class="icon-eye-open icon-white"></i>投影</a>
+     {% if record.flag_check == "是" %}
+    <a id="wall_conduct_{{record.id}}"href="/wall/{{ record.id}}/conduct" target="_blank" class="btn btn-primary"><i style="margin-right: 5px;"class="icon-filter icon-white"></i>审核</a>
+     {% endif %}
+     {% if record.flag_check == "否" %}
+    <a id="wall_conduct_{{record.id}}" href="#" class="btn disabled"><i style="margin-right: 5px;"class="icon-filter"></i>审核</a>
+     {% endif %}
+</div>
+<div style="float:left;" class="btn-group" id='btns_for_ops'>
+    <a style="margin-left:10px;" data-toggle="tooltip" data-container='body' data-animation="false" data-title="编辑" class="btn" onclick="showChangeDialog({{record.id}}, '{{record.event_name}}', '{{record.keyword|escape}}', '{{record.begin_time|date:'m/d/Y h:i A'}}', '{{record.end_time|date:'m/d/Y h:i A'}}', '{{record.welcome|escape}}', '{{record.flag_check}}', '{{record.anonymity}}')"><i class="icon-edit"></i></a>
+    <a data-toggle='tooltip' data-animation='false' data-container='body' data-title='删除' onclick="deleteWall({{ record.id }}, '{{ record.event_name }}')" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
+</div>
+</div>
+{% endautoescape %}

@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>微信墙展示</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}artDialog/skins/default.css"/>
+<script type="text/javascript" src="{{STATIC_URL}}artDialog/artDialog.min.js"/></script>
+<style>
+html,body{font-size: 62.5%; height:100%; margin:0; padding:0; overflow:scroll;}
+.d2{position:absolute; top:40%; left:50%; z-index:1;}
+.d3{position:relative; top:-40%; left:-50%;}
+#name{font-size: 8em; color: #fff;}
+#complete{font-size: 4em; color: #fff; margin-left:1.5em;}
+</style>
+</head>
+<body>
+<img src="{{STATIC_URL}}img/wall_back.jpg" style="width:100%;position:fixed;z-index:-999"/>
+<div class="d2">
+<div class="d3"><span id="complete">该活动已被删除</span></div>
+</div>  
+</body>
+</html>
+
