@@ -272,7 +272,6 @@ class JoinItem(models.Model):
     require2 = models.TextField(u'职位要求2', blank=True)
     require3 = models.TextField(u'职位要求3', blank=True)
     require4 = models.TextField(u'职位要求4', blank=True)
-    position = models.IntegerField(default = 0)
 
     class Meta:
         db_table = u"join_item"

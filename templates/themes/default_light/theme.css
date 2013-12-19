@@ -70,10 +70,6 @@ body {
     padding: 8px;
 }
 
-.join {
-    padding: 8px;
-}
-
 .trends {
     padding: 8px;
 }
@@ -113,7 +109,7 @@ body {
 }
 
 .joins .join .join-meta {
-    margin-left: 10px;
+    margin-left: 0px;
     min-height: 40px;
 }
 
@@ -123,6 +119,7 @@ body {
 }
 
 .joins .join .join-meta p {
+    padding: 8px;
     font-size: 20px;
     float: left;
     color: #828282;
