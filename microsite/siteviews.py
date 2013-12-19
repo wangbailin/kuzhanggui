@@ -34,13 +34,13 @@ def homepage_(request, homepage):
     pics = []
     exps = []
     if homepage.pic1:
-        pics.append((homepage.pic1, homepage.exp1))
+        pics.append((homepage.pic1, homepage.exp1, homepage.link1))
     if homepage.pic2:
-        pics.append((homepage.pic2, homepage.exp2))
+        pics.append((homepage.pic2, homepage.exp2, homepage.link2))
     if homepage.pic3:
-        pics.append((homepage.pic3, homepage.exp3))
+        pics.append((homepage.pic3, homepage.exp3, homepage.link3))
     if homepage.pic4:
-        pics.append((homepage.pic4, homepage.exp4))
+        pics.append((homepage.pic4, homepage.exp4, homepage.link4))
     logger.debug("%s" % str(pics))
     rows = []
     items = []

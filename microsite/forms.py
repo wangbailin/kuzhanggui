@@ -51,7 +51,6 @@ class HomePageForm(ModelForm):
     pic3 = forms.ImageField(label=u'焦点图3', widget=AjaxClearableFileInput(), required = False)
     pic4 = forms.ImageField(label=u'焦点图4', widget=AjaxClearableFileInput(), required = False)
     message_cover = forms.ImageField(label=u'消息封面', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片宽度大于640像素")
-
     class Meta:
         model = HomePage
         fields = (
@@ -65,6 +64,10 @@ class HomePageForm(ModelForm):
             'exp2',
             'exp3',
             'exp4',
+            'link1',
+            'link2',
+            'link3',
+            'link4',
             'message_cover',
             'message_description',
         )

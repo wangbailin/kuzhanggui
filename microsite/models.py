@@ -88,12 +88,16 @@ class HomePage(Page):
     template_type = models.IntegerField(u'模板类型', choices=choices, default = 1)
     pic1 = models.ImageField(u"焦点图1", storage=baidu_storage, upload_to='upload/', max_length=255)
     exp1 = models.CharField(u"焦点图1注释", max_length=255, blank=True)
+    link1 = models.CharField(u"焦点图1链接页面", max_length=255, blank=True)
     pic2 = models.ImageField(u"焦点图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp2 = models.CharField(u"焦点图2注释", max_length=255, blank=True)
+    link2 = models.CharField(u"焦点图2链接页面", max_length=255, blank=True)
     pic3 = models.ImageField(u"焦点图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp3 = models.CharField(u"焦点图3注释", max_length=255, blank=True)
+    link3 = models.CharField(u"焦点图3链接页面", max_length=255, blank=True)
     pic4 = models.ImageField(u"焦点图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     exp4 = models.CharField(u"焦点图4注释", max_length=255, blank=True)
+    link4 = models.CharField(u"焦点图4链接页面", max_length=255, blank=True)
 
     def _get_tab_name(self):
         return u"首页"
@@ -268,6 +272,7 @@ class JoinItem(models.Model):
     require2 = models.TextField(u'职位要求2', blank=True)
     require3 = models.TextField(u'职位要求3', blank=True)
     require4 = models.TextField(u'职位要求4', blank=True)
+    position = models.IntegerField(default = 0)
 
     class Meta:
         db_table = u"join_item"
@@ -433,7 +438,7 @@ class WeiboPage(Page):
 class ContentPage(Page):
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容', blank=True)
-   
+
     def save(self, *args, **kwargs):
         if len(self.title) == 0:
             self.title = '内容页面'
@@ -661,6 +666,16 @@ def get_page_url(page):
         return settings.SITE_URL + '/microsite/content/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         return page.cast().url
+
+def get_item_url(item):
+    if item.__class__ == JoinItem :
+        return settings.SITE_URL + '/microsite/joinitem/%d' % (item.pk)
+    elif item.__class__ == TrendItem:
+        return settings.SITE_URL + '/microsite/trenditem/%d' % (item.pk)
+    elif item.__class__ == CaseItem:
+        return settings.SITE_URL + '/microsite/caseitem/%d' % (item.pk)
+    elif item.__class__ == ProductItem:
+        return settings.SITE_URL + '/microsite/productitem/%d' % (item.pk)
 
 def get_default_msg(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
