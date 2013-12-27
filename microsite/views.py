@@ -240,7 +240,10 @@ def add_edit_contact(request, item_id=None):
                 account = Account.objects.get(user=user)
                 wx = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
                 contact_app = ContactApp.objects.get(wx=wx)
+                max_pos = contact_app.contactitem_set.all().aggregate(Max('position'))
+                position = int(max_pos['position__max'] or 0) + 1
                 item.contact = contact_app
+                item.position = position
             item.save()
             return render(request,'close_page.html')
     else:
@@ -335,7 +338,10 @@ def add_edit_trend(request, item_id=None):
             if item.pk is None:
                 wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 trends_app = TrendsApp.objects.get(wx=wx)
+                max_pos = trends_app.trenditem_set.all().aggregate(Max('position'))
+                position = int(max_pos['position__max'] or 0) + 1
                 item.trend = trends_app
+                item.position = position
             item.pub_time = datetime.now()
             item.save()
             return render(request,'close_page.html')
@@ -367,7 +373,10 @@ def add_edit_team(request, item_id=None):
             if item.pk is None:
                 wx = get_object_or_404(WXAccount, pk=request.session['active_wx_id'])
                 team_app = TeamApp.objects.get(wx=wx)
+                max_pos = team_app.teamitem_set.all().aggregate(Max('position'))
+                position = int(max_pos['position__max'] or 0) + 1
                 item.team = team_app
+                item.position = position
             item.pub_time = datetime.now()
             item.save()
             return render(request,'close_page.html')
@@ -471,7 +480,10 @@ def add_edit_case(request, item_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
+                max_pos = case_app.caseitem_set.all().aggregate(Max('position'))
+                position = int(max_pos['position__max'] or 0) + 1
                 item.case_app= case_app
+                item.position=position
             item.pub_time = datetime.now()
             logger.debug("item picurl %s" % item.case_pic1)
             item.save()
@@ -538,7 +550,10 @@ def add_edit_product(request, item_id=None):
         if form.is_valid():
             item = form.save(commit=False)
             if item.pk is None:
-                item.product_app= product_app
+                max_pos = product_app.productitem_set.all().aggregate(Max('position'))
+                position = int(max_pos['position__max'] or 0) + 1
+                item.product_app = product_app
+                item.position = position
             item.pub_time = datetime.now()
             item.save()
             return render(request,'close_page.html')

@@ -39,14 +39,14 @@
 <div id="margin_bottom">
 <a type="button" class="btn btn-default btn-primary" href="#add_edit_join_item" data-toggle="modal" role="button" target="_blank"><i class="icon-plus icon-white"></i>新增职位</a>
 </div>
-
+{% include "save_item_order.html" %}
 {% if not active_app_specific.enable %}
 {% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id %}
 {% endif %}
 
 <div class="navbar" style="margin-bottom:0;">
     <div class="navbar-inner">
-        <p class="navbar-text">职位名称</p>
+        <p class="navbar-text">招聘职位</p>
     </div>
 </div>
 {% load render_table from django_tables2 %}
@@ -81,49 +81,49 @@
             <div class="control-group">
                 <label class="control-label" for="content1"><span style="color:red;">*</span>工作内容1</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="content1" id="content1"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="content1" id="content1"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="content2">工作内容2</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="content2" id="content2"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="content2" id="content2"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="content3">工作内容3</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="content3" id="content3"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="content3" id="content3"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="content4">工作内容4</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="content4" id="content4"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="content4" id="content4"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="require1"><span style="color:red;">*</span>职位要求1</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="require1" id="require1"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="require1" id="require1"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="require2">职位要求2</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="require2" id="require2"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="require2" id="require2"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="require3">职位要求3</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="require3" id="require3"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="require3" id="require3"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="require4">职位要求4</label>
                 <div class="controls">
-                    <textarea rows="1" class="input-xlarge" name="require4" id="require4"></textarea>
+                    <textarea rows="2" class="input-xlarge" name="require4" id="require4"></textarea>
                 </div>
             </div>
             <input type="hidden" name="id" id="record_id">

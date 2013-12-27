@@ -120,7 +120,7 @@ body {
 
 .joins .join .join-meta p {
     padding: 8px;
-    font-size: 20px;
+    font-size: 15px;
     float: left;
     color: #828282;
 
@@ -431,7 +431,7 @@ a.phone:active div {
 
 .share {
     text-align:center;
-    margin: 25px auto;
+    margin: 15px auto;
     color: #333333;
 }
 

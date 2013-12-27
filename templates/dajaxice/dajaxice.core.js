@@ -58,6 +58,9 @@ var Dajaxice = {
         initial_opiton : function(callback_function, argv, custom_settings) {
             return Dajaxice.call('microsite.initial_opiton', 'POST', callback_function, argv, custom_settings);
         },
+        reorder_items : function(callback_function, argv, custom_settings) {
+            return Dajaxice.call('microsite.reorder_items', 'POST', callback_function, argv, custom_settings);
+        },
     }
 ,
 

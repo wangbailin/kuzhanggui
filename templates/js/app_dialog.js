@@ -10,7 +10,7 @@ var addEditJoinItemCallback = function(data) {
     }
     else{
         type = 'error';
-        $('#add_edit_join_item').button('reset');
+        $('#add_edit_join_item_save').button('reset');
     }
     toast(type, data.ret_msg);
 };

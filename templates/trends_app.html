@@ -3,7 +3,7 @@
 <div id="margin_bottom">
 <a type="button" class="btn btn-default btn-primary" href="/trend/add" target="_blank"><i class="icon-plus icon-white"></i>新增动态</a>
 </div>
-
+{% include "save_item_order.html" %}
 {% if not active_app_specific.enable %}
 {% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}
 {% endif %}

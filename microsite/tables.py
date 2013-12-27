@@ -16,105 +16,114 @@ class HomePageTable(tables.Table):
         orderable = False
 
 class ContactTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="contact_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = ContactItem
-        order_by = '-id'
+        order_by = '-position'
         empty_text = u'暂无联系地址'
         attrs = {'class' : 'table table-striped'}
         orderable = False
-        fields = ('name', 'address', 'fax_code')
+        fields = ('name', 'address', 'fax_code', 'position')
 
 class ContactPeopleTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="contact_people_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = ContactPeople
-        order_by = '-id'
+        order_by = '-position'
         attrs = {'class' : 'table table-striped'}
         orderable = False
         empty_text = u'暂无联系人'
-        fields = ('contact_item', 'name', 'email', 'phone', 'qq')
+        fields = ('contact_item', 'name', 'email', 'phone', 'qq', 'position')
 
 class JoinTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="join_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = JoinItem
-        order_by = '-id'
+        order_by = '-position'
         empty_text = u'暂无职位'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('job_title', 'publish', 'pub_time' )
+        fields = ('job_title', 'publish', 'pub_time', 'position' )
 
 class TrendsTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="trend_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = TrendItem
-        order_by = '-id'
+        order_by = '-position'
         empty_text = u'暂无公司动态'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('title','pub_time','summary')
+        fields = ('title','pub_time','summary', 'position')
 
 class TeamTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="team_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = TeamItem
         empty_text = u'暂无团队成员介绍'
-        order_by = 'id'
+        order_by = 'position'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('name', 'job_title', 'person_digest')
+        fields = ('name', 'job_title', 'person_digest','position')
 
 class CaseItemTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="case_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = CaseItem
-        order_by = '-id'
+        order_by = '-position'
         empty_text = u'暂无成功案例'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('title', 'cls')
+        fields = ('title', 'cls', 'position')
 
 
 class CaseClassTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="case_class_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = CaseClass
-        order_by = '-id'
+        order_by = '-position'
         empty_text = u'暂无案例分类'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('name',)
+        fields = ('name', 'position')
 
 class ProductItemTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="product_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = ProductItem
-        order_by = '-id'
+        order_by = '-position'
         empty_text = u'暂无产品'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('title', 'cls')
+        fields = ('title', 'cls', 'position')
 
 
 class ProductClassTable(tables.Table):
-    id = tables.Column(orderable=True, visible=False)
+    id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="product_class_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
+    position = tables.Column(orderable=True)
     class Meta:
         model = ProductClass
-        order_by = '-id'
+        order_by = '-position'
         empty_text = u'暂无产品分类'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('name',)
+        fields = ('name', 'position')
 
 class MenuTable(tables.Table):
     pages = TemplateColumn(template_name="menu_pages.html", verbose_name=u'页面')

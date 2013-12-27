@@ -16,6 +16,7 @@ from django.utils import simplejson
 from django.db import transaction
 from dajax.core import Dajax
 from django.core.cache import cache
+from django.db.models import Max
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
@@ -101,7 +102,10 @@ def add_edit_contact_people(request, form):
             contactPeople.phone = form.cleaned_data.get('phone')
             contactPeople.save()
         else:
-            ContactPeople.objects.create(contact_item=form.cleaned_data.get('contact_item'), name=form.cleaned_data.get('name'), qq=form.cleaned_data.get('qq'), phone=form.cleaned_data.get('phone'), email=form.cleaned_data.get('email'))
+            contact_item=form.cleaned_data.get('contact_item')
+            max_pos = contact_item.contactpeople_set.all().aggregate(Max('position'))
+            position = int(max_pos['position__max'] or 0) + 1
+            ContactPeople.objects.create(contact_item=contact_item, name=form.cleaned_data.get('name'), qq=form.cleaned_data.get('qq'), phone=form.cleaned_data.get('phone'), email=form.cleaned_data.get('email'),position=position)
         dajax.remove_css_class('#add_edit_contact_people_form.control-group', 'error')
         dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'addEditContactPeopleCallback')
         dajax.redirect(form.cleaned_data.get('tab_id'))
@@ -133,7 +137,11 @@ def add_edit_join_item(request, form):
             joinItem.require4 = form.cleaned_data.get('require4')
             joinItem.save()
         else:
-            JoinItem.objects.create(join_id=form.cleaned_data.get('tab_id'), publish=form.cleaned_data.get('publish'), job_title=form.cleaned_data.get('job_title'), number=form.cleaned_data.get('number'), content1=form.cleaned_data.get('content1'), content2=form.cleaned_data.get('content2'), content3=form.cleaned_data.get('content3'), content4=form.cleaned_data.get('content4'), require1=form.cleaned_data.get('require1'), require2=form.cleaned_data.get('require2'), require3=form.cleaned_data.get('require3'), require4=form.cleaned_data.get('require4'))
+            join_id=form.cleaned_data.get('tab_id')
+            joinapp = JoinApp.objects.get(pk=join_id)
+            max_pos = joinapp.joinitem_set.all().aggregate(Max('position'))
+            position = int(max_pos['position__max'] or 0) + 1
+            JoinItem.objects.create(join_id=join_id, publish=form.cleaned_data.get('publish'), job_title=form.cleaned_data.get('job_title'), number=form.cleaned_data.get('number'), content1=form.cleaned_data.get('content1'), content2=form.cleaned_data.get('content2'), content3=form.cleaned_data.get('content3'), content4=form.cleaned_data.get('content4'), require1=form.cleaned_data.get('require1'), require2=form.cleaned_data.get('require2'), require3=form.cleaned_data.get('require3'), require4=form.cleaned_data.get('require4'), position=position)
         dajax.remove_css_class('#add_edit_join_item_form.control-group', 'error')
         dajax.add_data({ 'ret_code' : 0, 'ret_msg' : 'success' }, 'addEditJoinItemCallback')
         dajax.redirect(form.cleaned_data.get('tab_id'))
@@ -156,7 +164,11 @@ def add_case_class(request, form):
                 dajax.add_css_class('#%s' % error, 'error')
             dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '最多只能添加4个分类！' }, 'addCaseClassCallback')
         else:
-            CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
+            case_app_id = form.cleaned_data.get('tab_id')
+            caseapp = CaseApp.objects.get(pk=case_app_id)
+            max_pos = caseapp.caseclass_set.all().aggregate(Max('position'))
+            position = int(max_pos['position__max'] or 0) + 1
+            CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=case_app_id, pub_time=datetime.datetime.now(),position=position)
             dajax.remove_css_class('#add_case_class_form .control-group', 'error')
             dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addCaseClassCallback')
             dajax.redirect(form.cleaned_data.get('tab_id'))
@@ -181,7 +193,11 @@ def add_product_class(request, form):
                 dajax.add_css_class('#%s' % error, 'error')
             dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '最多只能添加4个分类！' }, 'addProductClassCallback')
         else:
-            ProductClass.objects.create(name=form.cleaned_data.get('name'), product_app_id=form.cleaned_data.get('tab_id'), pub_time=datetime.datetime.now())
+            product_app_id=form.cleaned_data.get('tab_id')
+            productapp = ProductApp.objects.get(pk=product_app_id)
+            max_pos = productapp.productclass_set.all().aggregate(Max('position'))
+            position = int(max_pos['position__max'] or 0) + 1
+            ProductClass.objects.create(name=form.cleaned_data.get('name'), product_app_id=product_app_id, pub_time=datetime.datetime.now(), position=position)
             dajax.remove_css_class('#add_product_class_form .control-group', 'error')
             dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addProductClassCallback')
             dajax.redirect(form.cleaned_data.get('tab_id'))
@@ -385,4 +401,35 @@ def initial_opiton(request):
 
     return dajax.json()
 
-
+@dajaxice_register
+def reorder_items(request, items):
+    dajax = Dajax()
+    try:
+        for item in items:
+            if item[0] == "JoinItem" :
+                JoinItem.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "TrendItem":
+                TrendItem.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "CaseClass":
+                CaseClass.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "CaseItem":
+                CaseItem.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "ProductClass":
+                ProductClass.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "ProductItem":
+                ProductItem.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "TeamItem":
+                TeamItem.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "ContactItem":
+                ContactItem.objects.filter(pk=item[1]).update(position=item[2])
+            elif item[0] == "ContactPeople":
+                ContactPeople.objects.filter(pk=item[1]).update(position=item[2])
+            else:
+                dajax.add_data({'ret_code ': 1001, 'ret_msg' : '数据出错，请稍后再试'},'reorderItemCallback')
+    except Exception as e:
+        logger.exception("reorder_pages error")
+        dajax.add_data({'ret_code' : 1000, 'ret_msg' : '保存失败'},'reorderItemCallback')
+        raise e
+    else:
+        dajax.add_data({'ret_code' : 0, 'ret_msg' : '保存成功！'},'reorderItemCallback')
+    return dajax.json()

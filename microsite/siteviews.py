@@ -22,9 +22,9 @@ def get_home_info(subpage):
     else:
         return (get_page_url(subpage), subpage._get_icon(), subpage._get_tab_name())
 
-def get_footer(obj):
+def get_footer(id):
     try:
-        page = get_object_or_404(Page, pk=obj.pk)
+        page = get_object_or_404(Page, pk=id)
         homepage = ContentType.objects.get_for_model(HomePage).get_object_for_this_type(wx=page.wx)
     except:
         return None
@@ -66,7 +66,7 @@ def homepage(request, item_id):
     return homepage_(request, homepage)
 
 def intro_(request, intropage):
-    homepage_id=get_footer(intropage)
+    homepage_id=get_footer(intropage.pk)
     return render(request, 'microsite/contentpage.html', {'title':intropage.title, 'content':intropage.content, 'homepage_id':homepage_id, 'theme': site_templates[intropage.wx.wsite_template].site_template})
 def intro(request, item_id):
     intropage = get_object_or_404(IntroPage, pk=item_id)
@@ -81,8 +81,8 @@ def business(request, item_id):
     return business_(request, business_page)
 
 def join_(request, joinapp):
-    homepage_id=get_footer(joinapp)
-    joinitems = JoinItem.objects.filter(join=joinapp, publish=True).order_by("-pub_time")
+    homepage_id=get_footer(joinapp.pk)
+    joinitems = JoinItem.objects.filter(join=joinapp, publish=True).order_by("-position")
     pic_url = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
     if joinapp.pic:
         pic_url = joinapp.pic.url
@@ -96,7 +96,7 @@ def join(request, item_id):
     return join_(request, joinapp)
 
 def help_(request, helppage):
-    homepage_id=get_footer(helppage)
+    homepage_id=get_footer(helppage.pk)
     return render(request, 'microsite/contentpage.html', {'title':helppage.title, 'content':helppage.content, 'homepage_id':homepage_id, 'theme': site_templates[helppage.wx.wsite_template].site_template})
 
 def help(request, item_id):
@@ -104,7 +104,7 @@ def help(request, item_id):
     return help_(request, helppage)
 
 def content_(request, content_page):
-    homepage_id=get_footer(content_page)
+    homepage_id=get_footer(content_page.pk)
     return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content, 'homepage_id':homepage_id, 'theme': site_templates[content_page.wx.wsite_template].site_template})
 def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
@@ -119,7 +119,7 @@ def weibo(request, item_id):
 
 def trend_(request, trendapp):
     homepage_id=get_footer(trendapp)
-    trenditems = TrendItem.objects.filter(trend=trendapp).order_by("-pub_time")
+    trenditems = TrendItem.objects.filter(trend=trendapp).order_by("-position")
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
@@ -134,8 +134,8 @@ def trend(request, item_id):
     return trend_(request, trendapp)
 
 def team_(request, teamapp):
-    homepage_id=get_footer(teamapp)
-    teamitems = TeamItem.objects.filter(team=teamapp).order_by("pub_time")
+    homepage_id=get_footer(teamapp.pk)
+    teamitems = TeamItem.objects.filter(team=teamapp).order_by("-position")
     items = []
     for i in teamitems:
         logger.debug("one team name %s" % i.name)
@@ -167,7 +167,7 @@ def joinitem_(request, joinitem):
     if joinitem.require4:
         requires.append(joinitem.require4)
     logger.debug("%s" % str(requires))
-    homepage_id=get_footer(joinitem)
+    homepage_id=get_footer(joinitem.join.pk)
     return render(request, 'microsite/joinitempage.html', {'job_title':joinitem.job_title, 'number':joinitem.number, 'pub_time': joinitem.pub_time, 'contents':contents, 'requires':requires, 'homepage_id':homepage_id, 'theme': site_templates[joinitem.join.wx.wsite_template].site_template})
 def joinitem(request, item_id):
     joinitem = get_object_or_404(JoinItem, pk=item_id)
@@ -175,7 +175,7 @@ def joinitem(request, item_id):
     return joinitem_(request, joinitem)
 
 def trenditem_(request, trenditem):
-    homepage_id=get_footer(trenditem)
+    homepage_id=get_footer(trenditem.trend.pk)
     return render(request, 'microsite/contentpage.html', {'title':trenditem.title, 'content':trenditem.content.encode("utf8"), 'homepage_id':homepage_id, 'theme': site_templates[trenditem.trend.wx.wsite_template].site_template})
 def trenditem(request, item_id):
     trenditem = get_object_or_404(TrendItem, pk=item_id)
@@ -183,7 +183,7 @@ def trenditem(request, item_id):
     return trenditem_(request, trenditem)
 
 def teamitem_(request, teamitem):
-    homepage_id=get_footer(teamitem)
+    homepage_id=get_footer(teamitem.team.pk)
     picture_url = teamitem.picture.url
     item = (teamitem.name, '/microsite/teamitem/%s' % teamitem.id, teamitem.job_title, picture_url, teamitem.person_digest)
     return render(request, 'microsite/teamitempage.html', {'title':teamitem.name, 'item':item, 'content':teamitem.person_content.encode("utf8"), 'homepage_id':homepage_id, 'theme': site_templates[teamitem.team.wx.wsite_template].site_template})
@@ -193,8 +193,8 @@ def teamitem(request, item_id):
     return teamitem_(request, teamitem)
 
 def case_(request, caseapp, class_id):
-    homepage_id=get_footer(caseapp)
-    caseclasses = CaseClass.objects.filter(case_app=caseapp)
+    homepage_id=get_footer(caseapp.pk)
+    caseclasses = CaseClass.objects.filter(case_app=caseapp).order_by("-position")
 
     if class_id:
         caseclass = get_object_or_404(CaseClass, pk=class_id)
@@ -236,7 +236,7 @@ def case(request, item_id, class_id=None):
     return case_(request, caseapp, class_id)
 
 def caseitem_(request, caseitem):
-    homepage_id=get_footer(caseitem)
+    homepage_id=get_footer(caseitem.case_app.pk)
     pics = []
     if caseitem.case_pic1:
         pics.append(caseitem.case_pic1.url)
@@ -256,8 +256,8 @@ def caseitem(request, item_id):
     return caseitem_(request, caseitem)
 
 def product_(request, papp, class_id):
-    homepage_id=get_footer(papp)
-    pclasses = ProductClass.objects.filter(product_app=papp)
+    homepage_id=get_footer(papp.pk)
+    pclasses = ProductClass.objects.filter(product_app=papp).order_by("-position")
     if class_id:
         pclass = get_object_or_404(ProductClass, pk=class_id)
     else:
@@ -298,7 +298,7 @@ def product(request, item_id, class_id=None):
     return product_(request, papp, class_id)
 
 def productitem_(request, pitem):
-    homepage_id=get_footer(pitem)
+    homepage_id=get_footer(pitem.product_app.pk)
     pics = []
     if pitem.product_pic1:
         pics.append(pitem.product_pic1.url)
@@ -318,8 +318,8 @@ def productitem(request, item_id):
     return productitem_(request, pitem)
 
 def contact_(request, app):
-    homepage_id=get_footer(app)
-    items = ContactItem.objects.filter(contact=app)
+    homepage_id=get_footer(app.pk)
+    items = ContactItem.objects.filter(contact=app).order_by("-position")
     infos = []
     for item in items:
         contact_peoples = ContactPeople.objects.filter(contact_item=item)

@@ -232,6 +232,7 @@ class CaseClass(models.Model):
     case_app = models.ForeignKey(CaseApp, verbose_name=u'案例')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'case_class'
@@ -253,6 +254,7 @@ class CaseItem(models.Model):
     case_pic3 = models.ImageField(u"案例截图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     case_pic4 = models.ImageField(u"案例截图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     case_intro = models.TextField(u"案例介绍")
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'case_item'
@@ -272,6 +274,7 @@ class JoinItem(models.Model):
     require2 = models.TextField(u'职位要求2', blank=True)
     require3 = models.TextField(u'职位要求3', blank=True)
     require4 = models.TextField(u'职位要求4', blank=True)
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u"join_item"
@@ -297,6 +300,7 @@ class ProductClass(models.Model):
     product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'product_class'
@@ -318,6 +322,7 @@ class ProductItem(models.Model):
     product_pic3 = models.ImageField(u"产品截图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     product_pic4 = models.ImageField(u"产品截图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     product_intro = models.TextField(u"产品介绍")
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'product_item'
@@ -332,6 +337,7 @@ class TrendItem(models.Model):
     content = models.TextField(u'内容')
     cover = models.ImageField(u'封面', storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
     summary = models.CharField(u'摘要', max_length=255, blank=True)
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u"trend_item"
@@ -345,6 +351,7 @@ class TeamItem(models.Model):
     picture = models.ImageField(u"照片", storage=baidu_storage, upload_to='upload/', max_length=255)
     person_digest = models.CharField(u'简要介绍', max_length=255)
     person_content = models.TextField(u'详细介绍')
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u"team_item"
@@ -358,6 +365,7 @@ class ContactItem(models.Model):
     address = models.CharField(u'具体地址', max_length=200)
     mail_code = models.CharField(u'邮政编码', max_length=20, blank=True)
     fax_code = models.CharField(u'传真号码', max_length=30, blank=True)
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'contact_item'
@@ -371,6 +379,7 @@ class ContactPeople(models.Model):
     email = models.CharField(u'联系邮箱', max_length=50, blank=True)
     phone = models.CharField(u'联系电话', max_length=20)
     qq = models.CharField(u'QQ', max_length=20, blank=True)
+    position = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'contact_people'

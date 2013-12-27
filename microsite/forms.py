@@ -95,8 +95,9 @@ class IntroPageForm(ModelForm):
 class JoinAppForm(ModelForm):
     icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), help_text=u"建议图片大小为190px*235px")
     pic = forms.ImageField(label=u'焦点图', widget=AjaxClearableFileInput(), required=False)
+    front_words = forms.CharField(label=u'开场语', widget=forms.Textarea(attrs={'rows':4}))
     contact = forms.CharField(label=u'联系方式', widget=forms.TextInput(attrs={'placeholder':u'邮箱或电话'}))
-    end_words = forms.CharField(label=u'结束语', widget=forms.Textarea(attrs={'placeholder':'期待你的加入！'}), required=False)
+    end_words = forms.CharField(label=u'结束语', widget=forms.Textarea(attrs={'placeholder':'期待你的加入！','rows':4}), required=False)
     class Meta:
         model = JoinApp
         fields = (
@@ -112,14 +113,14 @@ class JoinAppForm(ModelForm):
 class JoinItemForm(ModelForm):
     id = forms.CharField(required=False)
     tab_id = forms.CharField()
-    content1 = forms.CharField(label=u'工作内容1', widget=forms.Textarea(attrs={'rows':1}))
-    content2 = forms.CharField(label=u'工作内容2', widget=forms.Textarea(attrs={'rows':1}), required=False)
-    content3 = forms.CharField(label=u'工作内容3', widget=forms.Textarea(attrs={'rows':1}), required=False)
-    content4 = forms.CharField(label=u'工作内容4', widget=forms.Textarea(attrs={'rows':1}), required=False)
-    require1 = forms.CharField(label=u'职位要求1', widget=forms.Textarea(attrs={'rows':1}))
-    require2 = forms.CharField(label=u'职位要求2', widget=forms.Textarea(attrs={'rows':1}), required=False)
-    require3 = forms.CharField(label=u'职位要求3', widget=forms.Textarea(attrs={'rows':1}), required=False)
-    require4 = forms.CharField(label=u'职位要求4', widget=forms.Textarea(attrs={'rows':1}), required=False)
+    content1 = forms.CharField(label=u'工作内容1', widget=forms.Textarea(attrs={'rows':2}))
+    content2 = forms.CharField(label=u'工作内容2', widget=forms.Textarea(attrs={'rows':2}), required=False)
+    content3 = forms.CharField(label=u'工作内容3', widget=forms.Textarea(attrs={'rows':2}), required=False)
+    content4 = forms.CharField(label=u'工作内容4', widget=forms.Textarea(attrs={'rows':2}), required=False)
+    require1 = forms.CharField(label=u'职位要求1', widget=forms.Textarea(attrs={'rows':2}))
+    require2 = forms.CharField(label=u'职位要求2', widget=forms.Textarea(attrs={'rows':2}), required=False)
+    require3 = forms.CharField(label=u'职位要求3', widget=forms.Textarea(attrs={'rows':2}), required=False)
+    require4 = forms.CharField(label=u'职位要求4', widget=forms.Textarea(attrs={'rows':2}), required=False)
     class Meta:
         model = JoinItem
         fields = (
