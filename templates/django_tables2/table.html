@@ -23,10 +23,12 @@
             $(".up").first().addClass("disabled");
             $(".down").last().addClass("disabled");
         });
-        $(".up").first().addClass("disabled");
-        $(".down").last().addClass("disabled");
-        $(".position").attr("style","display:none")
-        $(".reorder-items").attr("style","display:none")
+        $("table").each(function(){
+            $(".up").first().addClass("disabled");
+            $(".down").last().addClass("disabled");
+            $(".position").attr("style","display:none");
+            $(".reorder-items").attr("style","display:none");
+        })
 
     });
         $(".save-items-order").click(function(){
