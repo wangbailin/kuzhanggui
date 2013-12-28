@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
+from django.db.models import Max
 
 from forms import *
 from models import *

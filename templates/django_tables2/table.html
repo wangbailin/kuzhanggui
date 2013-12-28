@@ -24,12 +24,11 @@
             $(".down").last().addClass("disabled");
         });
         $("table").each(function(){
-            $(".up").first().addClass("disabled");
-            $(".down").last().addClass("disabled");
-            $(".position").attr("style","display:none");
-            $(".reorder-items").attr("style","display:none");
+            $(this).find(".up").first().addClass("disabled");
+            $(this).find(".down").last().addClass("disabled");
+            $(this).find(".position").attr("style","display:none");
         })
-
+        $(".reorder-items").attr("style","display:none");
     });
         $(".save-items-order").click(function(){
             var items = new Array();
