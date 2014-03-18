@@ -515,7 +515,7 @@ class Menu(models.Model):
         return result
 
     def __unicode__(self):
-        return self.page.tab_name
+        return self.name
 
 class PageGroup(models.Model):
     menu = models.ForeignKey(Menu)
