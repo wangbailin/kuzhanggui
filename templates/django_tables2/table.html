@@ -1,6 +1,9 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $(".up,.down").click(function(){
+            if($(this).hasClass("disabled")){
+                return;
+            }
             if (!$(this).hasClass("disabled")){
                 $(".reorder-items").fadeIn(3000);
             }

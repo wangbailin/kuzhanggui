@@ -61,9 +61,13 @@ def index(request, wx):
                 walluser.wall_item_id='0'
                 walluser.save() 
                 r.rpush('userList', message['FromUserName'])
+                wxlogger.info("我要订阅")
             if message['MsgType'] == 'text' or message['MsgType'] == 'image' or message['MsgType'] == 'voice':
+                wxlogger.info("我想上墙")
+                wxlogger.info(len(WallUser.objects.filter(wx=wx_account, openid=message['FromUserName'])))
                 if not len(WallUser.objects.filter(wx=wx_account, openid=message['FromUserName']))==0:
                     walluser = WallUser.objects.filter(wx=wx_account, openid=message['FromUserName'])[0]
+                    #wxlogger.info('walluser is %s' % message['FromUserName'])
                     if not walluser.wall_item_id == '0':#说明上墙了
                         #对上墙活动的进行时间进行判断，有可能上墙了但活动已经结束了
                         wallitem = WallItem.objects.filter(id=walluser.wall_item_id)
@@ -110,12 +114,14 @@ def index(request, wx):
                         else:
                             walluser.wall_item_id = '0'
                             walluser.save()
+                            wxlogger.info("活动已经结束超过10分钟，您已经被系统退出上墙。")
                             reply_str = "活动已经结束超过10分钟，您已经被系统退出上墙。"
                             reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
                             return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
                     else:#说明没有上墙
                         if message['MsgType'] == 'text':
                             wxlogger.info(message)
+                            wxlogger.info("说明没有上墙")
                             if not len(WallItem.objects.filter(wx=wx_account)) == 0:#说明该微信号有微信墙活动
                                 for wallitem in WallItem.objects.filter(wx=wx_account):
                                     if message['Content']==wallitem.keyword:#说明有上墙的关键字
@@ -145,10 +151,10 @@ def index(request, wx):
                 else:
                     wxlogger.info("%s", router_reply.data)
             else:
-                #wxlogger.info("router error %s router reply %s" % (str(router_error), str(router_reply)))
-                #reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, u"上墙文字发送错喽，请重新发一次吧。 ")
-                #return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
-                return HttpResponse('<xml></xml>', content_type="application/xml")
+                wxlogger.info("router error %s router reply %s" % (str(router_error), str(router_reply)))
+                reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, u"抱歉，我不是很明白")
+                return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
+                #return HttpResponse('<xml></xml>', content_type="application/xml")
         except:
             wxlogger.error(traceback.format_exc())
             reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, u"抱歉，我不是很明白。")

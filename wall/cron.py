@@ -195,6 +195,8 @@ def get_all_info(wx_id):
         app_secret = wall_accesstoken.app_secret
         if accesstoken == "":
             accesstoken = get_new_accesstoken(app_id, app_secret)
+            wall_accesstoken.access_token=accesstoken
+            wall_accesstoken.save()
         #用用户分组管理接口测试accesstoken
         url_test = "https://api.weixin.qq.com/cgi-bin/groups/get?access_token=%s"  % accesstoken
         url_test = str(url_test)
@@ -204,13 +206,20 @@ def get_all_info(wx_id):
                 logger.info('accesstoken is useful')
             else:
                 logger.info('accesstoken is not useful')
+                accesstoken = get_new_accesstoken(app_id, app_secret)
+                wall_accesstoken.access_token=accesstoken
+                wall_accesstoken.save()
         except:
             accesstoken = get_new_accesstoken(app_id, app_secret)
+            wall_accesstoken.access_token=accesstoken
+            wall_accesstoken.save()
             logger.info('get a new  accesstoken')
         url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s" % accesstoken
         url = str(url)
         userlist = crawl(url)
+        logger.info(userlist)
         total = userlist['total']
+        logger.info('接口已被授权')
         #最多一万，以后可以补上
         if total:
             total = int(total)
@@ -222,12 +231,12 @@ def get_all_info(wx_id):
             for openid in openids:
                 try:
                     fetch_one_info(wx_id, openid)
-                    num+1
+                    num = num + 1
                     logger.info('sucess %s' % openid)
                     logger.info('total is %d ,doing %d and success %d' % (count, num, num ))
                 except:
                     logger.info('fail %s' % openid)
-                    num+1
+                    num = num + 1
                     logger.info('total is %d ,doing %d and fail %d' % (count, num, num ))
                     pass
     except:

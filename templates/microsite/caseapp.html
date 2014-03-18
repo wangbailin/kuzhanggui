@@ -33,7 +33,7 @@
                 {% for item in row %}
                 <td>
                     <a href="/microsite/caseitem/{{ item.0.pk }}">
-                        <div class="case" style="background-image: url('{{ item.1 }}')">
+                        <div class="case" style="background-image: url('{{ item.1 }}'); background-size: cover;">
                             <div class="title">{{ item.0.title }}</div>
                         </div>
                     </a>
