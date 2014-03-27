@@ -1,4 +1,3 @@
-PASSWORD:=root
 
 REBUILD_SQL="drop database rocket; \
 			create database rocket;"

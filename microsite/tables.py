@@ -6,6 +6,7 @@ import django_tables2 as tables
 from django.contrib.contenttypes.models import ContentType
 from models import ContactApp, JoinApp, TrendsApp, ContactItem, JoinItem, TrendItem, TeamItem, ContactPeople, CaseItem, CaseClass, ProductItem, ProductClass, Menu
 from django_tables2.columns import DateTimeColumn, TemplateColumn
+from django.utils.safestring import mark_safe
 
 logger = logging.getLogger("default")
 
@@ -43,6 +44,11 @@ class JoinTable(tables.Table):
     id = tables.Column(orderable=False, visible=False)
     ops = TemplateColumn(template_name="join_ops.html",verbose_name=u"操作",orderable=False,attrs={"class":"ops"})
     position = tables.Column(orderable=True)
+
+    def render_publish(self, record):
+        icon = "icon-ok" if record.publish else "icon-remove"
+        return mark_safe("<i class='" + icon + "'></i>")
+
     class Meta:
         model = JoinItem
         order_by = '-position'
