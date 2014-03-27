@@ -1,3 +1,4 @@
+python-memcached
 pyyaml
 ua-parser
 user-agents
@@ -9,3 +10,6 @@ django-dajaxice
 django-cronjobs
 django-chartit
 django-dajax
+pillow
+redis
+requests
