@@ -253,6 +253,14 @@ LOGGING = {
             'backupCount': 0,
             'formatter':'standard',
         },
+        'django': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(PROJECT_ROOT + '/logs/','django.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter':'standard',
+        }
     },
     'loggers': {
         'django.request': {
@@ -290,5 +298,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+        'django': {
+            'handlers': ['django'],
+            'level': DEBUG,
+            'propagate': False
+
+        }
     }
 }
