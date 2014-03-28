@@ -135,7 +135,7 @@ def trend(request, item_id):
 
 def team_(request, teamapp):
     homepage_id=get_footer(teamapp.pk)
-    teamitems = TeamItem.objects.filter(team=teamapp).order_by("-position")
+    teamitems = TeamItem.objects.filter(team=teamapp).order_by("position")
     items = []
     for i in teamitems:
         logger.debug("one team name %s" % i.name)

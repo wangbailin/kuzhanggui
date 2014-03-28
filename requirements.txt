@@ -1,0 +1,15 @@
+python-memcached
+pyyaml
+ua-parser
+user-agents
+django-user-agents
+django-datetime-widget
+django-tables2
+django_select2
+django-dajaxice
+django-cronjobs
+django-chartit
+django-dajax
+pillow
+redis
+requests

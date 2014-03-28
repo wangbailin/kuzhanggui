@@ -56,7 +56,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = False
+USE_TZ = True
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.normpath(__file__)))
 # Absolute filesystem path to the directory that will hold user-uploaded files.
@@ -253,6 +253,14 @@ LOGGING = {
             'backupCount': 0,
             'formatter':'standard',
         },
+        'django': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(PROJECT_ROOT + '/logs/','django.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter':'standard',
+        }
     },
     'loggers': {
         'django.request': {
@@ -290,5 +298,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+        'django': {
+            'handlers': ['django'],
+            'level': DEBUG,
+            'propagate': False
+
+        }
     }
 }
