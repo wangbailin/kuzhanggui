@@ -1,3 +1,4 @@
+django==1.5.4
 python-memcached
 pyyaml
 ua-parser
@@ -13,3 +14,4 @@ django-dajax
 pillow
 redis
 requests
+mysql-python
