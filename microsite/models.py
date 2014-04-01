@@ -13,7 +13,6 @@ from rocket import settings
 from microsite import consts
 from baidu_yun.storage import BaiduYunStorage
 
-baidu_storage = BaiduYunStorage()
 
 class Page(models.Model):
     enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
@@ -21,8 +20,8 @@ class Page(models.Model):
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
     tab_name = models.CharField(u'页面名称', max_length=20)
     template_name = models.CharField(u'template的文件路径', max_length=260)
-    icon = models.ImageField(u"图标", storage=baidu_storage, upload_to='upload/', help_text=u"建议图片大小为190px*235px", max_length=255, blank=True)
-    message_cover = models.ImageField(u"消息封面", storage=baidu_storage, upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
+    icon = models.ImageField(u"图标", upload_to='upload/', help_text=u"建议图片大小为190px*235px", max_length=255, blank=True)
+    message_cover = models.ImageField(u"消息封面", upload_to='upload/', help_text=u"微信返回消息的封面，建议图片宽度大于640像素", max_length=255, blank=True)
     message_description = models.TextField(u"消息内容", help_text=u"微信返回消息的内容", max_length=1000, blank=True)
     position = models.IntegerField(default = 0)
 
@@ -86,16 +85,16 @@ class HomePage(Page):
     for k,v in site_templates.items():
         choices.append( (k, v.name) )
     template_type = models.IntegerField(u'模板类型', choices=choices, default = 1)
-    pic1 = models.ImageField(u"焦点图1", storage=baidu_storage, upload_to='upload/', max_length=255)
+    pic1 = models.ImageField(u"焦点图1", upload_to='upload/', max_length=255)
     exp1 = models.CharField(u"焦点图1注释", max_length=255, blank=True)
     link1 = models.CharField(u"焦点图1链接页面", max_length=255, blank=True)
-    pic2 = models.ImageField(u"焦点图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    pic2 = models.ImageField(u"焦点图2", upload_to='upload/', max_length=255, blank=True)
     exp2 = models.CharField(u"焦点图2注释", max_length=255, blank=True)
     link2 = models.CharField(u"焦点图2链接页面", max_length=255, blank=True)
-    pic3 = models.ImageField(u"焦点图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    pic3 = models.ImageField(u"焦点图3", upload_to='upload/', max_length=255, blank=True)
     exp3 = models.CharField(u"焦点图3注释", max_length=255, blank=True)
     link3 = models.CharField(u"焦点图3链接页面", max_length=255, blank=True)
-    pic4 = models.ImageField(u"焦点图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    pic4 = models.ImageField(u"焦点图4", upload_to='upload/', max_length=255, blank=True)
     exp4 = models.CharField(u"焦点图4注释", max_length=255, blank=True)
     link4 = models.CharField(u"焦点图4链接页面", max_length=255, blank=True)
 
@@ -131,7 +130,7 @@ class IntroPage(Page):
 
 class JoinApp(App):
     title = models.CharField(u'标题', max_length=50)
-    pic = models.ImageField(u"焦点图", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    pic = models.ImageField(u"焦点图", upload_to='upload/', max_length=255, blank=True)
     front_words = models.TextField(u'开场语', blank=True)
     contact = models.CharField(u'联系方式', max_length=50)
     end_words = models.TextField(u'结束语', blank=True)
@@ -249,10 +248,10 @@ class CaseItem(models.Model):
     cls = models.ForeignKey(CaseClass, verbose_name=u'分类', blank=True, null=True)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
     title = models.CharField(u'案例名称', max_length=100)
-    case_pic1 = models.ImageField(u"案例截图1", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
-    case_pic2 = models.ImageField(u"案例截图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
-    case_pic3 = models.ImageField(u"案例截图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
-    case_pic4 = models.ImageField(u"案例截图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    case_pic1 = models.ImageField(u"案例截图1", upload_to='upload/', max_length=255, blank=True)
+    case_pic2 = models.ImageField(u"案例截图2", upload_to='upload/', max_length=255, blank=True)
+    case_pic3 = models.ImageField(u"案例截图3", upload_to='upload/', max_length=255, blank=True)
+    case_pic4 = models.ImageField(u"案例截图4", upload_to='upload/', max_length=255, blank=True)
     case_intro = models.TextField(u"案例介绍")
     position = models.IntegerField(default=0)
 
@@ -317,10 +316,10 @@ class ProductItem(models.Model):
     cls = models.ForeignKey(ProductClass, verbose_name=u'分类', blank=True, null=True)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
     title = models.CharField(u'产品名称', max_length=100)
-    product_pic1 = models.ImageField(u"产品截图1", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
-    product_pic2 = models.ImageField(u"产品截图2", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
-    product_pic3 = models.ImageField(u"产品截图3", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
-    product_pic4 = models.ImageField(u"产品截图4", storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    product_pic1 = models.ImageField(u"产品截图1", upload_to='upload/', max_length=255, blank=True)
+    product_pic2 = models.ImageField(u"产品截图2", upload_to='upload/', max_length=255, blank=True)
+    product_pic3 = models.ImageField(u"产品截图3", upload_to='upload/', max_length=255, blank=True)
+    product_pic4 = models.ImageField(u"产品截图4", upload_to='upload/', max_length=255, blank=True)
     product_intro = models.TextField(u"产品介绍")
     position = models.IntegerField(default=0)
 
@@ -335,7 +334,7 @@ class TrendItem(models.Model):
     pub_time = models.DateTimeField(u'日期', auto_now_add=True)
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
-    cover = models.ImageField(u'封面', storage=baidu_storage, upload_to='upload/', max_length=255, blank=True)
+    cover = models.ImageField(u'封面', upload_to='upload/', max_length=255, blank=True)
     summary = models.CharField(u'摘要', max_length=255, blank=True)
     position = models.IntegerField(default=0)
 
@@ -348,7 +347,7 @@ class TeamItem(models.Model):
     pub_time = models.DateTimeField(u'日期', auto_now_add=True)
     name = models.CharField(u'姓名', max_length=100)
     job_title = models.CharField(u'职位名称', max_length=100)
-    picture = models.ImageField(u"照片", storage=baidu_storage, upload_to='upload/', max_length=255)
+    picture = models.ImageField(u"照片", upload_to='upload/', max_length=255)
     person_digest = models.CharField(u'简要介绍', max_length=255)
     person_content = models.TextField(u'详细介绍')
     position = models.IntegerField(default=0)
