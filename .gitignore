@@ -1,6 +1,7 @@
 *.py[cod]
 *.swp
 nohup.out
+.DS_Store
 
 # C extensions
 *.so
