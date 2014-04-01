@@ -6,3 +6,8 @@
 .navbar .brand {
     padding-top: 12px !important;
 }
+
+body, button, a {
+    font-family: Helvetica, "微软雅黑";
+}
+
