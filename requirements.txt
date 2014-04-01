@@ -1,3 +1,4 @@
+django==1.5.4
 python-memcached
 pyyaml
 simplejson #Django打算弃用simplejson改用json，目前采用json的话，django_chartit会不好用
@@ -14,3 +15,4 @@ django-dajax
 pillow
 redis
 requests
+mysql-python
