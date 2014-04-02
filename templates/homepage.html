@@ -3,7 +3,29 @@
         $(".error").hide();
 
         Dajaxice.microsite.homepage_available_options(function(data) {
-            console.log(data); 
+            console.log(data);
+            var links = data.links;
+            var options = data.options;
+            options.unshift({
+                name: "选择链接",
+                url: "#"
+            });
+            for(var i = 0; i < 4; i++) {
+                $select = $("#id_link" + (i + 1));
+                var html = "";
+                for(var j = 0; j < options.length; j++) {
+                    var option = options[j];
+                    if(option.url === links[i]) {
+                        html += "<option selected='selected' " + 
+                                    "value='" + option.url + "'>" + 
+                                    option.name+ "</option>";
+                    } else {
+                        html += "<option value='" + option.url + "'>" + 
+                                    option.name+ "</option>";
+                    }
+                }
+                $select.html(html);
+            }
         });
         
         $("select").focus(function(){

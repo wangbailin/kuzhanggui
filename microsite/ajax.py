@@ -371,31 +371,35 @@ def homepage_available_options(request):
             homepage = page.cast()
             links = [homepage.link1, homepage.link2, homepage.link3, homepage.link4]
         if page.real_type == ContentType.objects.get_for_model(TrendsApp):
-            items = page.cast().trenditem_set.all()
+            page = page.cast()
+            items = page.trenditem_set.all()
             for item in items:
                 options.append({
-                    "name": '-' + item.title, 
+                    "name": page.tab_name + '--' + item.title, 
                     "url": get_item_url(item)
                 })
         elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-            items = page.cast().caseitem_set.all()
+            page = page.cast()
+            items = page.caseitem_set.all()
             for item in items:
                 options.append({
-                    "name": '-' + item.title, 
+                    "name": page.tab_name + '--' + item.title, 
                     "url": get_item_url(item)
                 })
         elif page.real_type == ContentType.objects.get_for_model(JoinApp):
-            items = page.cast().joinitem_set.all()
+            page = page.cast()
+            items = page.joinitem_set.all()
             for item in items:
                 options.append({
-                    "name": '-' + item.job_title, 
+                    "name": page.tab_name + '--' + item.job_title, 
                     "url": get_item_url(item)
                 })
         elif page.real_type == ContentType.objects.get_for_model(ProductApp):
-            items = page.cast().productitem_set.all()
+            page = page.cast()
+            items = page.productitem_set.all()
             for item in items:
                 options.append({
-                    "name": '-' + item.title, 
+                    "name": page.tab_name + '--' + item.title, 
                     "url": get_item_url(item)
                 })
 
