@@ -87,7 +87,14 @@ def settings(request, active_tab_id = None):
     if active_tab_id > len(tabs):
         active_tab_id = 0
     apps = get_apps(request)
-    return render(request, "settings.html", {"tabs":tabs, "active_tab_id":active_tab_id, 'page':tabs[active_tab_id][0], 'f':tabs[active_tab_id][1], 'apps':apps, 'active_side_id':-1})
+    return render(request, "settings.html", {
+        "tabs":tabs, 
+        "active_tab_id":active_tab_id, 
+        'page':tabs[active_tab_id][0], 
+        'f':tabs[active_tab_id][1], 
+        'apps':apps, 
+        'active_side_id':-1
+    })
 
 @cal_time
 @login_required

@@ -1,23 +1,11 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $(".error").hide();
-        Dajaxice.microsite.initial_opiton(Dajax.process);
-        $("#link1").change(function(){
-            var value = $(this).val();
-            $("#id_link1").val(value);
+
+        Dajaxice.microsite.homepage_available_options(function(data) {
+            console.log(data); 
         });
-        $("#link2").change(function(){
-            var value = $(this).val();
-            $("#id_link2").val(value);
-        });
-        $("#link3").change(function(){
-            var value = $(this).val();
-            $("#id_link3").val(value);
-        });
-        $("#link4").change(function(){
-            var value = $(this).val();
-            $("#id_link4").val(value);
-        });
+        
         $("select").focus(function(){
             var pic_display = $(this).parents("tr:first").prevAll("tr:eq(1)").find("div[class='ajax-upload-preview-area']").css("display");
             if(pic_display == 'none'){
@@ -25,9 +13,6 @@
                 return;
             }
         });
-        $("select").blur(function(){
-            $(this).next(".error").hide();
-        })
     });
 </script>
 
@@ -42,20 +27,16 @@
     <tr><th><span style="color:red;">*</span>{{ form.template_type.label }}</th><td>{{ form.template_type }}{{ form.template_type.errors }}</td></tr>
     <tr><th><span style="color:red;">*</span>{{ form.pic1.label }}</th><td>{{ form.pic1 }}<span class="help-inline">{{form.pic1.help_text}}</span>{{ form.pic1.errors }}</td></tr>
     <tr><th>{{ form.exp1.label }}</th><td>{{ form.exp1 }}{{ form.exp1.errors }}</td></tr>
-    <tr><th>焦点图1链接</th><td><select id="link1"></select></td></tr>
-    <tr style="display:none;"><th>{{ form.link1.label }}</th><td>{{ form.link1 }}{{ form.link1.errors }}</td></tr>
+    <tr><th>{{ form.link1.label }}</th><td>{{ form.link1 }}{{ form.link1.errors }}</td></tr>
     <tr><th>{{ form.pic2.label }}</th><td>{{ form.pic2 }}{{ form.pic2.errors }}</td></tr>
     <tr><th>{{ form.exp2.label }}</th><td>{{ form.exp2 }}{{ form.exp2.errors }}</td></tr>
-    <tr><th>焦点图2链接</th><td><select id="link2"></select><span class="error" style="color:red;">此链接的焦点图不能为空</span></td></tr>
-    <tr style="display:none;"><th>{{ form.link2.label }}</th><td>{{ form.link2 }}{{ form.link2.errors }}</td></tr>
+    <tr><th>{{ form.link2.label }}</th><td>{{ form.link2 }}{{ form.link2.errors }}</td></tr>
     <tr><th>{{ form.pic3.label }}</th><td>{{ form.pic3 }}{{ form.pic3.errors }}</td></tr>
     <tr><th>{{ form.exp3.label }}</th><td>{{ form.exp3 }}{{ form.exp3.errors }}</td></tr>
-    <tr><th>焦点图3链接</th><td><select id="link3"></select><span class="error" style="color:red;">此链接的焦点图不能为空</span></td></tr>
-    <tr style="display:none;"><th>{{ form.link3.label }}</th><td>{{ form.link3 }}{{ form.link3.errors }}</td></tr>
+    <tr><th>{{ form.link3.label }}</th><td>{{ form.link3 }}{{ form.link3.errors }}</td></tr>
     <tr><th>{{ form.pic4.label }}</th><td>{{ form.pic4 }}{{ form.pic4.errors }}</td></tr>
     <tr><th>{{ form.exp4.label }}</th><td>{{ form.exp4 }}{{ form.exp4.errors }}</td></tr>
-    <tr><th>焦点图4链接</th><td><select id="link4"></select><span class="error" style="color:red;">此链接的焦点图不能为空</span></td></tr>
-    <tr style="display:none;"><th>{{ form.link4.label }}</th><td>{{ form.link4 }}{{ form.link4.errors }}</td></tr>
+    <tr><th>{{ form.link4.label }}</th><td>{{ form.link4 }}{{ form.link4.errors }}</td></tr>
     </tbody>
 </table>
 
