@@ -16,11 +16,6 @@ logger = logging.getLogger('default')
 sts_logger = logging.getLogger('sts')
 from wx_match import cal_time, sts_decorate
 
-def get_home_info(subpage):
-    if subpage.real_type == ContentType.objects.get_for_model(WeiboPage) or subpage.real_type == ContentType.objects.get_for_model(LinkPage):
-        return (subpage.url, subpage._get_icon(), subpage._get_tab_name())
-    else:
-        return (get_page_url(subpage), subpage._get_icon(), subpage._get_tab_name())
 
 def get_footer(id):
     try:
@@ -29,6 +24,7 @@ def get_footer(id):
     except:
         return None
     return homepage.pk
+
 
 def homepage_(request, homepage):
     pics = []
@@ -52,7 +48,13 @@ def homepage_(request, homepage):
             rows.append(items)
             items = []
         subp = p.cast()
-        items.append(get_home_info(subp))
+        if subp.real_type == ContentType.objects.get_for_model(WeiboPage) or \
+            subp.real_type == ContentType.objects.get_for_model(LinkPage):
+            items.append((subp.url, subp._get_icon(), subp._get_tab_name()))
+        else:
+            server = "http://" + request.META["HTTP_HOST"] 
+            items.append((server + get_page_url(subp), subp._get_icon(), subp._get_tab_name()))
+
     if len(items) > 0:
         rows.append(items)
 
@@ -83,9 +85,9 @@ def business(request, item_id):
 def join_(request, joinapp):
     homepage_id=get_footer(joinapp.pk)
     joinitems = JoinItem.objects.filter(join=joinapp, publish=True).order_by("-position")
-    pic_url = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
+    pic_url = "http://" + request.META["HTTP_HOST"] + settings.STATIC_URL + consts.DEFAULT_JOIN_COVER
     if joinapp.pic:
-        pic_url = joinapp.pic.url
+        pic_url = "http://" + request.META["HTTP_HOST"] + joinapp.pic.url
     items = []
     for i in joinitems:
         logger.debug("one join job title %s" % i.job_title)
@@ -123,9 +125,9 @@ def trend_(request, trendapp):
     items = []
     for i in trenditems:
         logger.debug("one trend title %s" % i.title)
-        cover_url = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_TRENDITEM_COVER
+        cover_url = "http://" + request.META["HTTP_HOST"] + settings.STATIC_URL + consts.DEFAULT_TRENDITEM_COVER
         if i.cover:
-            cover_url = i.cover.url
+            cover_url = "http://" + request.META["HTTP_HOST"] + i.cover.url
         new = (datetime.date.today() - i.pub_time.date()) <= datetime.timedelta(days=7)
         items.append( (i.title, '/microsite/trenditem/%d' % i.pk, i.pub_time, new, cover_url, i.summary))
     return render(request, 'microsite/trendapp.html', {'title':trendapp._get_tab_name(), 'items':items, 'homepage_id':homepage_id, 'theme': site_templates[trendapp.wx.wsite_template].site_template})

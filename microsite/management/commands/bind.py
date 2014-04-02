@@ -53,6 +53,7 @@ class Command(BaseCommand):
         wx.token = 'abc'
         wx.bind_time = datetime.utcnow().replace(tzinfo=utc)
         wx.app_id = 'test'
+        wx.wxid = username
         wx.app_secret = 'test, too'
         wx.save()
         add_default_site(wx)

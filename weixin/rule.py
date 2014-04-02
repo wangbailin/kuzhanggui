@@ -121,7 +121,7 @@ class Rule(object):
         return False
 
     @classmethod
-    def execute(self, info, rule, cb):
+    def execute(self, info, host, rule, cb):
         if rule and not isinstance(rule, Rule):
             rule = Rule(rule)
 
@@ -136,6 +136,6 @@ class Rule(object):
             return fn
 
         if isfunction(fn):
-                return fn(rule, info)
+            return fn(rule, info, host)
 
         return None

@@ -141,7 +141,7 @@ def index(request, wx):
                                         reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
                                         return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
                                     
-            Router.get_instance().reply(wx, message, _route_callback)
+            Router.get_instance().reply(wx, message, request.META["HTTP_HOST"], _route_callback)
             
             if router_error is None and router_reply is not None:
                 router_reply.platform = MessageBuilder.PLATFORM_WEIXIN
