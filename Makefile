@@ -15,8 +15,10 @@ start-uwsgi:
 stop-uwsgi: 
 	uwsgi --stop app.pid
 
-copy-assets:
-	cp bower_components/console-polyfill/index.js assets/js/console-polyfill.js
+console_polyfill=assets/js/console-polyfill.js
+$(console_polyfill): bower_components/console-polyfill/index.js
+	cp bower_components/console-polyfill/index.js $(console_polyfill)
 
+assets: $(console_polyfill)
 
-.PHONY: rebuild-db debug start-uwsgi stop-uswgi copy-assets
+.PHONY: rebuild-db debug start-uwsgi stop-uswgi 
