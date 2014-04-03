@@ -16,5 +16,5 @@ start-uwsgi:
 stop-uwsgi: 
 	uwsgi --stop app.pid
 
-.PHONY: rebuild_db debug start-uwsgi restart-uwsgi stop-uswgi
+.PHONY: rebuild_db debug start-uwsgi stop-uswgi
 
