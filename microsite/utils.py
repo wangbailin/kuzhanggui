@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys 
+import logging;
 reload(sys) 
 sys.setdefaultencoding('utf8')
 
@@ -7,17 +8,28 @@ import urllib
 import urllib2
 import json
 
+
+logger = logging.getLogger("default")
+
 def get_wx_access_token(app_id, app_secret):
     req = urllib2.Request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (app_id, app_secret))
     data = urllib.urlencode({})
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
     resp = opener.open(req, data)
     
-    jsonObj = json.loads(resp.read())
+    data = resp.read()
+    p = data.find('\r\n\r\n')
+    if p >= 0:
+        data = data[p:]
+    logger.debug(data)
+
+    jsonObj = json.loads(data)
     if jsonObj.has_key('access_token'):
         return jsonObj.get('access_token')
     else:
         return None
+
+        
 def create_wx_menu(access_token, menus):
     if not delete_wx_menu(access_token):
         return False
