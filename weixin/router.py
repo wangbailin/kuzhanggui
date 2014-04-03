@@ -62,7 +62,7 @@ class Router(object):
     def dialog(self, path):
         pass
 
-    def reply(self, wx, data, cb):
+    def reply(self, wx, data, host, cb):
         info = data
         if not isinstance(data, Info):
             info = Info(wx, data)
@@ -83,7 +83,7 @@ class Router(object):
             if Rule.is_match(info, rule):
                 weixinlogger.info("match %s" % rule.name)
                 rule.count = i
-                result = Rule.execute(info, rule, cb)
+                result = Rule.execute(info, host, rule, cb)
                 if isinstance(result, (str, unicode)):
                     result = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, result)
                 if result:

@@ -51,7 +51,7 @@ class Page(models.Model):
         if self.icon:
             return self.icon.url
         else:
-            return consts.DEFAULT_PRE + get_default_icon(self)
+            return get_default_icon(self)
 
     class Meta:
         db_table = 'page'
@@ -238,7 +238,7 @@ class CaseClass(models.Model):
         app_label = u'microsite'
 
     def get_url(self):
-        return settings.SITE_URL + '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
+        return '/microsite/case/%d/%d' % (self.case_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -306,7 +306,7 @@ class ProductClass(models.Model):
         app_label = u'microsite'
 
     def get_url(self):
-        return settings.SITE_URL + '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
+        return '/microsite/product/%d/%d' % (self.product_app.id, self.pk)
 
     def __unicode__(self):
         return self.name
@@ -647,42 +647,42 @@ def add_default_site(wx_account):
 
 def get_page_url(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
-        return settings.SITE_URL + '/microsite/contact/%d' % (page.id)
+        return '/microsite/contact/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return settings.SITE_URL + '/microsite/trend/%d' % (page.id)
+        return '/microsite/trend/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(TeamApp):
-        return settings.SITE_URL + '/microsite/team/%d' % (page.id)
+        return '/microsite/team/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-        return settings.SITE_URL + '/microsite/case/%d' % (page.id)
+        return '/microsite/case/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
-        return settings.SITE_URL + '/microsite/product/%d' % (page.id)
+        return '/microsite/product/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(HomePage):
-        return settings.SITE_URL + '/microsite/homepage/%d' % (page.id)
+        return '/microsite/homepage/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-        return settings.SITE_URL + '/microsite/intro/%d' % (page.id)
+        return '/microsite/intro/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
-        return settings.SITE_URL + '/microsite/business/%d' % (page.id)
+        return '/microsite/business/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(JoinApp):
-        return settings.SITE_URL+ '/microsite/join/%d' % (page.id)
+        return '/microsite/join/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
         weibo = page.cast()
         return weibo.url
     elif page.real_type == ContentType.objects.get_for_model(HelpPage):
-        return settings.SITE_URL + '/microsite/help/%d' % (page.id)
+        return '/microsite/help/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
-        return settings.SITE_URL + '/microsite/content/%d' % (page.id)
+        return '/microsite/content/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
         return page.cast().url
 
 def get_item_url(item):
     if item.__class__ == JoinItem :
-        return settings.SITE_URL + '/microsite/joinitem/%d' % (item.pk)
+        return '/microsite/joinitem/%d' % (item.pk)
     elif item.__class__ == TrendItem:
-        return settings.SITE_URL + '/microsite/trenditem/%d' % (item.pk)
+        return '/microsite/trenditem/%d' % (item.pk)
     elif item.__class__ == CaseItem:
-        return settings.SITE_URL + '/microsite/caseitem/%d' % (item.pk)
+        return '/microsite/caseitem/%d' % (item.pk)
     elif item.__class__ == ProductItem:
-        return settings.SITE_URL + '/microsite/productitem/%d' % (item.pk)
+        return '/microsite/productitem/%d' % (item.pk)
 
 def get_default_msg(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):

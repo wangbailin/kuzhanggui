@@ -2,6 +2,7 @@
 *.swp
 nohup.out
 .DS_Store
+static
 
 # C extensions
 *.so

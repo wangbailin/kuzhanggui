@@ -15,12 +15,21 @@ from data.models import WeixinDailyData
 
 logger = logging.getLogger('weixin')
 
-def unsubscribe(rule, info):
+def toStaticUrl(host, path):
+    return "http://" + host + settings.STATIC_URL + path
+
+
+def toUrl(host, path):
+    return "http://" + host + path
+
+
+def unsubscribe(rule, info, host):
     WeixinDailyData.today_unsubscribe_one(info.wx)
 
     return BuildConfig(MessageBuilder.TYPE_NO_RESPONSE, None, u"%s unsubscribe" % info.user)
 
-def check_bind_state(rule, info):
+
+def check_bind_state(rule, info, host):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
 
@@ -54,7 +63,7 @@ def match_menu(rule, info):
 def match_submenu(rule, info):
     return info.type == 'event' and re.match(r'submenu_\d+_\d+', info.event_key) is not None
 
-def micro_site(rule, info):
+def micro_site(rule, info, host):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
         WeixinDailyData.today_subscribe_one(info.wx)
@@ -66,16 +75,16 @@ def micro_site(rule, info):
         else:
             data['description'] = consts.DEFAULT_HOMEPAGE_MSG % wx_account.name
         if homepage.message_cover:
-            data['pic_url'] = homepage.message_cover.url
+            data['pic_url'] = toUrl(host, homepage.message_cover.url)
         else:
-            data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_HOMEPAGE_COVER
-        data['url'] = get_page_url(homepage) + "?user=%s&wx=%s" % (info.user, info.wx)
+            data['pic_url'] = toStaticUrl(host, consts.DEFAULT_HOMEPAGE_COVER)
+        data['url'] = toUrl(host, get_page_url(homepage) + "?user=%s&wx=%s" % (info.user, info.wx))
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
 
-def find_nearest(rule, info):
+def find_nearest(rule, info, host):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
         contact_app = ContactApp.objects.get(wx=wx_account)
@@ -94,8 +103,8 @@ def find_nearest(rule, info):
             data = {}
             data['title'] = u'找到我们'
             data['description'] = u'点击查看如何找到我们。'
-            data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_FINDME_COVER
-            data['url'] = settings.SITE_URL + '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng) + "?user=%s&wx=%s" % (info.user, info.wx)
+            data['pic_url'] = toStaticUrl(host, consts.DEFAULT_FINDME_COVER)
+            data['url'] = toUrl(host, '/microsite/contact_map/%d/%f/%f' % (nearest.pk, lat, lng) + "?user=%s&wx=%s" % (info.user, info.wx))
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:
             return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'不知道怎么找到我们。')
@@ -103,21 +112,21 @@ def find_nearest(rule, info):
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
 
-def telephone(rule, info):
+def telephone(rule, info, host):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
         contact_app = ContactApp.objects.get(wx=wx_account)
         data = {}
         data['title'] = u'联系电话'
         data['description'] = u'点击查看我们的联系电话。'
-        data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_CONTACT_COVER
-        data['url'] = settings.SITE_URL + "/microsite/telephone/%d" % (contact_app.pk) + "?user=%s&wx=%s" % (info.user, info.wx)
+        data['pic_url'] = toStaticUrl(host, consts.DEFAULT_CONTACT_COVER)
+        data['url'] = toUrl(host, "/microsite/telephone/%d" % (contact_app.pk) + "?user=%s&wx=%s" % (info.user, info.wx))
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
 
-def help(rule, info):
+def help(rule, info, host):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
         helppage = HelpPage.objects.get(wx=wx_account)
@@ -125,14 +134,14 @@ def help(rule, info):
         data['title'] = helppage.title
         data['description'] = consts.DEFAULT_HELP_MSG
 
-        data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
-        data['url'] = get_page_url(helppage) + "?user=%s&wx=%s" % (info.user, info.wx)
+        data['pic_url'] = "http://" + host + settings.STATIC_URL + consts.DEFAULT_HELP_COVER
+        data['url'] = "http://" + host + get_page_url(helppage) + "?user=%s&wx=%s" % (info.user, info.wx)
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
 
-def menu(rule, info):
+def menu(rule, info, host):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
         match = re.match(r'menu_(\d+)', info.event_key)
@@ -150,15 +159,15 @@ def menu(rule, info):
         if menu.page.message_cover:
             data['pic_url'] = menu.page.message_cover.url
         else:
-            data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + get_default_cover(menu.page)
+            data['pic_url'] = toStaticUrl(host, get_default_cover(menu.page))
 
-        data['url'] = get_page_url(menu.page) + "?user=%s&wx=%s" % (info.user, info.wx)
+        data['url'] = toUrl(host, get_page_url(menu.page) + "?user=%s&wx=%s" % (info.user, info.wx))
         return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
     except:
         logger.error(traceback.format_exc())
         return BuildConfig(MessageBuilder.TYPE_RAW_TEXT, None, u'非常抱歉')
 
-def submenu(rule, info):
+def submenu(rule, info, host):
     try:
         wx_account = WXAccount.objects.get(id=info.wx)
         match = re.match(r'submenu_(\d+)_(\d+)', info.event_key)
@@ -183,7 +192,7 @@ def submenu(rule, info):
             if menu.page.message_cover:
                 data['pic_url'] = menu.page.message_cover.url
             else:
-                data['pic_url'] = settings.SITE_URL + settings.STATIC_URL + get_default_cover(menu.page)
+                data['pic_url'] = toStaticUrl(host, get_default_cover(menu.page))
             data['url'] = cls.get_url() + "?user=%s&wx=%s" % (info.user, info.wx)
             return BuildConfig(MessageBuilder.TYPE_WEB_APP, None, data)
         else:

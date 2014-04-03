@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -349,7 +350,7 @@ def reorder_pages(request, page_list):
 
 
 @dajaxice_register
-def initial_opiton(request):
+def homepage_available_options(request):
     dajax = Dajax()
 
     account = Account.objects.get(user=request.user)
@@ -361,45 +362,52 @@ def initial_opiton(request):
     options = []
     output = []
     for page in pages:
-        options.append((page.pk, page.tab_name, get_page_url(page)))
+        options.append({
+            "name": page.tab_name, 
+            "url": get_page_url(page)
+        })
         #get the links which are already stored in HomePage.
         if page.real_type == ContentType.objects.get_for_model(HomePage):
             homepage = page.cast()
             links = [homepage.link1, homepage.link2, homepage.link3, homepage.link4]
         if page.real_type == ContentType.objects.get_for_model(TrendsApp):
-            items = page.cast().trenditem_set.all()
+            page = page.cast()
+            items = page.trenditem_set.all()
             for item in items:
-                options.append((item.pk, '-'+item.title, get_item_url(item)))
+                options.append({
+                    "name": page.tab_name + '--' + item.title, 
+                    "url": get_item_url(item)
+                })
         elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-            items = page.cast().caseitem_set.all()
+            page = page.cast()
+            items = page.caseitem_set.all()
             for item in items:
-                options.append((item.pk,'-'+ item.title, get_item_url(item)))
+                options.append({
+                    "name": page.tab_name + '--' + item.title, 
+                    "url": get_item_url(item)
+                })
         elif page.real_type == ContentType.objects.get_for_model(JoinApp):
-            items = page.cast().joinitem_set.all()
+            page = page.cast()
+            items = page.joinitem_set.all()
             for item in items:
-                options.append((item.pk, '-'+item.job_title, get_item_url(item)))
+                options.append({
+                    "name": page.tab_name + '--' + item.job_title, 
+                    "url": get_item_url(item)
+                })
         elif page.real_type == ContentType.objects.get_for_model(ProductApp):
-            items = page.cast().productitem_set.all()
+            page = page.cast()
+            items = page.productitem_set.all()
             for item in items:
-                options.append((item.pk, '-'+item.title, get_item_url(item)))
-        else:
-            continue
+                options.append({
+                    "name": page.tab_name + '--' + item.title, 
+                    "url": get_item_url(item)
+                })
 
-    for option in options:
-        if links[0] and links[0] in option:
-            dajax.assign("#link1", "innerHTML","<option value='%s'>%s</option>" % (option[2], option[1]))
-        if links[1] and links[1] in option:
-            dajax.assign("#link2", "innerHTML","<option value='%s'>%s</option>" % (option[2], option[1]))
-        if links[2] and links[2] in option:
-            dajax.assign("#link3", "innerHTML","<option value='%s'>%s</option>" % (option[2], option[1]))
-        if links[3] and links[3] in option:
-            dajax.assign("#link4", "innerHTML","<option value='%s'>%s</option>" % (option[2], option[1]))
-        output.append("<option value='%s'>%s</option>" % (option[2], option[1]))
-    links_id= ["#link1", "#link2", "#link3", "#link4"]
-    for link in links_id:
-        dajax.append(link, 'innerHTML', ''.join(output))
-
-    return dajax.json()
+    return json.dumps({
+        "options": options,
+        "links": links
+    })
+    
 
 @dajaxice_register
 def reorder_items(request, items):

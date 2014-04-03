@@ -2,12 +2,19 @@
 {% block title %}{{ name }}{% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+$(function() {
+    $("#focus").carousel();
+});
+</script>
+
 <div class="container">
     <div id="focus" class="carousel slide" style="width:100%;">
         <ol id="focus-indicators" class="carousel-indicators">
         {% for pic in pics %}
             {% if forloop.counter0 == 0 %}
-            <li data-target="#focus" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
+            <li data-target="#focus" data-slide-to="{{ forloop.counter0 }}" 
+                class="active"></li>
             {% else %}
             <li data-target="#focus" data-slide-to="{{ forloop.counter0 }}"></li>
             {% endif %}
@@ -15,23 +22,18 @@
         </ol>
         <div class="carousel-inner">
         {% for pic in pics %}
-            {% if forloop.counter0 == 0 %}
-            <a href="{{ pic.2 }}">
-                <div class="active item"><img src="{{ pic.0.url }}" />
-                    {% if pic.1 %}
-                    <div class="carousel-caption"><p>{{ pic.1 }}</p></div>
-                    {% endif %}
-                </div>
-            </a>
-            {% else %}
-            <a href="{{ pic.2 }}">
-                <div class="item"><img src="{{ pic.0.url }}" />
-                    {% if pic.1 %}
-                    <div class="carousel-caption"><p>{{ pic.1 }}</p></div>
-                    {% endif %}
-                </div>
-            </a>
-            {% endif %}
+            <div {% if forloop.counter0 == 0 %}
+                    class="active item"
+                 {% else %}
+                    class="item"
+                 {% endif %}>
+                <a href="{{ pic.2 }}">
+                    <img src="{{ pic.0.url }}" />
+                </a>
+                {% if pic.1 %}
+                <div class="carousel-caption"><p>{{ pic.1 }}</p></div>
+                {% endif %}
+            </div>
         {% endfor %}
         </div>
         {% if pics|length > 1 %}
