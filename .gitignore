@@ -21,7 +21,7 @@ develop-eggs
 .installed.cfg
 lib
 lib64
-logs
+*.log*
 
 # Installer logs
 pip-log.txt
