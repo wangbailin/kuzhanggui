@@ -1,6 +1,6 @@
 REBUILD_SQL="drop database rocket; \
 			create database rocket;"
-rebuild_db:
+rebuild-db:
 	echo $(REBUILD_SQL) | mysql -u root -p && ./manage.py syncdb --traceback
 
 HOST:=0.0.0.0
@@ -15,5 +15,4 @@ start-uwsgi:
 stop-uwsgi: 
 	uwsgi --stop app.pid
 
-.PHONY: rebuild_db debug start-uwsgi stop-uswgi
-
+.PHONY: rebuild-db debug start-uwsgi stop-uswgi
