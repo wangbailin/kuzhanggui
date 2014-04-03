@@ -13,9 +13,8 @@ debug:
 start-uwsgi:
 	uwsgi --ini uwsgi.ini
 
-restart-uwsgi: 
-	-uwsgi --stop app.pid
-	uwsgi --ini uwsgi.ini
+stop-uwsgi: 
+	uwsgi --stop app.pid
 
-.PHONY: rebuild_db debug start-uwsgi restart-uwsgi
+.PHONY: rebuild_db debug start-uwsgi restart-uwsgi stop-uswgi
 
