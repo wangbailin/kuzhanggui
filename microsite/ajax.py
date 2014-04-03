@@ -22,6 +22,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 
+from rocket import settings
 from framework.models import Account, WXAccount
 from microsite.forms import JoinItemForm, AddCaseClassForm, ChangeCaseClassForm, AddProductClassForm, ChangeProductClassForm, AddEditMenuForm, AddEditContactPeopleForm
 from microsite.models import *
@@ -261,64 +262,71 @@ def is_app_menu(menu):
     productAppType = ContentType.objects.get_for_model(ProductApp)
     return subPage.real_type == caseAppType or subPage.real_type == productAppType
 
+
+def generate_menu_json(wx_account):
+    view_fmt = u'{"type": "view", "name": "%s", "url": "%s"}'
+    buttons = []
+    for menu in wx_account.menu_set.all():
+        sub_buttons = []
+        menuItems = PageGroup.objects.filter(menu=menu)
+        if not is_app_menu(menu):
+            if len(menuItems) > 1:
+                for item in menuItems:
+                    values = (item.page.tab_name, settings.SITE_URL + get_page_url(item.page))
+                    sub_buttons.append(view_fmt % values)
+        else:
+            page = menuItems[0].page
+            if page.real_type == ContentType.objects.get_for_model(ProductApp):
+                product_app = page.cast()
+                for cls in product_app.productclass_set.all():
+                    sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
+                sub_buttons.append(view_fmt % (u'全部产品', settings.SITE_URL + get_page_url(page)))
+            elif page.real_type == ContentType.objects.get_for_model(CaseApp):
+                case_app = page.cast()
+                for cls in case_app.caseclass_set.all():
+                    sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
+                sub_buttons.append(view_fmt % (u'全部成功案例', settings.SITE_URL + get_page_url(page)))
+        if len(sub_buttons) > 0:
+            fmt = u'{ "type": "click", "name": "%s", "sub_button": [%s] }'
+            buttons.append(fmt % (menu.name, ','.join(sub_buttons)))
+        else:
+            buttons.append(view_fmt % (menu.name, settings.SITE_URL + get_page_url(menuItems[0].page)))
+
+    menu_data = u'{"button":[%s]}' % ','.join(buttons)
+    logger.debug("menu_data:")
+    logger.debug(menu_data)
+
+    return menu_data
+
+
 @dajaxice_register
 def generate_menu(request):
-    dajax = Dajax()
-
     account = Account.objects.get(user=request.user)
     wx_account = None
     if account.has_wx_bound:
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
 
+    if wx_account is None:
+        return json.dumps({'ret_code': 1001, 'ret_msg': '微信号未绑定'})
+
+    menu_data = generate_menu_json(wx_account)
+
     menu_count = wx_account.menu_set.count()
-    if menu_count >= 2 and menu_count <= 3:
-        wx_access_token = cache.get('wx_access_token_%d' % wx_account.id, None)
-        if wx_access_token is None:
-            wx_access_token = get_wx_access_token(wx_account.app_id, wx_account.app_secret)
+    if menu_count < 2 or menu_count > 3:
+        return json.dumps({'ret_code': 1000, 'ret_msg': '菜单项数量应该为2~3个！'})
 
-        if wx_access_token is None:
-            dajax.add_data({ 'ret_code' : 1001, 'ret_msg' : '微信系统繁忙，请重试生成菜单' }, 'generateMenuCallback')
-        else:
-            view_fmt = u'{"type": "view", "name": "%s", "url": "%s"}'
-            buttons = []
-            for menu in wx_account.menu_set.all():
-                sub_buttons = []
-                menuItems = PageGroup.objects.filter(menu=menu)
-                if not is_app_menu(menu):
-                    if len(menuItems) > 1:
-                        for item in menuItems:
-                            values = (item.page.tab_name, get_page_url(item.page))
-                            sub_buttons.append(view_fmt % values)
-                else:
-                    page = menuItems[0].page
-                    if page.real_type == ContentType.objects.get_for_model(ProductApp):
-                        product_app = page.cast()
-                        for cls in product_app.productclass_set.all():
-                            sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
-                        sub_buttons.append(view_fmt % (u'全部产品', get_page_url(page)))
-                    elif page.real_type == ContentType.objects.get_for_model(CaseApp):
-                        case_app = page.cast()
-                        for cls in case_app.caseclass_set.all():
-                            sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
-                        sub_buttons.append(view_fmt % (u'全部成功案例', get_page_url(page)))
+    wx_access_token = cache.get('wx_access_token_%d' % wx_account.id, None)
+    if wx_access_token is None:
+        wx_access_token = get_wx_access_token(wx_account.app_id, wx_account.app_secret)
 
-                if len(sub_buttons) > 0:
-                    fmt = u'{ "type": "click", "name": "%s", "sub_button": [%s] }'
-                    buttons.append(fmt % (menu.name, ','.join(sub_buttons)))
-                else:
-                    buttons.append(view_fmt % (menu.name, get_page_url(menuItems[0].page)))
+    if wx_access_token is None:
+        return json.dumps({'ret_code': 1001, 'ret_msg': '微信系统繁忙，请重试生成菜单'})
 
-            menu_data = u'{"button":[%s]}' % ','.join(buttons)
-            logger.debug("menu_data:")
-            logger.debug(menu_data)
-            if create_wx_menu(wx_access_token, menu_data):
-                dajax.add_data({'ret_code' : 0, 'ret_msg' : ''}, 'generateMenuCallback')
-            else:
-                dajax.add_data({'ret_code' : 1002, 'ret_msg' : '微信系统繁忙，请重试生成菜单!'},'generateMenuCallback')
+    if create_wx_menu(wx_access_token, menu_data):
+        return json.dumps({'ret_code': 0, 'ret_msg': ''})
     else:
-        dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '菜单项数量应该为2~3个！' }, 'generateMenuCallback')
+        return json.dumps({'ret_code': 1002, 'ret_msg': '微信系统繁忙，请重试生成菜单!'})
 
-    return dajax.json()
 
 @dajaxice_register
 @transaction.commit_manually

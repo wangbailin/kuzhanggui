@@ -51,23 +51,26 @@ var deleteMenu = function(id, name) {
 };
 
 var generateMenu = function() {
-    if (!$('#generate_menu').hasClass('disabled')) {
-        $('#generate_menu').button('loading');
-        Dajaxice.microsite.generate_menu(Dajax.process, {});
+    var $button = $('#generate_menu');
+    if (!$button.hasClass('disabled')) {
+        $button.button('loading');
+        Dajaxice.microsite.generate_menu(function(data) {
+            $button.button('reset');
+
+            if (data.ret_code !== 0) {
+                return toast('error', data.ret_msg);
+            }
+
+            toast('success', '生成菜单成功，请重新关注微信公众号查看效果！');
+        }, {}, {
+            error_callback: function() {
+                console.error("Oh, no!");
+                $button.button('reset');
+            }
+        });
     }
 };
 
-var generateMenuCallback = function(data) {
-    if (data) {
-        if (data.ret_code == 0) {
-            toast('success', '生成菜单成功，请重新关注微信公众号查看效果！');
-        } else {
-            toast('error', data.ret_msg);
-        }
-    }
-
-    $('#generate_menu').button('reset');
-}
 
 $(function() {
 
