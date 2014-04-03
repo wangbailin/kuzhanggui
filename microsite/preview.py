@@ -8,7 +8,7 @@ from models import *
 from framework.models import *
 from forms import *
 from django.contrib import auth
-from siteviews import homepage_, intro_, business_, join_, help_, weibo_, content_, trend_, team_, contact_, productitem_, product_, caseitem_, case_, joinitem_, trenditem_, teamitem_
+from siteviews import homepage_, intro_, business_, join_, help_, content_, trend_, team_, contact_, productitem_, product_, caseitem_, case_, joinitem_, trenditem_, teamitem_
 
 logger = logging.getLogger('default')
 

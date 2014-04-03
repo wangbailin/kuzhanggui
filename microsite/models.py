@@ -645,6 +645,7 @@ def add_default_site(wx_account):
         helppage.position = 10
         helppage.save()
 
+
 def get_page_url(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
         return '/microsite/contact/%d' % (page.id)
@@ -665,14 +666,14 @@ def get_page_url(page):
     elif page.real_type == ContentType.objects.get_for_model(JoinApp):
         return '/microsite/join/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(WeiboPage):
-        weibo = page.cast()
-        return weibo.url
+        return '/microsite/weibo/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(HelpPage):
         return '/microsite/help/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(ContentPage):
         return '/microsite/content/%d' % (page.id)
     elif page.real_type == ContentType.objects.get_for_model(LinkPage):
-        return page.cast().url
+        return '/microsite/link/%d' % (page.id)
+
 
 def get_item_url(item):
     if item.__class__ == JoinItem :

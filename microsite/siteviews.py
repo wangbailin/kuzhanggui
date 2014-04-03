@@ -1,11 +1,12 @@
 #coding:utf-8
 import logging
+import datetime
 
 from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-import datetime
+from django.http import Http404
 
 from rocket import settings
 from models import *
@@ -108,16 +109,26 @@ def help(request, item_id):
 def content_(request, content_page):
     homepage_id=get_footer(content_page.pk)
     return render(request, 'microsite/contentpage.html', {'title':content_page.title, 'content':content_page.content, 'homepage_id':homepage_id, 'theme': site_templates[content_page.wx.wsite_template].site_template})
+
 def content(request, item_id):
     content_page = get_object_or_404(ContentPage, pk=item_id)
     return content_(request, content_page)
 
-def weibo_(request, weibopage):
-    return render(request, 'microsite/weibopage.html', {'title':weibopage.title, 'url':weibopage.url})
+def link(request, item_id):
+    page = get_object_or_404(LinkPage, pk=item_id)
+    if page.url == "" or page.url is None:
+        raise Http404
+
+    return redirect(page.url)
+
 
 def weibo(request, item_id):
-    weibopage = get_object_or_404(WeiboPage, pk=item_id)
-    return weibo_(request, weibopage)
+    page = get_object_or_404(WeiboPage, pk=item_id)
+    if page.url == "" or page.url is None:
+        raise Http404
+
+    return redirect(page.url)
+
 
 def trend_(request, trendapp):
     homepage_id=get_footer(trendapp)
