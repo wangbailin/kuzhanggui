@@ -10,5 +10,12 @@ PORT:=8000
 debug:
 	./manage.py runserver $(HOST):$(PORT)
 
-.PHONY: rebuild_db debug
+start-uwsgi:
+	uwsgi --ini uwsgi.ini
+
+restart-uwsgi: 
+	-uwsgi --stop app.pid
+	uwsgi --ini uwsgi.ini
+
+.PHONY: rebuild_db debug start-uwsgi restart-uwsgi
 
