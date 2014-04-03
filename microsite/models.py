@@ -297,9 +297,19 @@ class ProductItem(models.Model):
         app_label = u'microsite'
 
 
+class TrendCategory(models.Model):
+    name = models.CharField(u'分类名称', max_length=255)
+    app = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
+
+    class Meta:
+        db_table = u'trend_category'
+        app_label = u'microsite'
+
 
 class TrendItem(models.Model):
     trend = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
+    category = models.ForeignKey(TrendCategory, verbose_name = u'分类')
+
     pub_time = models.DateTimeField(u'日期', auto_now_add=True)
     title = models.CharField(u'标题', max_length=100)
     content = models.TextField(u'内容')
@@ -310,6 +320,7 @@ class TrendItem(models.Model):
     class Meta:
         db_table = u"trend_item"
         app_label = u'microsite'
+
 
 class TeamItem(models.Model):
     team = models.ForeignKey(TeamApp, verbose_name = u'团队')

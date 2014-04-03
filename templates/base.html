@@ -8,24 +8,29 @@
 
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/sidenav.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}ajax_upload/css/ajax-upload-widget.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/rocket.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}css/jquery.pnotify.default.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}css/jquery.pnotify.default.icons.css"/>
-    {% block css %}{% endblock %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}ajax_upload/css/ajax-upload-widget.css"/>
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/rocket.css"/>
+  <link rel="stylesheet" type="text/css" media="all" 
+        href="{{ STATIC_URL }}css/jquery.pnotify.default.css"/>
+  <link rel="stylesheet" type="text/css" media="all" 
+        href="{{ STATIC_URL }}css/jquery.pnotify.default.icons.css"/>
+  {% block css %}{% endblock %}
 
-    <script type="text/javascript" src="{{ STATIC_URL }}ckeditor_new/ckeditor.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/console-poly-fill.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}ckeditor_new/ckeditor.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootbox.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/jquery.iframe-transport.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}ajax_upload/js/ajax-upload-widget.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.pnotify.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/base.js"></script>
-    {% dajaxice_js_import %}
-    {{ form.media }}
-    {% block js %}{% endblock %}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootbox.min.js"></script>
+  <script type="text/javascript" 
+          src="{{ STATIC_URL }}ajax_upload/js/jquery.iframe-transport.js"></script>
+  <script type="text/javascript" 
+          src="{{ STATIC_URL }}ajax_upload/js/ajax-upload-widget.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.pnotify.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/base.js"></script>
+  {% dajaxice_js_import %}
+  {{ form.media }}
+  {% block js %}{% endblock %}
 
 	<script type="text/javascript">
 		$(document).ready(function() {
