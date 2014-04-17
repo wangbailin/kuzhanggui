@@ -1,8 +1,23 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/app_dialog.js"></script>
 
-<div id="margin_bottom">
-<a type="button" class="btn btn-default btn-primary" href="/trend/add" target="_blank"><i class="icon-plus icon-white"></i>新增动态</a>
+<div class="btn-group" id="margin_bottom">
+    <button class="btn btn-primary" data-toggle="dropdown">
+        <i class="icon-plus icon-white"></i>新增动态
+    </button>
+    <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+
+    <ul class="dropdown-menu">
+        <li>
+            <a href="#add_trend_category" data-toggle="modal">新增动态分类</a>
+        </li>
+        <li>
+            <a href="/trend/add" target="_blank">新增动态</a>
+        </li>
+    </ul>
 </div>
+
 {% include "save_item_order.html" %}
 {% if not active_app_specific.enable %}
 {% include "prompt.html" with active_app_specific_title=active_app_specific.title tab_id=tab_id%}

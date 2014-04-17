@@ -39,3 +39,7 @@ nosetests.xml
 .project
 .pydevproject
 *.pid
+
+
+#bower 
+bower_components
