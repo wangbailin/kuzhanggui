@@ -302,6 +302,7 @@ class TrendCategory(models.Model):
     app = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
 
     class Meta:
+        unique_together = ('app', 'name')
         db_table = u'trend_category'
         app_label = u'microsite'
 

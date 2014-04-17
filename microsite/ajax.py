@@ -57,6 +57,45 @@ def menu_name_exists(name, exclude=None):
     else:
         return Menu.objects.filter(name=name).exclude(pk=exclude).exists()
 
+
+def ensure_wx_account(user):
+    account = Account.objects.get(user=request.user)
+    wx_account = None
+    if acount.has_wx_bound:
+        wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
+
+    return wx_account
+
+
+@dajaxice_register
+def add_edit_trend_category(request, id, name):
+    wx_account = ensure_wx_account(request.user)
+    if wx_account is None:
+        logger.error("add_edit_trend_category: wx account not found")
+        return simplejson({'ret_code': 1000, 'ret_msg': u'微信账号未绑定'})
+
+    if name is None or name == '':
+        logger.error("add_edit_trend_category: name is invalid")
+        return simplejson.dumps({'ret_code': 1000, 'ret_msg': u'名称是必填项'})
+
+    app = TrendsApp.objects.get(wx=wx_account)
+    if id is None or id == '':
+        if len(TrendCategory.objects.filter(app=app).exclude(pk=id).filter(name=name)) > 0:
+            logger.error("add_edit_trend_category: duplicated name")
+            return simplejson.dumps({'ret_code': 1000, 'ret_msg': u'分类已存在'})
+        category = TrendCategory.objects.get(pk=id)
+        category.app = app
+        category.name = name
+        category.save()
+    else:
+        if len(TrendCategory.objects.filter(name=name).filter(app=app)) > 0:
+            logger.error("add_edit_trend_category: duplicated name")
+            return simplejson.dumps({'ret_code': 1000, 'ret_msg': u'分类已存在'})
+        TrendCategory(app=app, name=name).save()
+
+    return simplejson.dumps({'ret_code': 0})
+
+
 @dajaxice_register
 def add_edit_menu(request, id, name, pages):
     #raise Exception()

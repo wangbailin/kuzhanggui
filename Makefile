@@ -17,7 +17,7 @@ stop-uwsgi:
 
 console_polyfill=assets/js/console-polyfill.js
 $(console_polyfill): bower_components/console-polyfill/index.js
-	cp bower_components/console-polyfill/index.js $(console_polyfill)
+	cp $? $(console_polyfill)
 
 assets: $(console_polyfill)
 
