@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container text-center">
-    <div class="navbar {% if theme == 'default' %}navbar-inverse{% endif %}">
+    <div class="navbar">
         <div class="navbar-inner">
             <ul class="nav">
                 <li class="dropdown">
@@ -11,12 +11,12 @@
                         {% if pclass %}
                         {{ pclass.name }}
                         {% else %}
-                        全部产品
+                        全部课程
                         {% endif %}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="product-category">
-                        <li><a href="/microsite/product/{{ app.pk }}/">全部产品</a></li>
+                        <li><a href="/microsite/product/{{ app.pk }}/">全部课程</a></li>
                         {% for c in pclasses %}
                         <li><a href="/microsite/product/{{ app.pk }}/{{ c.pk }}">{{ c.name }}</a></li>
                         {% endfor %}
@@ -42,7 +42,7 @@
             </tr>
             {% empty %}
                 <div class="empty">
-                    <p>暂无产品</p>
+                    <p>暂无课程</p>
                 </div>
             {% endfor %}
         </table>

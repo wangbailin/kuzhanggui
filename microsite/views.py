@@ -192,7 +192,6 @@ def save(request, page_id):
     sub_page = page.cast()
     enable = sub_page.enable
     form = FormManager.get_form(sub_page, request)
-    print form
     if not form.is_valid():
         logger.error("form is not valid")
         apps = get_apps(request)

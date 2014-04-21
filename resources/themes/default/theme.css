@@ -1,6 +1,10 @@
 body {
-    background-color: #1e1e1e;
-    color: #e8e8e8;
+    background-color: #f4f4f4;
+    background-image: url('bg_cloud.png');
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: contain;
+    color: black;
 }
 
 .empty {
@@ -17,7 +21,7 @@ body {
 }
 
 .items {
-    margin-bottom: 8px;
+    margin-bottom: 30px;
 }
 
 .items .item {
@@ -41,13 +45,61 @@ body {
 
 .items .item p {
     font-size: 14px;
-    color: #f8f8f8;
+    color: #101010;
     margin-top: -18px;
 }
 
 .items .item img {
     width: 95px;
     height: 118px;
+}
+
+#focus .carousel-caption {
+    background: rgba(244, 244, 244, 0.65);
+}
+
+#focus .carousel-caption p {
+    color: black;
+}
+
+.footer a span {
+    color: #006a2d !important;
+}
+
+.share .backhome {
+    width: 90%;
+    margin: 25px auto;
+    text-align: center;
+    padding: 8px;
+    background: -webkit-gradient(linear,center top,center bottom,from(#eaeaea), to(#e4e4e4));
+    border-radius: 5px;
+    border: solid 1px #d9d9d9;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.08);
+}
+
+.share .backhome a, .backhome a:active, .backhome a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+
+.share .to-friend img, .share .to-quan img {
+    margin-right: 5px;
+    height: 18px;
+    width: 20px;
+}
+
+.share {
+    text-align:center;
+    margin: 15px auto;
+    color: #333333;
+}
+
+.share a, .share a:active, .share a:hover {
+    color: #333333;
+}
+.share .click{
+    text-decoration: underline;
 }
 
 .content-page {
@@ -78,8 +130,9 @@ body {
 .card {
     border-radius: 5px;
     padding: 8px;
-    background-color: #2e2e2e;
-    box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+    background-color: #fff;
+    border: solid 1px #d9d9d9;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.08);
     margin-bottom: 12px;
 }
 
@@ -97,6 +150,7 @@ body {
 .trends .trend .trend-meta h4 {
     margin-top: 0px;
     margin-right: 20px;
+    color: black;
 }
 
 .trends .trend .trend-meta p {
@@ -108,6 +162,7 @@ body {
     margin-top: 6px;
     font-size: 12px;
     line-height: 18px;
+    color: black;
 }
 
 .trends .trend .new {
@@ -137,7 +192,8 @@ body {
     border-radius: 5px;
     padding: 8px;
     background-color: #ffffff;
-    box-shadow: 0px 1px 2px rgb(198,198,198);
+    border: solid 1px #d9d9d9;
+    box-shadow: 0px 1px 2px rgb(0,0,0,0.08);
     margin-bottom: 12px;
     min-height:105px;
 }
@@ -145,7 +201,7 @@ body {
 .content-team .team-card {
     border-radius: 5px;
     padding: 6px;
-    border: 2px solid #4c4c4c;
+    border: 2px solid #d9d9d9;
     margin-bottom: 12px;
     min-height:105px;
 }
@@ -166,6 +222,7 @@ body {
     min-height: 89px;
     padding: 8px;
     padding-right: 0;
+    color: black;
 }
 
 .team-meta .name h4{
@@ -266,7 +323,7 @@ a.phone:active div {
     height: 150px;
     display: inline-block;
     background-repeat: no-repeat;
-    background-size: 150px;
+    background-size: cover;
     background-position: 50%;
     margin-bottom: 12px;
 }
@@ -337,16 +394,7 @@ a.phone:active div {
     margin-bottom: 8px;
 }
 
-.navbar .dropdown-menu {
-    background-color: #2e2e2e;
-}
-
-.navbar .nav>li>.dropdown-menu:after {
-    border-bottom: 6px solid #2e2e2e;
-}
-
 .navbar .dropdown-menu>li>a {
-    color: #e8e8e8;
     padding: 5px 20px;
     text-align: left;
 }
@@ -358,4 +406,34 @@ a.phone:active div {
 #address {
     background-color: rgba(0,0,0,0.7); 
     color: #e8e8e8;
+}
+
+.joins {
+    padding: 8px;
+}
+
+.joins .front-words, .joins .end-words {
+    padding: 8px;
+}
+
+.joins .join .join-meta {
+    margin-left: 0px;
+    min-height: 36px;
+}
+
+.joins a, .joins a:hover, .joins a:visited, .joins a:active {
+    color: black;
+    text-decoration: none;
+}
+
+.joins .join .join-meta p {
+    color: black;
+    padding: 8px;
+    font-size: 15px;
+    float: left;
+}
+
+.joins .empty {
+    margin-top: 20px;
+    position: static;
 }

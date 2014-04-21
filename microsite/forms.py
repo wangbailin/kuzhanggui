@@ -194,7 +194,6 @@ class TeamAppForm(ModelForm):
 
 class TeamItemForm(ModelForm):
     name = forms.CharField(label=u'姓名', widget=LongTextInput)
-    job_title = forms.CharField(label=u'职位名称', widget=LongTextInput)
     person_digest = forms.CharField(label=u'简要介绍', widget=LongTextarea(attrs={'rows': 2}), help_text=u"建议字数限制在50字以内")
     person_content = forms.CharField(label=u'详细介绍', widget=CKEditorWidget())
     picture = forms.ImageField(label=u'照片', widget=AjaxClearableFileInput(), required = True, help_text=u'建议图片大小为105px*105px')
@@ -202,7 +201,6 @@ class TeamItemForm(ModelForm):
         model = TeamItem
         fields = (
             'name',
-            'job_title',
             'picture',
             'person_digest',
             'person_content',
@@ -364,11 +362,11 @@ class CaseClassForm(ModelForm):
 
 
 class ProductItemForm(ModelForm):
-    product_pic1 = forms.ImageField(label=u'产品截图1', widget=AjaxClearableFileInput(), help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
-    product_pic2 = forms.ImageField(label=u'产品截图2', widget=AjaxClearableFileInput(), required = False)
-    product_pic3 = forms.ImageField(label=u'产品截图3', widget=AjaxClearableFileInput(), required = False)
-    product_pic4 = forms.ImageField(label=u'产品截图4', widget=AjaxClearableFileInput(), required = False)
-    product_intro = forms.CharField(label=u'内容', widget=CKEditorWidget())
+    product_pic1 = forms.ImageField(label=u'截图1', widget=AjaxClearableFileInput(), help_text=u"建议焦点图的尺寸相同以保证焦点图的最佳显示效果")
+    product_pic2 = forms.ImageField(label=u'截图2', widget=AjaxClearableFileInput(), required = False)
+    product_pic3 = forms.ImageField(label=u'截图3', widget=AjaxClearableFileInput(), required = False)
+    product_pic4 = forms.ImageField(label=u'截图4', widget=AjaxClearableFileInput(), required = False)
+    product_intro = forms.CharField(label=u'介绍', widget=CKEditorWidget())
     class Meta:
         model = ProductItem
         fields = (
