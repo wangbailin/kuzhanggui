@@ -4,7 +4,7 @@
 {{ block.super }}
 <script type="text/javascript" src="{{ STATIC_URL }}js/highcharts.js"></script>
 {% load chartit %}
-{{ charts|load_charts:"weixin_daily_data,wsite_daily_data" }}
+{{ charts|load_charts:"wsite_daily_data" }}
 {% endblock %}
 
 {% block app %}
@@ -18,12 +18,10 @@
         <h1>{{ weixin.name }}</h1>
         <table style="margin-top:24px;">
             <thead style="font-size:20px;">
-                <th width="50px;">{{ weixin.follower_count }}</th>
                 <th width="50px;">{{ weixin.message_count }}</th>
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align:center;">粉丝</td>
                     <td style="text-align:center;">月消息</td>
                 </tr>
             </tbody>
@@ -35,6 +33,5 @@
     $('#nav-dashboard').addClass('active');
 </script>
 
-<div id="weixin_daily_data" class="well" style="height:400px;"></div>
 <div id="wsite_daily_data" class="well" style="height:400px;"></div>
 {% endblock %}

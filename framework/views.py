@@ -86,40 +86,6 @@ def dashboard(request):
         wx_account = WXAccount.objects.filter(account=account, state=WXAccount.STATE_BOUND)[0]
 
     if wx_account is not None:
-        weixin_ds = DataPool(
-            series=
-            [{
-            'options' : {
-            'source' : WeixinDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=15)).order_by('date')
-            },
-            'terms' : [
-            'date_str',
-            'follow_count',
-            'unfollow_count',
-            'new_count']
-            }])
-        weixin_chart = Chart(
-            datasource = weixin_ds,
-            series_options = [
-                {'options' : {
-                    'type' : 'line',
-                    'xAxis' : 0,
-                    'yAxis' : 0,
-                    'zIndex' : 1},
-                'terms' : {
-                    'date_str' : ['new_count']}},
-                {'options' : {
-                    'type' : 'column',
-                    'stacking' : True},
-                'terms' : {
-                    'date_str' : ['follow_count', 'unfollow_count']}
-                }],
-            chart_options = {
-                'title' : {'text' : u'微信日关注/取消关注/新增粉丝数'},
-                'xAxis' : {'title' : {'text' : u'日期'}},
-                'colors' : ['#f77f74', '#58ace8', '#3a3a3a']
-            })
-
         wsite_ds = DataPool(
             series = [{
             'options' : { 'source' : WSiteDailyData.objects.filter(weixin=wx_account, date__gte=date.today()-timedelta(days=15)).order_by('date')},
@@ -141,7 +107,7 @@ def dashboard(request):
                 'xAxis' : {'title' : {'text' : u'日期'}},
                 'colors' : ['#58ace8', '#f77f74']
            })
-        return render(request, 'dashboard.html', {'weixin' : wx_account, 'charts' : [weixin_chart, wsite_chart], 'apps' : get_apps(request)})
+        return render(request, 'dashboard.html', {'weixin' : wx_account, 'charts' : [wsite_chart], 'apps' : get_apps(request)})
     else:
         return redirect('/bind')
 
