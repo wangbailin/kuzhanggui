@@ -18,6 +18,9 @@ from framework.models import WXAccount
 from wall.models import WallUser, WallItem, WallMsg
 from wall.utils import judge_symbol
 
+
+logger = logging.getLogger('default');
+
 router_error = None
 router_reply = None
 def _route_callback(error=None, reply=None):
@@ -140,7 +143,8 @@ def index(request, wx):
                                                 reply_str = wallitem.welcome+','+'回复“退出”则退出上墙。'
                                         reply_config = BuildConfig(MessageBuilder.TYPE_RAW_TEXT, MessageBuilder.PLATFORM_WEIXIN, reply_str)
                                         return HttpResponse(MessageBuilder.build(message, reply_config), content_type="application/xml")
-                                    
+
+            logger.debug('incoming message' + str(message))
             Router.get_instance().reply(wx, message, request.META["HTTP_HOST"], _route_callback)
             
             if router_error is None and router_reply is not None:

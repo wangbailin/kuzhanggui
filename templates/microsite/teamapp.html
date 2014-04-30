@@ -8,21 +8,21 @@
             <a href="{{ item.1 }}">
                 <div class="team-card">
                     <div class="team-img">
-                        <img src="{{ item.3 }}" class="img-circle" />
+                        <img src="{{ item.2 }}" class="img-circle" />
                     </div>
                     <div class="team-meta">
                         <div class="name">
-                           <h4>{{ item.0 }}<span id="title">{{ item.2 }}</span></h4>
+                           <h4>{{ item.0 }}</h4>
                         </div>
                         <div class="digest">
-                            {{ item.4 }}
+                            {{ item.3 }}
                         </div>
                     </div>
                 </div>
             </a>
         {% empty %}
             <div class="empty">
-                <p>暂无团队成员</p>
+                <p>暂无教师</p>
             </div>
         {% endfor %}
     </div>

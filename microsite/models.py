@@ -110,7 +110,7 @@ class HomePage(Page):
 
 
 class IntroPage(Page):
-    title = models.CharField(u'标题', max_length=50, default=u'学校简介')
+    title = models.CharField(u'标题', max_length=50, default=u'学校介绍')
     content = models.TextField(u'内容', blank=True)
 
     class Meta:
@@ -265,7 +265,7 @@ class ProductApp(App):
         app_label = u'microsite'
 
 class ProductClass(models.Model):
-    product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
+    product_app = models.ForeignKey(ProductApp, verbose_name=u'课程中心')
     name = models.CharField(u'分类名称', max_length=20)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
     position = models.IntegerField(default=0)
@@ -281,15 +281,15 @@ class ProductClass(models.Model):
         return self.name
 
 class ProductItem(models.Model):
-    product_app = models.ForeignKey(ProductApp, verbose_name=u'产品')
+    product_app = models.ForeignKey(ProductApp, verbose_name=u'课程中心')
     cls = models.ForeignKey(ProductClass, verbose_name=u'分类', blank=True, null=True)
     pub_time = models.DateTimeField(u'添加时间', auto_now_add=True)
-    title = models.CharField(u'产品名称', max_length=100)
-    product_pic1 = models.ImageField(u"产品截图1", upload_to='upload/', max_length=255, blank=True)
-    product_pic2 = models.ImageField(u"产品截图2", upload_to='upload/', max_length=255, blank=True)
-    product_pic3 = models.ImageField(u"产品截图3", upload_to='upload/', max_length=255, blank=True)
-    product_pic4 = models.ImageField(u"产品截图4", upload_to='upload/', max_length=255, blank=True)
-    product_intro = models.TextField(u"产品介绍")
+    title = models.CharField(u'名称', max_length=100)
+    product_pic1 = models.ImageField(u"截图1", upload_to='upload/', max_length=255, blank=True)
+    product_pic2 = models.ImageField(u"截图2", upload_to='upload/', max_length=255, blank=True)
+    product_pic3 = models.ImageField(u"截图3", upload_to='upload/', max_length=255, blank=True)
+    product_pic4 = models.ImageField(u"截图4", upload_to='upload/', max_length=255, blank=True)
+    product_intro = models.TextField(u"介绍")
     position = models.IntegerField(default=0)
 
     class Meta:
@@ -297,19 +297,18 @@ class ProductItem(models.Model):
         app_label = u'microsite'
 
 
-class TrendCategory(models.Model):
+class TrendClass(models.Model):
     name = models.CharField(u'分类名称', max_length=255)
-    app = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
+    app = models.ForeignKey(TrendsApp, verbose_name = u'学校新闻')
 
     class Meta:
         unique_together = ('app', 'name')
-        db_table = u'trend_category'
+        db_table = u'trend_class'
         app_label = u'microsite'
 
 
 class TrendItem(models.Model):
-    trend = models.ForeignKey(TrendsApp, verbose_name = u'趋势')
-    category = models.ForeignKey(TrendCategory, verbose_name = u'分类')
+    trend = models.ForeignKey(TrendsApp, verbose_name = u'学校新闻')
 
     pub_time = models.DateTimeField(u'日期', auto_now_add=True)
     title = models.CharField(u'标题', max_length=100)
@@ -324,10 +323,9 @@ class TrendItem(models.Model):
 
 
 class TeamItem(models.Model):
-    team = models.ForeignKey(TeamApp, verbose_name = u'团队')
+    team = models.ForeignKey(TeamApp, verbose_name = u'师资力量')
     pub_time = models.DateTimeField(u'日期', auto_now_add=True)
     name = models.CharField(u'姓名', max_length=100)
-    job_title = models.CharField(u'职位名称', max_length=100)
     picture = models.ImageField(u"照片", upload_to='upload/', max_length=255)
     person_digest = models.CharField(u'简要介绍', max_length=255)
     person_content = models.TextField(u'详细介绍')
@@ -340,8 +338,8 @@ class TeamItem(models.Model):
 class ContactItem(models.Model):
     contact = models.ForeignKey(ContactApp, verbose_name = u'联系我们')
     name = models.CharField(u'地址名称', max_length=50)
-    lat = models.FloatField(u'公司纬度')
-    lng = models.FloatField(u'公司经度')
+    lat = models.FloatField(u'学校纬度')
+    lng = models.FloatField(u'学校经度')
     address = models.CharField(u'具体地址', max_length=200)
     mail_code = models.CharField(u'邮政编码', max_length=20, blank=True)
     fax_code = models.CharField(u'传真号码', max_length=30, blank=True)
@@ -385,7 +383,7 @@ class CulturePage(Page):
         return self.title
 
 class BusinessPage(Page):
-    title = models.CharField(u'标题', max_length=100, default=u'校园风采')
+    title = models.CharField(u'标题', max_length=100, default=u'学校风采')
     content = models.TextField(u'内容', blank=True)
 
     class Meta:
@@ -442,7 +440,7 @@ class LinkPage(Page):
         return self.title
 
 class HelpPage(Page):
-    title = models.CharField(u'标题', max_length=100, default=u'新手指南')
+    title = models.CharField(u'标题', max_length=100, default=u'新手指导')
     content = models.TextField(u'内容', blank=True)
 
     class Meta:
@@ -718,13 +716,13 @@ def get_default_title(page):
     if page.real_type == ContentType.objects.get_for_model(ContactApp):
         return u"联系我们"
     elif page.real_type == ContentType.objects.get_for_model(TrendsApp):
-        return u"公司动态"
+        return u"学校新闻"
     elif page.real_type == ContentType.objects.get_for_model(CaseApp):
         return u"成功案例"
     elif page.real_type == ContentType.objects.get_for_model(ProductApp):
         return u"课程中心"
     elif page.real_type == ContentType.objects.get_for_model(IntroPage):
-        return u"学校简介"
+        return u"学校介绍"
     elif page.real_type == ContentType.objects.get_for_model(BusinessPage):
         return u"学校风采"
     elif page.real_type == ContentType.objects.get_for_model(JoinApp):

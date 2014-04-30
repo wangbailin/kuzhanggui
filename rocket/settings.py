@@ -1,7 +1,7 @@
 # Django settings for rocket project.
 import os
 
-DEBUG = True
+DEBUG = False
 #DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -85,6 +85,7 @@ STATIC_URL = '/static/'
 # Additional locations of static files
 STATICFILES_DIRS = (
     PROJECT_ROOT + '/assets',
+    PROJECT_ROOT + '/resources',
 )
 
 

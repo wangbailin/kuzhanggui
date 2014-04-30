@@ -64,7 +64,7 @@ class TrendsTable(tables.Table):
     class Meta:
         model = TrendItem
         order_by = '-position'
-        empty_text = u'暂无公司动态'
+        empty_text = u'暂无新闻'
         orderable = False
         attrs = {'class' : 'table table-striped'}
         fields = ('title','pub_time','summary', 'position')
@@ -75,11 +75,11 @@ class TeamTable(tables.Table):
     position = tables.Column(orderable=True)
     class Meta:
         model = TeamItem
-        empty_text = u'暂无团队成员介绍'
+        empty_text = u'暂无教师'
         order_by = 'position'
         orderable = False
         attrs = {'class' : 'table table-striped'}
-        fields = ('name', 'job_title', 'person_digest','position')
+        fields = ('name', 'person_digest','position')
 
 class CaseItemTable(tables.Table):
     id = tables.Column(orderable=False, visible=False)
@@ -113,7 +113,7 @@ class ProductItemTable(tables.Table):
     class Meta:
         model = ProductItem
         order_by = '-position'
-        empty_text = u'暂无产品'
+        empty_text = u'暂无课程'
         orderable = False
         attrs = {'class' : 'table table-striped'}
         fields = ('title', 'cls', 'position')
@@ -126,7 +126,7 @@ class ProductClassTable(tables.Table):
     class Meta:
         model = ProductClass
         order_by = '-position'
-        empty_text = u'暂无产品分类'
+        empty_text = u'暂无课程分类'
         orderable = False
         attrs = {'class' : 'table table-striped'}
         fields = ('name', 'position')

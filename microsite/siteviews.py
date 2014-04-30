@@ -153,7 +153,7 @@ def team_(request, teamapp):
     for i in teamitems:
         logger.debug("one team name %s" % i.name)
         picture_url = i.picture.url
-        items.append( (i.name, '/microsite/teamitem/%d' % i.pk, i.job_title, picture_url, i.person_digest))
+        items.append( (i.name, '/microsite/teamitem/%d' % i.pk, picture_url, i.person_digest))
     return render(request, 'microsite/teamapp.html', {'title':teamapp._get_tab_name(), 'items':items, 'homepage_id':homepage_id, 'theme': site_templates[teamapp.wx.wsite_template].site_template})
 def team(request, item_id):
     teamapp = get_object_or_404(TeamApp, pk=item_id)
@@ -198,7 +198,7 @@ def trenditem(request, item_id):
 def teamitem_(request, teamitem):
     homepage_id=get_footer(teamitem.team.pk)
     picture_url = teamitem.picture.url
-    item = (teamitem.name, '/microsite/teamitem/%s' % teamitem.id, teamitem.job_title, picture_url, teamitem.person_digest)
+    item = (teamitem.name, '/microsite/teamitem/%s' % teamitem.id, picture_url, teamitem.person_digest)
     return render(request, 'microsite/teamitempage.html', {'title':teamitem.name, 'item':item, 'content':teamitem.person_content.encode("utf8"), 'homepage_id':homepage_id, 'theme': site_templates[teamitem.team.wx.wsite_template].site_template})
 def teamitem(request, item_id):
     teamitem = get_object_or_404(TeamItem, pk=item_id)

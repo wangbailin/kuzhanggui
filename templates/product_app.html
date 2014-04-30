@@ -13,16 +13,16 @@
 </script>
 
 <div class="btn-group" id="margin_bottom">
-    <button class="btn btn-primary" data-toggle="dropdown"><i class="icon-plus icon-white"></i>新增产品</button>
+    <button class="btn btn-primary" data-toggle="dropdown"><i class="icon-plus icon-white"></i>新增课程</button>
     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
         <li>
-            <a href="#add_product_class" data-toggle="modal">新增产品分类</a>
+            <a href="#add_product_class" data-toggle="modal">新增课程分类</a>
         </li>
         <li>
-            <a href="/product/add" target="_blank">新增产品</a>
+            <a href="/product/add" target="_blank">新增课程</a>
         </li>
     </ul>
 </div>
@@ -33,14 +33,14 @@
 
 <div class="navbar" style="margin-bottom:0;">
     <div class="navbar-inner">
-        <p class="navbar-text">产品分类</p>
+        <p class="navbar-text">课程分类</p>
     </div>
 </div>
 {% load render_table from django_tables2 %}
 {% render_table app_info.1 "django_tables2/table.html" %}
 <div class="navbar" style="margin-bottom:0;">
     <div class="navbar-inner">
-        <p class="navbar-text">产品</p>
+        <p class="navbar-text">课程</p>
     </div>
 </div>
 {% render_table app_info.0 "django_tables2/table.html" %}
@@ -48,7 +48,7 @@
 <div id="add_product_class" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="myModalLabel">新增产品分类</h3>
+        <h3 id="myModalLabel">新增课程分类</h3>
     </div>
     <div class="modal-body">
         <form id="add_product_class_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
@@ -70,7 +70,7 @@
 <div id="change_product_class" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="myModalLabel">修改产品分类</h3>
+        <h3 id="myModalLabel">修改课程分类</h3>
     </div>
     <div class="modal-body">
         <form id="change_product_class_form" class="form-horizontal" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
@@ -93,10 +93,10 @@
 <div id="delete_product" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_product_header" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>删除产品</h3>
+        <h3>删除课程</h3>
     </div>
     <div class="modal-body">
-        <span>确认删除产品 <strong id="product_name"></strong>?</span>
+        <span>确认删除课程 <strong id="product_name"></strong>?</span>
     </div>
     <div class="modal-footer">
         <a id="delete_product_ok" href="#" class="btn btn-danger btn-del">删除</a>
@@ -107,10 +107,10 @@
 <div id="delete_product_class" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="delete_product_class_header" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>删除产品分类</h3>
+        <h3>删除课程分类</h3>
     </div>
     <div class="modal-body">
-        <span>确认删除产品分类 <strong id="case_product_name"></strong>?</span>
+        <span>确认删除课程分类 <strong id="case_product_name"></strong>?</span>
     </div>
     <div class="modal-footer">
         <a id="delete_product_class_ok" href="#" class="btn btn-danger btn-del">删除</a>

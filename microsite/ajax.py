@@ -199,21 +199,22 @@ def add_case_class(request, form):
     dajax = Dajax()
     form = AddCaseClassForm(deserialize_form(form))
     if form.is_valid():
+        """
         if len(CaseClass.objects.filter(case_app_id=form.cleaned_data.get('tab_id'))) >= 4:
             dajax.remove_css_class('#add_case_class_form .control-group', 'error')
             for error in form.errors:
                 dajax.add_css_class('#%s' % error, 'error')
             dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '最多只能添加4个分类！' }, 'addCaseClassCallback')
         else:
-            case_app_id = form.cleaned_data.get('tab_id')
-            caseapp = CaseApp.objects.get(pk=case_app_id)
-            max_pos = caseapp.caseclass_set.all().aggregate(Max('position'))
-            position = int(max_pos['position__max'] or 0) + 1
-            CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=case_app_id, pub_time=datetime.datetime.now(),position=position)
-            dajax.remove_css_class('#add_case_class_form .control-group', 'error')
-            dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addCaseClassCallback')
-            dajax.redirect(form.cleaned_data.get('tab_id'))
-
+        """
+        case_app_id = form.cleaned_data.get('tab_id')
+        caseapp = CaseApp.objects.get(pk=case_app_id)
+        max_pos = caseapp.caseclass_set.all().aggregate(Max('position'))
+        position = int(max_pos['position__max'] or 0) + 1
+        CaseClass.objects.create(name=form.cleaned_data.get('name'), case_app_id=case_app_id, pub_time=datetime.datetime.now(),position=position)
+        dajax.remove_css_class('#add_case_class_form .control-group', 'error')
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addCaseClassCallback')
+        dajax.redirect(form.cleaned_data.get('tab_id'))
     else:
         dajax.remove_css_class('#add_case_class_form .control-group', 'error')
         for error in form.errors:
@@ -228,21 +229,22 @@ def add_product_class(request, form):
     form = AddProductClassForm(deserialize_form(form))
 
     if form.is_valid():
+        """
         if len(ProductClass.objects.filter(product_app_id=form.cleaned_data.get('tab_id'))) >= 4:
             dajax.remove_css_class('#add_product_class_form .control-group', 'error')
             for error in form.errors:
                 dajax.add_css_class('#%s' % error, 'error')
             dajax.add_data({ 'ret_code' : 1000, 'ret_msg' : '最多只能添加4个分类！' }, 'addProductClassCallback')
         else:
-            product_app_id=form.cleaned_data.get('tab_id')
-            productapp = ProductApp.objects.get(pk=product_app_id)
-            max_pos = productapp.productclass_set.all().aggregate(Max('position'))
-            position = int(max_pos['position__max'] or 0) + 1
-            ProductClass.objects.create(name=form.cleaned_data.get('name'), product_app_id=product_app_id, pub_time=datetime.datetime.now(), position=position)
-            dajax.remove_css_class('#add_product_class_form .control-group', 'error')
-            dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addProductClassCallback')
-            dajax.redirect(form.cleaned_data.get('tab_id'))
-
+        """
+        product_app_id=form.cleaned_data.get('tab_id')
+        productapp = ProductApp.objects.get(pk=product_app_id)
+        max_pos = productapp.productclass_set.all().aggregate(Max('position'))
+        position = int(max_pos['position__max'] or 0) + 1
+        ProductClass.objects.create(name=form.cleaned_data.get('name'), product_app_id=product_app_id, pub_time=datetime.datetime.now(), position=position)
+        dajax.remove_css_class('#add_product_class_form .control-group', 'error')
+        dajax.add_data({ 'ret_code' : 0, 'ret_msg' : u'分类已成功添加！' }, 'addProductClassCallback')
+        dajax.redirect(form.cleaned_data.get('tab_id'))
     else:
         dajax.remove_css_class('#add_product_class_form .control-group', 'error')
         for error in form.errors:
@@ -310,19 +312,19 @@ def generate_menu_json(wx_account):
         menuItems = PageGroup.objects.filter(menu=menu)
         if not is_app_menu(menu):
             if len(menuItems) > 1:
-                for item in menuItems:
+                for item in menuItems[0:4]:
                     values = (item.page.tab_name, settings.SITE_URL + get_page_url(item.page))
                     sub_buttons.append(view_fmt % values)
         else:
             page = menuItems[0].page
             if page.real_type == ContentType.objects.get_for_model(ProductApp):
                 product_app = page.cast()
-                for cls in product_app.productclass_set.all():
+                for cls in product_app.productclass_set.all()[0:4]:
                     sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
                 sub_buttons.append(view_fmt % (u'全部产品', settings.SITE_URL + get_page_url(page)))
             elif page.real_type == ContentType.objects.get_for_model(CaseApp):
                 case_app = page.cast()
-                for cls in case_app.caseclass_set.all():
+                for cls in case_app.caseclass_set.all()[0:4]:
                     sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
                 sub_buttons.append(view_fmt % (u'全部成功案例', settings.SITE_URL + get_page_url(page)))
         if len(sub_buttons) > 0:
