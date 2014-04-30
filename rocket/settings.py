@@ -1,7 +1,7 @@
 # Django settings for rocket project.
 import os
 
-DEBUG = True
+DEBUG = False
 #DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
