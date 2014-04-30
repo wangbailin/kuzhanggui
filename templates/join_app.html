@@ -30,7 +30,7 @@
         $('#job_title').val(job_title);
         $('#number').val(number);
         if(number !== '' && number !== undefined && number !== null) {
-            $("#id-ignore-number").removeProp('checked');
+            $("#id-ignore-number").prop('checked', false);
             $("#number").show();
         } else {
             $("#id-ignore-number").prop('checked', true);
@@ -51,8 +51,8 @@
             show: false
         });
         $("#id-ignore-number").change(function() {
-            if(this.checked) {
-                $("#number").hide();
+            if($(this).is(":checked")) {
+                $("#number").val('').hide();
             } else {
                 $("#number").show();
             }
