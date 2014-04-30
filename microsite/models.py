@@ -235,7 +235,7 @@ class JoinItem(models.Model):
     join = models.ForeignKey(JoinApp, verbose_name = u'加入')
     publish = models.BooleanField(u'发布状态', default=False, help_text=u"发布")
     job_title = models.CharField(u'职位名称', max_length=100)
-    number = models.IntegerField(u'招聘人数', max_length=100)
+    number = models.IntegerField(u'招聘人数', max_length=100, null=True, blank=True)
     pub_time = models.DateTimeField(u'发布时间', auto_now_add=True)
     content1 = models.TextField(u'工作内容1')
     content2 = models.TextField(u'工作内容2', blank=True)

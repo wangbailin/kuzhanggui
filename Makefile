@@ -1,8 +1,3 @@
-REBUILD_SQL="drop database rocket; \
-			create database rocket;"
-rebuild-db:
-	echo $(REBUILD_SQL) | mysql -u root -p && ./manage.py syncdb --traceback
-
 HOST:=0.0.0.0
 PORT:=8000
 
@@ -21,6 +16,12 @@ reload-uwsgi:
 console_polyfill=assets/js/console-polyfill.js
 $(console_polyfill): bower_components/console-polyfill/index.js
 	cp $? $(console_polyfill)
+
+REBUILD_SQL="drop database rocket; \
+			create database rocket;"
+rebuild-db:
+	echo $(REBUILD_SQL) | mysql -u root -p && ./manage.py syncdb --traceback
+
 
 assets: $(console_polyfill)
 

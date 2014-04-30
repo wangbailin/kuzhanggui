@@ -1,11 +1,11 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/app_dialog.js"></script>
 <script type="text/javascript">
+
     $(document).ready(function(){
         $('#add_edit_join_item_save').click(addEditJoinItem);
         $('#add_edit_join_item').on('hidden', function() {
         $('#publish').val('');
         $('#job_title').val('');
-        $('#number').val('');
         $('#content1').val('');
         $('#content2').val('');
         $('#content3').val('');
@@ -17,14 +17,25 @@
         $('#record_id').val('');
         $('#add_edit_join_item.control-group').removeClass('error');
         });
-
     });
+
     function showDialog(record_id,publish,job_title,number,content1,content2,content3,content4,require1,require2,require3,require4){
-        $('#add_edit_join_item').modal();
+        $("#add_edit_join_item").modal('show');
         $('#record_id').val(record_id);
-        $('#publish').val(publish);
+        if(publish === '' || publish === 'False') {
+            $('#publish').prop('checked', false);
+        } else {
+            $('#publish').val('checked', true);
+        }
         $('#job_title').val(job_title);
         $('#number').val(number);
+        if(number !== '' && number !== undefined && number !== null) {
+            $("#id-ignore-number").removeProp('checked');
+            $("#number").show();
+        } else {
+            $("#id-ignore-number").prop('checked', true);
+            $("#number").hide();
+        }
         $('#content1').val(content1);
         $('#content2').val(content2);
         $('#content3').val(content3);
@@ -34,10 +45,29 @@
         $('#require3').val(require3);
         $('#require4').val(require4);
     };
+
+    $(function() {
+        $('#add_edit_join_item').modal({
+            show: false
+        });
+        $("#id-ignore-number").change(function() {
+            if(this.checked) {
+                $("#number").hide();
+            } else {
+                $("#number").show();
+            }
+        });
+        $("#add-joinitem").click(function(e) {
+            e.preventDefault();
+            showDialog('', '', '', '', '', '', '', '', '', 
+                        '', '', '', '', '', '', '','', '', 
+                        '', '', '', '', '', '');
+        });
+    });
 </script>
 
 <div id="margin_bottom">
-<a type="button" class="btn btn-default btn-primary" href="#add_edit_join_item" data-toggle="modal" role="button" target="_blank"><i class="icon-plus icon-white"></i>新增职位</a>
+<a type="button" class="btn btn-default btn-primary" href="#add_edit_join_item" id='add-joinitem' role="button" target="_blank"><i class="icon-plus icon-white"></i>新增职位</a>
 </div>
 {% include "save_item_order.html" %}
 {% if not active_app_specific.enable %}
@@ -75,7 +105,12 @@
             <div class="control-group">
                 <label class="control-label" for="number"><span style="color:red;">*</span>招聘人数</label>
                 <div class="controls">
-                    <input class="input-xlarge" type="text" name="number" id="number">
+                    <label for='id-ignore-number' class="checkbox">
+                        <input checked type="checkbox" name='ignore-number' 
+                                id='id-ignore-number'>若干
+                    </label>
+                    <input style="display: none;" class="input-xlarge" 
+                        type="text" name="number" id="number">
                 </div>
             </div>
             <div class="control-group">

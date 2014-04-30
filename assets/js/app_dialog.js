@@ -7,8 +7,7 @@ var addEditJoinItemCallback = function(data) {
     var type= 'success';
     if (data.ret_code==0){
         $('#add_edit_join_item').modal('hide');
-    }
-    else{
+    } else{
         type = 'error';
         $('#add_edit_join_item_save').button('reset');
     }
