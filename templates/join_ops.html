@@ -1,5 +1,18 @@
-<div class="btn-group">
-    <a id="edit_join_item_button" class="btn" onclick="showDialog('{{ record.id }}', '{{ record.publish }}', '{{ record.job_title }}', '{{ record.number|default:"" }}', '{{ record.content1 }}', '{{ record.content2 }}', '{{ record.content3 }}', '{{ record.content4 }}', '{{ record.require1 }}', '{{ record.require2 }}', '{{ record.require3 }}', '{{ record.require4 }}')"><i class="icon-edit"></i></a>
+<div class="btn-group"
+    data-id="{{ record.id }}"
+    data-publish="'{{ record.publish }}"
+    data-job_title="{{ record.job_title }}"
+    data-number="{{ record.number|default:"" }}"
+    data-content1="{{ record.content1 }}"
+    data-content2="{{ record.content2 }}"
+    data-content3="{{ record.content3 }}"
+    data-content4="{{ record.content4 }}"
+    data-require1="{{ record.require1 }}"
+    data-require2="{{ record.require2 }}"
+    data-require3="{{ record.require3 }}"
+    data-require4="{{ record.require4 }}"
+    >
+    <a id="edit_join_item_button" class="btn edit"><i class="icon-edit"></i></a>
     <a data-toggle="modal" onclick="deleteJoinItem({{ record.id }}, '{{ record.title }}')" class="btn btn-danger btn-del"><i class="icon-trash"></i></a>
     <a href="#" class="btn up"><i class='icon-arrow-up'></i></a>
     <a href="#" class="btn down"><i class='icon-arrow-down'></i></a>

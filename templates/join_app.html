@@ -19,7 +19,9 @@
         });
     });
 
-    function showDialog(record_id,publish,job_title,number,content1,content2,content3,content4,require1,require2,require3,require4){
+    function showDialog(record_id,publish,job_title,number,content1,
+                        content2,content3,content4,require1,require2,
+                        require3,require4){
         $("#add_edit_join_item").modal('show');
         $('#record_id').val(record_id);
         if(publish === '' || publish === 'False') {
@@ -50,6 +52,7 @@
         $('#add_edit_join_item').modal({
             show: false
         });
+        
         $("#id-ignore-number").change(function() {
             if(this.checked) {
                 $("#number").hide();
@@ -57,11 +60,19 @@
                 $("#number").show();
             }
         });
+
         $("#add-joinitem").click(function(e) {
             e.preventDefault();
-            showDialog('', '', '', '', '', '', '', '', '', 
-                        '', '', '', '', '', '', '','', '', 
-                        '', '', '', '', '', '');
+            showDialog('', '', '', '', '', '', '', 
+                        '', '', '', '', '');
+        });
+
+        $("table .edit").click(function(e) {
+            e.preventDefault();
+            var data = $(this.parentNode).data();
+            showDialog(data.id, data.publish, data.job_title, data.number, 
+                        data.content1, data.content2, data.content3, data.content4, 
+                        data.require1, data.require2, data.require3, data.require4);
         });
     });
 </script>
