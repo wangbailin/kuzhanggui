@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container content-page">
     <p>发布时间：{{ pub_time | date:"Y年m月d日" }}</p>
-    <p>招聘人数：{{ number }}</p>
+    <p>招聘人数：{{ number|default:"若干" }}</p>
         <p>工作内容</p>
         <ul>
             {% for content in contents%}
