@@ -482,7 +482,7 @@ class PageGroup(models.Model):
 def add_default_site(wx_account):
     homepages = HomePage.objects.filter(wx=wx_account)
     if len(homepages) == 0:
-        kkkkhomepage = HomePage()
+        homepage = HomePage()
         homepage.wx = wx_account
         homepage.name = wx_account.name
         homepage.message_cover = consts.DEFAULT_HOMEPAGE_COVER
