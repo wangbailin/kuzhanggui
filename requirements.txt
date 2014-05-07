@@ -1,7 +1,10 @@
+--index-url http://pypi.douban.com/simple
+
 python-memcached
 pyyaml
 ua-parser
 user-agents
+django==1.5.4
 django-user-agents
 django-datetime-widget
 django-tables2
@@ -13,3 +16,6 @@ django-dajax
 pillow
 redis
 requests
+uwsgi
+mysql-python
+simplejson

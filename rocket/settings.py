@@ -1,7 +1,7 @@
 # Django settings for rocket project.
 import os
 
-DEBUG = True
+DEBUG = False
 #DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -30,7 +30,8 @@ CACHES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['jianfei.bestgames7.com','r.limijiaoyin.com', 'wangnan.limijiaoyin.com', 'yangchen.limijiaoyin.com']
+ALLOWED_HOSTS = ['jianfei.bestgames7.com','r.limijiaoyin.com', 
+		'wangnan.limijiaoyin.com', 'yangchen.limijiaoyin.com', 'kuzhanggui.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -58,7 +59,7 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.normpath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(os.path.normpath(__file__))))
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = '/data/media/'

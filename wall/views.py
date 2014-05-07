@@ -4,6 +4,7 @@ import logging
 from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 
 from django.contrib import auth
+from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -60,7 +61,7 @@ def wall(request):
         request.session['active_wx_id'] = wx.pk
     
     wall_item_nums = []
-    now = datetime.now()
+    now = timezone.now()
     logger.info('now time is %s' % now)
     wallitems = WallItem.objects.filter(wx=wx)
     if not len(wallitems)==0:

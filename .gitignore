@@ -19,13 +19,11 @@ develop-eggs
 .installed.cfg
 lib
 lib64
-logs
 
 # Installer logs
 pip-log.txt
 
-# Unit test / coverage reports
-.coverage
+# Unit test / coverage reports.coverage
 .tox
 nosetests.xml
 
@@ -36,3 +34,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+venv
+*.pid
+logs
+dump.rdb

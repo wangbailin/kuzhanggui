@@ -99,4 +99,5 @@ class BaiduYunStorage(Storage):
         
     def exists(self, name):
         return False
+        #return True
         
