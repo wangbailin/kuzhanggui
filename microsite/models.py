@@ -15,7 +15,7 @@ from baidu_yun.storage import BaiduYunStorage
 
 
 class Page(models.Model):
-    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微官网)")
+    enable = models.BooleanField(u'是否启用', default = True, help_text=u"启用 (启用后该页面内容会显示在微网站)")
     real_type = models.ForeignKey(ContentType, editable=False)
     wx = models.ForeignKey(WXAccount, verbose_name = u'微信账号')
     tab_name = models.CharField(u'页面名称', max_length=20)

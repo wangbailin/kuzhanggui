@@ -103,7 +103,7 @@ def dashboard(request):
                 'date_str' : ['visitor_count', 'visit_count']
             }}],
             chart_options = {
-                'title' : {'text' : u'微官网日访问人数/访问次数'},
+                'title' : {'text' : u'微网站日访问人数/访问次数'},
                 'xAxis' : {'title' : {'text' : u'日期'}},
                 'colors' : ['#58ace8', '#f77f74']
            })
