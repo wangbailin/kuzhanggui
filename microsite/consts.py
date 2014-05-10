@@ -20,7 +20,7 @@ DEFAULT_FINDME_COVER = 'img/findme_message.png'
 DEFAULT_TRENDITEM_COVER = 'img/default_trenditem_cover.png'
 DEFAULT_COVER = "img/empty.png"
 
-DEFAULT_HOMEPAGE_MSG = u'点击查看%s微官网。'
+DEFAULT_HOMEPAGE_MSG = u'点击查看%s微网站。'
 DEFAULT_INTRO_MSG = u'点击查看公司介绍。'
 DEFAULT_BUSINESS_MSG = u'点击查看公司业务。'
 DEFAULT_NEWS_MSG = u'点击查看公司动态。'
@@ -31,7 +31,7 @@ DEFAULT_WEIBO_MSG = u'点击查看公司官方微博。'
 DEFAULT_CONTACT_MSG = u'点击查看公司联系方式。'
 DEFAULT_JOIN_MSG = u'点击查看公司最新招聘信息。'
 DEFAULT_HELP_MSG = u'点击查看新手指导。'
-DEFAULT_MSG = "点击查看全部内容。"
+DEFAULT_MSG = "点击查看全部内容"
 
 
 DEFAULT_INTRO_ICON = 'themes/%s/home_intro.png'
