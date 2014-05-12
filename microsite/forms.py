@@ -142,7 +142,7 @@ class JoinItemForm(ModelForm):
             'require2',
             'require3',
             'require4',
-            )
+	)
 
 
 class ContactAppForm(ModelForm):
@@ -194,7 +194,7 @@ class TeamAppForm(ModelForm):
 
 class TeamItemForm(ModelForm):
     name = forms.CharField(label=u'姓名', widget=LongTextInput)
-    person_digest = forms.CharField(label=u'简要介绍', widget=LongTextarea(attrs={'rows': 2}), help_text=u"建议字数限制在50字以内")
+    person_digest = forms.CharField(label=u'简要介绍', widget=LongTextarea(attrs={'maxlength':50,'rows': 2}), help_text=u"建议字数限制在50字以内")
     person_content = forms.CharField(label=u'详细介绍', widget=CKEditorWidget())
     picture = forms.ImageField(label=u'照片', widget=AjaxClearableFileInput(), required = True, help_text=u'建议图片大小为105px*105px')
     class Meta:
