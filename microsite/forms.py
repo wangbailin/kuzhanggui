@@ -142,7 +142,7 @@ class JoinItemForm(ModelForm):
             'require2',
             'require3',
             'require4',
-	I)
+	)
 
 
 class ContactAppForm(ModelForm):
@@ -439,13 +439,6 @@ class ChangeProductClassForm(forms.Form):
 
         raise forms.ValidationError(u'分类已经存在！')
 
-class FormManager(object):
-    @classmethod
-    def get_form(cls, page, request = None):
-        if page.real_type == ContentType.objects.get_for_model(HomePage):
-            if (request):
-                return HomePageForm(request.POST, request.FILES, instance=page)
-            else:
                 return HomePageForm(instance=page)
         elif page.real_type == ContentType.objects.get_for_model(IntroPage):
             if (request):
