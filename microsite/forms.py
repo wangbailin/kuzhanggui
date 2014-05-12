@@ -87,18 +87,18 @@ class HomePageForm(ModelForm):
 
 class IntroPageForm(ModelForm):
     content = forms.CharField(label=u'内容', widget=CKEditorWidget(), required=False)
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = IntroPage
         fields = (
             'enable',
-#            'icon',
+            'icon',
             'title',
             'content',
         )
 
 class JoinAppForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), help_text=u"建议图片大小为190px*235px")
     pic = forms.ImageField(label=u'焦点图', widget=AjaxClearableFileInput(), required=False)
     front_words = forms.CharField(label=u'开场语', widget=forms.Textarea(attrs={'rows':4}))
     contact = forms.CharField(label=u'联系方式', widget=forms.TextInput(attrs={'placeholder':u'邮箱或电话'}))
@@ -107,7 +107,7 @@ class JoinAppForm(ModelForm):
         model = JoinApp
         fields = (
             'enable',
- #           'icon',
+            'icon',
             'title',
             'pic',
             'front_words',
@@ -146,21 +146,21 @@ class JoinItemForm(ModelForm):
 
 
 class ContactAppForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = ContactApp
         fields = (
             'title',
-#            'icon',
+            'icon',
             'enable',
         )
 class TrendsAppForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = TrendsApp
         fields = (
             'title',
-#            'icon',
+            'icon',
             'enable',
         )
 
@@ -183,12 +183,12 @@ class TrendItemForm(ModelForm):
         }
 
 class TeamAppForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = TeamApp
         fields = (
             'title',
-#            'icon',
+            'icon',
             'enable',
         )
 
@@ -235,61 +235,61 @@ class ContactPeopleForm(ModelForm):
 
 class CulturePageForm(ModelForm):
     content = forms.CharField(label='内容', widget=CKEditorWidget(), required = False)
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = CulturePage
         fields = (
             'enable',
-#            'icon',
+            'icon',
             'content',
             'title',
         )
 
 class BusinessPageForm(ModelForm):
     content = forms.CharField(label='内容', widget=CKEditorWidget(), required = False)
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = BusinessPage
         fields = (
             'enable',
-#            'icon',
+            'icon',
             'content',
             'title',
         )
 
 class HelpPageForm(ModelForm):
     content = forms.CharField(label='内容', widget=CKEditorWidget(), required = False)
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = BusinessPage
         fields = (
             'enable',
-#            'icon',
+            'icon',
             'content',
             'title',
         )
 
 
 class WeiboPageForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = WeiboPage
         fields = (
             'enable',
-#            'icon',
+            'icon',
             'title',
             'url',
         )
 
 class ContentPageForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     content = forms.CharField(label=u'内容', widget=CKEditorWidget(), required = False)
     class Meta:
         model = ContentPage
         fields = (
             'enable',
             'title',
-#            'icon',
+            'icon',
             'content',
         )
         widgets = {
@@ -298,13 +298,13 @@ class ContentPageForm(ModelForm):
 
 
 class LinkPageForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = LinkPage
         fields = (
             'enable',
             'title',
-#            'icon',
+            'icon',
             'url',
         )
         widgets = {
@@ -313,22 +313,22 @@ class LinkPageForm(ModelForm):
         }
 
 class CaseAppForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = CaseApp
         fields = (
             'title',
- #           'icon',
+            'icon',
             'enable',
         )
 
 class ProductAppForm(ModelForm):
-#    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
+    icon = forms.ImageField(label=u'首页图标', widget=AjaxClearableFileInput(), required = True, help_text=u"建议图片大小为190px*235px")
     class Meta:
         model = ProductApp
         fields = (
             'title',
- #           'icon',
+            'icon',
             'enable',
         )
 
@@ -439,6 +439,13 @@ class ChangeProductClassForm(forms.Form):
 
         raise forms.ValidationError(u'分类已经存在！')
 
+class FormManager(object):
+    @classmethod
+    def get_form(cls, page, request = None):
+        if page.real_type == ContentType.objects.get_for_model(HomePage):
+            if (request):
+                return HomePageForm(request.POST, request.FILES, instance=page)
+            else:
                 return HomePageForm(instance=page)
         elif page.real_type == ContentType.objects.get_for_model(IntroPage):
             if (request):
