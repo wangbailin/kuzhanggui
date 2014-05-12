@@ -92,7 +92,7 @@ class IntroPageForm(ModelForm):
         model = IntroPage
         fields = (
             'enable',
-            'icon',
+#            'icon',
             'title',
             'content',
         )
@@ -107,7 +107,7 @@ class JoinAppForm(ModelForm):
         model = JoinApp
         fields = (
             'enable',
-            'icon',
+ #           'icon',
             'title',
             'pic',
             'front_words',
@@ -151,7 +151,7 @@ class ContactAppForm(ModelForm):
         model = ContactApp
         fields = (
             'title',
-            'icon',
+#            'icon',
             'enable',
         )
 class TrendsAppForm(ModelForm):
@@ -160,7 +160,7 @@ class TrendsAppForm(ModelForm):
         model = TrendsApp
         fields = (
             'title',
-            'icon',
+#            'icon',
             'enable',
         )
 
@@ -188,7 +188,7 @@ class TeamAppForm(ModelForm):
         model = TeamApp
         fields = (
             'title',
-            'icon',
+#            'icon',
             'enable',
         )
 
@@ -240,7 +240,7 @@ class CulturePageForm(ModelForm):
         model = CulturePage
         fields = (
             'enable',
-            'icon',
+#            'icon',
             'content',
             'title',
         )
@@ -252,7 +252,7 @@ class BusinessPageForm(ModelForm):
         model = BusinessPage
         fields = (
             'enable',
-            'icon',
+#            'icon',
             'content',
             'title',
         )
@@ -264,7 +264,7 @@ class HelpPageForm(ModelForm):
         model = BusinessPage
         fields = (
             'enable',
-            'icon',
+#            'icon',
             'content',
             'title',
         )
@@ -276,7 +276,7 @@ class WeiboPageForm(ModelForm):
         model = WeiboPage
         fields = (
             'enable',
-            'icon',
+#            'icon',
             'title',
             'url',
         )
@@ -289,7 +289,7 @@ class ContentPageForm(ModelForm):
         fields = (
             'enable',
             'title',
-            'icon',
+#            'icon',
             'content',
         )
         widgets = {
@@ -304,7 +304,7 @@ class LinkPageForm(ModelForm):
         fields = (
             'enable',
             'title',
-            'icon',
+#            'icon',
             'url',
         )
         widgets = {
@@ -318,7 +318,7 @@ class CaseAppForm(ModelForm):
         model = CaseApp
         fields = (
             'title',
-            'icon',
+ #           'icon',
             'enable',
         )
 
@@ -328,7 +328,7 @@ class ProductAppForm(ModelForm):
         model = ProductApp
         fields = (
             'title',
-            'icon',
+ #           'icon',
             'enable',
         )
 
