@@ -351,7 +351,6 @@ def generate_menu(request):
         return json.dumps({'ret_code': 1001, 'ret_msg': '微信号未绑定'})
 
     menu_data = generate_menu_json(wx_account)
-    logger.debug(menu_data)
 
     menu_count = wx_account.menu_set.count()
     if menu_count < 2 or menu_count > 3:
