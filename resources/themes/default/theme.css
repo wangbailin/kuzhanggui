@@ -176,12 +176,12 @@ body {
 }
 
 .trends .empty {
-    background-image: url('news_empty.png');
+    background-image: url('nonews.png');
     margin-top: -45px;
     margin-left: -33px;
-    height: 52px;
-    width: 66px;
-    background-size: 66px 52px;
+    height: 60px;
+    width: 60px;
+    background-size: 60px 60px;
 }
 
 .trends .empty p {
@@ -244,12 +244,12 @@ body {
 }
 
 .teams .empty {
-    background-image: url('team_noinfo.png');
+    background-image: url('noteam.png');
     margin-top: -45px;
     margin-left: -33px;
-    height: 52px;
-    width: 66px;
-    background-size: 66px 52px;
+    height: 60px;
+    width: 60px;
+    background-size: 60px 60px;
 }
 
 .teams .empty p {
@@ -299,7 +299,7 @@ a.phone:active div {
 }
 
 .locs .empty {
-    background-image: url('contact_empty.png');
+    background-image: url('contactus.png');
     margin-top: -49px;
     margin-left:-42px;
     background-size: 60px 60px;
@@ -354,16 +354,16 @@ a.phone:active div {
 }
 
 .products .empty {
-    background-image: url('product_empty.png');
-    background-size: 65px 46px;
-    height: 46px;
-    width: 65px;
+    background-image: url('noclass.png');
+    background-size: 60px 60px;
+    height: 60px;
+    width: 60px;
     margin-top: -42px;
     margin-left: -32px;
 }
 
 .products .empty p {
-    margin-top: 54px;
+    margin-top: 60px;
 }
 
 @media (min-width: 340px) { 
