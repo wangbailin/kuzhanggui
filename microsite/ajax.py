@@ -320,8 +320,8 @@ def generate_menu_json(wx_account):
             if page.real_type == ContentType.objects.get_for_model(ProductApp):
                 product_app = page.cast()
                 for cls in product_app.productclass_set.all()[0:4]:
-                    sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
-                sub_buttons.append(view_fmt % (u'全部产品', settings.SITE_URL + get_page_url(page)))
+                    sub_buttons.append(view_fmt % (cls.name, settings.SITE_URL+cls.get_url()))
+                sub_buttons.append(view_fmt % (u'全部课程', settings.SITE_URL + get_page_url(page)))
             elif page.real_type == ContentType.objects.get_for_model(CaseApp):
                 case_app = page.cast()
                 for cls in case_app.caseclass_set.all()[0:4]:
@@ -351,6 +351,7 @@ def generate_menu(request):
         return json.dumps({'ret_code': 1001, 'ret_msg': '微信号未绑定'})
 
     menu_data = generate_menu_json(wx_account)
+    logger.debug(menu_data)
 
     menu_count = wx_account.menu_set.count()
     if menu_count < 2 or menu_count > 3:
