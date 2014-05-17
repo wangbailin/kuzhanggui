@@ -322,11 +322,13 @@ def generate_menu_json(wx_account):
                 for cls in product_app.productclass_set.all()[0:4]:
                     sub_buttons.append(view_fmt % (cls.name, settings.SITE_URL+cls.get_url()))
                 sub_buttons.append(view_fmt % (u'全部课程', settings.SITE_URL + get_page_url(page)))
+            """
             elif page.real_type == ContentType.objects.get_for_model(CaseApp):
                 case_app = page.cast()
                 for cls in case_app.caseclass_set.all()[0:4]:
                     sub_buttons.append(view_fmt % (cls.name, cls.get_url()))
                 sub_buttons.append(view_fmt % (u'全部成功案例', settings.SITE_URL + get_page_url(page)))
+            """
         if len(sub_buttons) > 0:
             fmt = u'{ "type": "click", "name": "%s", "sub_button": [%s] }'
             buttons.append(fmt % (menu.name, ','.join(sub_buttons)))
