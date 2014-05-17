@@ -10,7 +10,7 @@ import pybcs
 pybcs.init_logging(logging.INFO)
 AK = 'asaAuvEeFMOwyFMPcGe80uKz'
 SK = 'EVX9MurfG2eGfTaBbp1bLCGwX4wK0D2G'
-BUCKET = 'jianfei-baidu'
+BUCKET = 'jianfei-feiyang'
 bcs = pybcs.BCS('http://bcs.duapp.com/', AK, SK, pybcs.HttplibHTTPC)
 
 work_bucket = bcs.bucket(BUCKET)
