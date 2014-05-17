@@ -8,9 +8,9 @@ logger = logging.getLogger('default')
 
 import pybcs
 pybcs.init_logging(logging.INFO)
-AK = 'asaAuvEeFMOwyFMPcGe80uKz'
-SK = 'EVX9MurfG2eGfTaBbp1bLCGwX4wK0D2G'
-BUCKET = 'jianfei-feiyang'
+AK = 'VKgVRtN9Lja2Uu4mcRumpkTY'
+SK = 'Fnp8AQYSp9jR7G9RluVbgBxqmz7bQexH'
+BUCKET = 'kuzhanggui'
 bcs = pybcs.BCS('http://bcs.duapp.com/', AK, SK, pybcs.HttplibHTTPC)
 
 work_bucket = bcs.bucket(BUCKET)
