@@ -76,7 +76,7 @@ def intro(request, item_id):
     return intro_(request, intropage)
 
 def business_(request, business_page):
-    homepage_id=get_footer(business_page)
+    homepage_id=get_footer(business_page.pk)
     return render(request, 'microsite/contentpage.html', {'title':business_page.title, 'content':business_page.content, 'homepage_id':homepage_id, 'theme': site_templates[business_page.wx.wsite_template].site_template})
 
 def business(request, item_id):
@@ -131,7 +131,7 @@ def weibo(request, item_id):
 
 
 def trend_(request, trendapp):
-    homepage_id=get_footer(trendapp)
+    homepage_id=get_footer(trendapp.pk)
     trenditems = TrendItem.objects.filter(trend=trendapp).order_by("-position")
     items = []
     for i in trenditems:
