@@ -427,13 +427,21 @@ a.phone:active div {
 }
 
 .joins .join .join-meta p {
-    color: black;
+    margin-top: -42px;
+    color: black;    
     padding: 8px;
     font-size: 15px;
     float: left;
 }
 
 .joins .empty {
-    margin-top: 20px;
-    position: static;
+    background-image: url('joinus.png');
+    background-size: 60px 60px;
+    height: 60px;
+    width: 60px;
+    margin-top: -42px;
+    margin-left: -32px;
+}
+.joins .empty p {
+    margin-top: 68px;
 }

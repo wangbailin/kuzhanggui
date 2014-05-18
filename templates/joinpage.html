@@ -6,7 +6,7 @@
 <!--        <tr><th><span style="color:red;">*</span>{{ form.icon.label }}</th><td>{{ form.icon }}<span class="help-inline">{{form.icon.help_text}}<a style="margin-left:10px;" id="icon_help" rel="popover"><i class="icon-question-sign"></i>帮助</a></span>{{ form.icon.errors }}</td></tr>
  -->
         <tr><th>{{ form.pic.label }}</th><td>{{ form.pic }}{{ form.pic.errors }}</td></tr>
-        <tr><th>{{ form.front_words.label }}</th><td>{{ form.front_words }}{{ form.front_words.errors }}</td></tr>
+        <tr><th><span style="color:red;">*</span>{{ form.front_words.label }}</th><td>{{ form.front_words }}{{ form.front_words.errors }}</td></tr>
         <tr><th><span style="color:red;">*</span>{{ form.contact.label }}</th><td>{{ form.contact }}{{ form.contact.errors }}</td></tr>
         <tr><th>{{ form.end_words.label }}</th><td>{{ form.end_words }}{{ form.end_words.errors }}</td></tr>
     </tbody>
