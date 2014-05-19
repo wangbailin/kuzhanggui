@@ -18,7 +18,6 @@ logger = logging.getLogger("cron")
 from data.models import WSiteDailyData, WeixinDailyData
 from framework.models import WXAccount
 
-@cronjobs.register
 def sts_log_analyse():
     log_update_time = os.path.getmtime("./logs/sts.log")
     today_begin_time = int((time.time() + 8 * 3600) / (24 * 3600)) * 24 * 3600 - 8 * 3600
@@ -62,7 +61,6 @@ def sts_log_analyse():
             WSiteDailyData.today(wx_id, v[1], v[0])
 
 
-@cronjobs.register
 def weixin_daily_analyse():
     for wx in WXAccount.objects.filter(state=WXAccount.STATE_BOUND):
         try:
