@@ -22,7 +22,10 @@ REBUILD_SQL="drop database rocket; \
 rebuild-db:
 	echo $(REBUILD_SQL) | mysql -u root -p && ./manage.py syncdb --traceback
 
+VENV:=../ENV
+analyse: 
+	source $(VENV)/bin/activate && ./manage.py stslog && ./manage.py weixindaily
 
 assets: $(console_polyfill)
 
-.PHONY: rebuild-db debug start-uwsgi stop-uswgi reload-uwsgi
+.PHONY: rebuild-db debug start-uwsgi stop-uswgi reload-uwsgi, analyse

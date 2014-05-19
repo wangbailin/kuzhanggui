@@ -1,5 +1,6 @@
 *.py[cod]
 *.swp
+*.swo
 nohup.out
 .DS_Store
 static
@@ -43,3 +44,4 @@ nosetests.xml
 
 #bower 
 bower_components
+venv
