@@ -16,5 +16,4 @@ import data.cron
 
 class Command(BaseCommand):
     def handle(self,*args,**options):
-        print "Hello Django!"
         data.cron.weixin_daily_analyse()
