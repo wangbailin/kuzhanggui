@@ -24,7 +24,7 @@ rebuild-db:
 
 VENV:=../ENV
 analyse: 
-	source $(VENV)/bin/activate && ./manage.py mycommand && ./manage.py mycommand2
+	source $(VENV)/bin/activate && ./manage.py stslog && ./manage.py weixindaily
 
 assets: $(console_polyfill)
 
